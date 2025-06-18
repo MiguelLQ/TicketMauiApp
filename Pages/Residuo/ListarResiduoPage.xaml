@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Residuo.ListarResiduoPage"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels"
+             x:DataType="viewModels:Residuos.ResiduoPageModel"
+             Title="ListarResiduoPage">
+    
+  
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Button Text="Agregar Residuo"
+                Clicked="OnAgregarResiduoClicked" />
+
+        <CollectionView ItemsSource="{Binding ListaResiduos}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="5" Padding="10" BorderColor="LightGray">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding NombreResiduo}" FontAttributes="Bold" />
+                            <Label Text="{Binding EstadoResiduo, StringFormat='Estado: {0}'}" />
+                            <Label Text="{Binding IdCategoriaResiduo, StringFormat='Categoría ID: {0}'}" FontSize="12"/>
+
+                            <HorizontalStackLayout Spacing="10">
+                                <Button Text="✏️ Editar" 
+                                        Clicked="OnEditarResiduoClicked"
+                                        CommandParameter="{Binding .}" />
+
+                                <Button Text="Inhabilitar"
+                                        Command="{Binding BindingContext.CambiarEstadoResiduoCommand, Source={x:Reference ResiduoPage}}"
+                                        CommandParameter="{Binding IdResiduo}" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

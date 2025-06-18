@@ -1,31 +1,53 @@
 ﻿using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
 
 namespace MauiFirebase.Data.Repositories;
 public class ResiduoRepository : IResiduoRepository
 {
-    public Task<bool> ChangeEstadoResiduoAsync(int id)
+    private readonly AppDatabase _database;
+    public ResiduoRepository(AppDatabase database)
     {
-        throw new NotImplementedException();
+        _database = database;
+    }
+    public async Task<bool> ChangeEstadoResiduoAsync(int id)
+    {
+        Residuo residuo = await _database.Database!.Table<Residuo>()
+                              .Where(r => r.IdResiduo == id)
+                              .FirstOrDefaultAsync();
+        if (residuo == null)
+        {
+            return false;
+        }
+        residuo.EstadoResiduo = !residuo.EstadoResiduo;
+        int result = await _database.Database.UpdateAsync(residuo);
+        return result > 0;
+
     }
 
-    public Task<Residuo> CreateResiduoAsync(Residuo residuo)
+    public async Task<Residuo> CreateResiduoAsync(Residuo residuo)
     {
-        throw new NotImplementedException();
+        var resultado = await _database.Database!.InsertAsync(residuo);
+        return residuo;
     }
 
-    public Task<List<Residuo>> GetAllResiduoAync()
+    public async Task<List<Residuo>> GetAllResiduoAync()
     {
-        throw new NotImplementedException();
+        var resultado = await _database.Database!.Table<Residuo>().ToListAsync();
+        return resultado;
     }
 
     public Task<Residuo?> GetResiduoIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var resultado = _database.Database!.Table<Residuo>()
+                              .Where(r => r.IdResiduo == id)
+                              .FirstOrDefaultAsync();
+        return resultado!;
     }
 
-    public Task<int> UpdateResiduoAsync(Residuo residuo)
+    public async Task<int> UpdateResiduoAsync(Residuo residuo)
     {
-        throw new NotImplementedException();
+        var resultado = await _database.Database!.UpdateAsync(residuo);
+        return resultado;
     }
 }

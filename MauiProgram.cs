@@ -3,7 +3,9 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.PageModels.Premio;
+using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.Pages.Premio;
+using MauiFirebase.Pages.Residuo;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 
@@ -47,11 +49,18 @@ namespace MauiFirebase
             builder.Services.AddSingleton<ProjectListPageModel>();
             builder.Services.AddSingleton<ManageMetaPageModel>();
             // sql lite
-            builder.Services.AddSingleton(new SQLiteDataSource(
-                     Path.Combine(FileSystem.AppDataDirectory, "appdb.db3")));
+            //builder.Services.AddSingleton(new SQLiteDataSource(
+            //         Path.Combine(FileSystem.AppDataDirectory, "appdb.db3")));
+
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "appdb.db3");
+            builder.Services.AddSingleton(new AppDatabase(dbPath));
+      
+            builder.Services.AddSingleton<IResiduoRepository, ResiduoRepository>();
+            builder.Services.AddSingleton<ResiduoPageModel>();
+            builder.Services.AddSingleton<ListarResiduoPage>();
+            
 
             builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
-            // premio
             builder.Services.AddTransient<PremioViewModel>();
             builder.Services.AddTransient<PremioPage>();
 

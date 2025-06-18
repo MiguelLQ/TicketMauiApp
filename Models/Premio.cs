@@ -8,7 +8,7 @@ using SQLite;
 namespace MauiFirebase.Models
 {
     public class Premio
-    {
+    {   
         
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }

@@ -27,5 +27,25 @@ namespace MauiFirebase.Data.Sources
             premio.Id == 0 ? _database.InsertAsync(premio) : _database.UpdateAsync(premio);
 
         public Task<int> EliminarAsync(Premio premio) => _database.DeleteAsync(premio);
+
+        internal async Task EliminarAsync(RegistroDeReciclaje registro)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal async Task GuardarAsync(RegistroDeReciclaje registro)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Task<T> ObtenerPorIdAsync<T>(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Task<List<T>> ObtenerTodosAsync<T>()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

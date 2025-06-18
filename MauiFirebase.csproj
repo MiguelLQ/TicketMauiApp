@@ -80,13 +80,7 @@
 	  <MauiXaml Update="Pages\Premio\PremioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Residuo\AgregarResiduoPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Residuo\EditarResiduoPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Residuo\ListarResiduoPage.xaml">
+	  <MauiXaml Update="Pages\RegistroDeReciclaje\RegistroDeReciclajePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Ticket\ListarTicketPage.xaml">

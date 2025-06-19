@@ -6,32 +6,24 @@ namespace MauiFirebase.Data.Repositories
 {
     public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
     {
-        private readonly SQLiteDataSource _local;
-
-        public RegistroDeReciclajeRepository(SQLiteDataSource local)
-        {
-            _local = local;
-        }
-
         public Task EliminarAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task GuardarAsync(RegistroDeReciclaje registro)
+        public Task GuardarAsync(RegistroDeReciclaje registro)
         {
-            await _local.GuardarAsync(registro);
-            // TODO: Sincronizar con Firebase si se desea
+            throw new NotImplementedException();
         }
 
-        public async Task<RegistroDeReciclaje?> ObtenerPorIdAsync(int id)
+        public Task<RegistroDeReciclaje?> ObtenerPorIdAsync(int id)
         {
-            return await _local.ObtenerPorIdAsync<RegistroDeReciclaje>(id);
+            throw new NotImplementedException();
         }
 
-        public async Task<List<RegistroDeReciclaje>> ObtenerTodosAsync()
+        public Task<List<RegistroDeReciclaje>> ObtenerTodosAsync()
         {
-            return await _local.ObtenerTodosAsync<RegistroDeReciclaje>();
+            throw new NotImplementedException();
         }
     }
 }

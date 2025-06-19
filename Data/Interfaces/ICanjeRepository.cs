@@ -3,12 +3,12 @@ using System.Collections.ObjectModel;
 
 namespace MauiFirebase.Data.Interfaces
 {
-    internal interface ICanjeRepository
+    public interface ICanjeRepository
     {
-        Task<List<Canje>> GetAllResiduoAync();
-        Task<Canje> CreateResiduoAsync(Canje canje);
-        Task<Residuo?> GetResiduoIdAsync(int id);
-        Task<int> UpdateResiduoAsync(Residuo residuo);
-        Task<bool> ChangeEstadoResiduoAsync(int id);
+        Task<List<Canje>> GetAllCanjeAync();
+        Task<Canje> CreateCanjeAsync(Canje canje);
+        Task<Canje?> GetCanjeIdAsync(int id);
+        Task<int> UpdateCanjeAsync(Canje canje);
+        Task<bool> ChangeEstadoCanjeAsync(int id);
     }
 }

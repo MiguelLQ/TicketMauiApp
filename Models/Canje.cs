@@ -13,7 +13,7 @@ namespace MauiFirebase.Models
         [NotNull]
         public int IdPremio { get; set; }
         [NotNull]
-        public DateTime FechaDeCanjeo { get; set; }
+        public DateTime FechaCanje { get; set; }
         [NotNull]
         public bool EstadoCanje { get; set; } = true;
     }

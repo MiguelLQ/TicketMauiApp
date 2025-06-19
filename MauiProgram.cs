@@ -16,6 +16,7 @@ using MauiFirebase.Pages.RegistroDeReciclaje;
 using MauiFirebase.PageModels.CategoriaResiduos;
 using MauiFirebase.Pages.CategoriaResiduo;
 
+
 namespace MauiFirebase
 {
     public static class MauiProgram
@@ -89,6 +90,12 @@ namespace MauiFirebase
 
             builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
             builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
+            
+            //Canjes
+            builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
+            builder.Services.AddSingleton<CategoriaResiduoPageModel>();
+            builder.Services.AddSingleton<CategoriaResiduoPage>();
+
 
             return builder.Build();
         }

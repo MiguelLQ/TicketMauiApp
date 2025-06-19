@@ -89,6 +89,9 @@
 	  <MauiXaml Update="Pages\Residuo\ListarResiduoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Ticket\EditarTicketPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Ticket\ListarTicketPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -98,7 +101,6 @@
 	  <Folder Include="PageModels\Canje\" />
 	  <Folder Include="PageModels\Residente\" />
 	  <Folder Include="PageModels\RegistroReciclaje\" />
-	  <Folder Include="PageModels\Ticket\" />
 	  <Folder Include="Pages\CategoriaResiduo\" />
 	  <Folder Include="PageModels\CategoriaResiduo\" />
 	  <Folder Include="Pages\Canje\" />

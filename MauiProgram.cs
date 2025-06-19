@@ -4,8 +4,10 @@ using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.PageModels.Premio;
 using MauiFirebase.PageModels.Residuos;
+using MauiFirebase.PageModels.Ticket;
 using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.Residuo;
+using MauiFirebase.Pages.Ticket;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 
@@ -63,6 +65,11 @@ namespace MauiFirebase
             builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
             builder.Services.AddTransient<PremioViewModel>();
             builder.Services.AddTransient<PremioPage>();
+            // Ticket
+            builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
+            builder.Services.AddSingleton<TicketPageModel>();
+            builder.Services.AddTransient<ListarTicketPage>();
+
 
             builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
             builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");

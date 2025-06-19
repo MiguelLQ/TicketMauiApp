@@ -31,6 +31,6 @@ namespace MauiFirebase.PageModels.Canjes
 
 
 
-        public ObservableCollection<Canje> ListaCanjes { get; } = new();
+     
     }
 }

@@ -1,4 +1,4 @@
-using MauiFirebase.PageModels.Premio;
+using MauiFirebase.PageModels.Premios;
 
 namespace MauiFirebase.Pages.Premio;
 

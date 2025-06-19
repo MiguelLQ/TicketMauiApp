@@ -2,7 +2,7 @@
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
-using MauiFirebase.PageModels.Premio;
+using MauiFirebase.PageModels.Premios;
 using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.PageModels.Ticket;
 using MauiFirebase.Pages.Premio;

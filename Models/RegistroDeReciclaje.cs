@@ -1,18 +1,22 @@
-﻿using System;
-using SQLite;
+﻿using SQLite;
 
 namespace MauiFirebase.Models
 {
     public class RegistroDeReciclaje
     {
         [PrimaryKey, AutoIncrement]
+
         public int IDRegistroDeReciclaje { get; set; }
-
-        public int? IdResidente { get; set; } 
-        public int? IdResiduo { get; set; }  
-
+        [Indexed]
+        public int IdResidente { get; set; }
+        [NotNull]
+        public int IdResiduo { get; set; }
+        [NotNull]
         public decimal PesoKilogramo { get; set; }
-        public DateTime FechaRegistro { get; set; } 
+        [NotNull]
+        public DateTime FechaRegistro { get; set; }
+        [NotNull]
         public int TicketsGanados { get; set; }
+
     }
 }

@@ -2,8 +2,62 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.RegistroDeReciclaje.RegistroDeReciclajePage"
-             Title="RegistroDeReciclajePage">
+             x:Name="RegistroPage"
+             Title="Registro de Reciclaje">
+
     <ScrollView>
-        
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Agregar nuevo registro de reciclaje" FontAttributes="Bold" FontSize="18" />
+
+       
+            <Entry Placeholder="Peso en Kg" 
+                   Keyboard="Numeric"
+                   Text="{Binding PesoKilogramo}" />
+
+            <Entry Placeholder="Tickets Ganados" 
+                   Keyboard="Numeric"
+                   Text="{Binding TicketsGanados}" />
+
+            <Button 
+                Text="Agregar Registro"
+                Command="{Binding AddRegistroCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="White" />
+
+            <ActivityIndicator 
+                IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}" 
+                Color="Gray" />
+
+            <Label Text="Lista de Registros de Reciclaje" 
+                   FontSize="18" 
+                   FontAttributes="Bold" 
+                   Margin="0,20,0,0" />
+
+            <CollectionView ItemsSource="{Binding Registros}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding IdResidente, StringFormat='ID Residente: {0}'}" FontSize="14"/>
+                                <Label Text="{Binding IdResiduo, StringFormat='ID Residuo: {0}'}" FontSize="14"/>
+                                <Label Text="{Binding PesoKilogramo, StringFormat='Peso: {0} Kg'}" FontSize="14"/>
+                                <Label Text="{Binding TicketsGanados, StringFormat='Tickets: {0}'}" FontSize="14"/>
+                                <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" FontSize="12"/>
+
+                                <Button Text="Eliminar"
+                                        Command="{Binding Source={x:Reference RegistroPage}, Path=BindingContext.DeleteRegistroCommand}"
+                                        CommandParameter="{Binding IDRegistroDeReciclaje}"
+                                        BackgroundColor="#F44336"
+                                        TextColor="White"
+                                        FontSize="12" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

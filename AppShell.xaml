@@ -6,6 +6,7 @@
     xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
     xmlns:pages="clr-namespace:MauiFirebase.Pages"
     xmlns:premio="clr-namespace:MauiFirebase.Pages.Premio"
+    xmlns:registro="clr-namespace:MauiFirebase.Pages.RegistroDeReciclaje"
     xmlns:ticket="clr-namespace:MauiFirebase.Pages.Ticket"
     xmlns:residuo="clr-namespace:MauiFirebase.Pages.Residuo"
     Shell.FlyoutBehavior="Flyout"
@@ -33,6 +34,11 @@
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate premio:PremioPage}"
         Route="premio" />
+    <ShellContent
+        Title="Registro De Reciclaje"
+        Icon="{StaticResource IconMeta}"
+        ContentTemplate="{DataTemplate registro:RegistroDeReciclajePage}"
+        Route="registroDeReciclaje" />
     <ShellContent
         Title="Listar Ticket"
         Icon="{StaticResource IconMeta}"

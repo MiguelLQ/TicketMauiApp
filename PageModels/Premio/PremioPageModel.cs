@@ -7,7 +7,7 @@ using MauiFirebase.Models;
 
 namespace MauiFirebase.PageModels.Premio
 {
-    public class PremioViewModel : INotifyPropertyChanged
+    public class PremioPageModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
     }

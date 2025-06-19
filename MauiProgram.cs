@@ -13,6 +13,8 @@ using MauiFirebase.Models;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.PageModels.RegistroDeReciclaje;
 using MauiFirebase.Pages.RegistroDeReciclaje;
+using MauiFirebase.PageModels.CategoriaResiduos;
+using MauiFirebase.Pages.CategoriaResiduo;
 
 namespace MauiFirebase
 {
@@ -73,6 +75,11 @@ namespace MauiFirebase
             builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
             builder.Services.AddSingleton<TicketPageModel>();
             builder.Services.AddTransient<ListarTicketPage>();
+            // Categoria Residuo
+            builder.Services.AddSingleton<ICategoriaResiduoRepository, CategoriaResiduoRepository>();
+            builder.Services.AddSingleton<CategoriaResiduoPageModel>();
+            builder.Services.AddTransient<CategoriaResiduoPage>();
+
 
 
             builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();

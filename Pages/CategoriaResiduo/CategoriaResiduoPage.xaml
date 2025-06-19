@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
+             x:Class="MauiFirebase.Pages.CategoriaResiduo.CategoriaResiduoPage"
+             Title="CategoriaResiduoPage">
+    <VerticalStackLayout>
+        <Label 
+            Text="Categoria residuo page"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

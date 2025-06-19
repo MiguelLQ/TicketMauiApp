@@ -117,7 +117,7 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
             await _registroRepository.EliminarAsync(id);
             await LoadRegistrosAsync();
         }
-
+        //hbjasvhgsagvhas
         private void LimpiarFormulario()
         {
             IdResidente = 0;

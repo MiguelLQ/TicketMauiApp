@@ -9,6 +9,7 @@
     xmlns:registro="clr-namespace:MauiFirebase.Pages.RegistroDeReciclaje"
     xmlns:ticket="clr-namespace:MauiFirebase.Pages.Ticket"
     xmlns:residuo="clr-namespace:MauiFirebase.Pages.Residuo"
+    xmlns:categoriaresiduo="clr-namespace:MauiFirebase.Pages.CategoriaResiduo"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase">
 
@@ -49,6 +50,11 @@
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
         Route="residuo" />
+    <ShellContent
+        Title="Categoria Residuo"
+        Icon="{StaticResource IconProjects}"
+        ContentTemplate="{DataTemplate categoriaresiduo:CategoriaResiduoPage}"
+        Route="categoriaResiduo" />
     <Shell.FlyoutFooter>
         <Grid Padding="15">
             <sf:SfSegmentedControl x:Name="ThemeSegmentedControl" 

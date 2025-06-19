@@ -22,5 +22,9 @@ public class AppDatabase
          =========================================================*/
         _database.CreateTableAsync<Residuo>().Wait();
         _database.CreateTableAsync<Ticket>().Wait();
+        _database.CreateTableAsync<RegistroDeReciclaje>().Wait();
+        _database.CreateTableAsync<CategoriaResiduo>().Wait();
+
+
     }
 }

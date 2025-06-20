@@ -3,11 +3,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:MauiFirebase.Helpers"
              x:Class="MauiFirebase.Pages.CategoriaResiduo.CategoriaResiduoPage"
-             Title="CategoriaResiduoPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Categoria residuo page"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="CategoriaResiduoPage"
+             x:Name="CategoriaPage">
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Nueva Categoría" FontAttributes="Bold" FontSize="18"/>
+
+            <Entry Placeholder="Nombre de Categoría" 
+                   Text="{Binding NombreCategoria}" />
+
+            <Label Text="Estado (¿Activo?)"/>
+            <Switch IsToggled="{Binding EstadoCategoriaResiduo}" />
+
+            <Label Text="Seleccionar Ticket" />
+            <Picker 
+                Title="Elige un ticket"
+                ItemsSource="{Binding ListaTickets}" 
+                ItemDisplayBinding="{Binding ColorTicket}" 
+                SelectedItem="{Binding TicketSeleccionado}" />
+
+
+            <Button 
+                Text="Agregar Categoría" 
+                Command="{Binding AddCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="White" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                               IsVisible="{Binding IsBusy}" />
+
+            <Label Text="Lista de Categorías" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0" />
+
+            <CollectionView ItemsSource="{Binding Categorias}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding NombreCategoria}" FontSize="16"/>
+                                <Label Text="{Binding EstadoCategoriaResiduo, StringFormat='Activo: {0}'}" FontSize="14"/>
+                                <Label Text="{Binding IdTicket, StringFormat='Ticket ID: {0}'}" FontSize="12"/>
+
+                                <Button 
+                                    Text="Cambiar Estado"
+                                    Command="{Binding Source={x:Reference CategoriaPage}, Path=BindingContext.ChangeEstadoCommand}"
+                                    CommandParameter="{Binding IdCategoriaResiduo}"
+                                    BackgroundColor="#2196F3"
+                                    TextColor="White"
+                                    FontSize="12"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

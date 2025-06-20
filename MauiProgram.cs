@@ -78,7 +78,7 @@ namespace MauiFirebase
             // Categoria Residuo
             builder.Services.AddSingleton<ICategoriaResiduoRepository, CategoriaResiduoRepository>();
             builder.Services.AddSingleton<CategoriaResiduoPageModel>();
-            builder.Services.AddTransient<CategoriaResiduoPage>();
+            builder.Services.AddSingleton<CategoriaResiduoPage>();
 
 
 

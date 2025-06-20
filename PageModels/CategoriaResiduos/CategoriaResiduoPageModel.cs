@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 
 namespace MauiFirebase.PageModels.CategoriaResiduos
 {
     public class CategoriaResiduoPageModel : INotifyPropertyChanged
     {
+
         private readonly ICategoriaResiduoRepository _repository;
+        private readonly ITicketRepository _ticketRepository;
+        public ObservableCollection<Models.Ticket> ListaTickets { get; } = new();
 
         public ObservableCollection<Models.CategoriaResiduo> Categorias { get; set; } = new();
 
@@ -31,6 +36,19 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
             get => _idTicket;
             set { _idTicket = value; OnPropertyChanged(); }
         }
+        // capturar Id Conticket Seleccionado
+        private Models.Ticket? _ticketSeleccionado;
+        public Models.Ticket? TicketSeleccionado
+        {
+            get => _ticketSeleccionado;
+            set
+            {
+                _ticketSeleccionado = value;
+                IdTicket = value?.IdTicket ?? 0; // id no puede ser igual a 0
+                OnPropertyChanged();
+            }
+        }
+
 
         private bool _estadoCategoriaResiduo = true;
         public bool EstadoCategoriaResiduo
@@ -49,17 +67,39 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
         // Comandos
         public ICommand AddCommand { get; }
         public ICommand LoadCommand { get; }
+
+        //public ICommand LoadCommand { get; }
         public ICommand ChangeEstadoCommand { get; }
 
-        public CategoriaResiduoPageModel(ICategoriaResiduoRepository repository)
+        public CategoriaResiduoPageModel(ICategoriaResiduoRepository repository, ITicketRepository ticketRepository)
         {
             _repository = repository;
+            _ticketRepository = ticketRepository;
+
             AddCommand = new Command(async () => await AddAsync());
-            LoadCommand = new Command(async () => await LoadAsync());
+            LoadCommand = new Command(async() => await LoadAsync());
             ChangeEstadoCommand = new Command<int>(async (id) => await CambiarEstado(id));
+
+            // Cargar tickets al inicio
+            _ = CargarTicketsAsync();
+            _ = LoadAsync();
+        }
+        public async Task CargarTicketsAsync()
+        {
+            try
+            {
+                var lista = await _ticketRepository.GetAllTicketAync();
+                ListaTickets.Clear();
+                foreach (var t in lista)
+                    ListaTickets.Add(t);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error cargando tickets: {ex.Message}");
+            }
         }
 
-        private async Task LoadAsync()
+        public async Task LoadAsync()
         {
             if (IsBusy) return;
             IsBusy = true;

@@ -25,7 +25,7 @@ public partial class CategoriaResiduoPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", $"No se pudo cargar la información: {ex.Message}", "OK");
+            await DisplayAlert("Error", $"No se pudo cargar la información de ticket: {ex.Message}", "OK");
         }
     }
 }

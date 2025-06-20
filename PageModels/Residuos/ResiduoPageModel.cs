@@ -27,7 +27,9 @@ public partial class ResiduoPageModel : ObservableObject
         ListaResiduos.Clear();
         var residuos = await _residuoRepository.GetAllResiduoAync();
         foreach (var r in residuos)
+        {
             ListaResiduos.Add(r);
+        }
     }
     [RelayCommand]
     public async Task CrearResiduoAsync()

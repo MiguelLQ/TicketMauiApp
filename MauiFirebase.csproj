@@ -63,6 +63,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="PageModels\Canje\**" />
+	  <AndroidResource Remove="PageModels\CategoriaResiduo\**" />
+	  <AndroidResource Remove="PageModels\Residente\**" />
+	  <Compile Remove="PageModels\Canje\**" />
+	  <Compile Remove="PageModels\CategoriaResiduo\**" />
+	  <Compile Remove="PageModels\Residente\**" />
+	  <EmbeddedResource Remove="PageModels\Canje\**" />
+	  <EmbeddedResource Remove="PageModels\CategoriaResiduo\**" />
+	  <EmbeddedResource Remove="PageModels\Residente\**" />
+	  <MauiCss Remove="PageModels\Canje\**" />
+	  <MauiCss Remove="PageModels\CategoriaResiduo\**" />
+	  <MauiCss Remove="PageModels\Residente\**" />
+	  <MauiXaml Remove="PageModels\Canje\**" />
+	  <MauiXaml Remove="PageModels\CategoriaResiduo\**" />
+	  <MauiXaml Remove="PageModels\Residente\**" />
+	  <None Remove="PageModels\Canje\**" />
+	  <None Remove="PageModels\CategoriaResiduo\**" />
+	  <None Remove="PageModels\Residente\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
@@ -95,12 +116,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="PageModels\Canje\" />
-	  <Folder Include="PageModels\Residente\" />
 	  <Folder Include="PageModels\RegistroReciclaje\" />
 	  <Folder Include="PageModels\Ticket\" />
 	  <Folder Include="Pages\CategoriaResiduo\" />
-	  <Folder Include="PageModels\CategoriaResiduo\" />
 	  <Folder Include="Pages\Canje\" />
 	  <Folder Include="Pages\RegistroReciclaje\" />
 	  <Folder Include="Pages\Residente\" />

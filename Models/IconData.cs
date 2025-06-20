@@ -1,10 +1,8 @@
 using System;
 
-namespace MauiFirebase.Models
+namespace MauiFirebase.Models;
+public class IconData
 {
-    public class IconData
-    {
-        public string? Icon { get; set; }
-        public string? Description { get; set; }
-    }
+    public string? Icon { get; set; }
+    public string? Description { get; set; }
 }

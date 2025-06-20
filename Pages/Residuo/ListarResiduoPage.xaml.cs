@@ -10,7 +10,7 @@ public partial class ListarResiduoPage : ContentPage
 	{
 		InitializeComponent();
 		_pageModel = pageModel;
-		BindingContext = pageModel;
+		BindingContext = _pageModel;
     }
 
     protected override async void OnAppearing()
@@ -26,6 +26,7 @@ public partial class ListarResiduoPage : ContentPage
 
     private async void OnEditarResiduoClicked(object sender, EventArgs e)
     {
+        await Navigation.PushAsync(new EditarResiduoPage(_pageModel));
        
     }
 }

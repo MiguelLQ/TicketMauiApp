@@ -16,10 +16,10 @@
                 ItemDisplayBinding="{Binding NombreCategoriaResiduo}"
                 SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
 
-        <Button Text="Guardar"
-                Command="{Binding CrearResiduoCommand}" />
+        <Button CornerRadius="30" BackgroundColor="DarkBlue"  Text="Guardar"
+                Command="{Binding CrearResiduoCommand}"/>
 
-        <Button Text="Cancelar"
+        <Button CornerRadius="30" Text="Cancelar"
                 Clicked="OnCancelarClicked"
                 BackgroundColor="Gray" TextColor="White"/>
     </VerticalStackLayout>

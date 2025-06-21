@@ -13,6 +13,7 @@ using MauiFirebase.Pages.Ticket;
 using MauiFirebase.Pages.RegistroDeReciclaje;
 using MauiFirebase.PageModels.CategoriaResiduos;
 using MauiFirebase.Pages.CategoriaResiduo;
+using Syncfusion.Maui.Toolkit.Hosting;
 
 namespace MauiFirebase
 {
@@ -39,10 +40,6 @@ namespace MauiFirebase
                     fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-    		builder.Services.AddLogging(configure => configure.AddDebug());
-#endif
 
             builder.Services.AddSingleton<ProjectRepository>();
             builder.Services.AddSingleton<TaskRepository>();

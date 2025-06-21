@@ -5,9 +5,9 @@ using System.Windows.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 
-namespace MauiFirebase.PageModels.Premio
+namespace MauiFirebase.PageModels.Premios
 {
-    public class PremioViewModel : INotifyPropertyChanged
+    public class PremioPageModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
     }

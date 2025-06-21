@@ -4,11 +4,11 @@
              x:Class="MauiFirebase.Pages.Premio.PremioPage"  
              Title="PremioPage">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
+        <VerticalStackLayout Padding="20" Spacing="20" BackgroundColor="yellow" HeightRequest="500" WidthRequest="400">
 
             <Label Text="Registrar Premio"  
-                   FontSize="24"  
-                   FontAttributes="Bold"  
+                   FontSize="30"  
+                   FontAttributes="None"  
                    HorizontalOptions="Center" />
 
             <!-- Nombre -->

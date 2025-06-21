@@ -2,11 +2,64 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Ticket.ListarTicketPage"
+             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
+             x:Name="TicketPage"
              Title="ListarTicketPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Listar Ticket"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <!-- ✅ LOS RECURSOS VAN DENTRO DEL CONTENTPAGE -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToEstadoConverter x:Key="EstadoConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Agregar nuevo ticket" FontAttributes="Bold" FontSize="18" />
+
+            <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
+
+            <Label Text="¿Está activo?" />
+            <Switch IsToggled="{Binding EstadoTicket}" />
+
+            <Button 
+                Text="Agregar Ticket"
+                Command="{Binding AddTicketCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="White" />
+
+            <ActivityIndicator 
+                IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}" 
+                Color="Gray" />
+
+            <Label Text="Lista de Tickets" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0" />
+
+            <CollectionView ItemsSource="{Binding Tickets}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding ColorTicket}" FontSize="16" />
+                                <Label 
+                                    Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}" 
+                                    FontSize="14"
+                                    TextColor="Red" />
+                                <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" FontSize="12" />
+                                <Button 
+                                    Text="Cambiar Estado"
+                                    Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.ChangeEstadoCommand}"
+                                    CommandParameter="{Binding IdTicket}"
+                                    BackgroundColor="#2196F3"
+                                    TextColor="White"
+                                    FontSize="12" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

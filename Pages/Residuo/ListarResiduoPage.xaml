@@ -2,40 +2,38 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.ListarResiduoPage"
-             xmlns:residuosVm="clr-namespace:MauiFirebase.PageModels.Residuos"
-             Title="Listado de Residuos">
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels"
+             x:DataType="viewModels:Residuos.ResiduoPageModel"
+             Title="ListarResiduoPage">
+    
+  
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Button Text="Agregar Residuo"
+                Clicked="OnAgregarResiduoClicked" />
 
-    <StackLayout Padding="10">
-
-        <!-- Botón para agregar residuo -->
-        <Button Text="Agregar Residuo" Clicked="OnAgregarResiduoClicked" />
-
-        <!-- Lista de residuos -->
         <CollectionView ItemsSource="{Binding ListaResiduos}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border Margin="5" Padding="10" StrokeShape="RoundRectangle 8">
-                        <StackLayout>
-                            <Label Text="{Binding NombreResiduo}" FontSize="18" />
+                    <Frame Margin="5" Padding="10" BorderColor="LightGray">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding NombreResiduo}" FontAttributes="Bold" />
                             <Label Text="{Binding EstadoResiduo, StringFormat='Estado: {0}'}" />
-                            <Label Text="{Binding CategoriaResiduoSeleccionada}" />
+                            <Label Text="{Binding IdCategoriaResiduo, StringFormat='Categoría ID: {0}'}" FontSize="12"/>
 
-                            <StackLayout Orientation="Horizontal" Spacing="10">
-                                <!-- Botón para editar -->
-                                <Button Text="Editar"
+                            <HorizontalStackLayout Spacing="10">
+                                <Button Text="✏️ Editar" 
                                         Clicked="OnEditarResiduoClicked"
-                                        CommandParameter="{Binding}" />
+                                        CommandParameter="{Binding ActualizarResiduoCommand}" />
 
-                                <!-- Botón para cambiar estado -->
-                                <Button Text="Cambiar Estado"
-                                        Command="{Binding Source={x:Reference Name=PageBinding}, Path=BindingContext.CambiarEstadoResiduoCommand}"
+                                <Button Text="Inhabilitar"
+                                        Command="{Binding BindingContext.CambiarEstadoResiduoCommand, Source={x:Reference ResiduoPage}}"
                                         CommandParameter="{Binding IdResiduo}" />
-                            </StackLayout>
-                        </StackLayout>
-                    </Border>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-    </StackLayout>
+    </VerticalStackLayout>
 </ContentPage>

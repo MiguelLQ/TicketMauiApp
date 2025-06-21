@@ -11,30 +11,24 @@ namespace MauiFirebase.Data.Repositories
 {
     public class PremioRepository : IPremioRepository
     {
-        private readonly SQLiteDataSource _local;
-        public PremioRepository(SQLiteDataSource local)
+        public Task EliminarAsync(Premio premio)
         {
-            _local = local;
+            throw new NotImplementedException();
         }
 
-        public async  Task EliminarAsync(Premio premio)
+        public Task GuardarAsync(Premio premio)
         {
-            await _local.EliminarAsync(premio);
-        // TODO: Eliminar también en Firebase si hay conexión
-           }
-        public async Task GuardarAsync(Premio premio)
-        {
-            await _local.GuardarAsync(premio);
-        // TODO: Aquí irá sincronización con Firebase
-        }
-        public async Task<Premio> ObtenerPorIdAsync(int id)
-        {
-            return await _local.ObtenerPorIdAsync(id);
+            throw new NotImplementedException();
         }
 
-        public async Task<List<Premio>> ObtenerTodosAsync()
+        public Task<Premio> ObtenerPorIdAsync(int id)
         {
-            return await _local.ObtenerTodosAsync();
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Premio>> ObtenerTodosAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

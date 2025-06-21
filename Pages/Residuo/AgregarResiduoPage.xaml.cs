@@ -16,7 +16,7 @@ public partial class AgregarResiduoPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.CargarResiduosAsync();
+        await _viewModel.CargarCategoriaResiduoAsync();
     }
 
     private async void OnCancelarClicked(object sender, EventArgs e)

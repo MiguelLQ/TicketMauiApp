@@ -2,8 +2,10 @@
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
-using MauiFirebase.PageModels.Premio;
+using MauiFirebase.PageModels.CategoriaResiduos;
 using MauiFirebase.PageModels.Residuos;
+using MauiFirebase.PageModels.Ticket;
+using MauiFirebase.Pages.CategoriaResiduo;
 using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.Residuo;
 using Microsoft.Extensions.Logging;
@@ -55,15 +57,24 @@ public static class MauiProgram
         string dbPath = Path.Combine(FileSystem.AppDataDirectory, "appdb.db3");
         builder.Services.AddSingleton(new AppDatabase(dbPath));
   
-        builder.Services.AddSingleton<IResiduoRepository, ResiduoRepository>();
+        builder.Services.AddSingleton<ICategoriaRepository, ResiduoRepository>();
         builder.Services.AddSingleton<ResiduoPageModel>();
         builder.Services.AddSingleton<AgregarResiduoPage>();
         builder.Services.AddSingleton<ListarResiduoPage>();
         builder.Services.AddSingleton<EditarResiduoPage>();
-        
+
+        builder.Services.AddSingleton<ICategoriaResiduoRepository, CategoriaResiduoRepository>();
+        builder.Services.AddSingleton<CategoriaResiduoPageModel>();
+        builder.Services.AddSingleton<CategoriaResiduoPage>();
+
+        builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
+        builder.Services.AddSingleton<TicketPageModel>();
+   
+
+
+
 
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
-        builder.Services.AddTransient<PremioViewModel>();
         builder.Services.AddTransient<PremioPage>();
 
         builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");

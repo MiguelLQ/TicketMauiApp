@@ -13,7 +13,7 @@
 
         <Picker Title="Seleccionar categoría"
                 ItemsSource="{Binding ListaCategorias}"
-                ItemDisplayBinding="{Binding NombreCategoriaResiduo}"
+                ItemDisplayBinding="{Binding NombreCategoria }"
                 SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
 
         <Button CornerRadius="30" BackgroundColor="DarkBlue"  Text="Guardar"

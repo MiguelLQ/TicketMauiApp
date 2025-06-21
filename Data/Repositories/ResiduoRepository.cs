@@ -27,7 +27,14 @@ public class ResiduoRepository : IResiduoRepository
 
     public async Task<Residuo> CreateResiduoAsync(Residuo residuo)
     {
-        var resultado = await _database.Database!.InsertAsync(residuo);
+        var existeResiduo = await _database.Database!.Table<Residuo>()
+                                .FirstAsync(x => x.NombreResiduo!.ToLower() == residuo.NombreResiduo!.ToLower());
+        if (existeResiduo != null)
+        {
+            Console.WriteLine("Existe residuo con ese nombre");
+        }
+
+        int resultado = await _database.Database!.InsertAsync(residuo);
         return residuo;
     }
 

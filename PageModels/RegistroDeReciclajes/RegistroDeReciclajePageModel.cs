@@ -10,21 +10,31 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
     public class RegistroDeReciclajePageModel : INotifyPropertyChanged
     {
         private readonly IRegistroDeReciclajeRepository _registroRepository;
+       // private readonly IResidenteRepository _residenteRepository;
+        private readonly IResiduoRepository _residuoRepository;
 
         public ObservableCollection<RegistroDeReciclaje> Registros { get; set; } = new();
+        public ObservableCollection<Residuo> ListaResiduos { get; set; } = new();
 
-        private int _idResidente;
-        public int IdResidente
+        private string _dniResidente;
+        public string DniResidente
         {
-            get => _idResidente;
-            set { _idResidente = value; OnPropertyChanged(); }
+            get => _dniResidente;
+            set { _dniResidente = value; OnPropertyChanged(); }
         }
 
-        private int _idResiduo;
-        public int IdResiduo
+        //private Residente _residenteEncontrado;
+        //public Residente ResidenteEncontrado
+        //{
+        //    get => _residenteEncontrado;
+        //    set { _residenteEncontrado = value; OnPropertyChanged(); }
+        //}
+
+        private Residuo _residuoSeleccionado;
+        public Residuo ResiduoSeleccionado
         {
-            get => _idResiduo;
-            set { _idResiduo = value; OnPropertyChanged(); }
+            get => _residuoSeleccionado;
+            set { _residuoSeleccionado = value; OnPropertyChanged(); }
         }
 
         private decimal _pesoKilogramo;
@@ -49,21 +59,54 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
         }
 
         // Comandos
+        public ICommand BuscarResidenteCommand { get; }
         public ICommand LoadRegistrosCommand { get; }
         public ICommand AddRegistroCommand { get; }
-        public ICommand UpdateRegistroCommand { get; }
         public ICommand DeleteRegistroCommand { get; }
 
-        public RegistroDeReciclajePageModel(IRegistroDeReciclajeRepository registroRepository)
+        // poner IResidenteRepository residenteRepository,
+        public RegistroDeReciclajePageModel(IRegistroDeReciclajeRepository registroRepository,
+                                            IResiduoRepository residuoRepository)
         {
             _registroRepository = registroRepository;
+         //   _residenteRepository = residenteRepository;
+            _residuoRepository = residuoRepository;
 
             LoadRegistrosCommand = new Command(async () => await LoadRegistrosAsync());
+            BuscarResidenteCommand = new Command(async () => await BuscarResidenteAsync());
             AddRegistroCommand = new Command(async () => await AddRegistroAsync());
-            UpdateRegistroCommand = new Command<RegistroDeReciclaje>(async registro => await UpdateRegistroAsync(registro));
             DeleteRegistroCommand = new Command<int>(async id => await DeleteRegistroAsync(id));
 
-            _ = LoadRegistrosAsync(); // Carga automática
+            _ = LoadRegistrosAsync();
+            _ = CargarResiduosAsync();
+        }
+
+        private async Task CargarResiduosAsync()
+        {
+            var residuos = await _residuoRepository.GetAllResiduoAync();
+            ListaResiduos.Clear();
+            foreach (var residuo in residuos)
+                ListaResiduos.Add(residuo);
+        }
+
+        private async Task BuscarResidenteAsync()
+        {
+            if (string.IsNullOrWhiteSpace(DniResidente))
+            {
+                await AppShell.DisplayToastAsync("Ingresa un DNI válido.");
+                return;
+            }
+
+            //var residente = await _residenteRepository.ObtenerPorDniAsync(DniResidente);
+            //if (residente != null)
+            //{
+            //    ResidenteEncontrado = residente;
+            //    await AppShell.DisplayToastAsync($"Residente encontrado: {residente.NombreResidente}");
+            //}
+            //else
+            //{
+            //    await AppShell.DisplayToastAsync("Residente no encontrado.");
+            //}
         }
 
         public async Task LoadRegistrosAsync()
@@ -86,30 +129,35 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
 
         private async Task AddRegistroAsync()
         {
+            //if (ResidenteEncontrado == null)
+            //{
+            //    await AppShell.DisplayToastAsync("Debes buscar y seleccionar un residente válido.");
+            //    return;
+            //}
+
+            if (ResiduoSeleccionado == null)
+            {
+                await AppShell.DisplayToastAsync("Selecciona un residuo.");
+                return;
+            }
+
             var nuevoRegistro = new RegistroDeReciclaje
             {
-                IdResidente = IdResidente,
-                IdResiduo = IdResiduo,
+             //   IdResidente = int.Parse(ResidenteEncontrado.IdResidente),
+                IdResiduo = ResiduoSeleccionado.IdResiduo,
                 PesoKilogramo = PesoKilogramo,
                 TicketsGanados = TicketsGanados,
                 FechaRegistro = DateTime.Now
             };
 
             await _registroRepository.GuardarAsync(nuevoRegistro);
-            await LoadRegistrosAsync();
 
+            // Sumar tickets al residente
+         //   ResidenteEncontrado.TicketsTotalesGanados += TicketsGanados;
+         //   await _residenteRepository.GuardarAsync(ResidenteEncontrado);
+
+            await LoadRegistrosAsync();
             LimpiarFormulario();
-        }
-
-        private async Task UpdateRegistroAsync(RegistroDeReciclaje registro)
-        {
-            registro.IdResidente = IdResidente;
-            registro.IdResiduo = IdResiduo;
-            registro.PesoKilogramo = PesoKilogramo;
-            registro.TicketsGanados = TicketsGanados;
-
-            await _registroRepository.GuardarAsync(registro);
-            await LoadRegistrosAsync();
         }
 
         private async Task DeleteRegistroAsync(int id)
@@ -117,11 +165,12 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
             await _registroRepository.EliminarAsync(id);
             await LoadRegistrosAsync();
         }
-        //hbjasvhgsagvhas
+
         private void LimpiarFormulario()
         {
-            IdResidente = 0;
-            IdResiduo = 0;
+            DniResidente = string.Empty;
+        //    ResidenteEncontrado = null;
+            ResiduoSeleccionado = null;
             PesoKilogramo = 0;
             TicketsGanados = 0;
         }

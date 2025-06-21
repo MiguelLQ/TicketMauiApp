@@ -23,7 +23,7 @@
                             <HorizontalStackLayout Spacing="10">
                                 <Button Text="✏️ Editar" 
                                         Clicked="OnEditarResiduoClicked"
-                                        CommandParameter="{Binding .}" />
+                                        CommandParameter="{Binding ActualizarResiduoCommand}" />
 
                                 <Button Text="Inhabilitar"
                                         Command="{Binding BindingContext.CambiarEstadoResiduoCommand, Source={x:Reference ResiduoPage}}"

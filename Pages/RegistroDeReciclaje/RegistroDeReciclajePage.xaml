@@ -8,28 +8,62 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Label Text="Agregar nuevo registro de reciclaje" FontAttributes="Bold" FontSize="18" />
+            <Label Text="Agregar nuevo registro de reciclaje" 
+                   FontAttributes="Bold" 
+                   FontSize="18" />
 
-       
+            <!-- Entrada para el DNI del residente -->
+            <Entry Placeholder="DNI del Residente" 
+                   Text="{Binding DniResidente}" />
+
+            <!-- Botón para buscar residente (por ahora no funcional hasta completar repositorio) -->
+            <Button Text="Buscar Residente"
+                    Command="{Binding BuscarResidenteCommand}"
+                    BackgroundColor="#2196F3"
+                    TextColor="White" />
+
+            <!-- Mostrar datos si se encontró un residente -->
+            <Label Text="{Binding ResidenteEncontrado.NombreResidente, StringFormat='Residente: {0}'}" 
+                   FontSize="14" 
+                   IsVisible="{Binding ResidenteEncontrado}" />
+
+            <!-- Picker para seleccionar Residuo -->
+            <Label Text="Selecciona tipo de residuo:" FontAttributes="Bold" />
+            <Picker Title="Seleccionar tipo de residuo"
+                    ItemsSource="{Binding ListaResiduos}"
+                    ItemDisplayBinding="{Binding NombreResiduo}"
+                    SelectedItem="{Binding ResiduoSeleccionado}" />
+
+            <!-- Peso Kilogramo -->
+            <Label Text="Peso Kg" 
+                   FontAttributes="Bold" 
+                   FontSize="18" />
             <Entry Placeholder="Peso en Kg" 
                    Keyboard="Numeric"
                    Text="{Binding PesoKilogramo}" />
 
+            <!-- Tickets Ganados -->
+            <Label Text="Puntos ganados" 
+                   FontAttributes="Bold" 
+                   FontSize="18" />
             <Entry Placeholder="Tickets Ganados" 
                    Keyboard="Numeric"
                    Text="{Binding TicketsGanados}" />
 
+            <!-- Botón Agregar Registro -->
             <Button 
                 Text="Agregar Registro"
                 Command="{Binding AddRegistroCommand}"
                 BackgroundColor="#4CAF50"
                 TextColor="White" />
 
+            <!-- Indicador de carga -->
             <ActivityIndicator 
                 IsRunning="{Binding IsBusy}" 
                 IsVisible="{Binding IsBusy}" 
                 Color="Gray" />
 
+            <!-- Lista de registros -->
             <Label Text="Lista de Registros de Reciclaje" 
                    FontSize="18" 
                    FontAttributes="Bold" 

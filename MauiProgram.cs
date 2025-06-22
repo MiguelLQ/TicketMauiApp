@@ -3,10 +3,12 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.PageModels.CategoriaResiduos;
+using MauiFirebase.PageModels.RegistroDeReciclajePageModel;
 using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.PageModels.Ticket;
 using MauiFirebase.Pages.CategoriaResiduo;
 using MauiFirebase.Pages.Premio;
+using MauiFirebase.Pages.RegistroDeReciclaje;
 using MauiFirebase.Pages.Residuo;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
@@ -69,7 +71,11 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
-   
+        // registro reciclae
+
+        builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
+        builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
+        builder.Services.AddSingleton<RegistroDeReciclajePage>();
 
 
 

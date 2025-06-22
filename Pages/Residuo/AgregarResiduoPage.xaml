@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.AgregarResiduoPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels"
-             x:DataType="viewModels:Residuos.ResiduoPageModel"
              Title="AgregarResiduoPage">
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label Text="Nuevo Residuo" FontSize="24" FontAttributes="Bold" />

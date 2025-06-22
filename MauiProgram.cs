@@ -90,7 +90,7 @@ public static class MauiProgram
         ////canje
         builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
         builder.Services.AddSingleton<CanjePageModel>();
-        builder.Services.AddSingleton<CanjePage>();
+        builder.Services.AddSingleton<AgregarCanjePage>();
 
 
 

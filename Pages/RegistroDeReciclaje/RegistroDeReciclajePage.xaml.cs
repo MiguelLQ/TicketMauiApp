@@ -3,11 +3,11 @@ using MauiFirebase.PageModels.RegistroDeReciclajePageModel;
 
 namespace MauiFirebase.Pages.RegistroDeReciclaje;
 
-public partial class CanjePage : ContentPage
+public partial class RegistroDeReciclajePage : ContentPage
 {
     private readonly RegistroDeReciclajePageModel _pageModel;
 
-    public CanjePage(RegistroDeReciclajePageModel pageModel)
+    public RegistroDeReciclajePage(RegistroDeReciclajePageModel pageModel)
     {
         InitializeComponent();
         _pageModel = pageModel;

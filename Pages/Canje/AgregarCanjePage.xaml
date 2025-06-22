@@ -2,11 +2,62 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Canje.AgregarCanjePage"
-             Title="AgregarCanjePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Bienvenido a canje!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Name="CanjePage"
+             Title="Agregar Canje">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Agregar nuevo canje" FontAttributes="Bold" FontSize="18" />
+
+            <Picker 
+                Title="Selecciona un premio"
+                ItemsSource="{Binding ListaPremios}"
+                ItemDisplayBinding="{Binding NombrePremio}"
+                SelectedItem="{Binding premioSeleccionado}" />
+
+            <Label Text="¿Está activo?" />
+            <Switch IsToggled="{Binding EstadoCanje}" />
+
+            <Button 
+                Text="Agregar Canje"
+                Command="{Binding AddCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="White" />
+
+            <ActivityIndicator 
+                IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}" 
+                Color="Gray" />
+
+            <Label Text="Lista de Canjes" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0" />
+
+            <CollectionView ItemsSource="{Binding Canjes}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding IdPremio, StringFormat='Premio ID: {0}'}" FontSize="16" />
+                                <Label 
+                                    Text="{Binding EstadoCanje, StringFormat='Estado: {0}'}"
+                                    FontSize="14"
+                                    TextColor="Red" />
+                                <Label 
+                                    Text="{Binding FechaCanje, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}"
+                                    FontSize="12" />
+                                <Button 
+                                    Text="Cambiar Estado"
+                                    Command="{Binding Source={x:Reference CanjePage}, Path=BindingContext.ChangeEstadoCommand}"
+                                    CommandParameter="{Binding IdCanje}"
+                                    BackgroundColor="#2196F3"
+                                    TextColor="White"
+                                    FontSize="12" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

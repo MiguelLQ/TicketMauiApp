@@ -1,85 +1,79 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
-             x:Class="MauiFirebase.Pages.Premio.PremioPage"  
-             Title="PremioPage">
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20" BackgroundColor="yellow" HeightRequest="500" WidthRequest="400">
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Premio.PremioPage"
+             Title="Premios">
 
-            <Label Text="Registrar Premio"  
-                   FontSize="30"  
-                   FontAttributes="None"  
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20" BackgroundColor="White">
+
+            <Label Text="Registrar Premio"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="Black"
                    HorizontalOptions="Center" />
 
-            <!-- Nombre -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Nombre del premio"  
-                       FontAttributes="Bold"  
-                       FontSize="16" />
-                <Entry Placeholder="Ingrese nombre"  
-                       Text="{Binding Nombre}" />
+            <!-- Nombre del premio -->
+            <VerticalStackLayout>
+                <Label Text="Nombre" FontAttributes="Bold" TextColor="Black" />
+                <Entry Placeholder="Ingrese el nombre"
+                       Text="{Binding NombrePremio}"
+                       TextColor="Black"
+                       PlaceholderColor="Gray" />
             </VerticalStackLayout>
 
-            <!-- Descripción -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Descripción"  
-                       FontAttributes="Bold"  
-                       FontSize="16" />
-                <Editor Placeholder="Ingrese descripción"  
-                        AutoSize="TextChanges"  
-                        Text="{Binding Descripcion}"  
-                        HeightRequest="100" />
+            <!-- Descripción del premio -->
+            <VerticalStackLayout>
+                <Label Text="Descripción" FontAttributes="Bold" TextColor="Black" />
+                <Editor Placeholder="Ingrese descripción"
+                        AutoSize="TextChanges"
+                        Text="{Binding DescripcionPremio}"
+                        TextColor="Black"
+                        PlaceholderColor="Gray" />
             </VerticalStackLayout>
 
             <!-- Puntos requeridos -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Puntos requeridos"  
-                       FontAttributes="Bold"  
-                       FontSize="16" />
-                <Entry Placeholder="00"  
-                       Keyboard="Numeric"  
-                       Text="{Binding PuntosRequeridos}" />
+            <VerticalStackLayout>
+                <Label Text="Puntos Requeridos" FontAttributes="Bold" TextColor="Black" />
+                <Entry Placeholder="00"
+                       Keyboard="Numeric"
+                       Text="{Binding PuntosRequeridos}"
+                       TextColor="Black"
+                       PlaceholderColor="Gray" />
             </VerticalStackLayout>
 
-            <!-- Botones -->
-            <HorizontalStackLayout Spacing="15"  
-                                   HorizontalOptions="Center">
-                <Button Text="Guardar"  
-                        Command="{Binding GuardarCommand}"  
-                        />
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding AddPremioCommand}"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White" />
 
-                <Button Text="Eliminar"  
-                        Command="{Binding EliminarCommand}"  
-                        IsEnabled="{Binding PremioSeleccionado, Converter={StaticResource NullToBoolConverter}}"  
-                         />
-            </HorizontalStackLayout>
+            <!-- Lista de premios -->
+            <Label Text="Premios Registrados"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   Margin="0,20,0,10" />
 
-            <!-- Lista -->
-            <Label Text="Premios registrados"  
-                   FontSize="20"  
-                   FontAttributes="Bold"  
-                   Margin="20" />
-
-            <CollectionView ItemsSource="{Binding Premios}"  
-                            SelectionMode="Single"  
-                            SelectedItem="{Binding PremioSeleccionado}">
+            <CollectionView ItemsSource="{Binding Premios}"
+                            SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BorderColor="{AppThemeBinding Light=Gray, Dark=White}"  
-                               CornerRadius="12"  
-                               Margin="0,6"  
-                               Padding="5"  
-                               HasShadow="True">
-                            <VerticalStackLayout Spacing="4">
-                                <Label Text="{Binding Nombre}"  
-                                       FontAttributes="Bold"  
-                                       FontSize="16" />
-                                <Label Text="{Binding Descripcion}"  
-                                       FontSize="14"  
-                                       TextColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
-                                <Label Text="{Binding PuntosRequeridos, StringFormat='Puntos: {0}'}"  
-                                       FontSize="14"  
-                                       TextColor="{AppThemeBinding Light=DarkBlue, Dark=LightBlue}" />
+                        <Frame BorderColor="LightGray"
+                               BackgroundColor="White"
+                               CornerRadius="8"
+                               Padding="10">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding NombrePremio}" 
+                                       FontAttributes="Bold" 
+                                       FontSize="16" 
+                                       TextColor="Black" />
+                                <Label Text="{Binding DescripcionPremio}" 
+                                       FontSize="14" 
+                                       TextColor="Black" />
+                                <Label Text="{Binding PuntosRequeridos, StringFormat='Puntos: {0}'}" 
+                                       FontSize="14" 
+                                       TextColor="Black" />
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>

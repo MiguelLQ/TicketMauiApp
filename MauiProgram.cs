@@ -2,7 +2,7 @@
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
-using MauiFirebase.PageModels.Premios;
+using MauiFirebase.PageModels.Premio;
 using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.PageModels.Ticket;
 using MauiFirebase.PageModels.RegistroDeReciclajePageModel;
@@ -60,10 +60,10 @@ namespace MauiFirebase
             builder.Services.AddSingleton<IResiduoRepository, ResiduoRepository>();
             builder.Services.AddSingleton<ResiduoPageModel>();
             builder.Services.AddSingleton<ListarResiduoPage>();
-            
+          
 
-            builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
             // premio
+            builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
             builder.Services.AddTransient<PremioPageModel>();
             builder.Services.AddTransient<PremioPage>();
             // Ticket
@@ -89,6 +89,10 @@ namespace MauiFirebase
             builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
             builder.Services.AddSingleton<CategoriaResiduoPageModel>();
             builder.Services.AddSingleton<CategoriaResiduoPage>();
+
+           
+            
+
 
 
             return builder.Build();

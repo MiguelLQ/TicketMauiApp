@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
@@ -11,24 +8,43 @@ namespace MauiFirebase.Data.Repositories
 {
     public class PremioRepository : IPremioRepository
     {
-        public Task EliminarAsync(Premio premio)
+        private readonly AppDatabase _database;
+
+        public PremioRepository(AppDatabase database)
         {
-            throw new NotImplementedException();
+            _database = database;
+            _ = _database.Database!.CreateTableAsync<Premio>(); // asegúrate de crear la tabla
         }
 
-        public Task GuardarAsync(Premio premio)
+        public async Task<Premio> CreatePremioAsync(Premio premio)
         {
-            throw new NotImplementedException();
+            await _database.Database!.InsertAsync(premio);
+            return premio;
         }
 
-        public Task<Premio> ObtenerPorIdAsync(int id)
+        public async Task<List<Premio>> GetAllPremiosAsync()
         {
-            throw new NotImplementedException();
+            return await _database.Database!.Table<Premio>().ToListAsync();
         }
 
-        public Task<List<Premio>> ObtenerTodosAsync()
+        public async Task<Premio?> GetPremioByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _database.Database!.Table<Premio>().FirstOrDefaultAsync(t => t.IdPremio == id);
+        }
+
+        public async Task<int> UpdatePremioAsync(Premio premio)
+        {
+            return await _database.Database!.UpdateAsync(premio);
+        }
+
+        public async Task<bool> ChangePremioStatusAsync(int id)
+        {
+            var premio = await GetPremioByIdAsync(id);
+            if (premio == null) return false;
+
+            premio.EstadoPremio = !premio.EstadoPremio;
+            await _database.Database!.UpdateAsync(premio);
+            return true;
         }
     }
 }

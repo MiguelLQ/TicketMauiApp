@@ -44,7 +44,7 @@ namespace MauiFirebase.PageModels.Canjes
             set
             {
                 _premioSeleccionado = value;
-                IdPremio = value?.Id ?? 0; // id no puede ser igual a 0
+                IdPremio = value?.IdPremio ?? 0; // id no puede ser igual a 0
                 OnPropertyChanged();
             }
         }
@@ -89,7 +89,7 @@ namespace MauiFirebase.PageModels.Canjes
         {
             try
             {
-                var lista = await _premioRepository.ObtenerTodosAsync();
+                var lista = await _premioRepository.GetAllPremiosAsync();
                 ListaPremios.Clear();
                 foreach (var t in lista)
                     ListaPremios.Add(t);

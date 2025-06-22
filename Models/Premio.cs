@@ -1,5 +1,4 @@
 ﻿using SQLite;
-namespace MauiFirebase.Models;
 
 namespace MauiFirebase.Models
 {
@@ -17,4 +16,5 @@ namespace MauiFirebase.Models
 
         public bool EstadoPremio { get; set; }
     }
+
 }

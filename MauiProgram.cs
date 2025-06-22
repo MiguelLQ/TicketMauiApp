@@ -6,12 +6,16 @@ using MauiFirebase.PageModels.CategoriaResiduos;
 using MauiFirebase.PageModels.RegistroDeReciclajePageModel;
 using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.PageModels.Ticket;
+using MauiFirebase.PageModels.Canjes;
 using MauiFirebase.Pages.CategoriaResiduo;
 using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.RegistroDeReciclaje;
 using MauiFirebase.Pages.Residuo;
+using MauiFirebase.Pages.Canje;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
+
+
 
 namespace MauiFirebase;
 
@@ -83,18 +87,24 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
         builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
-        builder.Services.AddSingleton<RegistroDeReciclajePage>();
-
-            builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
-            builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
-            
-            //Canjes
-            builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
-            builder.Services.AddSingleton<CategoriaResiduoPageModel>();
-            builder.Services.AddSingleton<CategoriaResiduoPage>();
+        
 
 
-            return builder.Build();
-        }
+
+
+
+        builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
+        builder.Services.AddTransient<PremioPage>();
+        ////canje
+        builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
+        builder.Services.AddSingleton<CanjePageModel>();
+        builder.Services.AddSingleton<AgregarCanjePage>();
+
+
+
+        builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
+        builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
+
+        return builder.Build();
     }
 }

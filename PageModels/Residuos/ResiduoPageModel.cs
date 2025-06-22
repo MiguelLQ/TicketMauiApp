@@ -15,20 +15,36 @@ public partial class ResiduoPageModel : ObservableObject
     private CategoriaResiduo? _categoriaResiduoSeleccionada;// categoria seleccionada por el usuario
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
     public ObservableCollection<CategoriaResiduo> ListaCategorias { get; } = new();
-
-    private readonly IResiduoRepository _residuoRepository;
-    public ResiduoPageModel(IResiduoRepository residuoRepository)
+    private readonly ICategoriaRepository _residuoRepository;
+    private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
+    public ResiduoPageModel(ICategoriaRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository)
     {
         _residuoRepository = residuoRepository;
+        _categoriaResiduoRepository = categoriaResiduoRepository;
     }
+
+    [RelayCommand]
+    public async Task CargarCategoriaResiduoAsync()
+    {
+        ListaCategorias.Clear();
+        var categorias = await _categoriaResiduoRepository.GetAllCategoriaResiduoAsync();
+        foreach (var c in categorias)
+        {
+            ListaCategorias.Add(c);
+        }
+    }
+
     [RelayCommand]
     public async Task CargarResiduosAsync()
     {
         ListaResiduos.Clear();
         var residuos = await _residuoRepository.GetAllResiduoAync();
         foreach (var r in residuos)
+        {
             ListaResiduos.Add(r);
+        }
     }
+
     [RelayCommand]
     public async Task CrearResiduoAsync()
     {

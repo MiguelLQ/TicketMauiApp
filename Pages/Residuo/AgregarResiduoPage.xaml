@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.AgregarResiduoPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels"
-             x:DataType="viewModels:Residuos.ResiduoPageModel"
              Title="AgregarResiduoPage">
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label Text="Nuevo Residuo" FontSize="24" FontAttributes="Bold" />
@@ -13,13 +12,13 @@
 
         <Picker Title="Seleccionar categoría"
                 ItemsSource="{Binding ListaCategorias}"
-                ItemDisplayBinding="{Binding NombreCategoriaResiduo}"
+                ItemDisplayBinding="{Binding NombreCategoria }"
                 SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
 
-        <Button Text="Guardar"
-                Command="{Binding CrearResiduoCommand}" />
+        <Button CornerRadius="30" BackgroundColor="DarkBlue"  Text="Guardar"
+                Command="{Binding CrearResiduoCommand}"/>
 
-        <Button Text="Cancelar"
+        <Button CornerRadius="30" Text="Cancelar"
                 Clicked="OnCancelarClicked"
                 BackgroundColor="Gray" TextColor="White"/>
     </VerticalStackLayout>

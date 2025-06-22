@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.ListarResiduoPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels"
-             x:DataType="viewModels:Residuos.ResiduoPageModel"
              Title="ListarResiduoPage">
     
   

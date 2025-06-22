@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 
 namespace MauiFirebase.Data.Interfaces;
-public interface IResiduoRepository
+public interface ICategoriaRepository
 {
     Task<List<Residuo>> GetAllResiduoAync();
     Task<Residuo> CreateResiduoAsync(Residuo residuo);

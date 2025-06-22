@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.ResidentesView.ResidenteListPage"
+             x:Name="ResidenteListRoot"
+             xmlns:viewmodels="clr-namespace:MauiFirebase.PageModels.Residentes"
+             xmlns:models="clr-namespace:MauiFirebase.Models"
+             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
+             Title="Lista de Residentes"
+             
+             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
+
+    <ContentPage.Resources>
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+        <converters:BoolToStringConverter x:Key="BoolToStringConverter" />
+
+        <Style x:Key="SeparatorStyle" TargetType="BoxView">
+            <Setter Property="HeightRequest" Value="1" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#E0E0E0, Dark=#333}" />
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+
+        <Style TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1E1E1E}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+            <Setter Property="PlaceholderColor" Value="Gray" />
+            <Setter Property="HeightRequest" Value="45" />
+            <Setter Property="Margin" Value="0,5" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="Stroke" Value="{AppThemeBinding Light=#E0E0E0, Dark=#333}" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="Margin" Value="0,5" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1C1C1C}" />
+            <Setter Property="Shadow">
+                <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <Label Text="Gestión de Residentes"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+
+            <Border>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Buscar y Filtrar" FontSize="20" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=Blue, Dark=LightBlue}"
+                           HorizontalOptions="Center" />
+                    <BoxView Style="{StaticResource SeparatorStyle}" />
+
+                    <Entry Placeholder="Buscar por Nombre o Apellido"
+                           Text="{Binding BusquedaTexto}"
+                           ReturnCommand="{Binding BuscarResidentesCommand}" />
+
+                    <Grid ColumnDefinitions="*,*">
+                        <Button Text="Buscar"
+                                Command="{Binding BuscarResidentesCommand}"
+                                BackgroundColor="#2196F3"
+                                Grid.Column="0" />
+                        <Button Text="Buscar por DNI"
+                                Command="{Binding BuscarResidentePorDniCommand}"
+                                BackgroundColor="#9C27B0"
+                                Grid.Column="1" />
+                    </Grid>
+
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="15" Margin="0,10,0,0">
+                        <Label Text="Filtrar por Estado:" VerticalOptions="Center" FontSize="Medium" />
+                        <Picker Title="Estado"
+                                SelectedItem="{Binding FiltroEstadoResidente}"
+                                WidthRequest="150">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Todos</x:String>
+                                    <x:String>Activos</x:String>
+                                    <x:String>Inactivos</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </StackLayout>
+
+                    <Button Text="Aplicar Filtros"
+                            Command="{Binding AplicarFiltrosCommand}"
+                            BackgroundColor="DarkGray" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="Residentes Registrados"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light=Blue, Dark=LightBlue}" />
+
+            <BoxView Style="{StaticResource SeparatorStyle}" />
+
+            <CollectionView ItemsSource="{Binding ListaResidentes}" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout Padding="30" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="No hay residentes para mostrar." FontAttributes="Bold" TextColor="Gray" />
+                        <Label Text="Agrega uno nuevo o ajusta tu búsqueda." TextColor="LightGray" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Residente">
+                        <Border Margin="0,3" Padding="10">
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                <!-- Info principal -->
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="{Binding NombreResidente}" FontSize="14" FontAttributes="Bold" />
+                                    <Label Text="{Binding ApellidoResidente}" FontSize="13" TextColor="Gray" />
+                                    <Label Text="{Binding DniResidente, StringFormat='DNI: {0}'}" FontSize="12" TextColor="DarkGray" />
+                                </VerticalStackLayout>
+
+                                <!-- Estado + Tickets -->
+                                <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label Text="{Binding EstadoResidente, StringFormat='Activo: {0}'}"
+                                           FontSize="12"
+                                           TextColor="{Binding EstadoResidente, Converter={StaticResource BoolToColorConverter}}" />
+                                    <Label Text="{Binding TicketsTotalesGanados, StringFormat='Tickets: {0}'}"
+                                           FontSize="12" TextColor="Green" />
+                                </VerticalStackLayout>
+
+                                <!-- Botones -->
+                                <!-- Botones -->
+                                <VerticalStackLayout Grid.Column="2" Spacing="4" VerticalOptions="Center">
+                                    <Button Text="Editar"
+                                            Command="{Binding BindingContext.EditarResidenteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                            CommandParameter="{Binding .}"
+                                            FontSize="12" Padding="4" WidthRequest="70"
+                                            BackgroundColor="#2196F3" TextColor="White" />
+
+                                    <Button Text="{Binding EstadoResidente, Converter={StaticResource BoolToStringConverter}}" 
+                                            Command="{Binding BindingContext.CambiarEstadoResidenteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                            CommandParameter="{Binding IdResidente}"
+                                            FontSize="12" Padding="4" WidthRequest="70"
+                                            BackgroundColor="{Binding EstadoResidente, Converter={StaticResource BoolToColorConverter}}"
+                                            TextColor="White" />
+                                    <Button Text="Prueba" Command="{Binding ProbarComandoCommand}" />
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

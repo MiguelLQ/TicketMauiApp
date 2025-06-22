@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.ResidentesView.ResidenteFormPage"
+             xmlns:viewmodels="clr-namespace:MauiFirebase.PageModels.Residentes"
+             xmlns:models="clr-namespace:MauiFirebase.Models"
+             Title="Formulario de Residente"
+             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
+
+    <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1E1E1E}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+            <Setter Property="PlaceholderColor" Value="Gray" />
+            <Setter Property="HeightRequest" Value="45" />
+            <Setter Property="Margin" Value="0,6" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="Stroke" Value="{AppThemeBinding Light=#E0E0E0, Dark=#333}" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,10" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1C1C1C}" />
+            <Setter Property="Shadow">
+                <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
+            </Setter>
+        </Style>
+
+        <Style x:Key="SeparatorStyle" TargetType="BoxView">
+            <Setter Property="HeightRequest" Value="1" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#DDDDDD, Dark=#444}" />
+            <Setter Property="Margin" Value="0,8" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <Label Text="Registrar o Editar Residente"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+
+            <Border>
+                <VerticalStackLayout Spacing="12">
+                    <BoxView Style="{StaticResource SeparatorStyle}" />
+
+                    <Entry Placeholder="Nombre" Text="{Binding NombreResidente}" />
+                    <Entry Placeholder="Apellido" Text="{Binding ApellidoResidente}" />
+                    <Entry Placeholder="DNI" Text="{Binding DniResidente}" Keyboard="Numeric" MaxLength="10" />
+                    <Entry Placeholder="Correo Electrónico" Text="{Binding CorreoResidente}" Keyboard="Email" />
+                    <Entry Placeholder="Dirección" Text="{Binding DireccionResidente}" />
+
+                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                        <Label Text="Estado Activo:" VerticalOptions="Center" FontSize="16" />
+                        <Switch IsToggled="{Binding EstadoResidente}"
+                                ThumbColor="{AppThemeBinding Light=Blue, Dark=LightBlue}"
+                                OnColor="Green" />
+                    </HorizontalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*,*">
+                        <Button Text="Crear"
+                                Command="{Binding CrearResidenteCommand}"
+                                BackgroundColor="#4CAF50"
+                                Grid.Column="0" />
+                        <Button Text="Actualizar"
+                                Command="{Binding ActualizarResidenteCommand}"
+                                BackgroundColor="#2196F3"
+                                Grid.Column="1" />
+                        <Button Text="Limpiar"
+                                Command="{Binding LimpiarFormularioCommand}"
+                                BackgroundColor="#FF9800"
+                                Grid.Column="2" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

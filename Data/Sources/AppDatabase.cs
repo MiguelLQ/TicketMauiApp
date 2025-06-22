@@ -25,6 +25,7 @@ public class AppDatabase
         _database.CreateTableAsync<RegistroDeReciclaje>().Wait();
         _database.CreateTableAsync<CategoriaResiduo>().Wait();
         _database.CreateTableAsync<Canje>().Wait();
+        _database.CreateTableAsync<Residente>().Wait();
 
         // Solución: eliminar y recrear la tabla Premio
         _database.DropTableAsync<Premio>().Wait();

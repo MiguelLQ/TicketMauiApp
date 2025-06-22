@@ -101,6 +101,15 @@
 	  <MauiXaml Update="Pages\Premio\PremioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\ResidentesView\ResidenteFromPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ResidentesView\ResidenteListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ResidentesView\ResidentesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Residuo\AgregarResiduoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

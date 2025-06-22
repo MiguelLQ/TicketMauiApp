@@ -16,6 +16,8 @@ using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 using MauiFirebase.PageModels.Premio;
 using MauiFirebase.Pages.Ticket;
+using MauiFirebase.PageModels.Residentes;
+using MauiFirebase.Pages.ResidentesView;
 
 
 
@@ -23,6 +25,7 @@ namespace MauiFirebase;
 
 public static class MauiProgram
 {
+    public static IServiceProvider Services { get; private set; }///////////////////////////////
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
@@ -106,7 +109,23 @@ public static class MauiProgram
 
         builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
         builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
+        // Residente
+        builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
+        builder.Services.AddTransient<ResidentePageModel>();
 
+        builder.Services.AddTransient<ResidentesPage>();
+        builder.Services.AddTransientWithShellRoute<ResidenteFormPage, ResidenteFormPageModel>("residenteForm");
+
+        builder.Services.AddTransientWithShellRoute<ResidenteListPage, ResidenteListPageModel>("residenteList");
+
+
+
+        // ==========================================================
+        var app = builder.Build();
+        Services = app.Services;
+        // ==========================================================
+
+      
         return builder.Build();
     }
 }

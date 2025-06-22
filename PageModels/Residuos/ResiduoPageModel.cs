@@ -15,9 +15,9 @@ public partial class ResiduoPageModel : ObservableObject
     private CategoriaResiduo? _categoriaResiduoSeleccionada;// categoria seleccionada por el usuario
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
     public ObservableCollection<CategoriaResiduo> ListaCategorias { get; } = new();
-    private readonly ICategoriaRepository _residuoRepository;
+    private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
-    public ResiduoPageModel(ICategoriaRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository)
+    public ResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository)
     {
         _residuoRepository = residuoRepository;
         _categoriaResiduoRepository = categoriaResiduoRepository;

@@ -3,7 +3,7 @@ using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
 
 namespace MauiFirebase.Data.Repositories;
-public class ResiduoRepository : ICategoriaRepository
+public class ResiduoRepository : IResiduoRepository
 {
     private readonly AppDatabase _database;
     public ResiduoRepository(AppDatabase database)

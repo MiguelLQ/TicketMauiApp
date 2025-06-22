@@ -14,6 +14,8 @@ using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Canje;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
+using MauiFirebase.PageModels.Premio;
+using MauiFirebase.Pages.Ticket;
 
 
 

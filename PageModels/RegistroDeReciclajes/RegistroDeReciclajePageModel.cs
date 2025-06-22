@@ -12,7 +12,7 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
     {
         private readonly IRegistroDeReciclajeRepository _registroRepository;
        // private readonly IResidenteRepository _residenteRepository;
-        private readonly ICategoriaRepository _residuoRepository;
+        private readonly IResiduoRepository _residuoRepository;
 
         public ObservableCollection<RegistroDeReciclaje> Registros { get; set; } = new();
         public ObservableCollection<Residuo> ListaResiduos { get; set; } = new();
@@ -67,7 +67,7 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
 
         // poner IResidenteRepository residenteRepository,
         public RegistroDeReciclajePageModel(IRegistroDeReciclajeRepository registroRepository,
-                                            ICategoriaRepository residuoRepository)
+                                            IResiduoRepository residuoRepository)
         {
             _registroRepository = registroRepository;
          //   _residenteRepository = residenteRepository;

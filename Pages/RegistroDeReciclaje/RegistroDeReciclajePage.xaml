@@ -12,7 +12,7 @@
                    FontAttributes="Bold" 
                    FontSize="18" />
 
-            <!-- Entrada para el DNI del residente -->
+            <!-- Entrada para el DNI del resident -->
             <Entry Placeholder="DNI del Residente" 
                    Text="{Binding DniResidente}" />
 

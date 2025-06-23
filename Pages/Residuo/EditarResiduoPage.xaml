@@ -1,12 +1,32 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.EditarResiduoPage"
-             Title="EditarResiduoPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
+             x:DataType="viewModels:EditarResiduoPageModel"
+             Title="Editar Residuo">
+
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label Text="{Binding TituloPagina}" FontSize="24" FontAttributes="Bold" />
+
+        <Entry Placeholder="Nombre del residuo"
+               Text="{Binding NombreResiduo}" />
+
+        <Picker Title="Seleccionar categoría"
+                ItemsSource="{Binding ListaCategorias}"
+                ItemDisplayBinding="{Binding NombreCategoria }"
+                SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
+        <Label Text="Estado de Residuo"></Label>
+        <Switch IsToggled="{Binding EstadoResiduo}" />
+
+        <Button Text="Guardar"
+                Command="{Binding GuardarCambiosCommand}"
+                BackgroundColor="DarkBlue"
+                TextColor="White"/>
+
+        <Button Text="Cancelar"
+                Clicked="OnCancelarClicked"
+                BackgroundColor="Gray"
+                TextColor="White" />
     </VerticalStackLayout>
 </ContentPage>

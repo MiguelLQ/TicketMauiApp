@@ -1,6 +1,5 @@
-using MauiFirebase.Data.Interfaces;
-using MauiFirebase.PageModels.Residuos;
 
+using MauiFirebase.PageModels.Residuos;
 namespace MauiFirebase.Pages.Residuo;
 
 public partial class ListarResiduoPage : ContentPage
@@ -17,16 +16,18 @@ public partial class ListarResiduoPage : ContentPage
     {
         base.OnAppearing();
         await _pageModel.CargarResiduosAsync();
+        await _pageModel.CargarCategoriaResiduoAsync(); 
     }
-
     private async void OnAgregarResiduoClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new AgregarResiduoPage(_pageModel));
+        await Shell.Current.GoToAsync(nameof(AgregarResiduoPage));
     }
 
     private async void OnEditarResiduoClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new EditarResiduoPage(_pageModel));
-       
+        if (sender is Button btn && btn.CommandParameter is MauiFirebase.Models.Residuo residuo)
+        {
+            await Shell.Current.GoToAsync($"{nameof(EditarResiduoPage)}?id={residuo.IdResiduo}");
+        }
     }
 }

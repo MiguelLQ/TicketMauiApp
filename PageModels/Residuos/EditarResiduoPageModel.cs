@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
 
@@ -10,6 +11,7 @@ public partial class EditarResiduoPageModel : ObservableObject
 {
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
+    private readonly IAlertaHelper _alertaHelper;
 
     public ObservableCollection<CategoriaResiduo> ListaCategorias { get; } = new();
 
@@ -28,10 +30,11 @@ public partial class EditarResiduoPageModel : ObservableObject
     [ObservableProperty]
     private CategoriaResiduo? _categoriaResiduoSeleccionada;
 
-    public EditarResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository)
+    public EditarResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
     {
         _residuoRepository = residuoRepository;
         _categoriaResiduoRepository = categoriaResiduoRepository;
+        _alertaHelper = alertaHelper;
     }
 
     public async Task InicializarAsync()
@@ -70,6 +73,7 @@ public partial class EditarResiduoPageModel : ObservableObject
         ResiduoSeleccionado.IdCategoriaResiduo = CategoriaResiduoSeleccionada?.IdCategoriaResiduo ?? 0;
 
         await _residuoRepository.UpdateResiduoAsync(ResiduoSeleccionado);
+        await _alertaHelper.ShowSuccessAsync("Residuo actualizado correctamente.");
         await Shell.Current.GoToAsync("..");
     }
 }

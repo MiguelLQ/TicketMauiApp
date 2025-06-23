@@ -18,6 +18,8 @@ using MauiFirebase.PageModels.Premio;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.PageModels.Residentes;
 using MauiFirebase.Pages.ResidentesView;
+using MauiFirebase.Helpers.Interface;
+using MauiFirebase.Helpers;
 
 
 
@@ -61,6 +63,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<MainPageModel>();
         builder.Services.AddSingleton<ProjectListPageModel>();
         builder.Services.AddSingleton<ManageMetaPageModel>();
+        builder.Services.AddSingleton<IAlertaHelper, AlertaHelpers>();
+
+        
         // sql lite
         //builder.Services.AddSingleton(new SQLiteDataSource(
         //         Path.Combine(FileSystem.AppDataDirectory, "appdb.db3")));

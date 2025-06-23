@@ -1,5 +1,4 @@
 ﻿using MauiFirebase.Data.Interfaces;
-using MauiFirebase.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;

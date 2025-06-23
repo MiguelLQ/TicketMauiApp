@@ -36,5 +36,6 @@ namespace MauiFirebase.Data.Interfaces
 
         /// <returns>Una tarea que devuelve el objeto Residente si se encuentra, o null si no existe.</returns>
         Task<Residente?> GetResidenteByDniAsync(string dni);
+        Task<Residente> ObtenerPorDniAsync(string dniResidente);
     }
 }

@@ -10,6 +10,26 @@
 
             <Label Text="Agregar nuevo canje" FontAttributes="Bold" FontSize="18" />
 
+            <!-- NUEVO: Entrada para el DNI del residente -->
+            <Entry Placeholder="DNI del Residente"
+                   Text="{Binding DniResidente}" />
+
+            <!-- NUEVO: Botón para buscar residente -->
+            <Button Text="Buscar Residente"
+                    Command="{Binding BuscarResidenteCommand}"
+                    BackgroundColor="#2196F3"
+                    TextColor="White" />
+
+            <!-- NUEVO: Mostrar datos si se encontró un residente (ID + Nombre) -->
+            <Label Text="{Binding ResidenteEncontrado.IdResidente, StringFormat='ID Residente: {0}'}"
+                   FontSize="14"
+                   IsVisible="{Binding ResidenteEncontrado}" />
+
+            <Label Text="{Binding ResidenteEncontrado.NombreResidente, StringFormat='Residente: {0}'}"
+                   FontSize="14"
+                   IsVisible="{Binding ResidenteEncontrado}" />
+
+            <!-- Picker para seleccionar Premio -->
             <Picker 
                 Title="Selecciona un premio"
                 ItemsSource="{Binding ListaPremios}"
@@ -37,7 +57,11 @@
                     <DataTemplate>
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
                             <VerticalStackLayout>
+                                <!-- NUEVO: Mostrar el ID del Residente en la lista de Canjes -->
+                                <Label Text="{Binding IdResidente, StringFormat='ID Residente: {0}'}" FontSize="16" />
+
                                 <Label Text="{Binding IdPremio, StringFormat='Premio ID: {0}'}" FontSize="16" />
+
                                 <Label 
                                     Text="{Binding EstadoCanje, StringFormat='Estado: {0}'}"
                                     FontSize="14"

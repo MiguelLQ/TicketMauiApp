@@ -11,8 +11,6 @@ namespace MauiFirebase.Data.Repositories
     public class ResidenteRepository : IResidenteRepository
     {
         private readonly AppDatabase _database;
-
-        /// <param name="database">La instancia de AppDatabase para la conexión SQLite.</param>
         public ResidenteRepository(AppDatabase database)
         {
             _database = database;
@@ -20,8 +18,6 @@ namespace MauiFirebase.Data.Repositories
             // Simplemente llama al método y espera, sin el '_ ='
             _database.Database!.CreateTableAsync<Residente>().Wait(); // ¡Cambio aquí!
         }
-
-        /// <param name="residente">El objeto Residente a insertar.</param>
 
         public async Task<Residente> CreateResidenteAsync(Residente residente)
         {
@@ -43,15 +39,10 @@ namespace MauiFirebase.Data.Repositories
                                             .FirstOrDefaultAsync();
         }
 
-
-        /// <param name="residente">El objeto Residente con los datos actualizados.</param>
-
         public async Task<int> UpdateResidenteAsync(Residente residente)
         {
             return await _database.Database!.UpdateAsync(residente);
         }
-
-        /// <param name="id">El IdResidente del residente cuyo estado se va a cambiar.</param>
 
         public async Task<bool> ChangeEstadoResidenteAsync(int id) // O string id, según tu IdResidente
         {
@@ -102,5 +93,22 @@ namespace MauiFirebase.Data.Repositories
                                             .Where(r => r.DniResidente == dni) // Búsqueda exacta para DNI
                                             .FirstOrDefaultAsync();
         }
+
+        public async Task<Residente?> ObtenerPorDniAsync(string dniResidente)
+        {
+            if (string.IsNullOrWhiteSpace(dniResidente))
+            {
+                return null;
+            }
+
+            return await _database.Database!.Table<Residente>()
+                                            .Where(r => r.DniResidente == dniResidente)
+                                            .FirstOrDefaultAsync();
+        }
+        public async Task GuardarAsync(Residente residenteEncontrado)
+        {
+            await _database.Database!.UpdateAsync(residenteEncontrado);
+        }
+
     }
 }

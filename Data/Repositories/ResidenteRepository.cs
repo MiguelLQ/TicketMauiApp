@@ -10,14 +10,14 @@ namespace MauiFirebase.Data.Repositories
 {
     public class ResidenteRepository : IResidenteRepository
     {
-        private readonly AppDatabase _database;
+        private readonly AppDatabase _database;  
         public ResidenteRepository(AppDatabase database)
         {
             _database = database;
             // Asegúrate de que la tabla Residente exista.
             // Simplemente llama al método y espera, sin el '_ ='
             _database.Database!.CreateTableAsync<Residente>().Wait(); // ¡Cambio aquí!
-        }
+        }     
 
         public async Task<Residente> CreateResidenteAsync(Residente residente)
         {
@@ -29,8 +29,6 @@ namespace MauiFirebase.Data.Repositories
         {
             return await _database.Database!.Table<Residente>().ToListAsync();
         }
-
-        /// <param name="id">El IdResidente del residente a buscar.</param>
 
         public async Task<Residente?> GetResidenteByIdAsync(int id)
         {
@@ -79,8 +77,6 @@ namespace MauiFirebase.Data.Repositories
                                                         (r.ApellidoResidente != null && r.ApellidoResidente.ToLower().Contains(lowerSearchText)))
                                             .ToListAsync();
         }
-
-        /// <param name="dni">El DNI a buscar.</param>
 
         public async Task<Residente?> GetResidenteByDniAsync(string dni)
         {

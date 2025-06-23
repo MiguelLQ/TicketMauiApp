@@ -2,21 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
+using MauiFirebase.Pages.Residuo;
 using System.Collections.ObjectModel;
 namespace MauiFirebase.PageModels.Residuos;
 
 public partial class ResiduoPageModel : ObservableObject
 {
-    [ObservableProperty]
-    private string? _nombreResiduo;
-    [ObservableProperty]
-    private bool _estadoResiduo = true;
-    [ObservableProperty]
-    private CategoriaResiduo? _categoriaResiduoSeleccionada;// categoria seleccionada por el usuario
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
     public ObservableCollection<CategoriaResiduo> ListaCategorias { get; } = new();
+
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
+
     public ResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository)
     {
         _residuoRepository = residuoRepository;
@@ -46,42 +43,26 @@ public partial class ResiduoPageModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task CrearResiduoAsync()
-    {
-        var nuevo = new Residuo
-        {
-            NombreResiduo = NombreResiduo,
-            EstadoResiduo = true,
-            IdCategoriaResiduo = CategoriaResiduoSeleccionada?.IdCategoriaResiduo ?? 0
-        };
-
-        await _residuoRepository.CreateResiduoAsync(nuevo);
-        await CargarResiduosAsync();
-        LimpiarFormulario();
-    }
-
-    [RelayCommand]
-    public async Task ActualizarResiduoAsync(Residuo residuo)
-    {
-        residuo.NombreResiduo = NombreResiduo;
-        residuo.EstadoResiduo = EstadoResiduo;
-        residuo.IdCategoriaResiduo = CategoriaResiduoSeleccionada?.IdCategoriaResiduo ?? 0;
-
-        await _residuoRepository.UpdateResiduoAsync(residuo);
-        await CargarResiduosAsync();
-    }
-
-    [RelayCommand]
     public async Task CambiarEstadoResiduoAsync(int id)
     {
         await _residuoRepository.ChangeEstadoResiduoAsync(id);
         await CargarResiduosAsync();
     }
 
-    private void LimpiarFormulario()
+    [RelayCommand]
+    public async Task IrAEditarResiduoAsync(Residuo residuo)
     {
-        NombreResiduo = string.Empty;
-        EstadoResiduo = true;
-        CategoriaResiduoSeleccionada = null;
+        var parametros = new Dictionary<string, object>
+        {
+            { "ResiduoSeleccionado", residuo }
+        };
+
+        await Shell.Current.GoToAsync(nameof(EditarResiduoPage), parametros);
+    }
+
+    [RelayCommand]
+    public async Task IrACrearResiduoAsync()
+    {
+        await Shell.Current.GoToAsync("AgregarResiduoPage");
     }
 }

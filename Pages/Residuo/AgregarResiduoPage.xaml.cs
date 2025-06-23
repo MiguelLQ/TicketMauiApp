@@ -4,9 +4,9 @@ namespace MauiFirebase.Pages.Residuo;
 
 public partial class AgregarResiduoPage : ContentPage
 {
-    private readonly ResiduoPageModel _viewModel;
+    private readonly CrearResiduoPageModel _viewModel;
 
-    public AgregarResiduoPage(ResiduoPageModel viewModel)
+    public AgregarResiduoPage(CrearResiduoPageModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;
@@ -16,7 +16,7 @@ public partial class AgregarResiduoPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.CargarCategoriaResiduoAsync();
+        await _viewModel.CargarCategoriasAsync(); 
     }
 
     private async void OnCancelarClicked(object sender, EventArgs e)

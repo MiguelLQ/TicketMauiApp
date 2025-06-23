@@ -48,8 +48,8 @@ public static class MauiProgram
             });
 
 #if DEBUG
-		builder.Logging.AddDebug();
-		builder.Services.AddLogging(configure => configure.AddDebug());
+        builder.Logging.AddDebug();
+        builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
         builder.Services.AddSingleton<ProjectRepository>();
@@ -65,26 +65,30 @@ public static class MauiProgram
         //builder.Services.AddSingleton(new SQLiteDataSource(
         //         Path.Combine(FileSystem.AppDataDirectory, "appdb.db3")));
 
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "appdb.db3");
-            builder.Services.AddSingleton(new AppDatabase(dbPath));
-      
-            builder.Services.AddSingleton<IResiduoRepository, ResiduoRepository>();
-            builder.Services.AddSingleton<ResiduoPageModel>();
-            builder.Services.AddSingleton<ListarResiduoPage>();
-            
+        string dbPath = Path.Combine(FileSystem.AppDataDirectory, "appdb.db3");
+        builder.Services.AddSingleton(new AppDatabase(dbPath));
 
-            builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
-            // premio
-            builder.Services.AddTransient<PremioPageModel>();
-            builder.Services.AddTransient<PremioPage>();
-            // Ticket
-            builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
-            builder.Services.AddSingleton<TicketPageModel>();
-            builder.Services.AddTransient<ListarTicketPage>();
-            // Categoria Residuo
-            builder.Services.AddSingleton<ICategoriaResiduoRepository, CategoriaResiduoRepository>();
-            builder.Services.AddSingleton<CategoriaResiduoPageModel>();
-            builder.Services.AddSingleton<CategoriaResiduoPage>();
+        builder.Services.AddSingleton<IResiduoRepository, ResiduoRepository>();
+        builder.Services.AddSingleton<ResiduoPageModel>();
+        builder.Services.AddSingleton<EditarResiduoPageModel>();
+        builder.Services.AddSingleton<CrearResiduoPageModel>();
+        builder.Services.AddSingleton<ListarResiduoPage>();
+        builder.Services.AddSingleton<AgregarResiduoPage>();
+        builder.Services.AddSingleton<EditarResiduoPage>();
+
+
+        builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
+        // premio
+        builder.Services.AddTransient<PremioPageModel>();
+        builder.Services.AddTransient<PremioPage>();
+        // Ticket
+        builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
+        builder.Services.AddSingleton<TicketPageModel>();
+        builder.Services.AddTransient<ListarTicketPage>();
+        // Categoria Residuo
+        builder.Services.AddSingleton<ICategoriaResiduoRepository, CategoriaResiduoRepository>();
+        builder.Services.AddSingleton<CategoriaResiduoPageModel>();
+        builder.Services.AddSingleton<CategoriaResiduoPage>();
 
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
@@ -92,7 +96,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
         builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
-        
+
 
 
 
@@ -125,7 +129,7 @@ public static class MauiProgram
         Services = app.Services;
         // ==========================================================
 
-      
+
         return builder.Build();
     }
 }

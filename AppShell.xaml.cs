@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using MauiFirebase.Pages.Residuo;
 using Font = Microsoft.Maui.Font;
 
 namespace MauiFirebase
@@ -10,6 +11,10 @@ namespace MauiFirebase
         public AppShell()
         {
             InitializeComponent();
+      
+            Routing.RegisterRoute(nameof(EditarResiduoPage), typeof(EditarResiduoPage));
+            Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage)); // si usas esta página
+
             var currentTheme = Application.Current!.RequestedTheme;
             ThemeSegmentedControl.SelectedIndex = currentTheme == AppTheme.Light ? 0 : 1;
         }

@@ -53,5 +53,4 @@ public partial class ResiduoPageModel : ObservableObject
     {
         await Shell.Current.GoToAsync("AgregarResiduoPage");
     }
-
 }

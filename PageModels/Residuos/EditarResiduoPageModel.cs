@@ -63,6 +63,7 @@ public partial class EditarResiduoPageModel : ObservableObject
     }
 
     [RelayCommand]
+
     public async Task GuardarCambiosAsync()
     {
         if (ResiduoSeleccionado == null)

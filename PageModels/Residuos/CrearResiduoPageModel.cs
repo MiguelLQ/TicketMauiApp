@@ -42,6 +42,7 @@ public partial class CrearResiduoPageModel : ObservableObject
         }
     }
 
+
     [RelayCommand]
     public async Task CrearResiduoAsync()
     {

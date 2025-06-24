@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 
 namespace MauiFirebase.PageModels.CategoriaResiduos
 {
     public class CategoriaResiduoPageModel : INotifyPropertyChanged
     {
-
         private readonly ICategoriaResiduoRepository _repository;
         private readonly ITicketRepository _ticketRepository;
         public ObservableCollection<Models.Ticket> ListaTickets { get; } = new();
@@ -140,7 +132,6 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
             await _repository.ChangeEstadoCategoriaResiduoAsync(id);
             await LoadAsync();
         }
-
         // =================== INOTIFY =========================
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null!)

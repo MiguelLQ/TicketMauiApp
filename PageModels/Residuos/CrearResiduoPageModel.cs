@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
 
@@ -21,11 +22,13 @@ public partial class CrearResiduoPageModel : ObservableObject
 
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
+    private readonly IAlertaHelper _alertaHelper;
 
-    public CrearResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository)
+    public CrearResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
     {
         _residuoRepository = residuoRepository;
         _categoriaResiduoRepository = categoriaResiduoRepository;
+        _alertaHelper = alertaHelper;
     }
 
     [RelayCommand]
@@ -39,6 +42,7 @@ public partial class CrearResiduoPageModel : ObservableObject
         }
     }
 
+
     [RelayCommand]
     public async Task CrearResiduoAsync()
     {
@@ -50,6 +54,7 @@ public partial class CrearResiduoPageModel : ObservableObject
         };
 
         await _residuoRepository.CreateResiduoAsync(nuevo);
+        await _alertaHelper.ShowSuccessAsync("Residuo creado correctamente.");
         await Shell.Current.GoToAsync(".."); // Regresar al listado
     }
 }

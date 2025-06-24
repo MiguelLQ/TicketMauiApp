@@ -2,10 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
-using MauiFirebase.Pages.Residuo;
 using System.Collections.ObjectModel;
 namespace MauiFirebase.PageModels.Residuos;
-
 public partial class ResiduoPageModel : ObservableObject
 {
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
@@ -49,16 +47,6 @@ public partial class ResiduoPageModel : ObservableObject
         await CargarResiduosAsync();
     }
 
-    [RelayCommand]
-    public async Task IrAEditarResiduoAsync(Residuo residuo)
-    {
-        var parametros = new Dictionary<string, object>
-        {
-            { "ResiduoSeleccionado", residuo }
-        };
-
-        await Shell.Current.GoToAsync(nameof(EditarResiduoPage), parametros);
-    }
 
     [RelayCommand]
     public async Task IrACrearResiduoAsync()

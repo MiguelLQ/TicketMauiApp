@@ -11,7 +11,7 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
     public class RegistroDeReciclajePageModel : INotifyPropertyChanged
     {
         private readonly IRegistroDeReciclajeRepository _registroRepository;
-       // private readonly IResidenteRepository _residenteRepository;
+        private readonly IResidenteRepository _residenteRepository;
         private readonly IResiduoRepository _residuoRepository;
 
         public ObservableCollection<RegistroDeReciclaje> Registros { get; set; } = new();
@@ -24,12 +24,12 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
             set { _dniResidente = value; OnPropertyChanged(); }
         }
 
-        //private Residente _residenteEncontrado;
-        //public Residente ResidenteEncontrado
-        //{
-        //    get => _residenteEncontrado;
-        //    set { _residenteEncontrado = value; OnPropertyChanged(); }
-        //}
+        private Residente _residenteEncontrado;
+        public Residente ResidenteEncontrado
+        {
+            get => _residenteEncontrado;
+            set { _residenteEncontrado = value; OnPropertyChanged(); }
+        }
 
         private Residuo _residuoSeleccionado;
         public Residuo ResiduoSeleccionado
@@ -66,11 +66,12 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
         public ICommand DeleteRegistroCommand { get; }
 
         // poner IResidenteRepository residenteRepository,
-        public RegistroDeReciclajePageModel(IRegistroDeReciclajeRepository registroRepository,
+        public RegistroDeReciclajePageModel(IRegistroDeReciclajeRepository registroRepository, 
+                                            IResidenteRepository residenteRepository,
                                             IResiduoRepository residuoRepository)
         {
             _registroRepository = registroRepository;
-         //   _residenteRepository = residenteRepository;
+            _residenteRepository = residenteRepository;
             _residuoRepository = residuoRepository;
 
             LoadRegistrosCommand = new Command(async () => await LoadRegistrosAsync());
@@ -98,16 +99,16 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
                 return;
             }
 
-            //var residente = await _residenteRepository.ObtenerPorDniAsync(DniResidente);
-            //if (residente != null)
-            //{
-            //    ResidenteEncontrado = residente;
-            //    await AppShell.DisplayToastAsync($"Residente encontrado: {residente.NombreResidente}");
-            //}
-            //else
-            //{
-            //    await AppShell.DisplayToastAsync("Residente no encontrado.");
-            //}
+            var residente = await _residenteRepository.ObtenerPorDniAsync(DniResidente);
+            if (residente != null)
+            {
+                ResidenteEncontrado = residente;
+                await AppShell.DisplayToastAsync($"Residente encontrado: {residente.NombreResidente}");
+            }
+            else
+            {
+                await AppShell.DisplayToastAsync("Residente no encontrado.");
+            }
         }
 
         public async Task LoadRegistrosAsync()
@@ -130,11 +131,11 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
 
         private async Task AddRegistroAsync()
         {
-            //if (ResidenteEncontrado == null)
-            //{
-            //    await AppShell.DisplayToastAsync("Debes buscar y seleccionar un residente válido.");
-            //    return;
-            //}
+            if (ResidenteEncontrado == null)
+            {
+                await AppShell.DisplayToastAsync("Debes buscar y seleccionar un residente válido.");
+                return;
+            }
 
             if (ResiduoSeleccionado == null)
             {
@@ -144,7 +145,7 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
 
             var nuevoRegistro = new RegistroDeReciclaje
             {
-             //   IdResidente = int.Parse(ResidenteEncontrado.IdResidente),
+                IdResidente = ResidenteEncontrado.IdResidente,
                 IdResiduo = ResiduoSeleccionado.IdResiduo,
                 PesoKilogramo = PesoKilogramo,
                 TicketsGanados = TicketsGanados,
@@ -154,8 +155,8 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
             await _registroRepository.GuardarAsync(nuevoRegistro);
 
             // Sumar tickets al residente
-         //   ResidenteEncontrado.TicketsTotalesGanados += TicketsGanados;
-         //   await _residenteRepository.GuardarAsync(ResidenteEncontrado);
+            ResidenteEncontrado.TicketsTotalesGanados += TicketsGanados;
+            await _residenteRepository.GuardarAsync(ResidenteEncontrado);
 
             await LoadRegistrosAsync();
             LimpiarFormulario();
@@ -170,7 +171,7 @@ namespace MauiFirebase.PageModels.RegistroDeReciclajePageModel
         private void LimpiarFormulario()
         {
             DniResidente = string.Empty;
-        //    ResidenteEncontrado = null;
+            ResidenteEncontrado = null;
             ResiduoSeleccionado = null;
             PesoKilogramo = 0;
             TicketsGanados = 0;

@@ -9,7 +9,6 @@ using MauiFirebase.PageModels.Ticket;
 using MauiFirebase.PageModels.Canjes;
 using MauiFirebase.Pages.CategoriaResiduo;
 using MauiFirebase.Pages.Premio;
-using MauiFirebase.Pages.RegistroDeReciclaje;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Canje;
 using Microsoft.Extensions.Logging;
@@ -18,6 +17,8 @@ using MauiFirebase.PageModels.Premios;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.PageModels.Residentes;
 using MauiFirebase.Pages.ResidentesView;
+using MauiFirebase.Helpers.Interface;
+using MauiFirebase.Helpers;
 
 
 
@@ -62,13 +63,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<MainPageModel>();
         builder.Services.AddSingleton<ProjectListPageModel>();
         builder.Services.AddSingleton<ManageMetaPageModel>();
-        // sql lite
-        //builder.Services.AddSingleton(new SQLiteDataSource(
-        //         Path.Combine(FileSystem.AppDataDirectory, "appdb.db3")));
-
+        builder.Services.AddSingleton<IAlertaHelper, AlertaHelpers>();
+        /*================================================================
+         * Conexion local sqlite
+         ================================================================*/
         string dbPath = Path.Combine(FileSystem.AppDataDirectory, "appdb.db3");
         builder.Services.AddSingleton(new AppDatabase(dbPath));
-
+        /*================================================================
+        * servicios residuos
+        ================================================================*/
         builder.Services.AddSingleton<IResiduoRepository, ResiduoRepository>();
         builder.Services.AddSingleton<ResiduoPageModel>();
         builder.Services.AddSingleton<EditarResiduoPageModel>();

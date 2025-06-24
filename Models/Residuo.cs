@@ -13,4 +13,6 @@ public class Residuo
     public string? NombreResiduo { get; set; }
     [NotNull]
     public bool EstadoResiduo { get; set; } = true;
+    [Ignore] // SQLite ignora esta propiedad
+    public string? NombreCategoria { get; set; }
 }

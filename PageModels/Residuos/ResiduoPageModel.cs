@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
 namespace MauiFirebase.PageModels.Residuos;
@@ -11,11 +12,13 @@ public partial class ResiduoPageModel : ObservableObject
 
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
+    private readonly IAlertaHelper _alertaHelper;
 
-    public ResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository)
+    public ResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
     {
         _residuoRepository = residuoRepository;
         _categoriaResiduoRepository = categoriaResiduoRepository;
+        _alertaHelper = alertaHelper;
     }
 
     [RelayCommand]
@@ -33,17 +36,24 @@ public partial class ResiduoPageModel : ObservableObject
     public async Task CargarResiduosAsync()
     {
         ListaResiduos.Clear();
+
         var residuos = await _residuoRepository.GetAllResiduoAync();
-        foreach (var r in residuos)
+        var categorias = await _categoriaResiduoRepository.GetAllCategoriaResiduoAsync();
+
+        foreach (var residuo in residuos)
         {
-            ListaResiduos.Add(r);
+            var categoria = categorias.FirstOrDefault(c => c.IdCategoriaResiduo == residuo.IdCategoriaResiduo);
+            residuo.NombreCategoria = categoria?.NombreCategoria;
+            ListaResiduos.Add(residuo);
         }
     }
+
 
     [RelayCommand]
     public async Task CambiarEstadoResiduoAsync(int id)
     {
         await _residuoRepository.ChangeEstadoResiduoAsync(id);
+
         await CargarResiduosAsync();
     }
 

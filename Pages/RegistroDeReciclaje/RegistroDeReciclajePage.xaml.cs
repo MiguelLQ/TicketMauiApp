@@ -1,4 +1,4 @@
-using MauiFirebase.PageModels.Premio;
+using MauiFirebase.PageModels.Premios;
 using MauiFirebase.PageModels.RegistroDeReciclajePageModel;
 
 namespace MauiFirebase.Pages.RegistroDeReciclaje;

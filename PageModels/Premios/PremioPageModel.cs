@@ -1,124 +1,56 @@
-﻿using MauiFirebase.Data.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
+using MauiFirebase.Pages.Premio;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+using System.Threading.Tasks;
 
-namespace MauiFirebase.PageModels.Premio
+namespace MauiFirebase.PageModels.Premios;
+
+public partial class PremioPageModel : ObservableObject
 {
-    public class PremioPageModel : INotifyPropertyChanged
+    public ObservableCollection<Premio> ListaPremios { get; } = new();
+
+    private readonly IPremioRepository _premioRepository;
+
+    public PremioPageModel(IPremioRepository premioRepository)
     {
-        private readonly IPremioRepository _premioRepository;
+        _premioRepository = premioRepository;
+    }
 
-        public ObservableCollection<Models.Premio> Premios { get; set; } = new();
-
-        private string _nombrePremio;
-        public string NombrePremio
+    [RelayCommand]
+    public async Task CargarPremiosAsync()
+    {
+        ListaPremios.Clear();
+        var premios = await _premioRepository.GetAllPremiosAsync();
+        foreach (var p in premios)
         {
-            get => _nombrePremio;
-            set { _nombrePremio = value; OnPropertyChanged(); }
+            ListaPremios.Add(p);
         }
+    }
 
-        private string _descripcionPremio;
-        public string DescripcionPremio
+    [RelayCommand]
+    public async Task CambiarEstadoPremioAsync(int id)
+    {
+        await _premioRepository.ChangePremioStatusAsync(id);
+        await CargarPremiosAsync();
+    }
+
+    [RelayCommand]
+    public async Task IrAEditarPremioAsync(Premio premio)
+    {
+        var parametros = new Dictionary<string, object>
         {
-            get => _descripcionPremio;
-            set { _descripcionPremio = value; OnPropertyChanged(); }
-        }
+            { "id", premio.IdPremio }
+        };
 
-        private int _puntosRequeridos;
-        public int PuntosRequeridos
-        {
-            get => _puntosRequeridos;
-            set { _puntosRequeridos = value; OnPropertyChanged(); }
-        }
+        await Shell.Current.GoToAsync($"{nameof(EditarPremioPage)}?id={premio.IdPremio}");
+    }
 
-        private bool _estadoPremio = true;
-        public bool EstadoPremio
-        {
-            get => _estadoPremio;
-            set { _estadoPremio = value; OnPropertyChanged(); }
-        }
-
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set { _isBusy = value; OnPropertyChanged(); }
-        }
-
-        public ICommand LoadPremiosCommand { get; }
-        public ICommand AddPremioCommand { get; }
-        public ICommand ChangeEstadoCommand { get; }
-
-        public PremioPageModel(IPremioRepository premioRepository)
-        {
-            _premioRepository = premioRepository;
-
-            LoadPremiosCommand = new Command(async () => await LoadPremiosAsync());
-            AddPremioCommand = new Command(async () => await AddPremioAsync());
-            ChangeEstadoCommand = new Command<int>(async id => await ChangeEstadoAsync(id));
-
-            _ = LoadPremiosAsync(); // auto-load premios
-        }
-
-        private async Task LoadPremiosAsync()
-        {
-            if (IsBusy) return;
-            IsBusy = true;
-
-            try
-            {
-                Premios.Clear();
-                var premios = await _premioRepository.GetAllPremiosAsync();
-                foreach (var p in premios)
-                {
-                    Debug.WriteLine($"Premio: {p.NombrePremio}, {p.DescripcionPremio}, {p.PuntosRequeridos}");
-                    Premios.Add(p);
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-
-        private async Task AddPremioAsync()
-        {
-            if (string.IsNullOrWhiteSpace(NombrePremio) || string.IsNullOrWhiteSpace(DescripcionPremio))
-                return;
-
-            var newPremio = new Models.Premio
-            {
-                NombrePremio = NombrePremio,
-                DescripcionPremio = DescripcionPremio,
-                PuntosRequeridos = PuntosRequeridos,
-                EstadoPremio = EstadoPremio
-            };
-
-            await _premioRepository.CreatePremioAsync(newPremio);
-            await LoadPremiosAsync();
-
-            NombrePremio = string.Empty;
-            DescripcionPremio = string.Empty;
-            PuntosRequeridos = 0;
-            EstadoPremio = true;
-        }
-
-        private async Task ChangeEstadoAsync(int id)
-        {
-            await _premioRepository.ChangePremioStatusAsync(id);
-            await LoadPremiosAsync();
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null!)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    [RelayCommand]
+    public async Task IrACrearPremioAsync()
+    {
+        await Shell.Current.GoToAsync(nameof(AgregarPremioPage));
     }
 }

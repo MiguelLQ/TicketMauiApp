@@ -26,8 +26,9 @@
         <ShellContent
             Title="Premio"
             Icon="{StaticResource IconMeta}"
-            ContentTemplate="{DataTemplate premio:PremioPage}"
+            ContentTemplate="{DataTemplate premio:ListarPremioPage}"
             Route="premio" />
+
         <ShellContent
             Title="Registro"
             Icon="{StaticResource IconMeta}"
@@ -55,8 +56,9 @@
     <ShellContent
         Title="Premio"
         Icon="{StaticResource IconMeta}"
-        ContentTemplate="{DataTemplate premio:PremioPage}"
+        ContentTemplate="{DataTemplate premio:ListarPremioPage}"
         Route="premio" />
+
     <ShellContent
         Title="Registro De Reciclaje"
         Icon="{StaticResource IconMeta}"

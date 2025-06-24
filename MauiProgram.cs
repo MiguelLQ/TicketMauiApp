@@ -14,10 +14,11 @@ using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Canje;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
-using MauiFirebase.PageModels.Premio;
+using MauiFirebase.PageModels.Premios;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.PageModels.Residentes;
 using MauiFirebase.Pages.ResidentesView;
+
 
 
 
@@ -76,11 +77,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<AgregarResiduoPage>();
         builder.Services.AddSingleton<EditarResiduoPage>();
 
-
-        builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
         // premio
-        builder.Services.AddTransient<PremioPageModel>();
-        builder.Services.AddTransient<PremioPage>();
+        builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
+        builder.Services.AddSingleton<PremioPageModel>();
+        builder.Services.AddSingleton<EditarPremioPageModel>();
+        builder.Services.AddSingleton<CrearPremioPageModel>();
+        builder.Services.AddSingleton<ListarPremioPage>();
+        builder.Services.AddSingleton<AgregarPremioPage>();
+        builder.Services.AddSingleton<EditarPremioPage>();
+
         // Ticket
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
@@ -96,14 +101,8 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
         builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
-
-
-
-
-
-
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
-        builder.Services.AddTransient<PremioPage>();
+      
         ////canje
         builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
         builder.Services.AddSingleton<CanjePageModel>();

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.Residuo;
 using Font = Microsoft.Maui.Font;
 
@@ -14,6 +15,10 @@ namespace MauiFirebase
       
             Routing.RegisterRoute(nameof(EditarResiduoPage), typeof(EditarResiduoPage));
             Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage)); // si usas esta página
+
+            Routing.RegisterRoute(nameof(AgregarPremioPage), typeof(AgregarPremioPage));
+            Routing.RegisterRoute(nameof(EditarPremioPage), typeof(EditarPremioPage));
+
 
             var currentTheme = Application.Current!.RequestedTheme;
             ThemeSegmentedControl.SelectedIndex = currentTheme == AppTheme.Light ? 0 : 1;

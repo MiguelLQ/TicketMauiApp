@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 
 namespace MauiFirebase.PageModels.Premios;
@@ -20,10 +21,12 @@ public partial class CrearPremioPageModel : ObservableObject
     private bool estadoPremio = true;
 
     private readonly IPremioRepository _premioRepository;
+    private readonly IAlertaHelper _alertaHelper;
 
-    public CrearPremioPageModel(IPremioRepository premioRepository)
+    public CrearPremioPageModel(IPremioRepository premioRepository, IAlertaHelper alertaHelper)
     {
         _premioRepository = premioRepository;
+        _alertaHelper = alertaHelper;
     }
 
     [RelayCommand]
@@ -38,7 +41,7 @@ public partial class CrearPremioPageModel : ObservableObject
         };
 
         await _premioRepository.CreatePremioAsync(nuevo);
-        await AppShell.DisplayToastAsync("Premio guardado correctamente");
+        await _alertaHelper.ShowSuccessAsync("Premio creado correctamente.");
         await Shell.Current.GoToAsync(".."); // Volver a la página anterior
     }
 }

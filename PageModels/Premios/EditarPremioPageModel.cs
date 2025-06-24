@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace MauiFirebase.PageModels.Premios;
 public partial class EditarPremioPageModel : ObservableObject
 {
     private readonly IPremioRepository _premioRepository;
+    private readonly IAlertaHelper _alertaHelper;
 
     [ObservableProperty]
     private int idPremio;
@@ -33,9 +35,10 @@ public partial class EditarPremioPageModel : ObservableObject
     [ObservableProperty]
     private Premio? premioSeleccionado;
 
-    public EditarPremioPageModel(IPremioRepository premioRepository)
+    public EditarPremioPageModel(IPremioRepository premioRepository, IAlertaHelper alertaHelper)
     {
         _premioRepository = premioRepository;
+        _alertaHelper = alertaHelper;
     }
 
     public async Task InicializarAsync()
@@ -63,6 +66,7 @@ public partial class EditarPremioPageModel : ObservableObject
         PremioSeleccionado.EstadoPremio = EstadoPremio;
 
         await _premioRepository.UpdatePremioAsync(PremioSeleccionado);
+        await _alertaHelper.ShowSuccessAsync("Premio actualizado correctamente.");
         await Shell.Current.GoToAsync("..");
     }
 }

@@ -3,12 +3,19 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Views;
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Helpers.Interface;
+using MauiFirebase.Pages.CategoriaResiduo;
 
 namespace MauiFirebase.PageModels.CategoriaResiduos
 {
     public class CategoriaResiduoPageModel : INotifyPropertyChanged
     {
+        private IClosePopup? _popupCloser; // 🔧 Instancia UI del popup actual
+        private readonly IAlertaHelper _alertaHelper;
+
+
         private readonly ICategoriaResiduoRepository _repository;
         private readonly ITicketRepository _ticketRepository;
         public ObservableCollection<Models.Ticket> ListaTickets { get; } = new();
@@ -50,6 +57,7 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
         }
 
         private bool _isBusy;
+
         public bool IsBusy
         {
             get => _isBusy;
@@ -62,11 +70,15 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
 
         //public ICommand LoadCommand { get; }
         public ICommand ChangeEstadoCommand { get; }
+        public ICommand MostrarAgregarCategoriaCommand => new Command(MostrarAgregarCategoriaPopup);
+        public ICommand GuardarNuevaCategoriaCommand => new Command(async () => await GuardarNuevaCategoriaAsync());
 
-        public CategoriaResiduoPageModel(ICategoriaResiduoRepository repository, ITicketRepository ticketRepository)
+
+        public CategoriaResiduoPageModel(ICategoriaResiduoRepository repository, ITicketRepository ticketRepository, IAlertaHelper alertaHelper)
         {
             _repository = repository;
             _ticketRepository = ticketRepository;
+            _alertaHelper = alertaHelper;
 
             AddCommand = new Command(async () => await AddAsync());
             LoadCommand = new Command(async() => await LoadAsync());
@@ -108,7 +120,43 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
                 IsBusy = false;
             }
         }
+        // Establece el popup actual para poder cerrarlo desde el ViewModel
+        public void SetPopupCloser(IClosePopup popup)
+        {
+            _popupCloser = popup;
+        }
+        private async void MostrarAgregarCategoriaPopup()
+        {
+            NombreCategoria = string.Empty;
+            EstadoCategoriaResiduo = true;
+            IdTicket = IdTicket;
 
+            var popup = new AgregarCategoriaPopup();
+            popup.BindingContext = this;
+            SetPopupCloser(popup); // << Esto permite luego cerrarlo
+            await Application.Current.MainPage.ShowPopupAsync(popup);
+        }
+        private async Task GuardarNuevaCategoriaAsync()
+        {
+            if (string.IsNullOrWhiteSpace(NombreCategoria))
+            {
+                await _alertaHelper.ShowErrorAsync("El nombre de la categoria es obligatorio.");
+                return;
+            }
+            var nuevo = new Models.CategoriaResiduo
+            {
+                NombreCategoria = NombreCategoria,
+                EstadoCategoriaResiduo = EstadoCategoriaResiduo,
+                IdTicket = IdTicket
+            };
+
+            await _repository.CreateCategoriaResiduoAsync(nuevo);
+            await LoadAsync();
+            LimpiarFormulario();
+
+            _popupCloser?.ClosePopup(); //Cerramos el popup actual
+            await _alertaHelper.ShowSuccessAsync("Categoria agregada correctamente.");
+        }
         private async Task AddAsync()
         {
             if (string.IsNullOrWhiteSpace(NombreCategoria)) return;
@@ -131,6 +179,12 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
         {
             await _repository.ChangeEstadoCategoriaResiduoAsync(id);
             await LoadAsync();
+        }
+        private void LimpiarFormulario()
+        {
+            NombreCategoria = string.Empty;
+            EstadoCategoriaResiduo = true;
+            TicketSeleccionado = null;
         }
         // =================== INOTIFY =========================
         public event PropertyChangedEventHandler? PropertyChanged;

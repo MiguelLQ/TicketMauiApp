@@ -3,11 +3,12 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.PageModels.CategoriaResiduos;
-using MauiFirebase.PageModels.RegistroDeReciclajePageModel;
+using MauiFirebase.PageModels.RegistroDeReciclajes;
 using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.PageModels.Ticket;
 using MauiFirebase.PageModels.Canjes;
 using MauiFirebase.Pages.CategoriaResiduo;
+using MauiFirebase.Pages.RegistroDeReciclaje;
 using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Canje;
@@ -102,9 +103,19 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
+
         // registro reciclae
 
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
+        builder.Services.AddSingleton<AgregarRegistroPageModel>();
+        builder.Services.AddSingleton<BuscarResidentePageModel>();
+        builder.Services.AddSingleton<ListarRegistrosPageModel>();
+        builder.Services.AddSingleton<AgregarRegistroPage>();
+        builder.Services.AddSingleton<BuscarResidentePage>();
+        builder.Services.AddSingleton<ListarRegistrosPage>();
+
+
+        ////canje
         builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
      

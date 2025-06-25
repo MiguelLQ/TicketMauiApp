@@ -32,7 +32,7 @@
         <ShellContent
             Title="Registro"
             Icon="{StaticResource IconMeta}"
-            ContentTemplate="{DataTemplate registro:RegistroDeReciclajePage}"
+            ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
             Route="registroDeReciclaje" />
     </TabBar>
 
@@ -62,7 +62,7 @@
     <ShellContent
         Title="Registro De Reciclaje"
         Icon="{StaticResource IconMeta}"
-        ContentTemplate="{DataTemplate registro:RegistroDeReciclajePage}"
+        ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
         Route="registroDeReciclaje" />
     <ShellContent
         Title="Listar Ticket"

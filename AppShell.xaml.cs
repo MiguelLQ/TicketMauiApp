@@ -4,6 +4,7 @@ using MauiFirebase.Pages.Canje;
 using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ticket;
+using MauiFirebase.Pages.RegistroDeReciclaje;
 using Font = Microsoft.Maui.Font;
 
 namespace MauiFirebase
@@ -22,6 +23,10 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(EditarPremioPage), typeof(EditarPremioPage));
             Routing.RegisterRoute(nameof(EditarTicketPage), typeof(EditarTicketPage));
 
+            // Registro de rutas de reciclaje
+            Routing.RegisterRoute(nameof(BuscarResidentePage), typeof(BuscarResidentePage));
+            Routing.RegisterRoute(nameof(AgregarRegistroPage), typeof(AgregarRegistroPage));
+            Routing.RegisterRoute(nameof(ListarRegistrosPage), typeof(ListarRegistrosPage));
 
             Routing.RegisterRoute(nameof(AgregarCanjePage), typeof(AgregarCanjePage));
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));

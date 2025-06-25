@@ -1,8 +1,9 @@
 using CommunityToolkit.Maui.Views;
+using MauiFirebase.Helpers.Interface;
 
 namespace MauiFirebase.Pages.Ticket;
 
-public partial class EditarTicketPopup : Popup
+public partial class EditarTicketPopup : Popup, IClosePopup
 {
     public EditarTicketPopup()
     {
@@ -19,6 +20,10 @@ public partial class EditarTicketPopup : Popup
     private void CerrarPopupAlTocarFondo(object sender, TappedEventArgs e)
     {
         Close();
+    }
+    public void ClosePopup()
+    {
+        this.Close(); // Esto cierra el popup
     }
 
     // Solución al error CS0121: Asegúrate de que solo exista una definición de InitializeComponent()

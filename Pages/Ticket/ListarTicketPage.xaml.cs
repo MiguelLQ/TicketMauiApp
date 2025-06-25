@@ -41,4 +41,26 @@ public partial class ListarTicketPage : ContentPage
 
         }
     }
+    private async void OnAgregarTicketClicked(object sender, EventArgs e)
+    {
+        var viewModel = BindingContext as TicketPageModel;
+
+        if (viewModel != null)
+        {
+            viewModel.ColorTicket = string.Empty;
+            viewModel.EstadoTicket = true;
+            viewModel.TicketSeleccionado = null;
+
+            var popup = new AgregarTicketPopup();
+            popup.BindingContext = viewModel;
+
+            // ✅ Pasar el popup como IClosePopup
+            viewModel.SetPopupCloser(popup);
+
+            await this.ShowPopupAsync(popup);
+        }
+    }
+
+
+
 }

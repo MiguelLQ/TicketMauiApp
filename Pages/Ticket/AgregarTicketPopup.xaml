@@ -1,36 +1,30 @@
 <toolkit:Popup 
-    x:Class="MauiFirebase.Pages.Ticket.EditarTicketPopup"
+    x:Class="MauiFirebase.Pages.Ticket.AgregarTicketPopup"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    >
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
-    <AbsoluteLayout  BackgroundColor="#80000000">
 
-        <!-- Fondo oscuro tocable -->
+    <AbsoluteLayout BackgroundColor="#80000000">
+
         <BoxView
             BackgroundColor="Transparent"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All">
             <BoxView.GestureRecognizers>
-                <TapGestureRecognizer Tapped="CerrarPopupAlTocarFondo"/>
+                <TapGestureRecognizer Tapped="CerrarPopupAlTocarFondo" />
             </BoxView.GestureRecognizers>
         </BoxView>
 
-        <!-- Modal estilo bottom sheet -->
         <Frame
-            Padding="20"
             CornerRadius="25"
+            Padding="20"
             HasShadow="True"
             AbsoluteLayout.LayoutBounds="0,1,1,0.45"
             AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional">
 
             <VerticalStackLayout Spacing="15">
-                <BoxView HeightRequest="4" WidthRequest="50"
-                         CornerRadius="2" BackgroundColor="LightGray"
-                         HorizontalOptions="Center" />
-
-                <Label Text="Editar Ticket" FontSize="20" FontAttributes="Bold" />
+                <Label Text="Agregar Ticket" FontSize="20" FontAttributes="Bold" />
 
                 <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
                 <Label Text="¿Está activo?" />
@@ -39,11 +33,12 @@
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                     <Button 
                         Text="Guardar"
-                        Command="{Binding GuardarEdicionTicketCommand}"
+                        Command="{Binding GuardarNuevoTicketCommand}"
                         BackgroundColor="#4CAF50"
                         TextColor="White"
                         CornerRadius="20"
                         WidthRequest="120" />
+
 
                     <Button 
                         Text="Cancelar"

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui;
-
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;

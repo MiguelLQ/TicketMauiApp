@@ -4,10 +4,10 @@ namespace MauiFirebase.Pages.Ticket;
 
 public partial class EditarTicketPopup : Popup
 {
-    public EditarTicketPopup(object viewModel)
+    public EditarTicketPopup()
     {
         InitializeComponent();
-        BindingContext = viewModel;
+        
     }
 
     private void OnCancelarClicked(object sender, EventArgs e)

@@ -34,8 +34,11 @@ public partial class ListarTicketPage : ContentPage
         {
             viewModel.TicketSeleccionado = ticket;
 
-            var popup = new EditarTicketPopup(viewModel);
+            var popup = new EditarTicketPopup();
+            popup.BindingContext = viewModel;
             await this.ShowPopupAsync(popup);
+
+
         }
     }
 }

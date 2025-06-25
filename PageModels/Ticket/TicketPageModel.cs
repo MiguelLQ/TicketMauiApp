@@ -123,8 +123,17 @@ namespace MauiFirebase.PageModels.Ticket
             //    { "TicketSeleccionado", ticket }
             //});
             // Mostrar el popup desde la página actual
-            var popup = new EditarTicketPopup(this);
-            await Shell.Current.CurrentPage.ShowPopupAsync(popup); // 👈 aquí lo muestras
+            try
+            {
+                var popup = new EditarTicketPopup();
+                popup.BindingContext = this;
+                await Application.Current.MainPage.ShowPopupAsync(popup);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("ERROR", ex.ToString(), "OK");
+            }
+
 
 
         }

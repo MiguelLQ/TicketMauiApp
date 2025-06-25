@@ -142,7 +142,7 @@ namespace MauiFirebase.PageModels.Residentes
                 await CargarResidentesAsync(); // Recargar la lista para reflejar el cambio
             }
         }
-
+        
         [RelayCommand]
         private async Task EditarResidente(Residente residente)
 
@@ -152,9 +152,9 @@ namespace MauiFirebase.PageModels.Residentes
                 await Shell.Current.DisplayAlert("Error", "El residente recibido es null", "OK");
                 return;
             }
+            await Shell.Current.DisplayAlert("Tap", "¡El contenedor de prueba funciona!", "OK");
 
-          
-            await Shell.Current.DisplayAlert("Editar", $"Residente seleccionado: {residente.NombreResidente}", "OK");
+
             await Shell.Current.GoToAsync($"residenteForm?id={residente.IdResidente}");
         }
 

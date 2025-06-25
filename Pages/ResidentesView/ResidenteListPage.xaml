@@ -101,7 +101,7 @@
                             BackgroundColor="DarkGray" />
                 </VerticalStackLayout>
             </Border>
-
+          
             <Label Text="Residentes Registrados"
                    FontSize="20"
                    FontAttributes="Bold"
@@ -123,21 +123,10 @@
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer
                                     Command="{Binding Source={x:Reference ResidenteListRoot}, Path=BindingContext.EditarResidenteCommand}"
-                                        CommandParameter="{Binding .}" />
+                                    CommandParameter="{Binding .}"
+                                    Tapped="OnBorderTapped" />
                             </Border.GestureRecognizers>
-                            <!-- ESTADO VISUAL AL PRESIONAR -->
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroupList>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal" />
-                                        <VisualState x:Name="Pressed">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#e0e0e0" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateGroupList>
-                            </VisualStateManager.VisualStateGroups>
+
 
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                                 <!-- Info principal -->

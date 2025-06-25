@@ -3,6 +3,7 @@ using MauiFirebase.PageModels.Residentes;
 
 namespace MauiFirebase.Pages.ResidentesView;
 
+[QueryProperty(nameof(ResidenteId), "id")]
 public partial class ResidenteFormPage : ContentPage
 {
     private readonly ResidenteFormPageModel _vm;
@@ -12,6 +13,14 @@ public partial class ResidenteFormPage : ContentPage
         InitializeComponent();
         _vm = vm;
         BindingContext = _vm;
+    }
+    public string ResidenteId
+    {
+        set
+        {
+            if (int.TryParse(value, out int id))
+                _vm.CargarResidenteParaEdicion(id);
+        }
     }
 
     protected override void OnAppearing()

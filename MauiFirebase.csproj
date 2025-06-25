@@ -131,6 +131,12 @@
 	  <MauiXaml Update="Pages\Residuo\ListarResiduoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Ticket\AgregarTicketPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Ticket\EditarTicketPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Ticket\ListarTicketPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

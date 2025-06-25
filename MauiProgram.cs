@@ -122,6 +122,7 @@ public static class MauiProgram
 
 
 
+        builder.UseMauiCommunityToolkit(); // 👈 Esto es obligatorio
 
         builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
         builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");

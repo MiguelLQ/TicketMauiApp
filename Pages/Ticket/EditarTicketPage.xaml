@@ -3,10 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Ticket.EditarTicketPage"
              Title="EditarTicketPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Editar Ticket" FontAttributes="Bold" FontSize="20" />
+
+            <Entry 
+                Placeholder="Color del Ticket"
+                Text="{Binding ColorTicket}" />
+
+            <Label Text="¿Está activo?" />
+            <Switch IsToggled="{Binding EstadoTicket}" />
+
+            <Button 
+                Text="Guardar Cambios"
+                Command="{Binding GuardarEdicionTicketCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="White" />
+            <Button 
+                    Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    BackgroundColor="#F44336"
+                    TextColor="White" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
+   

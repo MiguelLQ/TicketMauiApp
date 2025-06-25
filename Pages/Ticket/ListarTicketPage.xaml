@@ -16,23 +16,18 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Label Text="Agregar nuevo ticket" FontAttributes="Bold" FontSize="18" />
-
-            <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
-
-            <Label Text="¿Está activo?" />
-            <Switch IsToggled="{Binding EstadoTicket}" />
-
-            <Button 
-                Text="Agregar Ticket"
-                Command="{Binding AddTicketCommand}"
-                BackgroundColor="#4CAF50"
-                TextColor="White" />
 
             <ActivityIndicator 
                 IsRunning="{Binding IsBusy}" 
                 IsVisible="{Binding IsBusy}" 
                 Color="Gray" />
+            <Button 
+                Text="Agregar Ticket"
+                Command="{Binding MostrarAgregarTicketCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="White" />
+
+
 
             <Label Text="Lista de Tickets" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0" />
 
@@ -47,13 +42,24 @@
                                     FontSize="14"
                                     TextColor="Red" />
                                 <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" FontSize="12" />
-                                <Button 
-                                    Text="Cambiar Estado"
-                                    Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.ChangeEstadoCommand}"
-                                    CommandParameter="{Binding IdTicket}"
-                                    BackgroundColor="#2196F3"
-                                    TextColor="White"
-                                    FontSize="12" />
+                                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+
+                                    <Button 
+                                        Text="Cambiar Estado"
+                                        Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.ChangeEstadoCommand}"
+                                        CommandParameter="{Binding IdTicket}"
+                                        BackgroundColor="#2196F3"
+                                        TextColor="White"
+                                        FontSize="12" />
+                                    <Button 
+                                        Text="Editar"
+                                        Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="#FFC107"
+                                        TextColor="Black"
+                                        FontSize="12" />
+                                </HorizontalStackLayout>
+
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
@@ -62,4 +68,4 @@
 
         </VerticalStackLayout>
     </ScrollView>
-</ContentPage>
+</ContentPage> 

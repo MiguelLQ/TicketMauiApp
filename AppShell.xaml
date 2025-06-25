@@ -69,6 +69,7 @@
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate ticket:ListarTicketPage}"
         Route="ticket" />
+
     <ShellContent
         Title="Listar Residuo"
         Icon="{StaticResource IconMeta}"

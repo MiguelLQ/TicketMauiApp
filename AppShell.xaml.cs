@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using MauiFirebase.Pages.Premio;
+using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Pages.Residuo;
 using Font = Microsoft.Maui.Font;
 
@@ -18,6 +19,7 @@ namespace MauiFirebase
 
             Routing.RegisterRoute(nameof(AgregarPremioPage), typeof(AgregarPremioPage));
             Routing.RegisterRoute(nameof(EditarPremioPage), typeof(EditarPremioPage));
+            Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
 
 
             var currentTheme = Application.Current!.RequestedTheme;

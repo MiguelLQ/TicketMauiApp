@@ -117,11 +117,29 @@
                         <Label Text="Agrega uno nuevo o ajusta tu búsqueda." TextColor="LightGray" />
                     </VerticalStackLayout>
                 </CollectionView.EmptyView>
-
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Residente">
                         <Border Margin="0,3" Padding="10">
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={x:Reference ResidenteListRoot}, Path=BindingContext.EditarResidenteCommand}"
+                                        CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <!-- ESTADO VISUAL AL PRESIONAR -->
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroupList>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="Pressed">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#e0e0e0" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                                 <!-- Info principal -->
                                 <VerticalStackLayout Grid.Column="0" Spacing="2">
                                     <Label Text="{Binding NombreResidente}" FontSize="14" FontAttributes="Bold" />
@@ -132,36 +150,23 @@
                                 <!-- Estado + Tickets -->
                                 <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
                                     <Label Text="{Binding EstadoResidente, StringFormat='Activo: {0}'}"
-                                           FontSize="12"
-                                           TextColor="{Binding EstadoResidente, Converter={StaticResource BoolToColorConverter}}" />
+                           FontSize="12"
+                           TextColor="{Binding EstadoResidente, Converter={StaticResource BoolToColorConverter}}" />
                                     <Label Text="{Binding TicketsTotalesGanados, StringFormat='Tickets: {0}'}"
-                                           FontSize="12" TextColor="Green" />
-                                </VerticalStackLayout>
-
-                                <!-- Botones -->
-                                <!-- Botones -->
-                                <VerticalStackLayout Grid.Column="2" Spacing="4" VerticalOptions="Center">
-                                    <Button Text="Editar"
-                                            Command="{Binding BindingContext.EditarResidenteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                            CommandParameter="{Binding .}"
-                                            FontSize="12" Padding="4" WidthRequest="70"
-                                            BackgroundColor="#2196F3" TextColor="White" />
-
-                                    <Button Text="{Binding EstadoResidente, Converter={StaticResource BoolToStringConverter}}" 
-                                            Command="{Binding BindingContext.CambiarEstadoResidenteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                            CommandParameter="{Binding IdResidente}"
-                                            FontSize="12" Padding="4" WidthRequest="70"
-                                            BackgroundColor="{Binding EstadoResidente, Converter={StaticResource BoolToColorConverter}}"
-                                            TextColor="White" />
-                                    <Button Text="Prueba" Command="{Binding ProbarComandoCommand}" />
-
+                           FontSize="12" TextColor="Green" />
                                 </VerticalStackLayout>
 
                             </Grid>
                         </Border>
                     </DataTemplate>
+                    
                 </CollectionView.ItemTemplate>
+
             </CollectionView>
+            
         </VerticalStackLayout>
+        
     </ScrollView>
+    
 </ContentPage>
+    

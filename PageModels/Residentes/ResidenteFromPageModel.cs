@@ -10,12 +10,20 @@ using Microsoft.Maui.Controls; // Necesario para Shell.Current.GoToAsync y Query
 
 namespace MauiFirebase.PageModels.Residentes
 {
+    [QueryProperty(nameof(IdResidente), "id")]
+
     public partial class ResidenteFormPageModel : ObservableObject
     {
         private readonly IResidenteRepository _residenteRepository;
 
         [ObservableProperty]
         private int _idResidente;
+
+        partial void OnIdResidenteChanged(int value)
+        {
+            if (value > 0)
+                _ = CargarResidenteParaEdicion(value);
+        }
 
         [ObservableProperty]
         private string _nombreResidente = string.Empty;

@@ -153,9 +153,7 @@ namespace MauiFirebase.PageModels.Residentes
                 return;
             }
 
-            // Navegar al formulario de registro/edición
-            // Pasamos el ID como parámetro de navegación
-            // Mensaje de prueba para verificar si el botón se está ejecutando
+          
             await Shell.Current.DisplayAlert("Editar", $"Residente seleccionado: {residente.NombreResidente}", "OK");
             await Shell.Current.GoToAsync($"residenteForm?id={residente.IdResidente}");
         }

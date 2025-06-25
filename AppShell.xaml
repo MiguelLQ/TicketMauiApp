@@ -82,8 +82,9 @@
     <ShellContent
         Title="Canje"
         Icon="{StaticResource IconProjects}"
-        ContentTemplate="{DataTemplate canje:AgregarCanjePage}"
+        ContentTemplate="{DataTemplate canje:ListarCanjePage}"
         Route="canje" />
+    
     <ShellContent
         Title="Administrar Residente"
         Icon="{StaticResource IconProjects}"

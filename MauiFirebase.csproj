@@ -98,6 +98,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\Canje\EditarCanjePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Canje\ListarCanjesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Premio\AgregarPremioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -134,7 +140,6 @@
 	  <Folder Include="PageModels\RegistroReciclaje\" />
 	  <Folder Include="PageModels\Ticket\" />
 	  <Folder Include="Pages\CategoriaResiduo\" />
-	  <Folder Include="Pages\Canje\" />
 	  <Folder Include="Pages\RegistroReciclaje\" />
 	  <Folder Include="Pages\Residente\" />
 	</ItemGroup>

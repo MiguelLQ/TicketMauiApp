@@ -2,11 +2,11 @@ using MauiFirebase.PageModels.Canjes;
 
 namespace MauiFirebase.Pages.Canje;
 
-public partial class AgregarCanjePage : ContentPage
+public partial class EditarCanjePage : ContentPage
 {
-    private readonly CrearCanjePageModel _viewModel;
+    private readonly EditarCanjePageModel _viewModel;
 
-    public AgregarCanjePage(CrearCanjePageModel viewModel)
+    public EditarCanjePage(EditarCanjePageModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;
@@ -16,7 +16,7 @@ public partial class AgregarCanjePage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.CargarPremiosAsync();
+        await _viewModel.InicializarAsync();
     }
 
     private async void OnCancelarClicked(object sender, EventArgs e)

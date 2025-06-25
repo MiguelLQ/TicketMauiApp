@@ -116,7 +116,6 @@ public static class MauiProgram
 
 
         ////canje
-        builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
      
         // Canje
@@ -129,8 +128,6 @@ public static class MauiProgram
 
         builder.Services.AddTransient<EditarCanjePageModel>();
         builder.Services.AddTransient<EditarCanjePage>();
-
-
 
 
         builder.UseMauiCommunityToolkit(); // 👈 Esto es obligatorio

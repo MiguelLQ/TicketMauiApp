@@ -91,6 +91,7 @@
         Icon="{StaticResource IconProjects}"
         ContentTemplate="{DataTemplate residente:ResidentesPage}"
         Route="residente" />
+  
     <Shell.FlyoutFooter>
         <Grid Padding="15">
             <sf:SfSegmentedControl x:Name="ThemeSegmentedControl" 

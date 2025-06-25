@@ -1,6 +1,7 @@
 ﻿// =================== ResidenteListPage.xaml.cs ===================
 using Microsoft.Maui.Controls;
 using MauiFirebase.PageModels.Residentes;
+using MauiFirebase.Models;
 namespace MauiFirebase.Pages.ResidentesView;
 
 public partial class ResidenteListPage : ContentPage
@@ -46,4 +47,18 @@ public partial class ResidenteListPage : ContentPage
             await Shell.Current.GoToAsync($"residenteForm?id={id}");
         }
     }
+    private async void OnBorderTapped(object sender, TappedEventArgs e)
+    {
+        if (sender is VisualElement border)
+        {
+            await border.FadeTo(0.6, 100);  // Efecto visual al tocar
+            await border.FadeTo(1.0, 100);
+            if (e.Parameter is Residente residente)
+            {
+                await Shell.Current.DisplayAlert("Editando", $"Abriendo edición de {residente.NombreResidente}", "OK");
+                await Shell.Current.GoToAsync($"residenteForm?id={residente.IdResidente}");
+            }
+        }
+    }
+
 }

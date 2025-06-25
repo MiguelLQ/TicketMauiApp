@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="ResidenteListRoot"
              x:Class="MauiFirebase.Pages.ResidentesView.ResidentesPage"
              xmlns:viewmodels="clr-namespace:MauiFirebase.PageModels.Residentes"
              xmlns:models="clr-namespace:MauiFirebase.Models"
@@ -37,11 +38,11 @@
                HorizontalOptions="Center"
                TextColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
 
-        <Button Text="➕ Nuevo Residente"
+        <Button Text="Nuevo Residente"
                 Command="{Binding NavigateToRegisterCommand}"
                 BackgroundColor="#4CAF50" />
 
-        <Button Text="📋 Ver Lista de Residentes"
+        <Button Text="Ver Lista de Residentes"
                 Command="{Binding NavigateToListCommand}"
                 BackgroundColor="#03A9F4" />
 

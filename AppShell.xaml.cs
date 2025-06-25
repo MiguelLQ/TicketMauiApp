@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using MauiFirebase.Pages.Canje;
 using MauiFirebase.Pages.Premio;
+using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.Pages.RegistroDeReciclaje;
@@ -30,6 +31,7 @@ namespace MauiFirebase
 
             Routing.RegisterRoute(nameof(AgregarCanjePage), typeof(AgregarCanjePage));
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
+            Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
 
 
             var currentTheme = Application.Current!.RequestedTheme;

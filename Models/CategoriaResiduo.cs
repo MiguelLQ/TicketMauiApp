@@ -12,4 +12,7 @@ public class CategoriaResiduo
     public string? NombreCategoria { get; set; }
     [NotNull]
     public bool EstadoCategoriaResiduo { get; set; }
+    [Ignore] // ← importante para que SQLite la ignore
+    public Ticket? Ticket { get; set; }
+
 }

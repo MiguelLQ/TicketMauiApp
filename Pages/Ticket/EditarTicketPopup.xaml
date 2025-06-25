@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    x:Class="MauiFirebase.Pages.Ticket.EditarTicketPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Size="MatchParent">
+
+    <Grid BackgroundColor="#80000000">
+
+        <!-- Zona exterior: si se toca, cierra el popup -->
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="CerrarPopupAlTocarFondo" />
+        </Grid.GestureRecognizers>
+
+        <!-- Modal deslizante -->
+        <Frame
+            BackgroundColor="White"
+            Padding="20"
+            CornerRadius="25"
+            VerticalOptions="End"
+            Margin="20"
+            HasShadow="True">
+
+            <VerticalStackLayout Spacing="15">
+                <Label Text="Editar Ticket" FontSize="20" FontAttributes="Bold" />
+
+                <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
+                <Label Text="¿Está activo?" />
+                <Switch IsToggled="{Binding EstadoTicket}" />
+
+                <HorizontalStackLayout Spacing="10">
+                    <Button 
+                        Text="Guardar"
+                        Command="{Binding GuardarEdicionTicketCommand}"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White" />
+
+                    <Button 
+                        Text="Cancelar"
+                        Clicked="OnCancelarClicked"
+                        BackgroundColor="#F44336"
+                        TextColor="White" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+</toolkit:Popup>

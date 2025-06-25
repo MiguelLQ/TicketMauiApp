@@ -54,6 +54,21 @@
                                     BackgroundColor="#2196F3"
                                     TextColor="White"
                                     FontSize="12" />
+                                <!--<Button 
+                                    Text="Editar"
+                                    Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="#FFC107"
+                                    TextColor="Black"
+                                    FontSize="12" />-->
+                                <Button 
+                                    Text="Editar"
+                                    Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="#FFC107"
+                                    TextColor="Black"
+                                    FontSize="12" />
+
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
@@ -62,4 +77,4 @@
 
         </VerticalStackLayout>
     </ScrollView>
-</ContentPage>
+</ContentPage> 

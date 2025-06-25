@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
@@ -112,6 +113,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AgregarCanjePage>();
 
 
+        builder.UseMauiCommunityToolkit(); // 👈 Esto es obligatorio
 
         builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
         builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");

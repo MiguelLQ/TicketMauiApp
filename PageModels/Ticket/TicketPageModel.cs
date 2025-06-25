@@ -13,6 +13,7 @@ namespace MauiFirebase.PageModels.Ticket
     {
         private IClosePopup? _popupCloser; // 🔧 Instancia UI del popup actual
         private readonly ITicketRepository _ticketRepository;
+        private readonly IAlertaHelper _alertaHelper;
 
         public ObservableCollection<Models.Ticket> Tickets { get; set; } = new();
 
@@ -62,9 +63,10 @@ namespace MauiFirebase.PageModels.Ticket
         public ICommand MostrarAgregarTicketCommand => new Command(MostrarAgregarPopup);
         public ICommand GuardarNuevoTicketCommand => new Command(async () => await GuardarNuevoTicketAsync());
 
-        public TicketPageModel(ITicketRepository ticketRepository)
+        public TicketPageModel(ITicketRepository ticketRepository, IAlertaHelper alertaHelper)
         {
             _ticketRepository = ticketRepository;
+            _alertaHelper = alertaHelper;
 
             LoadTicketsCommand = new Command(async () => await LoadTicketsAsync());
             AddTicketCommand = new Command(async () => await AddTicketAsync());
@@ -72,6 +74,7 @@ namespace MauiFirebase.PageModels.Ticket
             EditTicketCommand = new Command<Models.Ticket>(async ticket => await OnEditTicket(ticket));
 
             _ = LoadTicketsAsync();
+            
         }
 
         public async Task LoadTicketsAsync()
@@ -112,8 +115,11 @@ namespace MauiFirebase.PageModels.Ticket
 
         private async Task GuardarNuevoTicketAsync()
         {
-            if (string.IsNullOrWhiteSpace(ColorTicket)) return;
-
+            if(string.IsNullOrWhiteSpace(ColorTicket))
+    {
+                await _alertaHelper.ShowErrorAsync("El color del ticket es obligatorio.");
+                return;
+            }
             var nuevo = new Models.Ticket
             {
                 ColorTicket = ColorTicket,
@@ -126,12 +132,16 @@ namespace MauiFirebase.PageModels.Ticket
             LimpiarFormulario();
 
             _popupCloser?.ClosePopup(); // ✅ Cerramos el popup actual
+            await _alertaHelper.ShowSuccessAsync("Ticket agregado correctamente.");
         }
 
         private async Task AddTicketAsync()
         {
-            if (string.IsNullOrWhiteSpace(ColorTicket)) return;
-
+            if (string.IsNullOrWhiteSpace(ColorTicket))
+            {
+                await _alertaHelper.ShowErrorAsync("El color del ticket es obligatorio.");
+                return;
+            }
             var nuevo = new Models.Ticket
             {
                 ColorTicket = ColorTicket,
@@ -142,6 +152,8 @@ namespace MauiFirebase.PageModels.Ticket
             await _ticketRepository.CreateTicketAsync(nuevo);
             await LoadTicketsAsync();
             LimpiarFormulario();
+            await _alertaHelper.ShowSuccessAsync("Ticket agregado correctamente.");
+
         }
 
         private async Task GuardarCambiosTicketAsync()
@@ -153,13 +165,17 @@ namespace MauiFirebase.PageModels.Ticket
 
             await _ticketRepository.UpdateTicketAsync(TicketSeleccionado);
             await LoadTicketsAsync();
+            await _alertaHelper.ShowSuccessAsync("Ticket editado correctamente.");
             _popupCloser?.ClosePopup();
+
         }
 
         private async Task ChangeEstadoAsync(int id)
         {
             await _ticketRepository.ChangeEstadoTicketAsync(id);
             await LoadTicketsAsync();
+            await _alertaHelper.ShowSuccessAsync("Estado cambiado correctamente.");
+
         }
 
         private async Task OnEditTicket(Models.Ticket ticket)
@@ -174,6 +190,7 @@ namespace MauiFirebase.PageModels.Ticket
                 popup.BindingContext = this;
                 SetPopupCloser(popup);
                 await Application.Current.MainPage.ShowPopupAsync(popup);
+
             }
             catch (Exception ex)
             {

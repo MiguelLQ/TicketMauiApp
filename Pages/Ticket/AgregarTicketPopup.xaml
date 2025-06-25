@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
-
     <AbsoluteLayout BackgroundColor="#80000000">
 
+        <!-- Fondo transparente tocable -->
         <BoxView
             BackgroundColor="Transparent"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
@@ -16,14 +16,20 @@
             </BoxView.GestureRecognizers>
         </BoxView>
 
-        <Frame
-            CornerRadius="25"
-            Padding="20"
-            HasShadow="True"
+        <!-- Popup con solo esquinas superiores redondeadas -->
+        <Border
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 25,25,0,0"
             AbsoluteLayout.LayoutBounds="0,1,1,0.45"
-            AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional">
+            AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional"
+            Padding="20"
+            >
 
             <VerticalStackLayout Spacing="15">
+                <BoxView HeightRequest="4" WidthRequest="50"
+                         CornerRadius="2" BackgroundColor="LightGray"
+                         HorizontalOptions="Center" />
+
                 <Label Text="Agregar Ticket" FontSize="20" FontAttributes="Bold" />
 
                 <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
@@ -39,7 +45,6 @@
                         CornerRadius="20"
                         WidthRequest="120" />
 
-
                     <Button 
                         Text="Cancelar"
                         Clicked="OnCancelarClicked"
@@ -49,6 +54,7 @@
                         WidthRequest="120" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-        </Frame>
+        </Border>
+
     </AbsoluteLayout>
 </toolkit:Popup>

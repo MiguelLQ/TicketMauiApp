@@ -2,10 +2,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.ListarResiduoPage"
+             xmlns:converters="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
              x:Name="ResiduoPage"
              Title="ListarResiduoPage">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToEstadoConverter x:Key="BoolToEstadoConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
             <Button Text="Agregar Residuo"
@@ -17,17 +23,31 @@
                         <Frame Margin="5" Padding="10" BorderColor="LightGray">
                             <VerticalStackLayout>
                                 <Label Text="{Binding NombreResiduo}" FontAttributes="Bold" />
-                                <Label Text="{Binding EstadoResiduo, StringFormat='Estado: {0}'}" />
-                                <Label Text="{Binding IdCategoriaResiduo, StringFormat='Categoría ID: {0}'}" FontSize="12"/>
+                                <Label Text="{Binding EstadoResiduo, Converter={StaticResource BoolToEstadoConverter}, StringFormat='Estado: {0}'}" />
+                                <Label Text="{Binding NombreCategoria, StringFormat='Categoría: {0}'}" FontSize="12"/>
+
 
                                 <HorizontalStackLayout Spacing="10">
                                     <Button Text="✏️ Editar" 
                                         Clicked="OnEditarResiduoClicked"
                                         CommandParameter="{Binding .}" />
 
-                                    <Button Text="Inhabilitar"
+                                    <Button 
                                         Command="{Binding BindingContext.CambiarEstadoResiduoCommand, Source={x:Reference ResiduoPage}}"
-                                        CommandParameter="{Binding IdResiduo}" />
+                                        CommandParameter="{Binding IdResiduo}">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding EstadoResiduo}" Value="True">
+                                                <Setter Property="Text" Value="Inhabilitar" />
+                                                <Setter Property="BackgroundColor" Value="Red" />
+                                                <Setter Property="TextColor" Value="White" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Button" Binding="{Binding EstadoResiduo}" Value="False">
+                                                <Setter Property="Text" Value="Habilitar" />
+                                                <Setter Property="BackgroundColor" Value="Green" />
+                                                <Setter Property="TextColor" Value="White" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Frame>

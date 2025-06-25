@@ -1,0 +1,61 @@
+<toolkit:Popup 
+    x:Class="MauiFirebase.Pages.Ticket.EditarTicketPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <AbsoluteLayout BackgroundColor="#80000000">
+
+        <!-- Fondo oscuro tocable -->
+        <BoxView
+            BackgroundColor="Transparent"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="CerrarPopupAlTocarFondo"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+
+        <!-- Modal con solo bordes superiores redondeados -->
+        <Border
+            BackgroundColor="White"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 25,25,0,0"
+            AbsoluteLayout.LayoutBounds="0,1,1,0.45"
+            AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional"
+            Padding="20"
+            >
+
+            <VerticalStackLayout Spacing="15">
+                <BoxView HeightRequest="4" WidthRequest="50"
+                         CornerRadius="2" BackgroundColor="LightGray"
+                         HorizontalOptions="Center" />
+
+                <Label Text="Editar Ticket" FontSize="20" FontAttributes="Bold" />
+
+                <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
+                <Label Text="¿Está activo?" />
+                <Switch IsToggled="{Binding EstadoTicket}" />
+
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Button 
+                        Text="Guardar"
+                        Command="{Binding GuardarEdicionTicketCommand}"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        CornerRadius="20"
+                        WidthRequest="120" />
+
+                    <Button 
+                        Text="Cancelar"
+                        Clicked="OnCancelarClicked"
+                        BackgroundColor="#F44336"
+                        TextColor="White"
+                        CornerRadius="20"
+                        WidthRequest="120" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+    </AbsoluteLayout>
+</toolkit:Popup>

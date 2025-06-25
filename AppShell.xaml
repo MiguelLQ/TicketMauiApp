@@ -69,6 +69,7 @@
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate ticket:ListarTicketPage}"
         Route="ticket" />
+
     <ShellContent
         Title="Listar Residuo"
         Icon="{StaticResource IconMeta}"
@@ -82,8 +83,9 @@
     <ShellContent
         Title="Canje"
         Icon="{StaticResource IconProjects}"
-        ContentTemplate="{DataTemplate canje:AgregarCanjePage}"
+        ContentTemplate="{DataTemplate canje:ListarCanjePage}"
         Route="canje" />
+    
     <ShellContent
         Title="Administrar Residente"
         Icon="{StaticResource IconProjects}"

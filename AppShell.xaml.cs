@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using MauiFirebase.Pages.Canje;
 using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Pages.Residuo;
+using MauiFirebase.Pages.Ticket;
 using Font = Microsoft.Maui.Font;
 
 namespace MauiFirebase
@@ -19,6 +21,11 @@ namespace MauiFirebase
 
             Routing.RegisterRoute(nameof(AgregarPremioPage), typeof(AgregarPremioPage));
             Routing.RegisterRoute(nameof(EditarPremioPage), typeof(EditarPremioPage));
+            Routing.RegisterRoute(nameof(EditarTicketPage), typeof(EditarTicketPage));
+
+
+            Routing.RegisterRoute(nameof(AgregarCanjePage), typeof(AgregarCanjePage));
+            Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
             Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
 
 

@@ -22,7 +22,7 @@
             StrokeShape="RoundRectangle 25,25,0,0"
             AbsoluteLayout.LayoutBounds="0,1,1,0.45"
             AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional"
-            Padding="20"
+            Padding="25"
             >
 
             <VerticalStackLayout Spacing="15">

@@ -3,55 +3,91 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:MauiFirebase.Helpers"
              x:Class="MauiFirebase.Pages.CategoriaResiduo.CategoriaResiduoPage"
-             Title="CategoriaResiduoPage"
+             Title="Categorías de Residuos"
              x:Name="CategoriaPage">
-    
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToEstadoConverter x:Key="EstadoConverter" />
+            <converters:BoolToColorConverter x:Key="EstadoColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Label Text="Nueva Categoría" FontAttributes="Bold" FontSize="18"/>
-
-            <Entry Placeholder="Nombre de Categoría" 
-                   Text="{Binding NombreCategoria}" />
-
-            <Label Text="Estado (¿Activo?)"/>
-            <Switch IsToggled="{Binding EstadoCategoriaResiduo}" />
-
-            <Label Text="Seleccionar Ticket" />
-            <Picker 
-                Title="Elige un ticket"
-                ItemsSource="{Binding ListaTickets}" 
-                ItemDisplayBinding="{Binding ColorTicket}" 
-                SelectedItem="{Binding TicketSeleccionado}" />
-
-
             <Button 
-                Text="Agregar Categoría" 
-                Command="{Binding AddCommand}"
-                BackgroundColor="#4CAF50"
-                TextColor="White" />
+                Text="Agregar Categoría"
+                Command="{Binding MostrarAgregarCategoriaCommand}"
+                BackgroundColor="{DynamicResource Primary}"
+                TextColor="White"
+                CornerRadius="12" />
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}" 
-                               IsVisible="{Binding IsBusy}" />
+            <ActivityIndicator 
+                IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}" 
+                Color="Gray" />
 
-            <Label Text="Lista de Categorías" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0" />
+            <Label Text="Lista de Categorías" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="{DynamicResource Gray300}" 
+                   Margin="0,20,0,0" />
 
             <CollectionView ItemsSource="{Binding Categorias}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding NombreCategoria}" FontSize="16"/>
-                                <Label Text="{Binding EstadoCategoriaResiduo, StringFormat='Activo: {0}'}" FontSize="14"/>
-                                <Label Text="{Binding IdTicket, StringFormat='Ticket ID: {0}'}" FontSize="12"/>
+                        <Frame 
+                            Background="{DynamicResource CardBackgroundBrush}"
+                            BorderColor="{DynamicResource CardBorderBrush}"                       
+                            CornerRadius="15"
+                            Padding="15"
+                            Margin="0,8"
+                            HasShadow="True">
 
-                                <Button 
-                                    Text="Cambiar Estado"
-                                    Command="{Binding Source={x:Reference CategoriaPage}, Path=BindingContext.ChangeEstadoCommand}"
-                                    CommandParameter="{Binding IdCategoriaResiduo}"
-                                    BackgroundColor="#2196F3"
-                                    TextColor="White"
-                                    FontSize="12"/>
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding NombreCategoria}" 
+                                       FontSize="16"
+                                       TextColor="{DynamicResource Gray300}" />
+
+                                <!-- Estado con fondo de color (verde o rojo) -->
+                                <Frame
+                                    Padding="6,2"
+                                    CornerRadius="12"
+                                    HasShadow="False"
+                                    BackgroundColor="{Binding EstadoCategoriaResiduo, Converter={StaticResource EstadoColorConverter}}"
+                                    HorizontalOptions="Start">
+
+                                    <Label 
+                                        Text="{Binding EstadoCategoriaResiduo, Converter={StaticResource EstadoConverter}}"
+                                        FontSize="13"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+                                </Frame>
+
+                                <Label Text="{Binding Ticket.ColorTicket, StringFormat='Color: {0}'}"
+                                       FontSize="12"
+                                       TextColor="{DynamicResource Gray400}" />
+
+                                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Button 
+                                        Text="Cambiar Estado"
+                                        Command="{Binding Source={x:Reference CategoriaPage}, Path=BindingContext.ChangeEstadoCommand}"
+                                        CommandParameter="{Binding IdCategoriaResiduo}"
+                                        BackgroundColor="#2196F3"
+                                        TextColor="White"
+                                        FontSize="13"
+                                        WidthRequest="130" />
+
+                                    <Button 
+                                        Text="Editar"
+                                        Command="{Binding Source={x:Reference CategoriaPage}, Path=BindingContext.EditCategoriaResiduoCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="#FFC107"
+                                        TextColor="Black"
+                                        FontSize="13"
+                                        WidthRequest="90" />
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>

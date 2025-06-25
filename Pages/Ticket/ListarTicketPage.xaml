@@ -9,6 +9,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BoolToEstadoConverter x:Key="EstadoConverter" />
+            <converters:BoolToColorConverter x:Key="EstadoColorConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -48,9 +49,21 @@
                                        FontSize="16"
                                        TextColor="{DynamicResource Gray300}" />
 
-                                <Label Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}" 
-                                       FontSize="14"
-                                       TextColor= "#D600AA" />
+                                <Frame
+                                    Padding="6,2"
+                                    CornerRadius="12"
+                                    HasShadow="False"
+                                    BackgroundColor="{Binding EstadoTicket, Converter={StaticResource EstadoColorConverter}}"
+                                    HorizontalOptions="Start">
+
+                                     <Label 
+                                        Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}" 
+                                        FontSize="13"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+                                </Frame>
+
+
 
                                 <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" 
                                        FontSize="12"
@@ -73,7 +86,7 @@
                                         BackgroundColor="#FFC107"
                                         TextColor="Black"
                                         FontSize="13"
-                                        WidthRequest="130" />
+                                        WidthRequest="90" />
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Frame>

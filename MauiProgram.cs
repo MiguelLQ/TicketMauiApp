@@ -21,6 +21,8 @@ using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Helpers;
 using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
+using MauiFirebase.PageModels.Conversiones;
+using MauiFirebase.Pages.Convertidores;
 
 namespace MauiFirebase;
 
@@ -86,6 +88,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<ListarPremioPage>();
         builder.Services.AddSingleton<AgregarPremioPage>();
         builder.Services.AddSingleton<EditarPremioPage>();
+
+        // convertidor
+        builder.Services.AddSingleton<IConvertidorRepository, ConvertidorRepository>();
+        builder.Services.AddSingleton<ConversionesPageModel>();
+        builder.Services.AddSingleton<EditarConvertidorPageModel>();
+        builder.Services.AddSingleton<CrearConvertidorPageModel>();
+        builder.Services.AddSingleton<ListarConvertidorPage>();
+        builder.Services.AddSingleton<AgregarConvertidorPage>();
+        builder.Services.AddSingleton<EditarConvertidorPage>();
         // Ticket
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();

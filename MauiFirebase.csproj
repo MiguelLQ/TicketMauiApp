@@ -110,6 +110,15 @@
 	  <MauiXaml Update="Pages\CategoriaResiduo\EditarCategoriaPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Convertidores\AgregarConvertidorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Convertidores\EditarConvertidorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Convertidores\ListarConvertidorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Premio\AgregarPremioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -21,6 +21,7 @@ public class AppDatabase
           Aquí se agrega más tablas  
          =========================================================*/
         _database.CreateTableAsync<Residuo>().Wait();
+        _database.CreateTableAsync<Convertidor>().Wait();
         _database.CreateTableAsync<Ticket>().Wait();
         _database.CreateTableAsync<RegistroDeReciclaje>().Wait();
         _database.CreateTableAsync<CategoriaResiduo>().Wait();

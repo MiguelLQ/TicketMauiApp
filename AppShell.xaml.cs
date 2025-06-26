@@ -7,6 +7,7 @@ using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.Pages.RegistroDeReciclaje;
 using Font = Microsoft.Maui.Font;
+using MauiFirebase.Pages.Convertidores;
 
 namespace MauiFirebase
 {
@@ -18,7 +19,10 @@ namespace MauiFirebase
             InitializeComponent();
       
             Routing.RegisterRoute(nameof(EditarResiduoPage), typeof(EditarResiduoPage));
-            Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage)); 
+            Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage));
+
+            Routing.RegisterRoute(nameof(EditarConvertidorPage), typeof(EditarConvertidorPage));
+            Routing.RegisterRoute(nameof(AgregarConvertidorPage), typeof(AgregarConvertidorPage));
 
             Routing.RegisterRoute(nameof(AgregarPremioPage), typeof(AgregarPremioPage));
             Routing.RegisterRoute(nameof(EditarPremioPage), typeof(EditarPremioPage));

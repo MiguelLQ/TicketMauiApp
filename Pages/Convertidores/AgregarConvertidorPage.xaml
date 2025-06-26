@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Convertidores.AgregarConvertidorPage"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Conversiones"
+             x:DataType="viewModels:CrearConvertidorPageModel"
+             Title="AgregarConvertidorPage">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label Text="Nuevo Residuo" FontSize="24" FontAttributes="Bold" />
+
+        <Entry Placeholder="Valor Minimo"
+               Text="{Binding ValorMin}" />
+
+        <Entry Placeholder="Valor Maximo"
+               Text="{Binding ValorMax}" />
+
+        <Entry Placeholder="Tickets" Text="{Binding NumeroTicket}" />
+
+        <Button Text="Guardar"
+                BackgroundColor="DarkBlue"
+                TextColor="White"
+                CornerRadius="30"
+                Command="{Binding CrearConvertidorCommand}" />
+
+        <Button Text="Cancelar"
+                BackgroundColor="Gray"
+                TextColor="White"
+                CornerRadius="30"
+                Clicked="OnCancelarClicked" />
+    </VerticalStackLayout>
+</ContentPage>

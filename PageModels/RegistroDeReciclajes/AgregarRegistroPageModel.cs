@@ -5,7 +5,6 @@ using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
 namespace MauiFirebase.PageModels.RegistroDeReciclajes;
-
 public partial class AgregarRegistroPageModel : ObservableObject
 {
     private readonly IRegistroDeReciclajeRepository _registroRepository;
@@ -89,7 +88,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
 
     public async Task AddRegistroAsync()
     {
-        
+
         var nuevoRegistro = new RegistroDeReciclaje
         {
             IdResidente = ResidenteSeleccionado?.IdResidente ?? 0,

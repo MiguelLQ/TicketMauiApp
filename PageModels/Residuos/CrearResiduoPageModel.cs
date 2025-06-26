@@ -19,7 +19,7 @@ public partial class CrearResiduoPageModel : ObservableObject
     private CategoriaResiduo? _categoriaResiduoSeleccionada;
 
     public ObservableCollection<CategoriaResiduo> ListaCategorias { get; } = new();
-
+        
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
     private readonly IAlertaHelper _alertaHelper;

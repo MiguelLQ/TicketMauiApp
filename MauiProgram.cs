@@ -21,6 +21,7 @@ using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Helpers;
 using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
+using MauiFirebase.PageModels.Logins;
 
 namespace MauiFirebase;
 
@@ -63,6 +64,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<ProjectListPageModel>();
         builder.Services.AddSingleton<ManageMetaPageModel>();
         builder.Services.AddSingleton<IAlertaHelper, AlertaHelpers>();
+        // servicios firebase
+        builder.Services.AddSingleton<FirebaseAuthService>();
+
         /*================================================================
          * Conexion local sqlite
          ================================================================*/
@@ -138,6 +142,11 @@ public static class MauiProgram
         builder.Services.AddTransient<ResidentesPage>();
         builder.Services.AddTransientWithShellRoute<ResidenteFormPage, ResidenteFormPageModel>("residenteForm");
         builder.Services.AddTransientWithShellRoute<ResidenteListPage, ResidenteListPageModel>("residenteList");
+
+        // login
+        builder.Services.AddSingleton<LoginPageModel>();
+
+
         // ==========================================================
         var app = builder.Build();
         Services = app.Services;

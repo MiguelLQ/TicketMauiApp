@@ -7,6 +7,7 @@ using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.Pages.RegistroDeReciclaje;
 using Font = Microsoft.Maui.Font;
+using MauiFirebase.Pages.Login;
 
 namespace MauiFirebase
 {
@@ -33,7 +34,10 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
             Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
 
+            Routing.RegisterRoute("LoginPage", typeof(LoginPage));
 
+            // Escuchar cambio de rutas
+            Navigated += AppShell_Navigated;
             var currentTheme = Application.Current!.RequestedTheme;
             ThemeSegmentedControl.SelectedIndex = currentTheme == AppTheme.Light ? 0 : 1;
         }
@@ -67,6 +71,29 @@ namespace MauiFirebase
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             await toast.Show(cts.Token);
         }
+        private void AppShell_Navigated(object sender, ShellNavigatedEventArgs e)
+        {
+            // Detectar si estás en la página de login
+            if (e.Current.Location.OriginalString.Contains("LoginPage"))
+            {
+                Shell.Current.FlyoutBehavior = FlyoutBehavior.Disabled;
+                Shell.SetNavBarIsVisible(this, false); // Oculta barra de navegación
+            }
+            else
+            {
+                Shell.Current.FlyoutBehavior = FlyoutBehavior.Flyout;
+                Shell.SetNavBarIsVisible(this, true);
+            }
+        }
+        private void CerrarSesion_Clicked(object sender, EventArgs e)
+        {
+            var authService = new FirebaseAuthService();
+            authService.Logout();
+
+            Application.Current.MainPage = new LoginPage();
+        }
+
+
 
         private void SfSegmentedControl_SelectionChanged(object sender, Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {

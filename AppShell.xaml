@@ -16,31 +16,52 @@
     xmlns:residente="clr-namespace:MauiFirebase.Pages.ResidentesView"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase">
-    <!-- 🔵 TabBar inferior -->
-    <TabBar>
+    <Shell.FlyoutHeader>
+        <Grid Padding="20" BackgroundColor="#3949ab">
+            <VerticalStackLayout Spacing="10">
+                <Image 
+                Source="dotnet_bot.png" 
+                WidthRequest="64" HeightRequest="64" 
+                HorizontalOptions="Start" 
+                Aspect="AspectFill" 
+                 />
+
+                <Label Text="Hola, User Name"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   TextColor="White"
+                   HorizontalOptions="Start" />
+
+                <Label Text="Administrador"
+                   FontSize="14"
+                   TextColor="White"
+                   HorizontalOptions="Start" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <!-- ✅ FLYOUT CON MULTIPLE TABS SIMULADOS -->
+    <FlyoutItem Title="Dashboard" Icon="{StaticResource IconDashboard}" Route="dashboard">
         <ShellContent
-            Title="Dashboard"
-            Icon="{StaticResource IconDashboard}"
+            Title="Inicio"
+            Icon="casa.png"
             ContentTemplate="{DataTemplate pages:MainPage}"
             Route="main" />
         <ShellContent
-            Title="Premio"
-            Icon="{StaticResource IconMeta}"
+            Title="Premios"
             ContentTemplate="{DataTemplate premio:ListarPremioPage}"
             Route="premio" />
-
         <ShellContent
             Title="Registro"
-            Icon="{StaticResource IconMeta}"
             ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
-            Route="registroDeReciclaje" />
-    </TabBar>
+            Route="registro" />
+    </FlyoutItem>
 
-    <ShellContent
+    <!--<ShellContent
         Title="Dashboard"
         Icon="{StaticResource IconDashboard}"
         ContentTemplate="{DataTemplate pages:MainPage}"
-        Route="main" />
+        Route="main" />-->
 
     <ShellContent
         Title="Projects"

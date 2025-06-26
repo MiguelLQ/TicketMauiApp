@@ -49,10 +49,12 @@
             Route="main" />
         <ShellContent
             Title="Premios"
+            Icon="premio.png"
             ContentTemplate="{DataTemplate premio:ListarPremioPage}"
             Route="premio" />
         <ShellContent
             Title="Registro"
+            Icon="registro.png"
             ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
             Route="registro" />
     </FlyoutItem>

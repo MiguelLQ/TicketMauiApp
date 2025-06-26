@@ -110,7 +110,6 @@
 	  <MauiXaml Update="Pages\CategoriaResiduo\EditarCategoriaPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-<<<<<<< HEAD
 	  <MauiXaml Update="Pages\Convertidores\AgregarConvertidorPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -118,9 +117,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Convertidores\ListarConvertidorPage.xaml">
-=======
-	  <MauiXaml Update="Pages\Login\LoginPage.xaml">
->>>>>>> badf2df8117ba537db9e2ed8c9f64aca69aa6d49
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Premio\AgregarPremioPage.xaml">

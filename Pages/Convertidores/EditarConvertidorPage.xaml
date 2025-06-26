@@ -3,10 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Convertidores.EditarConvertidorPage"
              Title="EditarConvertidorPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label Text="Editar Convertidor" FontSize="24" FontAttributes="Bold" />
+
+        <Entry Placeholder="Valor Mínimo"
+               Text="{Binding ValorMin, Mode=TwoWay}" 
+               Keyboard="Numeric"/>
+
+        <Entry Placeholder="Valor Máximo"
+               Text="{Binding ValorMax, Mode=TwoWay}" 
+               Keyboard="Numeric"/>
+
+        <Entry Placeholder="Tickets"
+               Text="{Binding NumeroTicket, Mode=TwoWay}" 
+               Keyboard="Numeric"/>
+
+        <Label Text="Estado del Convertidor" />
+        <Switch IsToggled="{Binding EstadoConvertidor}" />
+
+        <Button Text="Guardar"
+                Command="{Binding GuardarCambiosCommand}"
+                BackgroundColor="DarkBlue"
+                TextColor="White"/>
+
+        <Button Text="Cancelar"
+                Clicked="OnCancelarClicked"
+                BackgroundColor="Gray"
+                TextColor="White"/>
     </VerticalStackLayout>
 </ContentPage>

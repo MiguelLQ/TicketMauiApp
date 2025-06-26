@@ -16,11 +16,13 @@ public partial class ListarRegistrosPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _pageModel.LoadRegistrosAsync();
+        await _pageModel.CargarResiduoAsync();
+        await _pageModel.CargarResidentesAsync();
+        await _pageModel.CargarRegistroResiduoAsync();
     }
 
-    private async void OnBuscarYAgregarClicked(object sender, EventArgs e)
+    private async void OnRegistrarReciclajeClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(BuscarResidentePage));
+        await Shell.Current.GoToAsync(nameof(AgregarRegistroPage));
     }
 }

@@ -53,7 +53,7 @@ public partial class ResiduoPageModel : ObservableObject
     public async Task CambiarEstadoResiduoAsync(int id)
     {
         await _residuoRepository.ChangeEstadoResiduoAsync(id);
-
+        await _alertaHelper.ShowSuccessAsync("Se cambio de estado de manera exitosa");
         await CargarResiduosAsync();
     }
 

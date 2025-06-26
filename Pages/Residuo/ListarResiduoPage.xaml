@@ -38,12 +38,12 @@
                                         <Button.Triggers>
                                             <DataTrigger TargetType="Button" Binding="{Binding EstadoResiduo}" Value="True">
                                                 <Setter Property="Text" Value="Inhabilitar" />
-                                                <Setter Property="BackgroundColor" Value="Red" />
+                                                <Setter Property="BackgroundColor" Value="DarkRed" />
                                                 <Setter Property="TextColor" Value="White" />
                                             </DataTrigger>
                                             <DataTrigger TargetType="Button" Binding="{Binding EstadoResiduo}" Value="False">
                                                 <Setter Property="Text" Value="Habilitar" />
-                                                <Setter Property="BackgroundColor" Value="Green" />
+                                                <Setter Property="BackgroundColor" Value="DarkGreen" />
                                                 <Setter Property="TextColor" Value="White" />
                                             </DataTrigger>
                                         </Button.Triggers>

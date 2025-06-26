@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.RegistroDeReciclaje.AgregarRegistroPage"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.RegistroDeReciclajes"
+             
              Title="Registrar Reciclaje">
-
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
@@ -13,7 +14,10 @@
             <Picker ItemsSource="{Binding ListaResiduos}"
                     ItemDisplayBinding="{Binding NombreResiduo}"
                     SelectedItem="{Binding ResiduoSeleccionado}" />
-
+            
+            <Picker ItemsSource="{Binding ListaResidentes}"
+                    ItemDisplayBinding="{Binding NombreResidente}"
+                    SelectedItem="{Binding ResidenteSeleccionado}" />
             <Label Text="Peso (Kg)" />
             <Entry Text="{Binding PesoKilogramo}" Keyboard="Numeric" Placeholder="Ej: 2.5" />
 
@@ -21,9 +25,15 @@
             <Entry Text="{Binding TicketsGanados}" Keyboard="Numeric" Placeholder="Ej: 10" />
 
             <Button Text="✅ Registrar"
-                    Command="{Binding AddRegistroCommand}"
+                    Command="{Binding AddRegistroAsync}"
                     BackgroundColor="#4CAF50"
                     TextColor="White" />
+
+            <Button Text="Cancelar"
+                    BackgroundColor="Gray"
+                    TextColor="White"
+                    CornerRadius="30"
+                    Clicked="OnCancelarClicked" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

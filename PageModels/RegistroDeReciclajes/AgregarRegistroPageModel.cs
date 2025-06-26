@@ -1,112 +1,118 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
-using MauiFirebase.Pages.RegistroDeReciclaje;
+using System.Collections.ObjectModel;
+namespace MauiFirebase.PageModels.RegistroDeReciclajes;
 
-namespace MauiFirebase.PageModels.RegistroDeReciclajes
+public partial class AgregarRegistroPageModel : ObservableObject
 {
-    public class AgregarRegistroPageModel : INotifyPropertyChanged
+    private readonly IRegistroDeReciclajeRepository _registroRepository;
+    private readonly IResidenteRepository _residenteRepository;
+    private readonly IResiduoRepository _residuoRepository;
+    private readonly IAlertaHelper _alertaHelper;
+    public ObservableCollection<Residuo> ListaResiduos { get; } = new();
+    public ObservableCollection<Residente> ListaResidentes { get; } = new();
+    public ObservableCollection<RegistroDeReciclaje> ListaRegistroReciclaje { get; } = new();
+
+    [ObservableProperty]
+    private Residente? _residenteSeleccionado;
+
+    [ObservableProperty]
+    private Residuo? _residuoSeleccionado;
+
+    [ObservableProperty]
+    private decimal _pesoKilogramo;
+
+    [ObservableProperty]
+    private int _ticketsGanados;
+
+
+    public AgregarRegistroPageModel(IRegistroDeReciclajeRepository registroRepository,
+                                    IResidenteRepository residenteRepository,
+                                    IResiduoRepository residuoRepository,
+                                    IAlertaHelper alertaHelper)
     {
-        private readonly IRegistroDeReciclajeRepository _registroRepository;
-        private readonly IResidenteRepository _residenteRepository;
-        private readonly IResiduoRepository _residuoRepository;
-        private readonly IAlertaHelper _alertaHelper;
-        public ObservableCollection<Residuo> ListaResiduos { get; set; } = new();
+        _registroRepository = registroRepository;
+        _residenteRepository = residenteRepository;
+        _residuoRepository = residuoRepository;
+        _alertaHelper = alertaHelper;
+    }
 
-        public ICommand AddRegistroCommand { get; }
+    [RelayCommand]
 
-        private Residente _residenteSeleccionado;
-        public Residente ResidenteSeleccionado
+    public async Task CargarResiduoAsync()
+    {
+        ListaResiduos.Clear();
+        var residuo = await _residuoRepository.GetAllResiduoAync();
+        foreach (var item in residuo)
         {
-            get => _residenteSeleccionado;
-            set { _residenteSeleccionado = value; OnPropertyChanged(); }
+            ListaResiduos.Add(item);
         }
+    }
 
-        private Residuo _residuoSeleccionado;
-        public Residuo ResiduoSeleccionado
+    [RelayCommand]
+    public async Task CargarResidenteAsync()
+    {
+        ListaResidentes.Clear();
+        var residente = await _residenteRepository.GetAllResidentesAsync();
+        foreach (var item in residente)
         {
-            get => _residuoSeleccionado;
-            set { _residuoSeleccionado = value; OnPropertyChanged(); }
+            ListaResidentes.Add(item);
         }
+    }
 
-        private decimal _pesoKilogramo;
-        public decimal PesoKilogramo
+    [RelayCommand]
+    public async Task CargarRegistroReciclajeAsync()
+    {
+        ListaRegistroReciclaje.Clear();
+        var registros = await _registroRepository.ObtenerTodosAsync();
+        var residentes = await _residenteRepository.GetAllResidentesAsync();
+        var residuos = await _residuoRepository.GetAllResiduoAync();
+        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+        var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
+        foreach (var item in registros)
         {
-            get => _pesoKilogramo;
-            set { _pesoKilogramo = value; OnPropertyChanged(); }
-        }
-
-        private int _ticketsGanados;
-        public int TicketsGanados
-        {
-            get => _ticketsGanados;
-            set { _ticketsGanados = value; OnPropertyChanged(); }
-        }
-
-        public AgregarRegistroPageModel(IRegistroDeReciclajeRepository registroRepository,
-                                        IResidenteRepository residenteRepository,
-                                        IResiduoRepository residuoRepository,
-                                        IAlertaHelper alertaHelper)
-        {
-            _registroRepository = registroRepository;
-            _residenteRepository = residenteRepository;
-            _residuoRepository = residuoRepository;
-            _alertaHelper = alertaHelper;
-
-            AddRegistroCommand = new Command(async () => await AddRegistroAsync());
-            _ = CargarResiduosAsync();
-        }
-
-        private async Task CargarResiduosAsync()
-        {
-            var residuos = await _residuoRepository.GetAllResiduoAync();
-            ListaResiduos.Clear();
-            foreach (var residuo in residuos)
-                ListaResiduos.Add(residuo);
-        }
-
-        private async Task AddRegistroAsync()
-        {
-            if (ResidenteSeleccionado == null || ResiduoSeleccionado == null)
+            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
             {
-                await _alertaHelper.ShowErrorAsync("Selecciona un residente y un residuo.");
-                return;
+                item.NombreResidente = residente.NombreResidente;
             }
-
-            var nuevoRegistro = new RegistroDeReciclaje
+            if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
             {
-                IdResidente = ResidenteSeleccionado.IdResidente,
-                IdResiduo = ResiduoSeleccionado.IdResiduo,
-                PesoKilogramo = PesoKilogramo,
-                TicketsGanados = TicketsGanados,
-                FechaRegistro = DateTime.Now
-            };
-
-            await _registroRepository.GuardarAsync(nuevoRegistro);
-
-            ResidenteSeleccionado.TicketsTotalesGanados += TicketsGanados;
-            await _residenteRepository.GuardarAsync(ResidenteSeleccionado);
-
-            LimpiarFormulario();
-            await _alertaHelper.ShowSuccessAsync("Registro guardado correctamente.");
-            await Shell.Current.GoToAsync(nameof(ListarRegistrosPage));
+                item.NombreResiduo = residuo.NombreResiduo;
+            }
+            ListaRegistroReciclaje.Add(item);
         }
+    }
 
-        private void LimpiarFormulario()
+
+    public async Task AddRegistroAsync()
+    {
+        
+        var nuevoRegistro = new RegistroDeReciclaje
         {
-            ResiduoSeleccionado = null;
-            PesoKilogramo = 0;
-            TicketsGanados = 0;
-        }
+            IdResidente = ResidenteSeleccionado?.IdResidente ?? 0,
+            IdResiduo = ResiduoSeleccionado?.IdResiduo ?? 0,
+            PesoKilogramo = PesoKilogramo,
+            TicketsGanados = TicketsGanados,
+            FechaRegistro = DateTime.Now
+        };
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null!)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        await _registroRepository.GuardarAsync(nuevoRegistro);
+
+        ResidenteSeleccionado!.TicketsTotalesGanados += TicketsGanados;
+        await _residenteRepository.GuardarAsync(ResidenteSeleccionado);
+
+        LimpiarFormulario();
+        await _alertaHelper.ShowSuccessAsync("Registro guardado correctamente.");
+        await Shell.Current.GoToAsync("..");
+    }
+
+    private void LimpiarFormulario()
+    {
+        ResiduoSeleccionado = null;
+        PesoKilogramo = 0;
+        TicketsGanados = 0;
     }
 }

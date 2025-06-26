@@ -2,31 +2,82 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Premio.ListarPremioPage"
+             xmlns:converters="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
              x:Name="PremioPage"
-             Title="ListarPremioPage">
+             Title="Lista de Premios">
 
-    <VerticalStackLayout Padding="20" Spacing="10">
-        <Button Text="Agregar Premio" Command="{Binding IrACrearPremioCommand}" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToEstadoConverter x:Key="BoolToEstadoConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-        <CollectionView ItemsSource="{Binding ListaPremios}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Margin="5" Padding="10" BorderColor="LightGray">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding NombrePremio}" FontAttributes="Bold" />
-                            <Label Text="{Binding DescripcionPremio}" />
-                            <Label Text="{Binding PuntosRequeridos, StringFormat='Puntos: {0}'}" />
-                            <Label Text="{Binding EstadoPremio, StringFormat='Estado: {0}'}" />
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="10">
+                <!--
+                <Button Text="Agregar Premio"
+                        Command="{Binding IrACrearPremioCommand}" />
+                -->
+                <Label Text="Lista de Premios" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   
+                   Margin="0,30,0,0" />
 
-                            <HorizontalStackLayout Spacing="10">
-                                <Button Text="✏️ Editar" Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.IrAEditarPremioCommand}" CommandParameter="{Binding .}" />
-                                <Button Text="Inhabilitar" Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.CambiarEstadoPremioCommand}" CommandParameter="{Binding IdPremio}" />
-                            </HorizontalStackLayout>
-                        </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding ListaPremios}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Margin="5" Padding="10" BorderColor="LightGray">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding NombrePremio}" FontAttributes="Bold" />
+                                    <Label Text="{Binding DescripcionPremio}" />
+                                    <Label Text="{Binding PuntosRequeridos, StringFormat='Puntos: {0}'}" />
+                                    <Label Text="{Binding EstadoPremio, Converter={StaticResource BoolToEstadoConverter}, StringFormat='Estado: {0}'}" />
+
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Button Text="✏️ Editar" 
+                                                Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.IrAEditarPremioCommand}"
+                                                CommandParameter="{Binding .}" />
+
+                                        <Button 
+                                            Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.CambiarEstadoPremioCommand}"
+                                            CommandParameter="{Binding IdPremio}">
+                                            <Button.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding EstadoPremio}" Value="True">
+                                                    <Setter Property="Text" Value="Inhabilitar" />
+                                                    <Setter Property="BackgroundColor" Value="Red" />
+                                                    <Setter Property="TextColor" Value="White" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Button" Binding="{Binding EstadoPremio}" Value="False">
+                                                    <Setter Property="Text" Value="Habilitar" />
+                                                    <Setter Property="BackgroundColor" Value="Green" />
+                                                    <Setter Property="TextColor" Value="White" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- 🔹 Botón flotante superior derecho -->
+        <Button
+            Text="+"
+            Command="{Binding IrACrearPremioCommand}"
+            BackgroundColor="{DynamicResource Primary}"
+            TextColor="White"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="0,20,20,0" />
+    </Grid>
 </ContentPage>

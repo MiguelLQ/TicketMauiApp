@@ -13,6 +13,7 @@
     xmlns:residuo="clr-namespace:MauiFirebase.Pages.Residuo"
     xmlns:categoriaresiduo="clr-namespace:MauiFirebase.Pages.CategoriaResiduo"
     xmlns:canje="clr-namespace:MauiFirebase.Pages.Canje"
+    xmlns:login="clr-namespace:MauiFirebase.Pages.Login"
     xmlns:residente="clr-namespace:MauiFirebase.Pages.ResidentesView"
     xmlns:conversiones="clr-namespace:MauiFirebase.Pages.Convertidores"
     Shell.FlyoutBehavior="Flyout"
@@ -50,10 +51,12 @@
             Route="main" />
         <ShellContent
             Title="Premios"
+            Icon="premio.png"
             ContentTemplate="{DataTemplate premio:ListarPremioPage}"
             Route="premio" />
         <ShellContent
             Title="Registro"
+            Icon="registro.png"
             ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
             Route="registro" />
     </FlyoutItem>
@@ -63,7 +66,7 @@
         Icon="{StaticResource IconDashboard}"
         ContentTemplate="{DataTemplate pages:MainPage}"
         Route="main" />-->
-
+    
     <ShellContent
         Title="Projects"
         Icon="{StaticResource IconProjects}"
@@ -121,18 +124,46 @@
     Route="conversiones" />
 
     <Shell.FlyoutFooter>
-        <Grid Padding="15">
-            <sf:SfSegmentedControl x:Name="ThemeSegmentedControl" 
-                VerticalOptions="Center" HorizontalOptions="Center" SelectionChanged="SfSegmentedControl_SelectionChanged"
-                SegmentWidth="40" SegmentHeight="40">
+        <Grid Padding="15" RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- 🎨 Cambiar tema -->
+            <sf:SfSegmentedControl x:Name="ThemeSegmentedControl"
+                           Grid.Row="0"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           SelectionChanged="SfSegmentedControl_SelectionChanged"
+                           SegmentWidth="40"
+                           SegmentHeight="40">
                 <sf:SfSegmentedControl.ItemsSource>
                     <x:Array Type="{x:Type sf:SfSegmentItem}">
-                        <sf:SfSegmentItem ImageSource="{StaticResource IconLight}"/>
-                        <sf:SfSegmentItem ImageSource="{StaticResource IconDark}"/>
+                        <sf:SfSegmentItem ImageSource="{StaticResource IconLight}" />
+                        <sf:SfSegmentItem ImageSource="{StaticResource IconDark}" />
                     </x:Array>
                 </sf:SfSegmentedControl.ItemsSource>
             </sf:SfSegmentedControl>
+
+            <!-- 🔓 Botón cerrar sesión -->
+            <Button Grid.Row="1"
+                Text="🔓 Cerrar sesión"
+                Clicked="CerrarSesion_Clicked"
+                BackgroundColor="Red"
+                TextColor="White"
+                FontAttributes="Bold"
+                FontSize="15"
+                Padding="5"
+                WidthRequest="200"
+                HeightRequest="20"
+                HorizontalOptions="Center"
+                >
+                
+            </Button>
         </Grid>
+
+
     </Shell.FlyoutFooter>
 
 </Shell>

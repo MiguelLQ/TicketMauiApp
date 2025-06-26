@@ -21,12 +21,11 @@ using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Helpers;
 using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
-<<<<<<< HEAD
+
 using MauiFirebase.PageModels.Conversiones;
 using MauiFirebase.Pages.Convertidores;
-=======
+
 using MauiFirebase.PageModels.Logins;
->>>>>>> badf2df8117ba537db9e2ed8c9f64aca69aa6d49
 
 namespace MauiFirebase;
 

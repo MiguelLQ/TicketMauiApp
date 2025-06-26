@@ -40,13 +40,13 @@ public class AlertaHelpers : IAlertaHelper
 
     public async Task ShowErrorAsync(string message)
     {
-        var snackbar = Snackbar.Make($"❌ Error: {message}", null, "Cerrar", TimeSpan.FromSeconds(4), errorOptions);
+        var snackbar = Snackbar.Make($"Error: {message}", null, "Cerrar", TimeSpan.FromSeconds(4), errorOptions);
         await snackbar.Show();
     }
 
     public async Task ShowSuccessAsync(string message)
     {
-        var snackbar = Snackbar.Make($"✅ Éxito: {message}", null, "OK", TimeSpan.FromSeconds(3), successOptions);
+        var snackbar = Snackbar.Make($"Éxito: {message}", null, "OK", TimeSpan.FromSeconds(3), successOptions);
         await snackbar.Show();
     }
 }

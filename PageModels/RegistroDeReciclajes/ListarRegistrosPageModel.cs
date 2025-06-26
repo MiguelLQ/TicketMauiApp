@@ -1,62 +1,81 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
+using System.Collections.ObjectModel;
 
-namespace MauiFirebase.PageModels.RegistroDeReciclajes
+namespace MauiFirebase.PageModels.RegistroDeReciclajes;
+public partial class ListarRegistrosPageModel : ObservableObject
 {
-    public class ListarRegistrosPageModel : INotifyPropertyChanged
+    public ObservableCollection<RegistroDeReciclaje> ListaRegistrosResiduo { get; } = new();
+    public ObservableCollection<Residente> ListaResidentes { get; } = new();
+    public ObservableCollection<Residuo> ListaResiduos { get; } = new();
+    private readonly IRegistroDeReciclajeRepository _registroRepository;
+    private readonly IResidenteRepository _residenteRepository;
+    private readonly IResiduoRepository _residuoRepository;
+    
+    public ListarRegistrosPageModel(IRegistroDeReciclajeRepository registroRepository, IResidenteRepository residenteRepository, IResiduoRepository residuoRepository)
     {
-        private readonly IRegistroDeReciclajeRepository _registroRepository;
+        _registroRepository = registroRepository;
+        _residenteRepository = residenteRepository;
+        _residuoRepository = residuoRepository;
+  
+    }
 
-        public ObservableCollection<RegistroDeReciclaje> Registros { get; set; } = new();
-
-        public ICommand EliminarRegistroCommand { get; }
-
-        private bool _isBusy;
-        public bool IsBusy
+    [RelayCommand]
+    public async Task CargarResiduoAsync()
+    {
+        ListaResiduos.Clear();
+        var residuos = await _residuoRepository.GetAllResiduoAync();
+        foreach (var item in residuos)
         {
-            get => _isBusy;
-            set { _isBusy = value; OnPropertyChanged(); }
+            ListaResiduos.Add(item);
         }
+    }
 
-        public ListarRegistrosPageModel(IRegistroDeReciclajeRepository registroRepository)
+    [RelayCommand]
+    public async Task CargarResidentesAsync()
+    {
+        ListaResidentes.Clear();
+        var residentes = await _residenteRepository.GetAllResidentesAsync();
+        foreach (var item in residentes)
         {
-            _registroRepository = registroRepository;
-            EliminarRegistroCommand = new Command<int>(async (id) => await EliminarRegistroAsync(id));
-            _ = LoadRegistrosAsync();
+            ListaResidentes.Add(item);
         }
+    }
 
-        public async Task LoadRegistrosAsync()
+    [RelayCommand]
+    public async Task CargarRegistroResiduoAsync()
+    {
+        ListaRegistrosResiduo.Clear();
+        var registros = await _registroRepository.ObtenerTodosAsync();
+        var residentes = await _residenteRepository.GetAllResidentesAsync();
+        var residuos = await _residuoRepository.GetAllResiduoAync();
+        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+        var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
+        foreach (var item in registros)
         {
-            if (IsBusy) return;
-            IsBusy = true;
-            try
+            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
             {
-                Registros.Clear();
-                var registros = await _registroRepository.ObtenerTodosAsync();
-                foreach (var r in registros)
-                    Registros.Add(r);
+                item.NombreResidente = residente.NombreResidente; 
             }
-            finally
+            if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
             {
-                IsBusy = false;
+                item.NombreResiduo = residuo.NombreResiduo;
             }
+            ListaRegistrosResiduo.Add(item);
         }
+    }
+    [RelayCommand]
+    public async Task IrACrearResiduoAsync()
+    {
+        await Shell.Current.GoToAsync("AgregarRegistroPageModel");
+    }
 
-        private async Task EliminarRegistroAsync(int id)
-        {
-            await _registroRepository.EliminarAsync(id);
-            await LoadRegistrosAsync();
-            await AppShell.DisplayToastAsync("Registro eliminado.");
-        }
+    [RelayCommand]
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null!)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    public async Task BuscarResidente()
+    {
+        await Shell.Current.GoToAsync("BuscarResidentePageModel");
     }
 }

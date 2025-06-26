@@ -8,10 +8,8 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
 
-            <Button Text="Registrar Nuevo Reciclaje"
-                    Clicked="OnBuscarYAgregarClicked"
-                    BackgroundColor="#4CAF50"
-                    TextColor="White" />
+            <Button Text="Registrar Reciclaje"
+                    Clicked="OnRegistrarReciclajeClicked" />
 
             <Label Text="Lista de Registros" FontSize="18" FontAttributes="Bold" />
 
@@ -22,8 +20,8 @@
                     <DataTemplate>
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
                             <VerticalStackLayout>
-                                <Label Text="{Binding IdResidente, StringFormat='ID Residente: {0}'}" />
-                                <Label Text="{Binding IdResiduo, StringFormat='ID Residuo: {0}'}" />
+                                <Label Text="{Binding NombreResidente, StringFormat='Residente: {0}'}" />
+                                <Label Text="{Binding NombreResiduo, StringFormat='Residuo: {0}'}" />
                                 <Label Text="{Binding PesoKilogramo, StringFormat='Peso: {0} Kg'}" />
                                 <Label Text="{Binding TicketsGanados, StringFormat='Tickets: {0}'}" />
                                 <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" />

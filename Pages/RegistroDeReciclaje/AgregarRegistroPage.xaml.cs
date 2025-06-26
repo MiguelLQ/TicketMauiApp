@@ -1,9 +1,7 @@
-using MauiFirebase.Models;
 using MauiFirebase.PageModels.RegistroDeReciclajes;
 
 namespace MauiFirebase.Pages.RegistroDeReciclaje;
 
-[QueryProperty(nameof(ResidenteSeleccionado), "ResidenteSeleccionado")]
 public partial class AgregarRegistroPage : ContentPage
 {
     private readonly AgregarRegistroPageModel _viewModel;
@@ -15,9 +13,14 @@ public partial class AgregarRegistroPage : ContentPage
         BindingContext = _viewModel;
     }
 
-    public Residente ResidenteSeleccionado
+    protected override async void OnAppearing()
     {
-        get => _viewModel.ResidenteSeleccionado;
-        set => _viewModel.ResidenteSeleccionado = value;
+        base.OnAppearing();
+        await _viewModel.CargarRegistroReciclajeAsync();
+    }
+
+    private async void OnCancelarClicked(object sender, EventArgs e)
+    {
+        await Navigation.PopAsync();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
@@ -10,14 +9,16 @@ using SQLite;
 
 namespace MauiFirebase.Data.Repositories
 {
-    class CanjeRepository : ICanjeRepository
+    public class CanjeRepository : ICanjeRepository
     {
         private readonly AppDatabase _database;
 
         public CanjeRepository(AppDatabase database)
         {
             _database = database;
-            _ = _database.Database!.CreateTableAsync<Canje>();
+
+            // Asegura que la tabla exista
+            Task.Run(async () => await _database.Database!.CreateTableAsync<Canje>()).Wait();
         }
 
         public async Task<Canje> CreateCanjeAsync(Canje canje)
@@ -32,7 +33,7 @@ namespace MauiFirebase.Data.Repositories
             return await _database.Database!.Table<Canje>().ToListAsync();
         }
 
-        public async Task<Canje?> GetCanjeByIdAsync(int id)
+        public async Task<Canje?> GetCanjeIdAsync(int id)
         {
             return await _database.Database!.Table<Canje>()
                 .FirstOrDefaultAsync(c => c.IdCanje == id);
@@ -53,11 +54,6 @@ namespace MauiFirebase.Data.Repositories
             canje.EstadoCanje = !canje.EstadoCanje;
             int result = await _database.Database.UpdateAsync(canje);
             return result > 0;
-        }
-
-        public Task<Canje?> GetCanjeIdAsync(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

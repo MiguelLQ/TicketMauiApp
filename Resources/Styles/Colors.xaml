@@ -35,6 +35,14 @@
     <Color x:Key="Gray600">#404040</Color>
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
+    <Color x:Key="CardBackgroundLight">#F0F0F0</Color>
+    <Color x:Key="CardBackgroundDark">#222228</Color>
+    <Color x:Key="BorderLight">#CCCCCC</Color>
+    <Color x:Key="BorderDark">#444444</Color>
+
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{AppThemeBinding Light={StaticResource CardBackgroundLight}, Dark={StaticResource CardBackgroundDark}}" />
+    <SolidColorBrush x:Key="CardBorderBrush" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>

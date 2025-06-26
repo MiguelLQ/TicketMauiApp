@@ -3,11 +3,12 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.PageModels.CategoriaResiduos;
-using MauiFirebase.PageModels.RegistroDeReciclajePageModel;
+using MauiFirebase.PageModels.RegistroDeReciclajes;
 using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.PageModels.Ticket;
 using MauiFirebase.PageModels.Canjes;
 using MauiFirebase.Pages.CategoriaResiduo;
+using MauiFirebase.Pages.RegistroDeReciclaje;
 using MauiFirebase.Pages.Premio;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Canje;
@@ -19,10 +20,7 @@ using MauiFirebase.PageModels.Residentes;
 using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Helpers;
-
-
-
-
+using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
 
 namespace MauiFirebase;
 
@@ -99,16 +97,39 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
+
         // registro reciclae
 
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
-        builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
-    
+        builder.Services.AddSingleton<AgregarRegistroPageModel>();
+        builder.Services.AddSingleton<BuscarResidentePageModel>();
+        builder.Services.AddSingleton<ListarRegistrosPageModel>();
+        builder.Services.AddSingleton<AgregarRegistroPage>();
+        builder.Services.AddSingleton<BuscarResidentePage>();
+        builder.Services.AddSingleton<ListarRegistrosPage>();
+
         ////canje
+        builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
+     
+        // Canje
         builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
         builder.Services.AddSingleton<CanjePageModel>();
+
         builder.Services.AddSingleton<AgregarCanjePage>();
+
+        builder.Services.AddSingleton<ListarCanjePage>();
+
+        builder.Services.AddTransient<CrearCanjePageModel>();
+        builder.Services.AddTransient<AgregarCanjePage>();
+
+        builder.Services.AddTransient<EditarCanjePageModel>();
+        builder.Services.AddTransient<EditarCanjePage>();
+
+
+        builder.UseMauiCommunityToolkit(); //  Esto es obligatorio
+
+
         builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
         builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
         // Residente

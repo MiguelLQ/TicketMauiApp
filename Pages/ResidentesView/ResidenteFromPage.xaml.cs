@@ -14,18 +14,12 @@ public partial class ResidenteFormPage : ContentPage
         _vm = vm;
         BindingContext = _vm;
     }
-
-    
-
-    // Recibe el parámetro “id” desde Shell
     public string ResidenteId
     {
         set
         {
             if (int.TryParse(value, out int id))
                 _vm.CargarResidenteParaEdicion(id);
-            else
-                _vm.LimpiarFormularioCommand.Execute(null);
         }
     }
 

@@ -1,19 +1,13 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!-- AgregarCanjePage.xaml -->
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.Canje.AgregarCanjePage"
+             x:Class="MauiFirebase.Pages.Canje.EditarCanjePage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Canjes"
-             x:DataType="viewModels:CrearCanjePageModel"
-             Title="Agregar Canje">
+             x:DataType="viewModels:EditarCanjePageModel"
+             Title="Editar Canje">
     <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Nuevo Canje" FontSize="24" FontAttributes="Bold" />
+        <Label Text="Editar Canje" FontSize="24" FontAttributes="Bold" />
 
-        <Entry Placeholder="DNI del residente"
-               Text="{Binding DniResidente}" />
-        <Button Text="Buscar Residente"
-                Command="{Binding BuscarResidenteCommand}" />
-
+        <Entry Placeholder="DNI del residente" Text="{Binding DniResidente}" IsEnabled="False" />
         <Label Text="Residente:" FontAttributes="Bold" />
         <Label Text="{Binding ResidenteEncontrado.NombreResidente}" />
 
@@ -22,16 +16,17 @@
                 ItemDisplayBinding="{Binding NombrePremio}"
                 SelectedItem="{Binding PremioSeleccionado}" />
 
-        <Button Text="Guardar"
+        <Label Text="Estado del Canje" />
+        <Switch IsToggled="{Binding EstadoCanje}" />
+
+        <Button Text="Guardar Cambios"
                 BackgroundColor="DarkBlue"
                 TextColor="White"
-                CornerRadius="30"
-                Command="{Binding CrearCanjeCommand}" />
+                Command="{Binding GuardarCambiosCommand}" />
 
         <Button Text="Cancelar"
                 BackgroundColor="Gray"
                 TextColor="White"
-                CornerRadius="30"
                 Clicked="OnCancelarClicked" />
     </VerticalStackLayout>
 </ContentPage>

@@ -12,88 +12,107 @@
             <converters:BoolToColorConverter x:Key="EstadoColorConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <Grid>
+        <ScrollView>
+        
+            <VerticalStackLayout Padding="20" Spacing="15">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+                <ActivityIndicator 
+                    IsRunning="{Binding IsBusy}" 
+                    IsVisible="{Binding IsBusy}" 
+                    Color="Gray" />
 
-            <ActivityIndicator 
-                IsRunning="{Binding IsBusy}" 
-                IsVisible="{Binding IsBusy}" 
-                Color="Gray" />
+                <!--<Button 
+                    Text="Agregar Ticket"
+                    Command="{Binding MostrarAgregarTicketCommand}"
+                    BackgroundColor="{DynamicResource Primary}"
+                    TextColor="White"
+                     />-->
 
-            <Button 
-                Text="Agregar Ticket"
-                Command="{Binding MostrarAgregarTicketCommand}"
-                BackgroundColor="{DynamicResource Primary}"
-                TextColor="White"
-                 />
+                <Label Text="Lista de Tickets" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="{DynamicResource Gray500}" 
+                       Margin="0,20,0,0" />
 
-            <Label Text="Lista de Tickets" 
-                   FontSize="20" 
-                   FontAttributes="Bold" 
-                   TextColor="{DynamicResource Gray300}" 
-                   Margin="0,20,0,0" />
+                <CollectionView ItemsSource="{Binding Tickets}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame 
+                                Background="{DynamicResource CardBackgroundBrush}"
+                                BorderColor="{DynamicResource CardBorderBrush}"
+                                CornerRadius="15"
+                                Padding="15"
+                                Margin="0,8"
+                                HasShadow="True">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="{Binding ColorTicket}" 
+                                           FontSize="16"
+                                           TextColor="{DynamicResource Gray400}" />
 
-            <CollectionView ItemsSource="{Binding Tickets}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame 
-                            Background="{DynamicResource CardBackgroundBrush}"
-                            BorderColor="{DynamicResource CardBorderBrush}"
-                            CornerRadius="15"
-                            Padding="15"
-                            Margin="0,8"
-                            HasShadow="True">
-                            <VerticalStackLayout Spacing="8">
-                                <Label Text="{Binding ColorTicket}" 
-                                       FontSize="16"
-                                       TextColor="{DynamicResource Gray300}" />
+                                    <Frame
+                                        Padding="6,2"
+                                        CornerRadius="12"
+                                        HasShadow="False"
+                                        BackgroundColor="{Binding EstadoTicket, Converter={StaticResource EstadoColorConverter}}"
+                                        HorizontalOptions="Start">
 
-                                <Frame
-                                    Padding="6,2"
-                                    CornerRadius="12"
-                                    HasShadow="False"
-                                    BackgroundColor="{Binding EstadoTicket, Converter={StaticResource EstadoColorConverter}}"
-                                    HorizontalOptions="Start">
-
-                                     <Label 
-                                        Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}" 
-                                        FontSize="13"
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center" />
-                                </Frame>
+                                         <Label 
+                                            Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}" 
+                                            TextColor="White"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                    </Frame>
 
 
 
-                                <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" 
-                                       FontSize="12"
-                                       TextColor="{DynamicResource Gray400}" />
+                                    <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" 
+                                           FontSize="12"
+                                           TextColor="{DynamicResource Gray500}" />
 
-                                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                                    <Button 
-                                        Text="Cambiar Estado"
-                                        Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.ChangeEstadoCommand}"
-                                        CommandParameter="{Binding IdTicket}"
-                                        BackgroundColor="#2196F3"
-                                        TextColor="White"
-                                        FontSize="13"
-                                        WidthRequest="130" />
+                                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                                        <Button 
+                                            Text="Cambiar Estado"
+                                            Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.ChangeEstadoCommand}"
+                                            CommandParameter="{Binding IdTicket}"
+                                            BackgroundColor="#2196F3"
+                                            TextColor="White"
+                                            FontSize="13"
+                                            WidthRequest="130" />
 
-                                    <Button 
-                                        Text="Editar"
-                                        Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="#FFC107"
-                                        TextColor="Black"
-                                        FontSize="13"
-                                        WidthRequest="90" />
-                                </HorizontalStackLayout>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                        <Button 
+                                            Text="Editar"
+                                            Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="#FFC107"
+                                            TextColor="Black"
+                                            FontSize="13"
+                                            WidthRequest="90" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-        </VerticalStackLayout>
-    </ScrollView>
+            </VerticalStackLayout>
+        </ScrollView>
+        <!-- Botón flotante fuera del ScrollView -->
+        <Button
+            Text="+"
+            Command="{Binding MostrarAgregarTicketCommand}"
+            BackgroundColor="{DynamicResource Primary}"
+            TextColor="White"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="0,20,20,0"
+            />
+    
+
+    </Grid>
 </ContentPage>

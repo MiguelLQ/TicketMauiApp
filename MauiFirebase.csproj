@@ -116,7 +116,14 @@
 	  <MauiXaml Update="Pages\Convertidores\EditarConvertidorPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+<<<<<<< HEAD
 	  <MauiXaml Update="Pages\Convertidores\ListarConvertidorPage.xaml">
+=======
+		<MauiXaml Update="Pages\Convertidores\ListarConvertidorPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\Login\LoginPage.xaml">
+>>>>>>> 9f3e93c9fb93314aaf9e2c1c86270bac707b97ca
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Premio\AgregarPremioPage.xaml">

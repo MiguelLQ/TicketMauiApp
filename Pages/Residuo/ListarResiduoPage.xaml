@@ -25,7 +25,7 @@
                                 <Label Text="{Binding NombreResiduo}" FontAttributes="Bold" />
                                 <Label Text="{Binding EstadoResiduo, Converter={StaticResource BoolToEstadoConverter}, StringFormat='Estado: {0}'}" />
                                 <Label Text="{Binding NombreCategoria, StringFormat='Categoría: {0}'}" FontSize="12"/>
-
+                                <Label Text="{Binding ValorResiduo, StringFormat='Valor: {0}'}" FontSize="12"/>
 
                                 <HorizontalStackLayout Spacing="10">
                                     <Button Text="✏️ Editar" 

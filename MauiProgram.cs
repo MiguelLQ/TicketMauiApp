@@ -26,7 +26,10 @@ using MauiFirebase.PageModels.Conversiones;
 using MauiFirebase.Pages.Convertidores;
 
 using MauiFirebase.PageModels.Logins;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9f3e93c9fb93314aaf9e2c1c86270bac707b97ca
 
 namespace MauiFirebase;
 

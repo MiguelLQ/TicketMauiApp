@@ -16,7 +16,10 @@
                 ItemsSource="{Binding ListaCategorias}"
                 ItemDisplayBinding="{Binding NombreCategoria}"
                 SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
-
+        
+        <Entry Placeholder="Valor de Residuo"
+               Text="{Binding ValorResiduo}" />
+        
         <Button Text="Guardar"
                 BackgroundColor="DarkBlue"
                 TextColor="White"

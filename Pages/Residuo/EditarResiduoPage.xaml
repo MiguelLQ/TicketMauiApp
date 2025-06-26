@@ -17,6 +17,10 @@
                 ItemDisplayBinding="{Binding NombreCategoria }"
                 SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
         <Label Text="Estado de Residuo"></Label>
+
+        <Entry Placeholder="Valor de Residuo"
+               Text="{Binding ValorResiduo}" />
+        
         <Switch IsToggled="{Binding EstadoResiduo}" />
 
         <Button Text="Guardar"

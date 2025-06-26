@@ -67,17 +67,17 @@
         ContentTemplate="{DataTemplate pages:MainPage}"
         Route="main" />-->
     
-    <ShellContent
+    <!--<ShellContent
         Title="Projects"
         Icon="{StaticResource IconProjects}"
         ContentTemplate="{DataTemplate pages:ProjectListPage}"
-        Route="projects" />
+        Route="projects" />-->
 
-    <ShellContent
+    <!--<ShellContent
         Title="Manage Meta"
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate pages:ManageMetaPage}"
-        Route="manage" />
+        Route="manage" />-->
     <ShellContent
         Title="Premio"
         Icon="{StaticResource IconMeta}"

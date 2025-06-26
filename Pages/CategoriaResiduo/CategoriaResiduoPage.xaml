@@ -65,9 +65,10 @@
                                         VerticalOptions="Center" />
                                 </Frame>
 
-                                <Label Text="{Binding IdTicket, StringFormat='ID Ticket: {0}'}" 
+                                <Label Text="{Binding Ticket.ColorTicket, StringFormat='Color: {0}'}"
                                        FontSize="12"
                                        TextColor="{DynamicResource Gray400}" />
+
                                 <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                                     <Button 
                                         Text="Cambiar Estado"
@@ -80,6 +81,8 @@
 
                                     <Button 
                                         Text="Editar"
+                                        Command="{Binding Source={x:Reference CategoriaPage}, Path=BindingContext.EditCategoriaResiduoCommand}"
+                                        CommandParameter="{Binding .}"
                                         BackgroundColor="#FFC107"
                                         TextColor="Black"
                                         FontSize="13"

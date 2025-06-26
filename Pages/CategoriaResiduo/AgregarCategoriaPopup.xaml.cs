@@ -9,16 +9,17 @@ public partial class AgregarCategoriaPopup : Popup,IClosePopup
     {
         InitializeComponent();
     }
-    public void ClosePopup()
-    {
-        this.Close();
-    }
+
     private void CerrarPopupAlTocarFondo(object sender, TappedEventArgs e)
     {
         this.Close();
     }
 
     private void OnCancelarClicked(object sender, EventArgs e)
+    {
+        this.Close();
+    }
+    public void ClosePopup()
     {
         this.Close();
     }

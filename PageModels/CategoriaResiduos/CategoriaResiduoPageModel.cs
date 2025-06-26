@@ -55,6 +55,23 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
             get => _estadoCategoriaResiduo;
             set { _estadoCategoriaResiduo = value; OnPropertyChanged(); }
         }
+        //propiedad para manejar la categoría que se está editando
+        private Models.CategoriaResiduo? _categoriaSeleccionada;
+        public Models.CategoriaResiduo? CategoriaSeleccionada
+        {
+            get => _categoriaSeleccionada;
+            set
+            {
+                _categoriaSeleccionada = value;
+                if (value != null)
+                {
+                    NombreCategoria = value.NombreCategoria;
+                    EstadoCategoriaResiduo = value.EstadoCategoriaResiduo;
+                    TicketSeleccionado = ListaTickets.FirstOrDefault(t => t.IdTicket == value.IdTicket);
+                }
+                OnPropertyChanged();
+            }
+        }
 
         private bool _isBusy;
 
@@ -72,6 +89,8 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
         public ICommand ChangeEstadoCommand { get; }
         public ICommand MostrarAgregarCategoriaCommand => new Command(MostrarAgregarCategoriaPopup);
         public ICommand GuardarNuevaCategoriaCommand => new Command(async () => await GuardarNuevaCategoriaAsync());
+        public ICommand EditCategoriaResiduoCommand { get; }
+        public ICommand GuardarEdicionCategoriaCommand => new Command(async () => await GuardarCambiosCategoriaAsync());
 
 
         public CategoriaResiduoPageModel(ICategoriaResiduoRepository repository, ITicketRepository ticketRepository, IAlertaHelper alertaHelper)
@@ -83,6 +102,7 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
             AddCommand = new Command(async () => await AddAsync());
             LoadCommand = new Command(async() => await LoadAsync());
             ChangeEstadoCommand = new Command<int>(async (id) => await CambiarEstado(id));
+            EditCategoriaResiduoCommand = new Command<Models.CategoriaResiduo>(async categoria => await OnEditCategoriaResiduo(categoria));
 
             // Cargar tickets al inicio
             _ = CargarTicketsAsync();
@@ -111,15 +131,22 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
             try
             {
                 Categorias.Clear();
-                var lista = await _repository.GetAllCategoriaResiduoAsync();
-                foreach (var c in lista)
-                    Categorias.Add(c);
+                var listaCategorias = await _repository.GetAllCategoriaResiduoAsync();
+                var listaTickets = await _ticketRepository.GetAllTicketAync();
+
+                foreach (var categoria in listaCategorias)
+                {
+                    // Asociar el ticket por Id
+                    categoria.Ticket = listaTickets.FirstOrDefault(t => t.IdTicket == categoria.IdTicket);
+                    Categorias.Add(categoria);
+                }
             }
             finally
             {
                 IsBusy = false;
             }
         }
+
         // Establece el popup actual para poder cerrarlo desde el ViewModel
         public void SetPopupCloser(IClosePopup popup)
         {
@@ -157,6 +184,43 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
             _popupCloser?.ClosePopup(); //Cerramos el popup actual
             await _alertaHelper.ShowSuccessAsync("Categoria agregada correctamente.");
         }
+        private async Task GuardarCambiosCategoriaAsync()
+        {
+            if (CategoriaSeleccionada == null)
+            {
+                await _alertaHelper.ShowErrorAsync("No hay categoría seleccionada.");
+                return;
+            }
+
+            CategoriaSeleccionada.NombreCategoria = NombreCategoria;
+            CategoriaSeleccionada.EstadoCategoriaResiduo = EstadoCategoriaResiduo;
+            CategoriaSeleccionada.IdTicket = TicketSeleccionado?.IdTicket ?? 0;
+
+            await _repository.UpdateCategoriaResiduoAsync(CategoriaSeleccionada);
+            await LoadAsync();
+            _popupCloser?.ClosePopup();
+            await _alertaHelper.ShowSuccessAsync("Categoría editada correctamente.");
+        }
+        private async Task OnEditCategoriaResiduo(Models.CategoriaResiduo categoria)
+        {
+            if (categoria == null) return;
+
+            CategoriaSeleccionada = categoria;
+
+            try
+            {
+                var popup = new EditarCategoriaPopup(); // Asegúrate de tener esta vista creada
+                popup.BindingContext = this;
+                SetPopupCloser(popup);
+                await Application.Current.MainPage.ShowPopupAsync(popup);
+            }
+            catch (Exception ex)
+            {
+                await _alertaHelper.ShowErrorAsync($"Error al editar: {ex.Message}");
+            }
+        }
+
+
         private async Task AddAsync()
         {
             if (string.IsNullOrWhiteSpace(NombreCategoria)) return;
@@ -178,6 +242,7 @@ namespace MauiFirebase.PageModels.CategoriaResiduos
         private async Task CambiarEstado(int id)
         {
             await _repository.ChangeEstadoCategoriaResiduoAsync(id);
+            await _alertaHelper.ShowSuccessAsync("Estado cambiado correctamente.");
             await LoadAsync();
         }
         private void LimpiarFormulario()

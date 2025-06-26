@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <toolkit:Popup
-    x:Class="MauiFirebase.Pages.CategoriaResiduo.AgregarCategoriaPopup"
+    x:Class="MauiFirebase.Pages.CategoriaResiduo.EditarCategoriaPopup"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
@@ -17,7 +17,7 @@
             </BoxView.GestureRecognizers>
         </BoxView>
 
-        <!-- Contenedor principal con solo bordes superiores redondeados -->
+        <!-- Contenedor principal con esquinas superiores redondeadas -->
         <Border
             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"
             StrokeThickness="0"
@@ -27,24 +27,30 @@
             Padding="25">
 
             <VerticalStackLayout Spacing="15">
-                <BoxView HeightRequest="4" WidthRequest="50"
-                     CornerRadius="2" BackgroundColor="LightGray"
-                     HorizontalOptions="Center" />
 
-                <Label Text="Agregar Categoría" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <BoxView HeightRequest="4" WidthRequest="50"
+                         CornerRadius="2" BackgroundColor="LightGray"
+                         HorizontalOptions="Center" />
+
+                <Label Text="Editar Categoría"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       HorizontalOptions="Center"/>
 
                 <Entry 
                     Placeholder="Nombre de Categoría"
                     Text="{Binding NombreCategoria}"
                     BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}"
                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                    HeightRequest="40"
-                     />
+                    HeightRequest="40" />
 
-                <Label Text="¿Está activa?" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                <Label Text="¿Está activa?" 
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                 <Switch IsToggled="{Binding EstadoCategoriaResiduo}" />
 
-                <Label Text="Seleccionar Ticket" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                <Label Text="Seleccionar Ticket"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                 <Picker 
                     Title="Elige un ticket"
                     ItemsSource="{Binding ListaTickets}"
@@ -53,12 +59,12 @@
 
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                     <Button 
-                        Text="Guardar"
-                        Command="{Binding GuardarNuevaCategoriaCommand}"
+                        Text="Guardar cambios"
+                        Command="{Binding GuardarEdicionCategoriaCommand}"
                         BackgroundColor="#4CAF50"
                         TextColor="White"
                         CornerRadius="20"
-                        WidthRequest="120" />
+                        WidthRequest="140" />
 
                     <Button 
                         Text="Cancelar"

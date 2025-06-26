@@ -1,8 +1,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Canje.ListarCanjePage"
+             xmlns:converters="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Canjes"
-             x:Name="CanjePage"
+             x:Name="CanjePages"
              Title="Listado de Canjes">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">

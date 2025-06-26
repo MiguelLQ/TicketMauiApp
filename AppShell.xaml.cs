@@ -14,7 +14,7 @@ namespace MauiFirebase
             InitializeComponent();
       
             Routing.RegisterRoute(nameof(EditarResiduoPage), typeof(EditarResiduoPage));
-            Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage)); // si usas esta página
+            Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage)); 
 
             Routing.RegisterRoute(nameof(AgregarPremioPage), typeof(AgregarPremioPage));
             Routing.RegisterRoute(nameof(EditarPremioPage), typeof(EditarPremioPage));

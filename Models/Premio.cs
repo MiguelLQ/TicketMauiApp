@@ -16,5 +16,4 @@ namespace MauiFirebase.Models
 
         public bool EstadoPremio { get; set; }
     }
-
 }

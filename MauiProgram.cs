@@ -23,6 +23,7 @@ using MauiFirebase.Helpers;
 
 
 
+
 namespace MauiFirebase;
 
 public static class MauiProgram
@@ -79,7 +80,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<ListarResiduoPage>();
         builder.Services.AddSingleton<AgregarResiduoPage>();
         builder.Services.AddSingleton<EditarResiduoPage>();
-
         // premio
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
         builder.Services.AddSingleton<PremioPageModel>();
@@ -88,7 +88,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<ListarPremioPage>();
         builder.Services.AddSingleton<AgregarPremioPage>();
         builder.Services.AddSingleton<EditarPremioPage>();
-
         // Ticket
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
@@ -105,27 +104,19 @@ public static class MauiProgram
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
         builder.Services.AddSingleton<RegistroDeReciclajePageModel>();
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
-      
+    
         ////canje
         builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
         builder.Services.AddSingleton<CanjePageModel>();
         builder.Services.AddSingleton<AgregarCanjePage>();
-
-
-
         builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
         builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
         // Residente
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
         builder.Services.AddTransient<ResidentePageModel>();
-
         builder.Services.AddTransient<ResidentesPage>();
         builder.Services.AddTransientWithShellRoute<ResidenteFormPage, ResidenteFormPageModel>("residenteForm");
-
         builder.Services.AddTransientWithShellRoute<ResidenteListPage, ResidenteListPageModel>("residenteList");
-
-
-
         // ==========================================================
         var app = builder.Build();
         Services = app.Services;

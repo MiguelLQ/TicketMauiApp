@@ -17,6 +17,5 @@ namespace MauiFirebase.Models
         public DateTime FechaRegistro { get; set; }
         [NotNull]
         public int TicketsGanados { get; set; }
-
     }
 }

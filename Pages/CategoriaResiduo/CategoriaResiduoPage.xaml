@@ -12,16 +12,10 @@
             <converters:BoolToColorConverter x:Key="EstadoColorConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <ScrollView>
+    <Grid>
+        <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Button 
-                Text="Agregar Categoría"
-                Command="{Binding MostrarAgregarCategoriaCommand}"
-                BackgroundColor="{DynamicResource Primary}"
-                TextColor="White"
-                CornerRadius="12" />
 
             <ActivityIndicator 
                 IsRunning="{Binding IsBusy}" 
@@ -96,4 +90,21 @@
 
         </VerticalStackLayout>
     </ScrollView>
+        <!-- Botón flotante fuera del ScrollView -->
+        <Button
+        Text="+"
+        Command="{Binding MostrarAgregarCategoriaCommand}"
+        BackgroundColor="{DynamicResource Primary}"
+        TextColor="White"
+        FontSize="28"
+        WidthRequest="60"
+        HeightRequest="60"
+        CornerRadius="30"
+        HorizontalOptions="End"
+        VerticalOptions="Start"
+        Margin="0,20,20,0"
+        />
+
+
+    </Grid>
 </ContentPage>

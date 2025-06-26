@@ -1,15 +1,24 @@
-﻿namespace MauiFirebase
+﻿using MauiFirebase.Pages.Login;
+
+namespace MauiFirebase
 {
     public partial class App : Application
     {
         public App()
         {
             InitializeComponent();
+
+            var authService = new FirebaseAuthService();
+
+            if (authService.IsLoggedIn())
+            {
+                MainPage = new AppShell(); // ir directo al sistema
+            }
+            else
+            {
+                MainPage = new LoginPage(); // mostrar login
+            }
         }
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            return new Window(new AppShell());
-        }
     }
 }

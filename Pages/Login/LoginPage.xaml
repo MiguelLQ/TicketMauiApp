@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiFirebase.PageModels.Logins"
+             x:Class="MauiFirebase.Pages.Login.LoginPage"
+             x:DataType="vm:LoginPageModel"
+             Shell.NavBarIsVisible="False"
+             >
+    <VerticalStackLayout Padding="30" Spacing="15">
+        <Entry Placeholder="Correo" Text="{Binding Email}" Keyboard="Email" />
+        <Entry Placeholder="Contraseña" Text="{Binding Password}" IsPassword="True" />
+        <Button Text="Iniciar Sesión" Command="{Binding LoginCommand}" />
+        <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
+    </VerticalStackLayout>
+</ContentPage>

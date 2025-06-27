@@ -5,6 +5,14 @@
              x:DataType="vm:LoginPageModel"
              Shell.NavBarIsVisible="False">
 
+    <!-- Fondo con gradiente azul-verde -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#92FE9D" Offset="0.0" />
+            <GradientStop  Color="#01C9FF"  Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
     <ScrollView>
         <Grid Padding="50">
             <Grid.RowDefinitions>
@@ -12,46 +20,40 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- Icono y título -->
+            <!-- Encabezado -->
             <VerticalStackLayout Grid.Row="0" Spacing="10" HorizontalOptions="Center">
                 <Image Source="logosanji.png" HeightRequest="100" />
                 <Label Text="Bienvenido"
                        FontSize="26"
                        FontAttributes="Bold"
-                       TextColor="White"
-                       HorizontalOptions="Center"/>
+                       HorizontalOptions="Center" />
+                <!-- Imagen del camión debajo del logo -->
+                <Image Source="camion.png"
+                       Aspect="AspectFit"
+                       HeightRequest="100"
+                       HorizontalOptions="Center" />
             </VerticalStackLayout>
 
             <!-- Formulario -->
             <VerticalStackLayout Grid.Row="1" Spacing="20" VerticalOptions="Center">
 
                 <!-- Correo -->
-                <Border Stroke="White"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 10"
-                        BackgroundColor="White"
-                        Padding="10">
+                <Frame CornerRadius="10" Padding="10" BackgroundColor="White" HasShadow="False">
                     <Entry Placeholder="Correo"
-                           BackgroundColor="White"   
-                           TextColor="Black"
-                           FontSize="14"
+                           BackgroundColor="Transparent"
+                           FontSize="16"
                            Keyboard="Email"
                            Text="{Binding Email}" />
-                </Border>
+                </Frame>
 
                 <!-- Contraseña -->
-                <Border Stroke="White"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 10"
-                        BackgroundColor="White"   
-                        Padding="10">
+                <Frame CornerRadius="10" Padding="10" BackgroundColor="White" HasShadow="False">
                     <Entry Placeholder="Contraseña"
                            IsPassword="True"
-                           BackgroundColor="White"   
-                           TextColor="Black"
-                           FontSize="14"
+                           BackgroundColor="Transparent"
+                           FontSize="16"
                            Text="{Binding Password}" />
-                </Border>
+                </Frame>
 
                 <!-- Botón Iniciar Sesión -->
                 <Button Text="INICIAR SESIÓN"

@@ -9,13 +9,13 @@ public partial class ListarPremioPage : ContentPage
     public ListarPremioPage(PremioPageModel viewModel)
     {
         InitializeComponent();
-        _viewModel = viewModel;
-        BindingContext = _viewModel;
+        BindingContext = _viewModel = viewModel;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.CargarPremiosAsync();
+        await _viewModel.CargarPremiosAsync(); // ?? Esto actualiza la lista cada vez que entras
     }
 }
+

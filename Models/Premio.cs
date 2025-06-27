@@ -15,5 +15,8 @@ namespace MauiFirebase.Models
         public int PuntosRequeridos { get; set; }
 
         public bool EstadoPremio { get; set; }
+
+        public string FotoPremio { get; set; } = string.Empty;
+
     }
 }

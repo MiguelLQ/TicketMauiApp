@@ -14,13 +14,15 @@ namespace MauiFirebase.Data.Repositories
         {
             _database = database;
             _ = _database.Database!.CreateTableAsync<Premio>(); // asegúrate de crear la tabla
+
         }
 
         public async Task<Premio> CreatePremioAsync(Premio premio)
         {
-            await _database.Database!.InsertAsync(premio);
+            await _database.Database!.InsertAsync(premio); // Inserta toda la entidad
             return premio;
         }
+
 
         public async Task<List<Premio>> GetAllPremiosAsync()
         {

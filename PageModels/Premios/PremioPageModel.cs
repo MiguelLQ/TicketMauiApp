@@ -22,13 +22,14 @@ public partial class PremioPageModel : ObservableObject
     [RelayCommand]
     public async Task CargarPremiosAsync()
     {
-        ListaPremios.Clear();
-        var premios = await _premioRepository.GetAllPremiosAsync();
+        ListaPremios.Clear(); // Limpiamos primero
+        var premios = await _premioRepository.GetAllPremiosAsync(); // Obtenemos desde BD
         foreach (var p in premios)
         {
-            ListaPremios.Add(p);
+            ListaPremios.Add(p); // Añadimos a la ObservableCollection
         }
     }
+
 
     [RelayCommand]
     public async Task CambiarEstadoPremioAsync(int id)

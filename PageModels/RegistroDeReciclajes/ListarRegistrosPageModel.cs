@@ -15,12 +15,15 @@ public partial class ListarRegistrosPageModel : ObservableObject
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
 
     [ObservableProperty]
-    private string _dniBuscado;
+    private string _dniBuscado = string.Empty;
 
     [ObservableProperty]
-    private string mensajeBusqueda;
+    private string _mensajeBusqueda = string.Empty;
 
-    private List<RegistroDeReciclaje> _todosLosRegistros = new(); // Almacenamos todos los registros originales
+    [ObservableProperty]
+    private bool _mostrarMensaje = false;
+
+    private List<RegistroDeReciclaje> _todosLosRegistros = new();
 
     private readonly IRegistroDeReciclajeRepository _registroRepository;
     private readonly IResidenteRepository _residenteRepository;
@@ -38,9 +41,12 @@ public partial class ListarRegistrosPageModel : ObservableObject
     {
         ListaResiduos.Clear();
         var residuos = await _residuoRepository.GetAllResiduoAync();
-        foreach (var item in residuos)
+        if (residuos != null)
         {
-            ListaResiduos.Add(item);
+            foreach (var item in residuos)
+            {
+                ListaResiduos.Add(item);
+            }
         }
     }
 
@@ -49,9 +55,12 @@ public partial class ListarRegistrosPageModel : ObservableObject
     {
         ListaResidentes.Clear();
         var residentes = await _residenteRepository.GetAllResidentesAsync();
-        foreach (var item in residentes)
+        if (residentes != null)
         {
-            ListaResidentes.Add(item);
+            foreach (var item in residentes)
+            {
+                ListaResidentes.Add(item);
+            }
         }
     }
 
@@ -65,33 +74,36 @@ public partial class ListarRegistrosPageModel : ObservableObject
         var residentes = await _residenteRepository.GetAllResidentesAsync();
         var residuos = await _residuoRepository.GetAllResiduoAync();
 
-        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
-        var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
-
-        foreach (var item in registros)
+        if (registros != null && residentes != null && residuos != null)
         {
-            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+            var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+            var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
+
+            foreach (var item in registros)
             {
-                item.NombreResidente = residente.NombreResidente;
-                item.ApellidoResidente = residente.ApellidoResidente;
-                item.DniResidente = residente.DniResidente;
+                if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+                {
+                    item.NombreResidente = residente.NombreResidente;
+                    item.ApellidoResidente = residente.ApellidoResidente;
+                    item.DniResidente = residente.DniResidente;
+                }
+
+                if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
+                {
+                    item.NombreResiduo = residuo.NombreResiduo;
+                }
+
+                _todosLosRegistros.Add(item);
             }
 
-            if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
+            foreach (var r in _todosLosRegistros)
             {
-                item.NombreResiduo = residuo.NombreResiduo;
+                ListaRegistrosResiduo.Add(r);
             }
-
-            _todosLosRegistros.Add(item); // Guardamos todos los registros para poder filtrar
-        }
-
-        // Cargamos todos los registros por defecto
-        foreach (var r in _todosLosRegistros)
-        {
-            ListaRegistrosResiduo.Add(r);
         }
 
         MensajeBusqueda = string.Empty;
+        MostrarMensaje = false;
     }
 
     [RelayCommand]
@@ -99,10 +111,10 @@ public partial class ListarRegistrosPageModel : ObservableObject
     {
         try
         {
-            // Validación de lista cargada
             if (_todosLosRegistros == null || _todosLosRegistros.Count == 0)
             {
                 MensajeBusqueda = "No hay datos cargados para filtrar.";
+                MostrarMensaje = true;
                 return;
             }
 
@@ -114,25 +126,32 @@ public partial class ListarRegistrosPageModel : ObservableObject
                     ListaRegistrosResiduo.Add(r);
 
                 MensajeBusqueda = string.Empty;
+                MostrarMensaje = false;
                 return;
             }
 
             var filtrados = _todosLosRegistros
-                .Where(r => !string.IsNullOrEmpty(r.DniResidente) && r.DniResidente.Contains(DniBuscado))
+                .Where(r => r.DniResidente != null && r.DniResidente.Contains(DniBuscado, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             foreach (var r in filtrados)
                 ListaRegistrosResiduo.Add(r);
 
-            MensajeBusqueda = filtrados.Count == 0
-                ? $"No se encontraron registros con el DNI \"{DniBuscado}\"."
-                : string.Empty;
+            if (filtrados.Count == 0)
+            {
+                MensajeBusqueda = $"No se encontraron registros con el DNI \"{DniBuscado}\".";
+                MostrarMensaje = true;
+            }
+            else
+            {
+                MensajeBusqueda = string.Empty;
+                MostrarMensaje = false;
+            }
         }
         catch (Exception ex)
         {
             MensajeBusqueda = "Error inesperado en búsqueda: " + ex.Message;
+            MostrarMensaje = true;
         }
     }
-
-
 }

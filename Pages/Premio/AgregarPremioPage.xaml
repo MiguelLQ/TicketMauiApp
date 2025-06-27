@@ -5,36 +5,52 @@
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
              x:DataType="viewModels:CrearPremioPageModel"
              Title="Agregar Premio">
-    
+
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label Text="Nuevo Premio" FontSize="24" FontAttributes="Bold" />
-        
+
         <!-- Nombre del premio -->
         <Entry Placeholder="Nombre del premio"
-       Text="{Binding NombrePremio}" />
-        
-        <!-- Descripción del premio -->
-        <Entry Placeholder="Descripcion"
-       Text="{Binding DescripcionPremio}" />
-        
-        <!-- Puntos requeridos -->
-        <Entry Placeholder="Punto requeridos"
-       Text="{Binding PuntosRequeridos}" Keyboard="Numeric" />
+               Text="{Binding NombrePremio}" />
 
+        <!-- Descripción del premio -->
+        <Entry Placeholder="Descripción"
+               Text="{Binding DescripcionPremio}" />
+
+        <!-- Puntos requeridos -->
+        <Entry Placeholder="Puntos requeridos"
+               Text="{Binding PuntosRequeridos}" Keyboard="Numeric" />
         
+        
+        <Entry Placeholder="URL de la imagen"
+               Text="{Binding FotoPremio}" />
+
+
+        <!-- Imagen seleccionada -->
+        <Image Source="{Binding FotoPremio}" 
+               HeightRequest="150"
+               Aspect="AspectFit" />
+
+
+        <!-- Botón para seleccionar imagen -->
+        <Button Text="Seleccionar Imagen"
+                Command="{Binding SeleccionarFotoCommand}"
+                BackgroundColor="#0077CC"
+                TextColor="White"
+                CornerRadius="30" />
+
         <!-- Botón Guardar -->
         <Button Text="Guardar"
-        BackgroundColor="DarkBlue"
-        TextColor="White"
-        CornerRadius="30"
-        Command="{Binding AddPremioCommand}" />
+                BackgroundColor="DarkBlue"
+                TextColor="White"
+                CornerRadius="30"
+                Command="{Binding AddPremioCommand}" />
 
+        <!-- Botón Cancelar -->
         <Button Text="Cancelar"
-        BackgroundColor="Gray"
-        TextColor="White"
-        CornerRadius="30"
-        Clicked="OnCancelarClicked" />
-
-
-    </VerticalStackLayout >
+                BackgroundColor="Gray"
+                TextColor="White"
+                CornerRadius="30"
+                Clicked="OnCancelarClicked" />
+    </VerticalStackLayout>
 </ContentPage>

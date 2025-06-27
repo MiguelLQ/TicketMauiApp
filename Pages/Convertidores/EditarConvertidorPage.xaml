@@ -2,33 +2,102 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Convertidores.EditarConvertidorPage"
-             Title="EditarConvertidorPage">
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Editar Convertidor" FontSize="24" FontAttributes="Bold" />
+             Title="Editar Convertidor">
 
-        <Entry Placeholder="Valor Mínimo"
-               Text="{Binding ValorMin, Mode=TwoWay}" 
-               Keyboard="Numeric"/>
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
 
-        <Entry Placeholder="Valor Máximo"
-               Text="{Binding ValorMax, Mode=TwoWay}" 
-               Keyboard="Numeric"/>
+            <!-- Título -->
+            <Label Text="🔧 Editar Convertidor"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
 
-        <Entry Placeholder="Tickets"
-               Text="{Binding NumeroTicket, Mode=TwoWay}" 
-               Keyboard="Numeric"/>
+            <!-- Valor Mínimo -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Valor Mínimo"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding ValorMin, Mode=TwoWay}"
+                           Keyboard="Numeric"
+                           FontSize="16"
+                           Placeholder="Ej. 1"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Label Text="Estado del Convertidor" />
-        <Switch IsToggled="{Binding EstadoConvertidor}" />
+            <!-- Valor Máximo -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Valor Máximo"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding ValorMax, Mode=TwoWay}"
+                           Keyboard="Numeric"
+                           FontSize="16"
+                           Placeholder="Ej. 100"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button Text="Guardar"
-                Command="{Binding GuardarCambiosCommand}"
-                BackgroundColor="DarkBlue"
-                TextColor="White"/>
+            <!-- Tickets -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Número de Tickets"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding NumeroTicket, Mode=TwoWay}"
+                           Keyboard="Numeric"
+                           FontSize="16"
+                           Placeholder="Ej. 5"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button Text="Cancelar"
-                Clicked="OnCancelarClicked"
-                BackgroundColor="Gray"
-                TextColor="White"/>
-    </VerticalStackLayout>
+            <!-- Estado del Convertidor -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Estado del Convertidor"
+                       FontSize="14"
+                       TextColor="#6B7280" />
+                <Switch IsToggled="{Binding EstadoConvertidor}" />
+            </VerticalStackLayout>
+
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCambiosCommand}"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="{DynamicResource Primary}"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

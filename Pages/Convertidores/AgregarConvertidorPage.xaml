@@ -4,29 +4,98 @@
              x:Class="MauiFirebase.Pages.Convertidores.AgregarConvertidorPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Conversiones"
              x:DataType="viewModels:CrearConvertidorPageModel"
-             Title="AgregarConvertidorPage">
+             >
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Nuevo Residuo" FontSize="24" FontAttributes="Bold" />
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
 
-        <Entry Placeholder="Valor Minimo"
-               Text="{Binding ValorMin}" />
+            <!-- Título con ícono -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Label Text="🔁"
+                       FontSize="28"
+                       VerticalOptions="Center" />
+                <Label Text="Nuevo Convertidor"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
 
-        <Entry Placeholder="Valor Maximo"
-               Text="{Binding ValorMax}" />
+            <!-- Campo: Valor Mínimo -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Valor mínimo"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding ValorMin}"
+                           FontSize="16"
+                           Keyboard="Numeric"
+                           Placeholder="Ej. 0.00"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Entry Placeholder="Tickets" Text="{Binding NumeroTicket}" />
+            <!-- Campo: Valor Máximo -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Valor máximo"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding ValorMax}"
+                           FontSize="16"
+                           Keyboard="Numeric"
+                           Placeholder="Ej. 10.00"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button Text="Guardar"
-                BackgroundColor="DarkBlue"
-                TextColor="White"
-                CornerRadius="30"
-                Command="{Binding CrearConvertidorCommand}" />
+            <!-- Campo: Número de Tickets -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Número de Tickets"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding NumeroTicket}"
+                           FontSize="16"
+                           Keyboard="Numeric"
+                           Placeholder="Ej. 5"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button Text="Cancelar"
-                BackgroundColor="Gray"
-                TextColor="White"
-                CornerRadius="30"
-                Clicked="OnCancelarClicked" />
-    </VerticalStackLayout>
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding CrearConvertidorCommand}"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="{DynamicResource Primary}"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="red"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

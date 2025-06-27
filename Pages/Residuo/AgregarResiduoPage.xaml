@@ -4,29 +4,100 @@
              x:Class="MauiFirebase.Pages.Residuo.AgregarResiduoPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
              x:DataType="viewModels:CrearResiduoPageModel"
-             Title="Agregar Residuo">
+             Title="Agregar Residuo"
+             >
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Nuevo Residuo" FontSize="24" FontAttributes="Bold" />
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
 
-        <Entry Placeholder="Nombre del residuo"
-               Text="{Binding NombreResiduo}" />
+            <!-- Título centrado -->
+            <Label Text="🧴 Nuevo Residuo"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   
+                   HorizontalOptions="Center" />
 
-        <Picker Title="Seleccionar categoría"
-                ItemsSource="{Binding ListaCategorias}"
-                ItemDisplayBinding="{Binding NombreCategoria}"
-                SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
+            <!-- Campo: Nombre del Residuo -->
+            <Frame 
+                     Background="{DynamicResource CardBackgroundBrush}"
+                    BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Nombre del residuo"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding NombreResiduo}"
+                           FontSize="16"
+                           Placeholder="Ej. Botella de plástico"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button Text="Guardar"
-                BackgroundColor="DarkBlue"
-                TextColor="White"
-                CornerRadius="30"
-                Command="{Binding CrearResiduoCommand}" />
+            <!-- Campo: Categoría -->
+            <Frame 
+                Background="{DynamicResource CardBackgroundBrush}"
+                BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Categoría"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Picker Title="Seleccionar categoría"
+                            FontSize="16"
+                            TitleColor="#9CA3AF"
+                            TextColor="{DynamicResource Gray500}"
+                            ItemsSource="{Binding ListaCategorias}"
+                            ItemDisplayBinding="{Binding NombreCategoria}"
+                            SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button Text="Cancelar"
-                BackgroundColor="Gray"
-                TextColor="White"
-                CornerRadius="30"
-                Clicked="OnCancelarClicked" />
-    </VerticalStackLayout>
+            <!-- Campo: Valor del Residuo -->
+            <Frame 
+               Background="{DynamicResource CardBackgroundBrush}"
+                BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Valor (en soles)"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding ValorResiduo}"
+                           FontSize="16"
+                           Keyboard="Numeric"
+                           Placeholder="Ej. 0.50"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding CrearResiduoCommand}"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="{DynamicResource Primary}"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                     />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="red"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

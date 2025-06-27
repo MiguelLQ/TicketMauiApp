@@ -1,32 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.EditarResiduoPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
              x:DataType="viewModels:EditarResiduoPageModel"
-             Title="Editar Residuo">
+             >
 
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="{Binding TituloPagina}" FontSize="24" FontAttributes="Bold" />
+            <Label Text="✏️Editar Residuo"
+               FontSize="26"
+               FontAttributes="Bold"
+               VerticalOptions="Center"
+                   HorizontalOptions="Center"/>
 
-        <Entry Placeholder="Nombre del residuo"
-               Text="{Binding NombreResiduo}" />
+            <!-- Nombre del residuo -->
+            <Frame CornerRadius="12"
+                   Padding="12" 
+                     Background="{DynamicResource CardBackgroundBrush}"
+                    BorderColor="{DynamicResource CardBorderBrush}"
+                   >
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Nombre del residuo"
+                           FontSize="14" />
+                    <Entry Placeholder="Nombre del residuo"
+                           Text="{Binding NombreResiduo}"
+                           FontSize="16"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Picker Title="Seleccionar categoría"
-                ItemsSource="{Binding ListaCategorias}"
-                ItemDisplayBinding="{Binding NombreCategoria }"
-                SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
-        <Label Text="Estado de Residuo"></Label>
-        <Switch IsToggled="{Binding EstadoResiduo}" />
+            <!-- Categoría -->
+            <Frame  Background="{DynamicResource CardBackgroundBrush}"
+                BorderColor="{DynamicResource CardBorderBrush}"
+                CornerRadius="12" Padding="12" HasShadow="True" >
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Seleccionar categoría"
+                           FontSize="14" />
+                    <Picker Title="Seleccionar categoría"
+                            ItemsSource="{Binding ListaCategorias}"
+                            ItemDisplayBinding="{Binding NombreCategoria}"
+                            SelectedItem="{Binding CategoriaResiduoSeleccionada}"
+                            FontSize="16" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button Text="Guardar"
-                Command="{Binding GuardarCambiosCommand}"
-                BackgroundColor="DarkBlue"
-                TextColor="White"/>
+            <!-- Valor -->
+            <Frame 
+                 Background="{DynamicResource CardBackgroundBrush}"
+                    BorderColor="{DynamicResource CardBorderBrush}"
+                CornerRadius="12" Padding="12" HasShadow="True" >
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Valor de Residuo"
+                           FontSize="14" />
+                    <Entry Placeholder="Valor de Residuo"
+                           Text="{Binding ValorResiduo}"
+                           FontSize="16"
+                           Keyboard="Numeric"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
+            <!-- Estado -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Estado de Residuo"
+                    FontSize="14" />
+                <Switch IsToggled="{Binding EstadoResiduo}" />
+            </VerticalStackLayout>
+           
+            
 
-        <Button Text="Cancelar"
-                Clicked="OnCancelarClicked"
-                BackgroundColor="Gray"
-                TextColor="White" />
-    </VerticalStackLayout>
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCambiosCommand}"
+                    BackgroundColor="{DynamicResource Primary}"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="25"
+                    HeightRequest="50" />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    BackgroundColor="red"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="25"
+                    HeightRequest="50" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

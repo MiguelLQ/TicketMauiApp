@@ -16,6 +16,9 @@ public partial class CrearResiduoPageModel : ObservableObject
     private bool _estadoResiduo = true;
 
     [ObservableProperty]
+    private int _valorResiduo;
+
+    [ObservableProperty]
     private CategoriaResiduo? _categoriaResiduoSeleccionada;
 
     public ObservableCollection<CategoriaResiduo> ListaCategorias { get; } = new();
@@ -50,6 +53,7 @@ public partial class CrearResiduoPageModel : ObservableObject
         {
             NombreResiduo = NombreResiduo,
             EstadoResiduo = EstadoResiduo,
+            ValorResiduo = ValorResiduo,
             IdCategoriaResiduo = CategoriaResiduoSeleccionada?.IdCategoriaResiduo ?? 0
         };
 

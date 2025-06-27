@@ -120,10 +120,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
         builder.Services.AddSingleton<AgregarRegistroPageModel>();
-        builder.Services.AddSingleton<BuscarResidentePageModel>();
         builder.Services.AddSingleton<ListarRegistrosPageModel>();
         builder.Services.AddSingleton<AgregarRegistroPage>();
-        builder.Services.AddSingleton<BuscarResidentePage>();
         builder.Services.AddSingleton<ListarRegistrosPage>();
 
         ////canje

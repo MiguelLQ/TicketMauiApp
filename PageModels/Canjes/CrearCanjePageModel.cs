@@ -4,9 +4,7 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
-
 namespace MauiFirebase.PageModels.Canjes;
-
 public partial class CrearCanjePageModel : ObservableObject
 {
     private readonly ICanjeRepository _canjeRepository;
@@ -15,11 +13,51 @@ public partial class CrearCanjePageModel : ObservableObject
     private readonly IAlertaHelper _alertaHelper;
 
     public ObservableCollection<Premio> ListaPremios { get; } = new();
+    public ObservableCollection<Residente> ListaResidentes { get; } = new();
+    public ObservableCollection<Canje> ListaCanje { get; } = new();
+    public ObservableCollection<Premio> PremiosDisponibles { get; } = new();
 
-    [ObservableProperty] private Premio? _premioSeleccionado;
-    [ObservableProperty] private string _dniResidente = string.Empty;
-    [ObservableProperty] private Residente? _residenteEncontrado;
-    [ObservableProperty] private bool _estadoCanje = true;
+    [ObservableProperty] 
+    private Premio? _premioSeleccionado;
+    [ObservableProperty] 
+    private string _dniResidente = string.Empty;
+    [ObservableProperty] 
+    private Residente? _residenteEncontrado;
+    [ObservableProperty] 
+    private bool _estadoCanje = true;
+    [ObservableProperty] 
+    private bool _noTienePremiosDisponibles;
+
+    public bool PuedeGuardar
+    {
+        get
+        {
+            if (ResidenteEncontrado == null)
+            {
+                return false;
+            }
+            if (PremioSeleccionado == null)
+            {
+                return false;
+            }
+            if (ResidenteEncontrado.TicketsTotalesGanados < PremioSeleccionado.PuntosRequeridos)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    partial void OnPremioSeleccionadoChanged(Premio? value)
+    {
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
+
+    partial void OnResidenteEncontradoChanged(Residente? value)
+    {
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
 
     public CrearCanjePageModel(
         ICanjeRepository canjeRepository,
@@ -43,6 +81,44 @@ public partial class CrearCanjePageModel : ObservableObject
     }
 
     [RelayCommand]
+    public async Task CargarResiduosAsync()
+    {
+        ListaResidentes.Clear();
+        var residente = await _residenteRepository.GetAllResidentesAsync();
+        foreach (var item in residente)
+        {
+            ListaResidentes.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    public async Task CargarCanjeAsync()
+    {
+        ListaCanje.Clear();
+        var canjes = await _canjeRepository.GetAllCanjeAync();
+        var premios = await _premioRepository.GetAllPremiosAsync();
+        var residentes = await _residenteRepository.GetAllResidentesAsync();
+
+
+        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+        var premiosDict = premios.ToDictionary(r => r.IdPremio);
+
+        foreach (var item in canjes)
+        {
+            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+            {
+                item.NombreResidente = residente.NombreResidente;
+            }
+            if (premiosDict.TryGetValue(item.IdCanje, out var canje))
+            {
+                item.NombrePremio = canje.NombrePremio;
+            }
+            ListaCanje.Add(item);
+        }
+    }
+
+
+    [RelayCommand]
     public async Task BuscarResidenteAsync()
     {
         if (string.IsNullOrWhiteSpace(DniResidente))
@@ -56,6 +132,20 @@ public partial class CrearCanjePageModel : ObservableObject
         {
             ResidenteEncontrado = residente;
             await _alertaHelper.ShowSuccessAsync($"Residente encontrado: {residente.NombreResidente}");
+            PremiosDisponibles.Clear();
+            foreach (var premio in ListaPremios)
+            {
+                if (premio.PuntosRequeridos <= residente.TicketsTotalesGanados)
+                {
+                    PremiosDisponibles.Add(premio);
+                }
+            }
+            NoTienePremiosDisponibles = PremiosDisponibles.Count == 0;
+
+            if (NoTienePremiosDisponibles)
+            {
+                await _alertaHelper.ShowErrorAsync("El residente no tiene puntos suficientes para canjear ningún premio.");
+            }
         }
         else
         {
@@ -66,14 +156,34 @@ public partial class CrearCanjePageModel : ObservableObject
     [RelayCommand]
     public async Task CrearCanjeAsync()
     {
+        if (ResidenteEncontrado == null)
+        {
+            await _alertaHelper.ShowErrorAsync("Debe buscar un residente antes de crear el canje.");
+            return;
+        }
+
+        if (PremioSeleccionado == null)
+        {
+            await _alertaHelper.ShowErrorAsync("Debe seleccionar un premio para canjear.");
+            return;
+        }
+
+        if (ResidenteEncontrado.TicketsTotalesGanados < PremioSeleccionado.PuntosRequeridos)
+        {
+            await _alertaHelper.ShowErrorAsync($"El residente no tiene suficientes puntos. Tiene {ResidenteEncontrado.TicketsTotalesGanados} y el premio cuesta {PremioSeleccionado.PuntosRequeridos}.");
+            return;
+        }
+
+        ResidenteEncontrado.TicketsTotalesGanados -= PremioSeleccionado.PuntosRequeridos;
+        await _residenteRepository.UpdateResidenteAsync(ResidenteEncontrado);
+
         var nuevoCanje = new Canje
         {
             FechaCanje = DateTime.Now,
             EstadoCanje = EstadoCanje,
-            IdPremio = PremioSeleccionado?.IdPremio ?? 0,
-            IdResidente = ResidenteEncontrado?.IdResidente ?? 0
+            IdPremio = PremioSeleccionado.IdPremio,
+            IdResidente = ResidenteEncontrado.IdResidente
         };
-
         await _canjeRepository.CreateCanjeAsync(nuevoCanje);
         await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
         await Shell.Current.GoToAsync("..");

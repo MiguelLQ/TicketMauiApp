@@ -3,46 +3,141 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Convertidores.ListarConvertidorPage"
              xmlns:converters="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:convertercolor="clr-namespace:MauiFirebase.Helpers"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Conversiones"
-           
-             Title="ListarConvertidorPage">
+             x:Name="ConvertidorPage"
+             Title="Convertidores">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BoolToEstadoConverter x:Key="BoolToEstadoConverter"/>
+            <convertercolor:BoolToColorConverter x:Key="EstadoColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="10">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
+                <Label Text="⚙️  Lista Convertidores"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource Gray500}" />
 
-            <Button Text="Agregar Convertidor"
-                    Clicked="OnAgregarConvertidorClicked" />
+                <CollectionView ItemsSource="{Binding ListaConvertidor}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame 
+                                Background="{DynamicResource CardBackgroundBrush}"
+                                BorderColor="{DynamicResource CardBorderBrush}"
+                                CornerRadius="12"
+                                Padding="12"
+                                Margin="0,8"
+                                HasShadow="True">
 
-            <CollectionView ItemsSource="{Binding ListaConvertidor}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Margin="5" Padding="10" BorderColor="LightGray">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding IdConvertidor, StringFormat='ID: {0}'}" FontAttributes="Bold"/>
-                                <Label Text="{Binding ValorMin, StringFormat='Valor Mínimo: {0}'}"/>
-                                <Label Text="{Binding ValorMax, StringFormat='Valor Máximo: {0}'}"/>
-                                <Label Text="{Binding NumeroTicket, StringFormat='Ticket: {0}'}"/>
-                                <Label Text="{Binding EstadoConvertidor, Converter={StaticResource BoolToEstadoConverter}, StringFormat='Estado: {0}'}"/>
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
 
-                                <HorizontalStackLayout Spacing="10">
-                                    <Button Text="✏️ Editar"
-                                            Clicked="OnEditarConvertidorClicked"
-                                            CommandParameter="{Binding .}" />
-                                </HorizontalStackLayout>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                    <!-- Icono -->
+                                    <Label 
+                                        Text="⚙️" 
+                                        FontSize="26"
+                                        Grid.RowSpan="2"
+                                        VerticalOptions="Start"
+                                        Margin="0,0,10,0" />
 
-        </VerticalStackLayout>
-    </ScrollView>
+                                    <!-- Contenido -->
+                                    <StackLayout Grid.Column="1" Spacing="2">
+                                        <Label 
+                                            Text="{Binding IdConvertidor, StringFormat='ID: {0}'}" 
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            TextColor="#0077CC" />
 
+                                        <Frame
+                                            Padding="6,2"
+                                            CornerRadius="12"
+                                            HasShadow="False"
+                                            BackgroundColor="{Binding EstadoConvertidor, Converter={StaticResource EstadoColorConverter}}"
+                                            HorizontalOptions="Start">
+                                            <Label 
+                                                Text="{Binding EstadoConvertidor, Converter={StaticResource BoolToEstadoConverter}}"
+                                                TextColor="White"
+                                                FontSize="13"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <!-- Botón Editar -->
+                                    <Button 
+                                        Text="✏️ Editar" 
+                                        Clicked="OnEditarConvertidorClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        Grid.Column="2"
+                                        Grid.Row="0"
+                                        BackgroundColor="OrangeRed"
+                                        TextColor="White"
+                                        FontSize="13"
+                                        CornerRadius="12"
+                                        Padding="6,2"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        WidthRequest="70"/>
+
+                                    <!-- Línea divisoria -->
+                                    <BoxView 
+                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                        HeightRequest="1"
+                                        BackgroundColor="{DynamicResource Primary}"
+                                        HorizontalOptions="Fill"
+                                        Margin="0,8,0,8" />
+
+                                    <!-- Datos adicionales -->
+                                    <StackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="2">
+                                        <Label 
+                                            Text="{Binding ValorMin, StringFormat='Valor Mínimo: {0}'}" 
+                                            FontSize="13"
+                                            TextColor="{DynamicResource Gray500}" />
+                                        <Label 
+                                            Text="{Binding ValorMax, StringFormat='Valor Máximo: {0}'}" 
+                                            FontSize="13"
+                                            TextColor="{DynamicResource Gray500}" />
+                                        <Label 
+                                            Text="{Binding NumeroTicket, StringFormat='Tickets: {0}'}" 
+                                            FontSize="13"
+                                            TextColor="{DynamicResource Gray500}" />
+                                    </StackLayout>
+
+                                    <!-- See more -->
+                                    <Label 
+                                        Grid.Row="3" Grid.Column="2"
+                                        Text="See more >"
+                                        FontSize="13"
+                                        TextColor="#D600AA"
+                                        HorizontalOptions="End"
+                                        Margin="0,6,0,0" />
+                                </Grid>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Botón flotante para agregar -->
+        <Button
+            Text="+"
+            Clicked="OnAgregarConvertidorClicked"
+            BackgroundColor="{DynamicResource Primary}"
+            TextColor="White"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="0,0,20,0"
+            ZIndex="1" />
+    </Grid>
 </ContentPage>

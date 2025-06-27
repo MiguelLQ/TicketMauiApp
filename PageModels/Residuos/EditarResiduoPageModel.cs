@@ -28,6 +28,9 @@ public partial class EditarResiduoPageModel : ObservableObject
     private bool _estadoResiduo;
 
     [ObservableProperty]
+    private int _valorResiduo;
+
+    [ObservableProperty]
     private CategoriaResiduo? _categoriaResiduoSeleccionada;
 
     public EditarResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
@@ -47,6 +50,7 @@ public partial class EditarResiduoPageModel : ObservableObject
         {
             NombreResiduo = ResiduoSeleccionado.NombreResiduo;
             EstadoResiduo = ResiduoSeleccionado.EstadoResiduo;
+            ValorResiduo = ResiduoSeleccionado.ValorResiduo;
             CategoriaResiduoSeleccionada = ListaCategorias.FirstOrDefault(c => c.IdCategoriaResiduo == ResiduoSeleccionado.IdCategoriaResiduo);
         }
     }
@@ -71,6 +75,7 @@ public partial class EditarResiduoPageModel : ObservableObject
 
         ResiduoSeleccionado.NombreResiduo = NombreResiduo;
         ResiduoSeleccionado.EstadoResiduo = EstadoResiduo;
+        ResiduoSeleccionado.ValorResiduo = ValorResiduo;
         ResiduoSeleccionado.IdCategoriaResiduo = CategoriaResiduoSeleccionada?.IdCategoriaResiduo ?? 0;
 
         await _residuoRepository.UpdateResiduoAsync(ResiduoSeleccionado);

@@ -16,7 +16,7 @@ public partial class ListarCanjePage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _pageModel.CargarCanjesAsync();
+        await _pageModel.CargarCanjeAsync();
     }
 
     private async void OnAgregarCanjeClicked(object sender, EventArgs e)

@@ -1,15 +1,111 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MauiFirebase.PageModels.Logins"
              x:Class="MauiFirebase.Pages.Login.LoginPage"
              x:DataType="vm:LoginPageModel"
-             Shell.NavBarIsVisible="False"
-             >
-    <VerticalStackLayout Padding="30" Spacing="15">
-        <Entry Placeholder="Correo" Text="{Binding Email}" Keyboard="Email" />
-        <Entry Placeholder="Contraseña" Text="{Binding Password}" IsPassword="True" />
-        <Button Text="Iniciar Sesión" Command="{Binding LoginCommand}" />
-        <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
-    </VerticalStackLayout>
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <Grid Padding="50">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Icono y título -->
+            <VerticalStackLayout Grid.Row="0" Spacing="10" HorizontalOptions="Center">
+                <Image Source="logosanji.png" HeightRequest="100" />
+                <Label Text="Bienvenido"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+
+            <!-- Formulario -->
+            <VerticalStackLayout Grid.Row="1" Spacing="20" VerticalOptions="Center">
+
+                <!-- Correo -->
+                <Border Stroke="White"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10"
+                        BackgroundColor="White"
+                        Padding="10">
+                    <Entry Placeholder="Correo"
+                           BackgroundColor="White"   
+                           TextColor="Black"
+                           FontSize="14"
+                           Keyboard="Email"
+                           Text="{Binding Email}" />
+                </Border>
+
+                <!-- Contraseña -->
+                <Border Stroke="White"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10"
+                        BackgroundColor="White"   
+                        Padding="10">
+                    <Entry Placeholder="Contraseña"
+                           IsPassword="True"
+                           BackgroundColor="White"   
+                           TextColor="Black"
+                           FontSize="14"
+                           Text="{Binding Password}" />
+                </Border>
+
+                <!-- Botón Iniciar Sesión -->
+                <Button Text="INICIAR SESIÓN"
+                        BackgroundColor="#00BFFF"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        CornerRadius="10"
+                        Command="{Binding LoginCommand}" />
+
+                <!-- Mensaje de error -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       IsVisible="{Binding HasError}" />
+
+                <!-- Registro -->
+                <Label HorizontalOptions="Center" FontSize="14" TextColor="White">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="¿No tienes una cuenta? " />
+                            <Span Text="Regístrate aquí"
+                                  TextDecorations="Underline"
+                                  TextColor="#00BFFF">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="RegisterTapped" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <!-- Línea divisoria -->
+                <BoxView HeightRequest="1" Color="#B0C4DE" />
+
+                <!-- Social login -->
+                <Label Text="o inicia sesión con"
+                       FontSize="14"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
+                    <ImageButton Source="facebook.png"
+                                 HeightRequest="40"
+                                 WidthRequest="40"
+                                 BackgroundColor="Transparent"
+                                 Clicked="FacebookClicked" />
+                    <ImageButton Source="google.png"
+                                 HeightRequest="40"
+                                 WidthRequest="40"
+                                 BackgroundColor="Transparent"
+                                 Clicked="GoogleClicked" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
 </ContentPage>

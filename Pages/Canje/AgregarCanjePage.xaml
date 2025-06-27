@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- AgregarCanjePage.xaml -->
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Canje.AgregarCanjePage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Canjes"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              x:DataType="viewModels:CrearCanjePageModel"
              Title="Agregar Canje">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label Text="Nuevo Canje" FontSize="24" FontAttributes="Bold" />
 
@@ -18,15 +26,22 @@
         <Label Text="{Binding ResidenteEncontrado.NombreResidente}" />
 
         <Picker Title="Seleccionar premio"
-                ItemsSource="{Binding ListaPremios}"
+                ItemsSource="{Binding PremiosDisponibles}"
                 ItemDisplayBinding="{Binding NombrePremio}"
                 SelectedItem="{Binding PremioSeleccionado}" />
 
-        <Button Text="Guardar"
-                BackgroundColor="DarkBlue"
-                TextColor="White"
-                CornerRadius="30"
-                Command="{Binding CrearCanjeCommand}" />
+        <Label Text="No tiene puntos suficientes para canjear ningún premio."
+               TextColor="Red"
+               FontAttributes="Bold"
+               IsVisible="{Binding NoTienePremiosDisponibles}" />
+
+        <Button
+            Text="Guardar"
+            IsEnabled="{Binding PuedeGuardar}"
+            BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+            TextColor="White"
+            CornerRadius="30"
+            Command="{Binding CrearCanjeCommand}" />
 
         <Button Text="Cancelar"
                 BackgroundColor="Gray"

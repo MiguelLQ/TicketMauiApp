@@ -29,7 +29,7 @@
                     TextColor="White"
                      />-->
 
-                <Label Text="Lista de Tickets" 
+                <Label Text="🎟    Lista de Tickets" 
                        FontSize="20" 
                        FontAttributes="Bold" 
                        TextColor="{DynamicResource Gray500}" 
@@ -41,56 +41,92 @@
                             <Frame 
                                 Background="{DynamicResource CardBackgroundBrush}"
                                 BorderColor="{DynamicResource CardBorderBrush}"
-                                CornerRadius="15"
-                                Padding="15"
+                                CornerRadius="12"
+                                Padding="12"
                                 Margin="0,8"
                                 HasShadow="True">
-                                <VerticalStackLayout Spacing="8">
-                                    <Label Text="{Binding ColorTicket}" 
-                                           FontSize="16"
-                                           TextColor="{DynamicResource Gray400}" />
 
-                                    <Frame
-                                        Padding="6,2"
-                                        CornerRadius="12"
-                                        HasShadow="False"
-                                        BackgroundColor="{Binding EstadoTicket, Converter={StaticResource EstadoColorConverter}}"
-                                        HorizontalOptions="Start">
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+                                    <!-- Ícono izquierdo -->
+                                    <!--<Image 
+                                        Source="dotnet_bot.png" 
+                                        HeightRequest="40"
+                                        WidthRequest="40"
+                                        Grid.RowSpan="2"
+                                        Margin="0,0,10,0"
+                                        VerticalOptions="Start" />-->
+                                    <Label 
+                                        Text="🎟" 
+                                        FontSize="26"
+                                        Grid.RowSpan="2"
+                                        VerticalOptions="Start"
+                                        Margin="0,0,10,0" />
 
-                                         <Label 
-                                            Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}" 
-                                            TextColor="White"
+                                    <!-- Nombre y cargo -->
+                                    <StackLayout Grid.Column="1" Spacing="2">
+                                        <Label 
+                                            Text="{Binding ColorTicket}" 
+                                            FontAttributes="Bold" 
+                                            FontSize="16"
+                                            TextColor="#0077CC" />
+
+                                        <Frame
+                                            Padding="6,2"
+                                            CornerRadius="12"
+                                            HasShadow="False"
+                                            BackgroundColor="{Binding EstadoTicket, Converter={StaticResource EstadoColorConverter}}"
+                                            HorizontalOptions="Start">
+
+                                            <Label 
+                                                Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}" 
+                                                TextColor="White"
+                                                FontSize="13"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <!-- Menú de opciones -->
+                                    <ImageButton 
+                                        Source="edit.png" 
+                                        HeightRequest="10"
+                                        WidthRequest="10"
+                                        BackgroundColor="Transparent"
+                                        Grid.Column="2"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        Margin="0"
+                                        Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
+                                        CommandParameter="{Binding .}" />
+                                    <!-- Línea divisora -->
+                                    <BoxView 
+                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                        HeightRequest="1"
+                                        BackgroundColor="{DynamicResource Primary}"
+                                        HorizontalOptions="Fill"
+                                        Margin="0,0,0,8" />
+
+                                    <!-- Datos adicionales -->
+                                    <StackLayout Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,8,0,0" Spacing="2">
+                                        <Label 
+                                            Text="{Binding FechaRegistro, StringFormat='Fecha de Creación: {0:dd/MM/yyyy}'}" 
                                             FontSize="13"
-                                            HorizontalOptions="Center"
-                                            VerticalOptions="Center" />
-                                    </Frame>
+                                            TextColor="{DynamicResource Gray500}" 
+                                            />
 
+                       
+                                    </StackLayout>
 
+                                    <!-- Ver más -->
+                                    <Label 
+                                        Grid.Column="1" Grid.Row="2"
+                                        Text="See more >"
+                                        FontSize="13"
+                                        TextColor="#D600AA"
+                                        HorizontalOptions="End"
+                                        Margin="0,8,0,0" />
+                                </Grid>
 
-                                    <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" 
-                                           FontSize="12"
-                                           TextColor="{DynamicResource Gray500}" />
-
-                                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                                        <Button 
-                                            Text="Cambiar Estado"
-                                            Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.ChangeEstadoCommand}"
-                                            CommandParameter="{Binding IdTicket}"
-                                            BackgroundColor="#2196F3"
-                                            TextColor="White"
-                                            FontSize="13"
-                                            WidthRequest="130" />
-
-                                        <Button 
-                                            Text="Editar"
-                                            Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
-                                            CommandParameter="{Binding .}"
-                                            BackgroundColor="#FFC107"
-                                            TextColor="Black"
-                                            FontSize="13"
-                                            WidthRequest="90" />
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

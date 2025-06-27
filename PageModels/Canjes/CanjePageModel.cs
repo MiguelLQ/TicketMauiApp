@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace MauiFirebase.PageModels.Canjes;
 
@@ -10,40 +11,70 @@ public partial class CanjePageModel : ObservableObject
 {
     private readonly ICanjeRepository _canjeRepository;
     private readonly IPremioRepository _premioRepository;
-
+    private readonly IResidenteRepository _residenteRepository;
     public ObservableCollection<Canje> ListaCanjes { get; } = new();
+    public ObservableCollection<Premio> ListaPremios { get; } = new();
+    public ObservableCollection<Residente> ListaResidentes { get; } = new();
 
     [ObservableProperty] private bool _isBusy;
 
-    public CanjePageModel(ICanjeRepository canjeRepository, IPremioRepository premioRepository)
+    public CanjePageModel(ICanjeRepository canjeRepository, IPremioRepository premioRepository, IResidenteRepository residenteRepository)
     {
         _canjeRepository = canjeRepository;
         _premioRepository = premioRepository;
+        _residenteRepository = residenteRepository;
     }
 
     [RelayCommand]
-    public async Task CargarCanjesAsync()
+    public async Task CargarPremioAsync()
     {
-        if (IsBusy) return;
-        IsBusy = true;
-
-        try
+        ListaPremios.Clear();
+        var residuos = await _premioRepository.GetAllPremiosAsync();
+        foreach (var item in residuos)
         {
-            ListaCanjes.Clear();
-            var canjes = await _canjeRepository.GetAllCanjeAync();
-            foreach (var canje in canjes)
-                ListaCanjes.Add(canje);
-        }
-        finally
-        {
-            IsBusy = false;
+            ListaPremios.Add(item);
         }
     }
 
     [RelayCommand]
-    public async Task CambiarEstadoCanjeAsync(int id)
+    public async Task CargarResidentesAsync()
     {
-        await _canjeRepository.ChangeEstadoCanjeAsync(id);
-        await CargarCanjesAsync();
+        ListaResidentes.Clear();
+        var residentes = await _residenteRepository.GetAllResidentesAsync();
+        foreach (var item in residentes)
+        {
+            ListaResidentes.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    public async Task CargarCanjeAsync()
+    {
+        ListaCanjes.Clear();
+        var canjes = await _canjeRepository.GetAllCanjeAync();
+        var premios = await _premioRepository.GetAllPremiosAsync();
+        var residentes = await _residenteRepository.GetAllResidentesAsync();
+        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+        var premiosDict = premios.ToDictionary(r => r.IdPremio);
+
+        foreach (var item in canjes)
+        {
+            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+            {
+                item.NombreResidente = residente.NombreResidente;
+            }
+
+            if (premiosDict.TryGetValue(item.IdPremio, out var premio))
+            {
+                item.NombrePremio = premio.NombrePremio;
+            }
+            ListaCanjes.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    public async Task IrACrearResiduoAsync()
+    {
+        await Shell.Current.GoToAsync("CrearCanjePageModel");
     }
 }

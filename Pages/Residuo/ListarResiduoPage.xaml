@@ -3,57 +3,147 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.ListarResiduoPage"
              xmlns:converters="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:convertercolor="clr-namespace:MauiFirebase.Helpers"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
              x:Name="ResiduoPage"
-             Title="ListarResiduoPage">
+             >
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BoolToEstadoConverter x:Key="BoolToEstadoConverter"/>
+            <convertercolor:BoolToColorConverter x:Key="EstadoColorConverter" />
+            <converters:BoolToEstadoConverter x:Key="EstadoConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
-            <Button Text="Agregar Residuo"
-                Clicked="OnAgregarResiduoClicked" />
 
-            <CollectionView ItemsSource="{Binding ListaResiduos}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Margin="5" Padding="10" BorderColor="LightGray">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding NombreResiduo}" FontAttributes="Bold" />
-                                <Label Text="{Binding EstadoResiduo, Converter={StaticResource BoolToEstadoConverter}, StringFormat='Estado: {0}'}" />
-                                <Label Text="{Binding NombreCategoria, StringFormat='Categoría: {0}'}" FontSize="12"/>
+    <!-- Envolver todo en un Grid para permitir contenido + botón flotante -->
+    <Grid>
+        <!-- Contenido principal -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="10">
+                <!--<Button Text="Agregar Residuo"
+                        Clicked="OnAgregarResiduoClicked" />-->
+                <Label Text="🗑️  Listar Residuos"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{DynamicResource Gray500}" />
+                <CollectionView ItemsSource="{Binding ListaResiduos}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame 
+                                Background="{DynamicResource CardBackgroundBrush}"
+                                BorderColor="{DynamicResource CardBorderBrush}"
+                                CornerRadius="12"
+                                Padding="12"
+                                Margin="0,8"
+                                HasShadow="True">
 
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
 
-                                <HorizontalStackLayout Spacing="10">
-                                    <Button Text="✏️ Editar" 
-                                        Clicked="OnEditarResiduoClicked"
-                                        CommandParameter="{Binding .}" />
+                                    <!-- Ícono del residuo -->
+                                    <!--<Image 
+                                        Source="dotnet_bot.png" 
+                                        HeightRequest="40"
+                                        WidthRequest="40"
+                                        Grid.RowSpan="2"
+                                        Margin="0,0,10,0"
+                                        VerticalOptions="Start" />-->
+                                    <Label 
+                                        Text="🗑️" 
+                                        FontSize="26"
+                                        Grid.RowSpan="2"
+                                        VerticalOptions="Start"
+                                        Margin="0,0,10,0" />
 
+                                    <!-- Nombre y estado -->
+                                    <StackLayout Grid.Column="1" Spacing="2">
+                                        <Label 
+                                            Text="{Binding NombreResiduo}" 
+                                            FontAttributes="Bold" 
+                                            FontSize="16"
+                                            TextColor="#0077CC" />
+
+                                        <Frame
+                                            Padding="6,2"
+                                            CornerRadius="12"
+                                            HasShadow="False"
+                                            BackgroundColor="{Binding EstadoResiduo, Converter={StaticResource EstadoColorConverter}}"
+                                            HorizontalOptions="Start">
+                                            <Label 
+                                                Text="{Binding EstadoResiduo, Converter={StaticResource EstadoConverter}}" 
+                                                TextColor="White"
+                                                FontSize="13"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <!-- Botón Editar a la derecha -->
                                     <Button 
-                                        Command="{Binding BindingContext.CambiarEstadoResiduoCommand, Source={x:Reference ResiduoPage}}"
-                                        CommandParameter="{Binding IdResiduo}">
-                                        <Button.Triggers>
-                                            <DataTrigger TargetType="Button" Binding="{Binding EstadoResiduo}" Value="True">
-                                                <Setter Property="Text" Value="Inhabilitar" />
-                                                <Setter Property="BackgroundColor" Value="DarkRed" />
-                                                <Setter Property="TextColor" Value="White" />
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Button" Binding="{Binding EstadoResiduo}" Value="False">
-                                                <Setter Property="Text" Value="Habilitar" />
-                                                <Setter Property="BackgroundColor" Value="DarkGreen" />
-                                                <Setter Property="TextColor" Value="White" />
-                                            </DataTrigger>
-                                        </Button.Triggers>
-                                    </Button>
-                                </HorizontalStackLayout>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
+                                        Text="✏️Editar" 
+                                        Clicked="OnEditarResiduoClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        Grid.Column="1"
+                                        Grid.Row="0"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        BackgroundColor="OrangeRed"
+                                        TextColor="White"
+                                        FontSize="13"
+                                        Padding="2,1"
+                                        HeightRequest="10"
+                                        WidthRequest="80"/>
+
+                                    <!-- Línea divisoria -->
+                                    <BoxView 
+                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                        HeightRequest="1"
+                                        BackgroundColor="{DynamicResource Primary}"
+                                        HorizontalOptions="Fill"
+                                        Margin="0,8,0,8" />
+
+                                    <!-- Datos adicionales -->
+                                    <StackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="2">
+                                        <Label 
+                                            Text="{Binding NombreCategoria, StringFormat='Categoría: {0}'}" 
+                                            FontSize="13"
+                                            TextColor="{DynamicResource Gray500}" />
+
+                                        <Label 
+                                            Text="{Binding ValorResiduo, StringFormat='Valor: {0}'}" 
+                                            FontSize="13"
+                                            TextColor="{DynamicResource Gray500}" />
+                                    </StackLayout>
+
+                                    <!-- See more -->
+                                    <Label 
+                                        Grid.Row="3" Grid.Column="1"
+                                        Text="See more >"
+                                        FontSize="13"
+                                        TextColor="#D600AA"
+                                        HorizontalOptions="End"
+                                        Margin="0,6,0,0" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Botón flotante fijo arriba a la derecha -->
+        <Button
+            Text="+"
+            Clicked="OnAgregarResiduoClicked"
+            BackgroundColor="{DynamicResource Primary}"
+            TextColor="White"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="0,0,20,0"
+            ZIndex="1" />
+    </Grid>
 </ContentPage>

@@ -2,9 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.RegistroDeReciclaje.ListarRegistrosPage"
-             x:Name="ListarPage"
-             Title="Registros de Reciclaje">
-
+             xmlns:converters="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.RegistroDeReciclajes"
+             x:Name="RegistrosPages"
+             Title="Registrosde Reciclaje">
+    
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
 
@@ -14,13 +16,22 @@
             <Label Text="Lista de Registros" FontSize="18" FontAttributes="Bold" />
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Entry Placeholder="Buscar por DNI"
+                   Text="{Binding DniBuscado, Mode=TwoWay}"
+                   TextChanged="OnDniTextChanged"/>
+            <Label Text="{Binding MensajeBusqueda}" 
+                   TextColor="Red" 
+                   FontAttributes="Italic"
+                   IsVisible="{Binding MensajeBusqueda, Converter={StaticResource StringToVisibilityConverter}}" />
 
-            <CollectionView ItemsSource="{Binding Registros}">
+            <CollectionView ItemsSource="{Binding ListaRegistrosResiduo }">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
                             <VerticalStackLayout>
                                 <Label Text="{Binding NombreResidente, StringFormat='Residente: {0}'}" />
+                                <Label Text="{Binding ApellidoResidente, StringFormat='Apellido: {0}'}" />
+                                <Label Text="{Binding DniResidente, StringFormat='DNI: {0}'}" />
                                 <Label Text="{Binding NombreResiduo, StringFormat='Residuo: {0}'}" />
                                 <Label Text="{Binding PesoKilogramo, StringFormat='Peso: {0} Kg'}" />
                                 <Label Text="{Binding TicketsGanados, StringFormat='Tickets: {0}'}" />

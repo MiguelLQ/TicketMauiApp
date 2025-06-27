@@ -16,5 +16,9 @@ namespace MauiFirebase.Models
         public DateTime FechaCanje { get; set; }
         [NotNull]
         public bool EstadoCanje { get; set; } = true;
+        [Ignore] // SQLite ignores this property
+        public string? NombreResidente { get; set; }
+        [Ignore] // SQLite ignores this property
+        public string? NombrePremio { get; set; }
     }
 }

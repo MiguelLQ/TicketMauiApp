@@ -20,6 +20,10 @@ public class RegistroDeReciclaje
     [Ignore] // SQLite ignora esta propiedad
     public string? NombreResidente { get; set; }
     [Ignore] // SQLite ignora esta propiedad
+    public string? ApellidoResidente { get; set; }
+    [Ignore]
+    public string? DniResidente { get; set; }
+    [Ignore]
     public string? NombreResiduo { get; set; }
 }
 

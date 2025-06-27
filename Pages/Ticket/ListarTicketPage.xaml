@@ -29,7 +29,7 @@
                     TextColor="White"
                      />-->
 
-                <Label Text="Lista de Tickets" 
+                <Label Text="🎟    Lista de Tickets" 
                        FontSize="20" 
                        FontAttributes="Bold" 
                        TextColor="{DynamicResource Gray500}" 
@@ -48,13 +48,19 @@
 
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
                                     <!-- Ícono izquierdo -->
-                                    <Image 
-                                        Source="escoba.png" 
+                                    <!--<Image 
+                                        Source="dotnet_bot.png" 
                                         HeightRequest="40"
                                         WidthRequest="40"
                                         Grid.RowSpan="2"
                                         Margin="0,0,10,0"
-                                        VerticalOptions="Start" />
+                                        VerticalOptions="Start" />-->
+                                    <Label 
+                                        Text="🎟" 
+                                        FontSize="26"
+                                        Grid.RowSpan="2"
+                                        VerticalOptions="Start"
+                                        Margin="0,0,10,0" />
 
                                     <!-- Nombre y cargo -->
                                     <StackLayout Grid.Column="1" Spacing="2">

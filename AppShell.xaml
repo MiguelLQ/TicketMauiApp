@@ -16,8 +16,24 @@
     xmlns:login="clr-namespace:MauiFirebase.Pages.Login"
     xmlns:residente="clr-namespace:MauiFirebase.Pages.ResidentesView"
     xmlns:conversiones="clr-namespace:MauiFirebase.Pages.Convertidores"
+    xmlns:inicio="clr-namespace:MauiFirebase.Pages.Home"
     Shell.FlyoutBehavior="Flyout"
-    Title="MauiFirebase">
+    Title="MauiFirebase"
+    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}"
+    >
+    <!--Personalización del encabezado -->
+    <Shell.TitleView>
+        <Grid>
+            <Image
+            Source="logosanji.png"
+            Margin="60,0,0,0"  
+            HorizontalOptions="Start"
+            VerticalOptions="Center"
+            HeightRequest="40"
+            Aspect="AspectFit" />
+        </Grid>
+    </Shell.TitleView>
+
     <Shell.FlyoutHeader>
         <Grid Padding="20" BackgroundColor="#3949ab">
             <VerticalStackLayout Spacing="10">
@@ -43,12 +59,12 @@
     </Shell.FlyoutHeader>
 
     <!-- ✅ FLYOUT CON MULTIPLE TABS SIMULADOS -->
-    <FlyoutItem Title="Dashboard" Icon="{StaticResource IconDashboard}" Route="dashboard">
+    <FlyoutItem Title="Inicio" Icon="{StaticResource IconDashboard}" Route="Home">
         <ShellContent
             Title="Inicio"
             Icon="casa.png"
-            ContentTemplate="{DataTemplate pages:MainPage}"
-            Route="main" />
+            ContentTemplate="{DataTemplate inicio:InicioPage}"
+            Route="inicio" />
         <ShellContent
             Title="Premios"
             Icon="premio.png"
@@ -78,6 +94,11 @@
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate pages:ManageMetaPage}"
         Route="manage" />-->
+    <!--<ShellContent
+        Title="Inicio"
+        Icon="{StaticResource IconDashboard}"
+        ContentTemplate="{DataTemplate inicio:InicioPage}"
+        Route="inicio" />-->
     <ShellContent
         Title="Premio"
         Icon="{StaticResource IconMeta}"

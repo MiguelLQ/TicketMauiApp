@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Home.InicioPage"
+             >
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="HeaderOrange">#3949ab</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="0">
+
+            <!--Encabezado con fondo naranja y tarjeta del coche -->
+
+            <Grid HeightRequest="220">
+                <!-- Fondo naranja superior -->
+                <BoxView 
+                    BackgroundColor="{StaticResource HeaderOrange}" 
+                    HeightRequest="210" 
+                    VerticalOptions="Start" />
+
+                <!-- Frame superior (dentro del fondo naranja) -->
+                <Frame
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    Padding="10"
+                    WidthRequest="330"
+                    HeightRequest="90"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    Margin="0,15,0,0">
+                    <!-- Ajusta este margen para ubicarlo más arriba -->
+                    <HorizontalStackLayout HorizontalOptions="Center">
+                        <Label Text="🚗 Vehículos activos"
+                           FontSize="16"
+                           VerticalOptions="Center"
+                           TextColor="{DynamicResource Gray500}" />
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!--Frame sobresalido (fuera del fondo naranja) -->
+                <Frame
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    Padding="10"
+                    WidthRequest="330"
+                    HeightRequest="160"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    Margin="0,120,0,0">
+                    <!-- Se superpone al fondo naranja -->
+
+                    <Image Source="dotnet_bot.png" Aspect="AspectFit" />
+                </Frame>
+            </Grid>
+            
+            <!--Contenido existente (no modificado) -->
+            <VerticalStackLayout Spacing="20" Padding="40">
+                
+                <!-- Tarjetas resumen en carrusel -->
+                <CollectionView ItemsLayout="HorizontalList" HeightRequest="130" Margin="0,10"
+                                ItemsSource="{Binding TarjetasResumen}">
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                                   WidthRequest="140"
+                                   CornerRadius="15"
+                                   Margin="5"
+                                   Padding="10"
+                                   HasShadow="True">
+                                <VerticalStackLayout HorizontalOptions="Center">
+                                    <Image Source="{Binding Icono}" HeightRequest="40" WidthRequest="40" />
+                                    <Label Text="{Binding Valor}" FontSize="22" FontAttributes="Bold" TextColor="{DynamicResource Gray500}" HorizontalTextAlignment="Center"/>
+                                    <Label Text="{Binding Titulo}" FontSize="14" TextColor="{DynamicResource Gray500}" HorizontalTextAlignment="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label Text="Gráfico" FontSize="19" FontAttributes="Bold" />
+                <!-- Gráfico de residuos reciclados -->
+                <Frame HeightRequest="200" 
+                       Background="{DynamicResource CardBackgroundBrush}"
+                       CornerRadius="10">
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label Text="Total reciclado por categoría" FontSize="18" TextColor="{DynamicResource Gray500}" />
+                        <Label Text="Plástico: 32 kg" />
+                        <Label Text="Orgánico: 25 kg" />
+                        <Label Text="Papel: 18 kg" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Registros recientes -->
+                <Grid HeightRequest="44">
+                    <Label Text="Últimos registros de reciclaje" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <ImageButton 
+                        Source="dotnet_bot.png" 
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        HeightRequest="40"
+                        WidthRequest="40"
+                        BackgroundColor="Transparent" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="15">
+                    <Frame CornerRadius="10" Padding="15" Background="{DynamicResource CardBackgroundBrush}" BorderColor="{DynamicResource CardBorderBrush}">
+                        <Label Text="Ana recicló 4.5 kg de plástico" FontSize="16" TextColor="{DynamicResource Gray500}"/>
+                    </Frame>
+                    <Frame CornerRadius="10" Padding="15" Background="{DynamicResource CardBackgroundBrush}" BorderColor="{DynamicResource CardBorderBrush}">
+                        <Label Text="Luis recicló 3 kg de papel" FontSize="16" TextColor="{DynamicResource Gray500}"/>
+                    </Frame>
+                    <Frame CornerRadius="10" Padding="15" Background="{DynamicResource CardBackgroundBrush}" BorderColor="{DynamicResource CardBorderBrush}">
+                        <Label Text="Marta recicló 7.2 kg de vidrio" FontSize="16" TextColor="{DynamicResource Gray500}"/>
+                    </Frame>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

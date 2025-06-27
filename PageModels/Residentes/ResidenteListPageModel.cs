@@ -1,19 +1,23 @@
-﻿// =================== ResidenteListPageModel.cs ===================
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
+using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls; // Para Shell.Current.GoToAsync
 
 namespace MauiFirebase.PageModels.Residentes
 {
     public partial class ResidenteListPageModel : ObservableObject
     {
+        private IClosePopup? _popupCloser; // 🔧 Instancia UI del popup actual
         private readonly IResidenteRepository _residenteRepository;
+        private readonly IAlertaHelper _alertaHelper;
+
+        private List<Residente> _todosLosResidentes = new(); // respaldo en memoria
 
         [ObservableProperty]
         private ObservableCollection<Residente> _listaResidentes = new();
@@ -22,65 +26,84 @@ namespace MauiFirebase.PageModels.Residentes
         private string _busquedaTexto = string.Empty;
 
         [ObservableProperty]
-        private string _filtroEstadoResidente = "Todos"; // "Todos", "Activos", "Inactivos"
+        private string _filtroEstadoResidente = "Todos";
+        
 
-        public ResidenteListPageModel(IResidenteRepository residenteRepository)
+        partial void OnFiltroEstadoResidenteChanged(string value)
         {
-            _residenteRepository = residenteRepository;
-            // No cargamos aquí, se carga en OnAppearing de la página o con un comando
+            AplicarFiltros();
+        }
+        partial void OnBusquedaTextoChanged(string value)
+        {
+            AplicarFiltros();
         }
 
-        // Comandos de navegación para la página principal
+        public ResidenteListPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
+        {
+            _residenteRepository = residenteRepository;
+            _alertaHelper = alertaHelper;
+
+
+            // Carga diferida en OnAppearing o mediante comando explícito
+            WeakReferenceMessenger.Default.Register<Residente, string>(
+                this,
+                "ResidenteActualizado",
+                (recipient, residenteActualizado) =>
+                {
+                    var existente = ListaResidentes.FirstOrDefault(r => r.IdResidente == residenteActualizado.IdResidente);
+                    if (existente != null)
+                    {
+                        existente.NombreResidente = residenteActualizado.NombreResidente;
+                        existente.ApellidoResidente = residenteActualizado.ApellidoResidente;
+                        existente.DniResidente = residenteActualizado.DniResidente;
+                        existente.CorreoResidente = residenteActualizado.CorreoResidente;
+                        existente.DireccionResidente = residenteActualizado.DireccionResidente;
+                        existente.EstadoResidente = residenteActualizado.EstadoResidente;
+                    }
+                    else
+                    {
+                        ListaResidentes.Add(residenteActualizado);
+                    }
+                    // También actualiza el respaldo para que los filtros funcionen correctamente
+                    var index = _todosLosResidentes.FindIndex(r => r.IdResidente == residenteActualizado.IdResidente);
+                    if (index >= 0)
+                        _todosLosResidentes[index] = residenteActualizado;
+                    AplicarFiltros();
+                });
+
+        }
+
+        // 🔹 Navegación
         [RelayCommand]
         private async Task NavigateToRegister()
         {
-            // Navega a la página del formulario (vacío para nuevo registro)
             await Shell.Current.GoToAsync("residenteForm");
         }
 
         [RelayCommand]
         private async Task NavigateToList()
         {
-            // Navega a la página de la lista
             await Shell.Current.GoToAsync("residenteList");
         }
 
-        // Comandos para la lista
+        // 🔹 Cargar y mantener los residentes en memoria
         [RelayCommand]
         public async Task CargarResidentesAsync()
         {
             var residentes = await _residenteRepository.GetAllResidentesAsync();
-            ListaResidentes.Clear();
-            foreach (var residente in residentes.OrderBy(r => r.NombreResidente)) // Ordenar por nombre
-            {
-                ListaResidentes.Add(residente);
-            }
-            AplicarFiltros(); // Asegura que los filtros iniciales se apliquen
+            _todosLosResidentes = residentes.OrderBy(r => r.NombreResidente).ToList();
+            AplicarFiltros();
         }
 
+        // 🔹 Buscar por nombre o apellido
         [RelayCommand]
-        public async Task BuscarResidentesAsync()
+        public Task BuscarResidentesAsync()
         {
-            await CargarResidentesAsync(); // Recargar todos para buscar sobre la lista completa
-            if (!string.IsNullOrWhiteSpace(BusquedaTexto))
-            {
-                var filteredList = ListaResidentes
-                    .Where(r => r.NombreResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase) ||
-                                r.ApellidoResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-                ListaResidentes.Clear();
-                foreach (var res in filteredList)
-                {
-                    ListaResidentes.Add(res);
-                }
-            }
-            else
-            {
-                await CargarResidentesAsync(); // Si la búsqueda está vacía, recarga todos y aplica filtros
-            }
-            AplicarFiltros(); // Aplicar filtros después de la búsqueda
+            AplicarFiltros(); // ahora trabaja sobre la lista en memoria
+            return Task.CompletedTask;
         }
 
+        // 🔹 Buscar por DNI (consulta individual)
         [RelayCommand]
         public async Task BuscarResidentePorDniAsync()
         {
@@ -92,6 +115,7 @@ namespace MauiFirebase.PageModels.Residentes
 
             var residente = await _residenteRepository.GetResidenteByDniAsync(BusquedaTexto);
             ListaResidentes.Clear();
+
             if (residente != null)
             {
                 ListaResidentes.Add(residente);
@@ -99,16 +123,18 @@ namespace MauiFirebase.PageModels.Residentes
             else
             {
                 await Shell.Current.DisplayAlert("Información", "No se encontró ningún residente con ese DNI.", "OK");
-                await CargarResidentesAsync(); // Recargar la lista completa si no se encuentra
+                AplicarFiltros(); // mostrar la lista anterior
             }
-            AplicarFiltros(); // Aplicar filtros después de la búsqueda por DNI
         }
-
-        [RelayCommand]
-        public async Task AplicarFiltros()
+        // Establece el popup actual para poder cerrarlo desde el ViewModel
+        public void SetPopupCloser(IClosePopup popup)
         {
-            var residentes = await _residenteRepository.GetAllResidentesAsync();
-            var filtered = residentes.AsEnumerable();
+            _popupCloser = popup;
+        }
+        [RelayCommand]
+        public void AplicarFiltros()
+        {
+            IEnumerable<Residente> filtered = _todosLosResidentes;
 
             if (!string.IsNullOrWhiteSpace(BusquedaTexto))
             {
@@ -123,41 +149,49 @@ namespace MauiFirebase.PageModels.Residentes
                 filtered = filtered.Where(r => !r.EstadoResidente);
 
             ListaResidentes.Clear();
-            foreach (var res in filtered.OrderBy(r => r.NombreResidente))
+            foreach (var res in filtered)
             {
                 ListaResidentes.Add(res);
             }
         }
 
+        // 🔹 Filtrado por texto y estado (en memoria)
 
+
+        // 🔹 Cambiar estado activo/inactivo
         [RelayCommand]
         private async Task CambiarEstadoResidente(int idResidente)
         {
             var residente = await _residenteRepository.GetResidenteByIdAsync(idResidente);
             if (residente != null)
             {
-                residente.EstadoResidente = !residente.EstadoResidente; // Cambiar el estado
+                residente.EstadoResidente = !residente.EstadoResidente;
                 await _residenteRepository.UpdateResidenteAsync(residente);
-                await Shell.Current.DisplayAlert("Estado Actualizado", $"El estado de {residente.NombreResidente} ahora es: {(residente.EstadoResidente ? "Activo" : "Inactivo")}", "OK");
-                await CargarResidentesAsync(); // Recargar la lista para reflejar el cambio
+
+                await Shell.Current.DisplayAlert(
+                    "Estado Actualizado",
+                    $"El estado de {residente.NombreResidente} ahora es: {(residente.EstadoResidente ? "Activo" : "Inactivo")}",
+                    "OK"
+                );
+
+                await CargarResidentesAsync(); // recargar lista actualizada
             }
         }
-        
+
+        // 🔹 Editar residente (navegación con parámetro)
         [RelayCommand]
         private async Task EditarResidente(Residente residente)
-
         {
             if (residente == null)
             {
                 await Shell.Current.DisplayAlert("Error", "El residente recibido es null", "OK");
                 return;
             }
-            await Shell.Current.DisplayAlert("Tap", "¡El contenedor de prueba funciona!", "OK");
-
 
             await Shell.Current.GoToAsync($"residenteForm?id={residente.IdResidente}");
+
+            _popupCloser?.ClosePopup(); // ✅ Cerramos el popup actual
+            await _alertaHelper.ShowSuccessAsync("Ticket agregado correctamente.");
         }
-
-
     }
 }

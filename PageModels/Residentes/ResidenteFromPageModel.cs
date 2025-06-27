@@ -4,9 +4,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
+using MauiFirebase.Helpers.Interface;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls; // Necesario para Shell.Current.GoToAsync y QueryProperty
+using Microsoft.Maui.Controls;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace MauiFirebase.PageModels.Residentes
 {
@@ -15,6 +17,8 @@ namespace MauiFirebase.PageModels.Residentes
     public partial class ResidenteFormPageModel : ObservableObject
     {
         private readonly IResidenteRepository _residenteRepository;
+        private readonly IAlertaHelper _alertaHelper;
+
 
         [ObservableProperty]
         private int _idResidente;
@@ -41,15 +45,13 @@ namespace MauiFirebase.PageModels.Residentes
         private string _direccionResidente = string.Empty;
 
         [ObservableProperty]
-        private bool _estadoResidente = true; // Por defecto activo para nuevos
+        private bool _estadoResidente = true; 
 
         // Constructor para Inyección de Dependencias
-        public ResidenteFormPageModel(IResidenteRepository residenteRepository)
+        public ResidenteFormPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
         {
             _residenteRepository = residenteRepository;
-            // Opcional: Puedes llamar a LimpiarFormulario() aquí si quieres asegurar
-            // que siempre inicie limpio, incluso si no se usa QueryProperty al principio.
-            // LimpiarFormulario();
+            _alertaHelper = alertaHelper;
         }
 
         // Comandos para el formulario
@@ -74,9 +76,8 @@ namespace MauiFirebase.PageModels.Residentes
             };
 
             await _residenteRepository.CreateResidenteAsync(newResidente);
-            await Shell.Current.DisplayAlert("Éxito", "Residente creado correctamente.", "OK");
-            // LimpiarFormulario(); // Comentar aquí, ya que se limpiará al navegar de vuelta
-            await Shell.Current.GoToAsync(".."); // Regresar a la lista o pantalla anterior
+            await _alertaHelper.ShowSuccessAsync("Residente creado correctamente.");
+            await Shell.Current.GoToAsync(".."); 
         }
 
         [RelayCommand]
@@ -111,13 +112,16 @@ namespace MauiFirebase.PageModels.Residentes
                 CorreoResidente = CorreoResidente,
                 DireccionResidente = DireccionResidente,
                 EstadoResidente = EstadoResidente,
-                FechaRegistroResidente = existingResidente.FechaRegistroResidente // Mantenemos la fecha original
+                FechaRegistroResidente = existingResidente.FechaRegistroResidente 
             };
 
             await _residenteRepository.UpdateResidenteAsync(residenteToUpdate);
-            await Shell.Current.DisplayAlert("Éxito", "Residente actualizado correctamente.", "OK");
+            WeakReferenceMessenger.Default.Send(residenteToUpdate, "ResidenteActualizado");
+            await _alertaHelper.ShowSuccessAsync("Residente actualizado correctamente.");
             // LimpiarFormulario(); // Comentar aquí, ya que se limpiará al navegar de vuelta
             await Shell.Current.GoToAsync(".."); // Regresar a la lista
+                                                 // Envía el residente actualizado a quien lo escuche
+            
         }
 
         [RelayCommand]

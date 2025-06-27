@@ -152,7 +152,6 @@ public static class MauiProgram
         // Residente
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
         builder.Services.AddTransient<ResidentePageModel>();
-        builder.Services.AddTransient<ResidentesPage>();
         builder.Services.AddTransientWithShellRoute<ResidenteFormPage, ResidenteFormPageModel>("residenteForm");
         builder.Services.AddTransientWithShellRoute<ResidenteListPage, ResidenteListPageModel>("residenteList");
 

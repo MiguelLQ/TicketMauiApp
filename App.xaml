@@ -7,6 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <helpers:NullToBoolConverter x:Key="NullToBoolConverter" />
+            <helpers:BoolToEstadoConverter x:Key="BoolToEstadoConverter" />
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />

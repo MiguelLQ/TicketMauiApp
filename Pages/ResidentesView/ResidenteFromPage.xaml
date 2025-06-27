@@ -4,7 +4,7 @@
              x:Class="MauiFirebase.Pages.ResidentesView.ResidenteFormPage"
              xmlns:viewmodels="clr-namespace:MauiFirebase.PageModels.Residentes"
              xmlns:models="clr-namespace:MauiFirebase.Models"
-             Title="Formulario de Residente"
+             Title="Formulario de Ciudadanos"
              BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
 
     <ContentPage.Resources>
@@ -47,7 +47,7 @@
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
 
-            <Label Text="Registrar o Editar Residente"
+            <Label Text="Registrar o Editar Ciudadano"
                    FontSize="20"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
@@ -70,7 +70,7 @@
                                 OnColor="Green" />
                     </HorizontalStackLayout>
 
-                    <Grid ColumnDefinitions="*,*,*">
+                    <Grid ColumnDefinitions="*,*">
                         <Button Text="Crear"
                                 Command="{Binding CrearResidenteCommand}"
                                 BackgroundColor="#4CAF50"
@@ -78,10 +78,6 @@
                         <Button Text="Actualizar"
                                 Command="{Binding ActualizarResidenteCommand}"
                                 BackgroundColor="#2196F3"
-                                Grid.Column="1" />
-                        <Button Text="Limpiar"
-                                Command="{Binding LimpiarFormularioCommand}"
-                                BackgroundColor="#FF9800"
                                 Grid.Column="2" />
                     </Grid>
                 </VerticalStackLayout>

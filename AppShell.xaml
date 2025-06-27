@@ -112,9 +112,9 @@
         Route="canje" />
     
     <ShellContent
-        Title="Administrar Residente"
+        Title="Administrar Ciudadanos"
         Icon="{StaticResource IconProjects}"
-        ContentTemplate="{DataTemplate residente:ResidentesPage}"
+        ContentTemplate="{DataTemplate residente:ResidenteListPage}"
         Route="residente" />
 
     <ShellContent

@@ -43,6 +43,10 @@ public class AlertaHelpers : IAlertaHelper
         var snackbar = Snackbar.Make($"Error: {message}", null, "Cerrar", TimeSpan.FromSeconds(4), errorOptions);
         await snackbar.Show();
     }
+    public Task ShowInfoAsync(string mensaje)
+    {
+        return Shell.Current.DisplayAlert("Información", mensaje, "OK");
+    }
 
     public async Task ShowSuccessAsync(string message)
     {

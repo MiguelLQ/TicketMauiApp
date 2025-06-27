@@ -21,6 +21,8 @@
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
                             <VerticalStackLayout>
                                 <Label Text="{Binding NombreResidente, StringFormat='Residente: {0}'}" />
+                                <Label Text="{Binding ApellidoResidente, StringFormat='Residente: {0}'}" />
+                                <Label Text="{Binding DniResidente, StringFormat='Residente: {0}'}" />
                                 <Label Text="{Binding NombreResiduo, StringFormat='Residuo: {0}'}" />
                                 <Label Text="{Binding PesoKilogramo, StringFormat='Peso: {0} Kg'}" />
                                 <Label Text="{Binding TicketsGanados, StringFormat='Tickets: {0}'}" />

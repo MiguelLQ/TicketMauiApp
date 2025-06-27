@@ -58,7 +58,10 @@ public partial class ListarRegistrosPageModel : ObservableObject
             if (residentesDict.TryGetValue(item.IdResidente, out var residente))
             {
                 item.NombreResidente = residente.NombreResidente;
+                item.ApellidoResidente = residente.ApellidoResidente;
+                item.DniResidente= residente.DniResidente;
             }
+
             if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
             {
                 item.NombreResiduo = residuo.NombreResiduo;

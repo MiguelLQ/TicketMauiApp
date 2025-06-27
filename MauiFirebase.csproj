@@ -137,9 +137,6 @@
 	  <MauiXaml Update="Pages\RegistroDeReciclaje\AgregarRegistroPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\RegistroDeReciclaje\BuscarResidentePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\RegistroDeReciclaje\ListarRegistrosPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

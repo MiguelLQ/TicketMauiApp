@@ -120,6 +120,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
             if (residente != null)
             {
                 ResidenteSeleccionado = residente;
+
                 await _alertaHelper.ShowSuccessAsync($"Residente encontrado: {residente.NombreResidente}");
             }
             else

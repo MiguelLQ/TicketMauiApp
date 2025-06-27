@@ -78,7 +78,7 @@ namespace MauiFirebase.PageModels.Logins
 
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
                 {
-                    await Shell.Current.GoToAsync("//dashboard/main");
+                    await Shell.Current.GoToAsync("//Home/inicio");
                 });
             }
 

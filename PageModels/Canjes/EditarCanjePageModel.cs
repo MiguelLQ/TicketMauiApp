@@ -16,10 +16,14 @@ public partial class EditarCanjePageModel : ObservableObject
 
     public ObservableCollection<Premio> ListaPremios { get; } = new();
 
-    [ObservableProperty] private int idCanje;
-    [ObservableProperty] private Premio? _premioSeleccionado;
-    [ObservableProperty] private bool _estadoCanje;
-    [ObservableProperty] private Canje? _canjeSeleccionado;
+    [ObservableProperty] 
+    private int idCanje;
+    [ObservableProperty] 
+    private Premio? _premioSeleccionado;
+    [ObservableProperty] 
+    private bool _estadoCanje;
+    [ObservableProperty] 
+    private Canje? _canjeSeleccionado;
 
     public EditarCanjePageModel(
         ICanjeRepository canjeRepository,

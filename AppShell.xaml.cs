@@ -7,13 +7,8 @@ using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.Pages.RegistroDeReciclaje;
 using Font = Microsoft.Maui.Font;
-<<<<<<< HEAD
-
 using MauiFirebase.Pages.Convertidores;
 
-=======
-using MauiFirebase.Pages.Convertidores;
->>>>>>> 9f3e93c9fb93314aaf9e2c1c86270bac707b97ca
 using MauiFirebase.Pages.Login;
 
 namespace MauiFirebase

@@ -4,9 +4,7 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
-
 namespace MauiFirebase.PageModels.Canjes;
-
 public partial class CrearCanjePageModel : ObservableObject
 {
     private readonly ICanjeRepository _canjeRepository;
@@ -15,11 +13,17 @@ public partial class CrearCanjePageModel : ObservableObject
     private readonly IAlertaHelper _alertaHelper;
 
     public ObservableCollection<Premio> ListaPremios { get; } = new();
+    public ObservableCollection<Residente> ListaResidentes { get; } = new();
+    public ObservableCollection<Canje> ListaCanje { get; } = new();
 
-    [ObservableProperty] private Premio? _premioSeleccionado;
-    [ObservableProperty] private string _dniResidente = string.Empty;
-    [ObservableProperty] private Residente? _residenteEncontrado;
-    [ObservableProperty] private bool _estadoCanje = true;
+    [ObservableProperty] 
+    private Premio? _premioSeleccionado;
+    [ObservableProperty] 
+    private string _dniResidente = string.Empty;
+    [ObservableProperty] 
+    private Residente? _residenteEncontrado;
+    [ObservableProperty] 
+    private bool _estadoCanje = true;
 
     public CrearCanjePageModel(
         ICanjeRepository canjeRepository,
@@ -41,6 +45,44 @@ public partial class CrearCanjePageModel : ObservableObject
         foreach (var premio in premios)
             ListaPremios.Add(premio);
     }
+
+    [RelayCommand]
+    public async Task CargarResiduosAsync()
+    {
+        ListaResidentes.Clear();
+        var residente = await _residenteRepository.GetAllResidentesAsync();
+        foreach (var item in residente)
+        {
+            ListaResidentes.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    public async Task CargarCanjeAsync()
+    {
+        ListaCanje.Clear();
+        var canjes = await _canjeRepository.GetAllCanjeAync();
+        var premios = await _premioRepository.GetAllPremiosAsync();
+        var residentes = await _residenteRepository.GetAllResidentesAsync();
+
+
+        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+        var premiosDict = premios.ToDictionary(r => r.IdPremio);
+
+        foreach (var item in canjes)
+        {
+            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+            {
+                item.NombreResidente = residente.NombreResidente;
+            }
+            if (premiosDict.TryGetValue(item.IdCanje, out var canje))
+            {
+                item.NombrePremio = canje.NombrePremio;
+            }
+            ListaCanje.Add(item);
+        }
+    }
+
 
     [RelayCommand]
     public async Task BuscarResidenteAsync()

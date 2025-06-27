@@ -10,6 +10,11 @@
             <Entry Text="{Binding DniBuscado}" Placeholder="DNI del residente" />
             <Button Text="Buscar Residente" Command="{Binding BuscarPorDniCommand}" />
 
+            <StackLayout IsVisible="{Binding ResidenteSeleccionado, Converter={StaticResource NullToBoolConverter}}">
+                <Label Text="{Binding ResidenteSeleccionado.NombreResidente, StringFormat='Nombre: {0}'}" />
+                <Label Text="{Binding ResidenteSeleccionado.ApellidoResidente, StringFormat='Apellido: {0}'}" />
+            </StackLayout>
+            
             <Label Text="Tipo de residuo" />
             <Picker ItemsSource="{Binding ListaResiduos}"
                     ItemDisplayBinding="{Binding NombreResiduo}"

@@ -25,4 +25,9 @@ public partial class ListarRegistrosPage : ContentPage
     {
         await Shell.Current.GoToAsync(nameof(AgregarRegistroPage));
     }
+    private void OnDniTextChanged(object sender, TextChangedEventArgs e)
+    {
+        _pageModel.FiltrarPorDniCommand.Execute(null);
+    }
+
 }

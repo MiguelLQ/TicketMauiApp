@@ -21,13 +21,10 @@
         <Entry Placeholder="Puntos requeridos"
                Text="{Binding PuntosRequeridos}" 
                Keyboard="Numeric" />
-
-        <!-- Imagen actual del premio -->
-        <Image Source="{Binding FotoPremio}"
-               HeightRequest="150"
-               Aspect="AspectFill"
-               BackgroundColor="#ccc"
-               Margin="0,10,0,0" />
+        
+        <!--Url de la imagen-->
+        <Entry Placeholder="URL de la imagen"
+         Text="{Binding FotoPremio}" />
 
         <!-- Botón para seleccionar nueva imagen -->
         <Button Text="Cambiar Imagen"

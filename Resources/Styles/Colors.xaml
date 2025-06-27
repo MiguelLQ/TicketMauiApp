@@ -35,9 +35,9 @@
     <Color x:Key="Gray600">#404040</Color>
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
-    <Color x:Key="CardBackgroundLight">#C8C8C8</Color>
+    <Color x:Key="CardBackgroundLight">#e3e4e6</Color>
     <Color x:Key="CardBackgroundDark">#222228</Color>
-    <Color x:Key="BorderLight">#CCCCCC</Color>
+    <Color x:Key="BorderLight">#d2d3d6</Color>
     <Color x:Key="BorderDark">#444444</Color>
     <Color x:Key="FlyoutLight">#EDEDED</Color>
     <!-- gris claro -->

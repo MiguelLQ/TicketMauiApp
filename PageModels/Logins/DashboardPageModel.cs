@@ -14,6 +14,7 @@ namespace MauiFirebase.PageModels.Logins
         public string Titulo { get; set; }
         public string Valor { get; set; }
         public string Icono { get; set; } // Usa imágenes o emojis
+        public string Emoji { get; set; } // nuevo campo
     }
 
     public class DashboardPageModel : INotifyPropertyChanged
@@ -26,12 +27,13 @@ namespace MauiFirebase.PageModels.Logins
         {
             // Datos simulados
             TarjetasResumen = new ObservableCollection<TarjetaResumen>
-            {
-                new TarjetaResumen { Titulo = "Residentes", Valor = "25", Icono = "dotnet_bot.png" },
-                new TarjetaResumen { Titulo = "Reciclaje", Valor = "234.5 kg", Icono = "dotnet_bot.png" },
-                new TarjetaResumen { Titulo = "Tickets", Valor = "19", Icono = "dotnet_bot.png" },
-                new TarjetaResumen { Titulo = "Premios", Valor = "7", Icono = "dotnet_bot.png" },
+{
+                new TarjetaResumen { Titulo = "Residentes", Valor = "25", Emoji = "👥" },
+                new TarjetaResumen { Titulo = "Reciclaje", Valor = "234.5 kg", Emoji = "♻️" },
+                new TarjetaResumen { Titulo = "Tickets", Valor = "19", Emoji = "🎟️" },
+                new TarjetaResumen { Titulo = "Premios", Valor = "7", Emoji = "🏆" },
             };
+
         }
 
         protected void OnPropertyChanged([CallerMemberName] string name = "")

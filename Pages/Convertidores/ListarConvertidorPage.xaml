@@ -19,7 +19,7 @@
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="10">
 
-                <Label Text="⚙️ Convertidores"
+                <Label Text="⚙️  Lista Convertidores"
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}" />

@@ -22,7 +22,7 @@
                 IsVisible="{Binding IsBusy}" 
                 Color="Gray" />
 
-            <Label Text="Lista de Categorías" 
+                <Label Text="♻️   Lista de Categorías" 
                    FontSize="20" 
                    FontAttributes="Bold" 
                    TextColor="{DynamicResource Gray300}" 
@@ -42,50 +42,56 @@
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
 
                                     <!-- Ícono izquierdo -->
-                                    <Image 
-                        Source="dotnet_bot.png" 
-                        HeightRequest="40"
-                        WidthRequest="40"
-                        Grid.RowSpan="2"
-                        Margin="0,0,10,0"
-                        VerticalOptions="Start" />
+                                    <!--<Image 
+                                        Source="dotnet_bot.png" 
+                                        HeightRequest="40"
+                                        WidthRequest="40"
+                                        Grid.RowSpan="2"
+                                        Margin="0,0,10,0"
+                                        VerticalOptions="Start" />-->
+                                    <Label 
+                                        Text="♻️" 
+                                        FontSize="26"
+                                        Grid.RowSpan="2"
+                                        VerticalOptions="Start"
+                                        Margin="0,0,10,0" />
 
                                     <!-- Nombre y Estado -->
                                     <StackLayout Grid.Column="1" Spacing="2">
                                         <Label 
-                            Text="{Binding NombreCategoria}" 
-                            FontAttributes="Bold" 
-                            FontSize="16"
-                            TextColor="#0077CC" />
+                                            Text="{Binding NombreCategoria}" 
+                                            FontAttributes="Bold" 
+                                            FontSize="16"
+                                            TextColor="#0077CC" />
 
                                         <Frame
-                            Padding="6,2"
-                            CornerRadius="12"
-                            HasShadow="False"
-                            BackgroundColor="{Binding EstadoCategoriaResiduo, Converter={StaticResource EstadoColorConverter}}"
-                            HorizontalOptions="Start">
+                                            Padding="6,2"
+                                            CornerRadius="12"
+                                            HasShadow="False"
+                                            BackgroundColor="{Binding EstadoCategoriaResiduo, Converter={StaticResource EstadoColorConverter}}"
+                                            HorizontalOptions="Start">
 
                                             <Label 
-                                Text="{Binding EstadoCategoriaResiduo, Converter={StaticResource EstadoConverter}}" 
-                                TextColor="White"
-                                FontSize="13"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center" />
+                                                Text="{Binding EstadoCategoriaResiduo, Converter={StaticResource EstadoConverter}}" 
+                                                TextColor="White"
+                                                FontSize="13"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
                                         </Frame>
                                     </StackLayout>
 
                                     <!-- Botón de edición (ícono pequeño) -->
                                     <ImageButton 
-                        Source="edit.png" 
-                        HeightRequest="10"
-                        WidthRequest="10"
-                        BackgroundColor="Transparent"
-                        Grid.Column="2"
-                        HorizontalOptions="End"
-                        VerticalOptions="Start"
-                        Margin="0"
-                        Command="{Binding Source={x:Reference CategoriaPage}, Path=BindingContext.EditCategoriaResiduoCommand}"
-CommandParameter="{Binding .}"></ImageButton>
+                                                Source="edit.png" 
+                                                HeightRequest="10"
+                                                WidthRequest="10"
+                                                BackgroundColor="Transparent"
+                                                Grid.Column="2"
+                                                HorizontalOptions="End"
+                                                VerticalOptions="Start"
+                                                Margin="0"
+                                                Command="{Binding Source={x:Reference CategoriaPage}, Path=BindingContext.EditCategoriaResiduoCommand}"
+                        CommandParameter="{Binding .}"></ImageButton>
 
                                     <!-- Línea divisora -->
                                     <BoxView 

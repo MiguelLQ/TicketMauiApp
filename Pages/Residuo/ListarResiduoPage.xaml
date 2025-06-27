@@ -23,7 +23,7 @@
             <VerticalStackLayout Padding="20" Spacing="10">
                 <!--<Button Text="Agregar Residuo"
                         Clicked="OnAgregarResiduoClicked" />-->
-                <Label Text="Listar Residuos"
+                <Label Text="🗑️  Listar Residuos"
                    FontSize="20"
                    FontAttributes="Bold"
                    TextColor="{DynamicResource Gray500}" />
@@ -41,13 +41,19 @@
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
 
                                     <!-- Ícono del residuo -->
-                                    <Image 
+                                    <!--<Image 
                                         Source="dotnet_bot.png" 
                                         HeightRequest="40"
                                         WidthRequest="40"
                                         Grid.RowSpan="2"
                                         Margin="0,0,10,0"
-                                        VerticalOptions="Start" />
+                                        VerticalOptions="Start" />-->
+                                    <Label 
+                                        Text="🗑️" 
+                                        FontSize="26"
+                                        Grid.RowSpan="2"
+                                        VerticalOptions="Start"
+                                        Margin="0,0,10,0" />
 
                                     <!-- Nombre y estado -->
                                     <StackLayout Grid.Column="1" Spacing="2">

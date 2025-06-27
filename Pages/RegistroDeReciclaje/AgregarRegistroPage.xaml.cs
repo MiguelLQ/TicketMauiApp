@@ -16,6 +16,7 @@ public partial class AgregarRegistroPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        await _viewModel.CargarResiduoAsync();
         await _viewModel.CargarRegistroReciclajeAsync();
     }
 

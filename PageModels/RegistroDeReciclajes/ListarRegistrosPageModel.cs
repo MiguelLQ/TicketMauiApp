@@ -13,13 +13,13 @@ public partial class ListarRegistrosPageModel : ObservableObject
     private readonly IRegistroDeReciclajeRepository _registroRepository;
     private readonly IResidenteRepository _residenteRepository;
     private readonly IResiduoRepository _residuoRepository;
-    
+
     public ListarRegistrosPageModel(IRegistroDeReciclajeRepository registroRepository, IResidenteRepository residenteRepository, IResiduoRepository residuoRepository)
     {
         _registroRepository = registroRepository;
         _residenteRepository = residenteRepository;
         _residuoRepository = residuoRepository;
-  
+
     }
 
     [RelayCommand]
@@ -57,7 +57,7 @@ public partial class ListarRegistrosPageModel : ObservableObject
         {
             if (residentesDict.TryGetValue(item.IdResidente, out var residente))
             {
-                item.NombreResidente = residente.NombreResidente; 
+                item.NombreResidente = residente.NombreResidente;
             }
             if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
             {

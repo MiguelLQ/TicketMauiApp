@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.RegistroDeReciclaje.ListarRegistrosPage"
-             x:Name="ListarPage"
+             x:Name="ListarPages"
              Title="Registros de Reciclaje">
 
     <ScrollView>
@@ -15,7 +15,7 @@
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
 
-            <CollectionView ItemsSource="{Binding Registros}">
+            <CollectionView ItemsSource="{Binding ListaRegistrosResiduo}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">

@@ -7,17 +7,14 @@
              Title="Registrar Reciclaje">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
-
-            <Label Text="{Binding ResidenteSeleccionado.NombreResidente, StringFormat='Residente: {0}'}" FontAttributes="Bold" FontSize="18"/>
+            <Entry Text="{Binding DniBuscado}" Placeholder="DNI del residente" />
+            <Button Text="Buscar Residente" Command="{Binding BuscarPorDniCommand}" />
 
             <Label Text="Tipo de residuo" />
             <Picker ItemsSource="{Binding ListaResiduos}"
                     ItemDisplayBinding="{Binding NombreResiduo}"
                     SelectedItem="{Binding ResiduoSeleccionado}" />
-            
-            <Picker ItemsSource="{Binding ListaResidentes}"
-                    ItemDisplayBinding="{Binding NombreResidente}"
-                    SelectedItem="{Binding ResidenteSeleccionado}" />
+
             <Label Text="Peso (Kg)" />
             <Entry Text="{Binding PesoKilogramo}" Keyboard="Numeric" Placeholder="Ej: 2.5" />
 
@@ -25,7 +22,7 @@
             <Entry Text="{Binding TicketsGanados}" Keyboard="Numeric" Placeholder="Ej: 10" />
 
             <Button Text="✅ Registrar"
-                    Command="{Binding AddRegistroAsync}"
+                    Command="{Binding AddRegistroCommand}" 
                     BackgroundColor="#4CAF50"
                     TextColor="White" />
 

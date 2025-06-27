@@ -5,6 +5,7 @@ using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
 namespace MauiFirebase.PageModels.RegistroDeReciclajes;
+
 public partial class AgregarRegistroPageModel : ObservableObject
 {
     private readonly IRegistroDeReciclajeRepository _registroRepository;
@@ -14,6 +15,9 @@ public partial class AgregarRegistroPageModel : ObservableObject
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
     public ObservableCollection<RegistroDeReciclaje> ListaRegistroReciclaje { get; } = new();
+    [ObservableProperty]
+    private string _dniBuscado;
+
 
     [ObservableProperty]
     private Residente? _residenteSeleccionado;
@@ -86,9 +90,9 @@ public partial class AgregarRegistroPageModel : ObservableObject
     }
 
 
+    [RelayCommand]
     public async Task AddRegistroAsync()
     {
-
         var nuevoRegistro = new RegistroDeReciclaje
         {
             IdResidente = ResidenteSeleccionado?.IdResidente ?? 0,
@@ -107,7 +111,28 @@ public partial class AgregarRegistroPageModel : ObservableObject
         await _alertaHelper.ShowSuccessAsync("Registro guardado correctamente.");
         await Shell.Current.GoToAsync("..");
     }
-
+    [RelayCommand]
+    public async Task BuscarPorDniAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(DniBuscado))
+        {
+            var residente = await _residenteRepository.ObtenerPorDniAsync(DniBuscado);
+            if (residente != null)
+            {
+                ResidenteSeleccionado = residente;
+                await _alertaHelper.ShowSuccessAsync($"Residente encontrado: {residente.NombreResidente}");
+            }
+            else
+            {
+                await _alertaHelper.ShowErrorAsync("Residente no encontrado.");
+            }
+        }
+        else
+        {
+            await _alertaHelper.ShowErrorAsync("Ingresa un DNI válido.");
+            return;
+        }
+    }
     private void LimpiarFormulario()
     {
         ResiduoSeleccionado = null;

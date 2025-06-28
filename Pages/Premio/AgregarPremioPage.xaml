@@ -20,24 +20,30 @@
         <!-- Puntos requeridos -->
         <Entry Placeholder="Puntos requeridos"
                Text="{Binding PuntosRequeridos}" Keyboard="Numeric" />
-        
-        
-        <Entry Placeholder="URL de la imagen"
-               Text="{Binding FotoPremio}" />
+
+        <!-- Campo URL con botón pequeño a la derecha -->
+        <HorizontalStackLayout Spacing="10">
+            <Entry Placeholder="URL o seleccionar imagen"
+           Text="{Binding FotoPremio}"
+           HorizontalOptions="FillAndExpand" />
+
+            <Button Text="📁"
+            WidthRequest="40"
+            HeightRequest="40"
+            BackgroundColor="#0077CC"
+            TextColor="White"
+            FontSize="18"
+            Command="{Binding SeleccionarImagenCommand}"
+            VerticalOptions="Center"
+            CornerRadius="20" />
+        </HorizontalStackLayout>
 
 
-        <!-- Imagen seleccionada -->
+        <!-- Vista previa de imagen -->
         <Image Source="{Binding FotoPremio}" 
                HeightRequest="150"
-               Aspect="AspectFit" />
-
-
-        <!-- Botón para seleccionar imagen -->
-        <Button Text="Seleccionar Imagen"
-                Command="{Binding SeleccionarFotoCommand}"
-                BackgroundColor="#0077CC"
-                TextColor="White"
-                CornerRadius="30" />
+               Aspect="AspectFit"
+               Margin="0,10,0,0" />
 
         <!-- Botón Guardar -->
         <Button Text="Guardar"

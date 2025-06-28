@@ -75,7 +75,7 @@
                                    Padding="10"
                                    HasShadow="True">
                                 <VerticalStackLayout HorizontalOptions="Center">
-                                    <Image Source="{Binding Icono}" HeightRequest="40" WidthRequest="40" />
+                                    <Label Text="{Binding Emoji}" FontSize="25" HorizontalOptions="Center"/>
                                     <Label Text="{Binding Valor}" FontSize="22" FontAttributes="Bold" TextColor="{DynamicResource Gray500}" HorizontalTextAlignment="Center"/>
                                     <Label Text="{Binding Titulo}" FontSize="14" TextColor="{DynamicResource Gray500}" HorizontalTextAlignment="Center"/>
                                 </VerticalStackLayout>
@@ -85,16 +85,30 @@
                 </CollectionView>
                 <Label Text="Gráfico" FontSize="19" FontAttributes="Bold" />
                 <!-- Gráfico de residuos reciclados -->
+                <!-- Gráfico de residuos reciclados -->
                 <Frame HeightRequest="200" 
                        Background="{DynamicResource CardBackgroundBrush}"
-                       CornerRadius="10">
-                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label Text="Total reciclado por categoría" FontSize="18" TextColor="{DynamicResource Gray500}" />
-                        <Label Text="Plástico: 32 kg" />
-                        <Label Text="Orgánico: 25 kg" />
-                        <Label Text="Papel: 18 kg" />
-                    </VerticalStackLayout>
+                       CornerRadius="10"
+                       Padding="15">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <!-- Columna izquierda: Datos -->
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="5">
+                            <Label Text="Total reciclado por categoría" FontSize="18" TextColor="{DynamicResource Gray500}" />
+                            <Label Text="Plástico: 32 kg" FontSize="16" />
+                            <Label Text="Orgánico: 25 kg" FontSize="16" />
+                            <Label Text="Papel: 18 kg" FontSize="16" />
+                        </VerticalStackLayout>
+
+                        <!-- Columna derecha: Ícono -->
+                        <Image Grid.Column="1"
+                           Source="grafico.png"  
+                           WidthRequest="120"
+                           HeightRequest="120"
+                           HorizontalOptions="End"
+                           VerticalOptions="Center" />
+                    </Grid>
                 </Frame>
+
 
                 <!-- Registros recientes -->
                 <Grid HeightRequest="44">

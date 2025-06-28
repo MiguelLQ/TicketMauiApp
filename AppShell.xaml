@@ -38,13 +38,13 @@
         <Grid Padding="20" BackgroundColor="#3949ab">
             <VerticalStackLayout Spacing="10">
                 <Image 
-                Source="dotnet_bot.png" 
+                Source="userlogo.png" 
                 WidthRequest="64" HeightRequest="64" 
                 HorizontalOptions="Start" 
                 Aspect="AspectFill" 
                  />
 
-                <Label Text="Hola, User Name"
+                <Label Text="Hola, Admin@gmail.com"
                    FontAttributes="Bold"
                    FontSize="18"
                    TextColor="White"
@@ -66,15 +66,20 @@
             ContentTemplate="{DataTemplate inicio:InicioPage}"
             Route="inicio" />
         <ShellContent
-            Title="Premios"
+            Title="canje"
             Icon="premio.png"
-            ContentTemplate="{DataTemplate premio:ListarPremioPage}"
-            Route="premio" />
+            ContentTemplate="{DataTemplate canje:ListarCanjePage}"
+            Route="canje" />
         <ShellContent
             Title="Registro"
-            Icon="registro.png"
+            Icon="regi.png"
             ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
             Route="registro" />
+        <ShellContent
+            Title="Ciudadanos"
+            Icon="veci.png"
+            ContentTemplate="{DataTemplate residente:ResidenteListPage}"
+            Route="residente" />
     </FlyoutItem>
 
     <!--<ShellContent
@@ -100,43 +105,43 @@
         ContentTemplate="{DataTemplate inicio:InicioPage}"
         Route="inicio" />-->
     <ShellContent
-        Title="Premio"
+        Title="Premios"
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate premio:ListarPremioPage}"
         Route="premio" />
 
-    <ShellContent
+    <!--<ShellContent
         Title="Registro De Reciclaje"
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
-        Route="registroDeReciclaje" />
+        Route="registroDeReciclaje" />-->
     <ShellContent
-        Title="Listar Ticket"
+        Title="Colores"
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate ticket:ListarTicketPage}"
         Route="ticket" />
-
-    <ShellContent
-        Title="Listar Residuo"
-        Icon="{StaticResource IconMeta}"
-        ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
-        Route="residuo" />
     <ShellContent
         Title="Categoria Residuo"
         Icon="{StaticResource IconProjects}"
         ContentTemplate="{DataTemplate categoriaresiduo:CategoriaResiduoPage}"
         Route="categoriaResiduo" />
     <ShellContent
+        Title="Residuos"
+        Icon="{StaticResource IconMeta}"
+        ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
+        Route="residuo" />
+    
+    <!--<ShellContent
         Title="Canje"
         Icon="{StaticResource IconProjects}"
         ContentTemplate="{DataTemplate canje:ListarCanjePage}"
-        Route="canje" />
+        Route="canje" />-->
     
-    <ShellContent
+    <!--<ShellContent
         Title="Administrar Ciudadanos"
         Icon="{StaticResource IconProjects}"
         ContentTemplate="{DataTemplate residente:ResidenteListPage}"
-        Route="residente" />
+        Route="residente" />-->
 
     <ShellContent
     Title="Gestionar conversiones"

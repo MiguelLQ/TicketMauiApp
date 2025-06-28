@@ -30,7 +30,7 @@
                          CornerRadius="2" BackgroundColor="LightGray"
                          HorizontalOptions="Center" />
 
-                <Label Text="Agregar Ticket" FontSize="20" FontAttributes="Bold" />
+                <Label Text="Agregar Ticket" FontSize="20" FontAttributes="Bold"  />
 
                 <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
                 <Label Text="¿Está activo?" />
@@ -40,7 +40,7 @@
                     <Button 
                         Text="Guardar"
                         Command="{Binding GuardarNuevoTicketCommand}"
-                        BackgroundColor="#4CAF50"
+                        BackgroundColor="{DynamicResource Primary}"
                         TextColor="White"
                         CornerRadius="20"
                         WidthRequest="120" />
@@ -48,7 +48,7 @@
                     <Button 
                         Text="Cancelar"
                         Clicked="OnCancelarClicked"
-                        BackgroundColor="#F44336"
+                        BackgroundColor="Red"
                         TextColor="White"
                         CornerRadius="20"
                         WidthRequest="120" />

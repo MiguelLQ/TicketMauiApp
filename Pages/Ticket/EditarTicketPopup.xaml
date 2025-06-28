@@ -41,7 +41,7 @@
                     <Button 
                         Text="Guardar"
                         Command="{Binding GuardarEdicionTicketCommand}"
-                        BackgroundColor="#4CAF50"
+                        BackgroundColor="{DynamicResource Primary}"
                         TextColor="White"
                         CornerRadius="20"
                         WidthRequest="120" />
@@ -49,7 +49,7 @@
                     <Button 
                         Text="Cancelar"
                         Clicked="OnCancelarClicked"
-                        BackgroundColor="#F44336"
+                        BackgroundColor="red"
                         TextColor="White"
                         CornerRadius="20"
                         WidthRequest="120" />

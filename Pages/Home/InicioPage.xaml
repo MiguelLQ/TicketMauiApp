@@ -25,6 +25,7 @@
                 <!-- Frame superior (dentro del fondo naranja) -->
                 <Frame
                     Background="{DynamicResource CardBackgroundBrush}"
+                    BorderColor="{DynamicResource CardBorderBrush}"
                     Padding="10"
                     WidthRequest="330"
                     HeightRequest="90"
@@ -35,7 +36,7 @@
                     Margin="0,15,0,0">
                     <!-- Ajusta este margen para ubicarlo más arriba -->
                     <HorizontalStackLayout HorizontalOptions="Center">
-                        <Label Text="🚗 Vehículos activos"
+                        <Label Text="Hola Bienvenido!"
                            FontSize="16"
                            VerticalOptions="Center"
                            TextColor="{DynamicResource Gray500}" />
@@ -70,10 +71,11 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame Background="{DynamicResource CardBackgroundBrush}"
+                                   BorderColor="{DynamicResource CardBorderBrush}"
                                    WidthRequest="150"
                                    CornerRadius="15"
                                    Margin="5"
-                                   Padding="20"
+                                   Padding="15"
                                    HasShadow="True">
                                 <VerticalStackLayout HorizontalOptions="Center">
                                     <Label Text="{Binding Emoji}" FontSize="25" HorizontalOptions="Center"/>
@@ -88,7 +90,9 @@
                 <!-- Gráfico de residuos reciclados -->
                 <Frame HeightRequest="200" 
                        Background="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="{DynamicResource CardBorderBrush}"
                        CornerRadius="10"
+                       HasShadow="True"
                        Padding="15">
                     <Grid ColumnDefinitions="*, Auto">
                         <!-- Columna izquierda: Datos -->
@@ -108,8 +112,6 @@
                            VerticalOptions="Center" />
                     </Grid>
                 </Frame>
-
-
                 <!-- Registros recientes -->
                 <Grid HeightRequest="44">
                     <Label Text="♻️ Actividad reciente de reciclaje" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>

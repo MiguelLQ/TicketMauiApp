@@ -44,8 +44,9 @@
     <Color x:Key="FlyoutDark">#2A2A2E</Color>
     <!-- gris oscuro, pero no negro -->
 
+    <SolidColorBrush x:Key="CardBackgroundBrush"
+    Color="{AppThemeBinding Light={StaticResource CardBackgroundLight}, Dark={StaticResource CardBackgroundDark}}" />
 
-    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{AppThemeBinding Light={StaticResource CardBackgroundLight}, Dark={StaticResource CardBackgroundDark}}" />
     <SolidColorBrush x:Key="CardBorderBrush" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
     <SolidColorBrush x:Key="FlyoutBackgroundBrush"
                  Color="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}" />

@@ -106,7 +106,7 @@
         Route="inicio" />-->
     <ShellContent
         Title="Premios"
-        Icon="{StaticResource IconMeta}"
+        Icon="{StaticResource IconPremios}"
         ContentTemplate="{DataTemplate premio:ListarPremioPage}"
         Route="premio" />
 
@@ -117,17 +117,17 @@
         Route="registroDeReciclaje" />-->
     <ShellContent
         Title="Colores"
-        Icon="{StaticResource IconMeta}"
+        Icon="{StaticResource IconColores}"
         ContentTemplate="{DataTemplate ticket:ListarTicketPage}"
         Route="ticket" />
     <ShellContent
         Title="Categoria Residuo"
-        Icon="{StaticResource IconProjects}"
+        Icon="{StaticResource IconCategoriaResiduos}"
         ContentTemplate="{DataTemplate categoriaresiduo:CategoriaResiduoPage}"
         Route="categoriaResiduo" />
     <ShellContent
         Title="Residuos"
-        Icon="{StaticResource IconMeta}"
+        Icon="{StaticResource IconResiduo}"
         ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
         Route="residuo" />
     
@@ -145,7 +145,7 @@
 
     <ShellContent
     Title="Gestionar conversiones"
-    Icon="{StaticResource IconProjects}"
+    Icon="{StaticResource IconConfiguracion}"
     ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
     Route="conversiones" />
 

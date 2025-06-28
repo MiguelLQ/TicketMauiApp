@@ -49,11 +49,45 @@
              Default="5">
         <OnIdiom.Desktop>15</OnIdiom.Desktop>
     </OnIdiom>
+        <FontImageSource x:Key="IconReciclaje"
+                     Glyph="&#xEAD3;"
+                     FontFamily="FluentUI"
+                     Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                     Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconConfiguracion"
+                    Glyph="{x:Static f:FluentUI.arrow_clockwise_24_regular}"
+                    FontFamily="{x:Static f:FluentUI.FontFamily}"
+                    Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                    Size="{StaticResource IconSize}" />
 
-    <FontImageSource x:Key="IconDashboard"
+
+    <FontImageSource x:Key="IconColores"
+                     Glyph="{x:Static f:FluentUI.color_24_regular}"
+                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                     Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                     Size="{StaticResource IconSize}" />
+
+        <FontImageSource x:Key="IconResiduo"
+                     Glyph="{x:Static f:FluentUI.delete_24_regular}"
+                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                     Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                     Size="{StaticResource IconSize}" />
+        <FontImageSource x:Key="IconPremios"
+                     Glyph="{x:Static f:FluentUI.ribbon_24_regular}"
+                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                     Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                     Size="{StaticResource IconSize}" />
+        <FontImageSource x:Key="IconCategoriaResiduos"
+                    Glyph="&#x267B;"
+                    FontFamily="FluentUI"
+                    Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                    Size="{StaticResource IconSize}" />
+
+
+        <FontImageSource x:Key="IconDashboard"
                      Glyph="{x:Static f:FluentUI.diagram_24_regular}"
                      FontFamily="{x:Static f:FluentUI.FontFamily}"
-                     Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                     Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
                      Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconProjects"

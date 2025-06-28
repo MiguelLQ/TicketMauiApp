@@ -110,11 +110,11 @@
         ContentTemplate="{DataTemplate premio:ListarPremioPage}"
         Route="premio" />
 
-    <!--<ShellContent
+    <ShellContent
         Title="Registro De Reciclaje"
         Icon="{StaticResource IconMeta}"
         ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
-        Route="registroDeReciclaje" />-->
+        Route="registroDeReciclaje" />
     <ShellContent
         Title="Colores"
         Icon="{StaticResource IconColores}"

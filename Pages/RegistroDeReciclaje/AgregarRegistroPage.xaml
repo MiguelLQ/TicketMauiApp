@@ -23,8 +23,8 @@
             <Label Text="Peso (Kg)" />
             <Entry Text="{Binding PesoKilogramo}" Keyboard="Numeric" Placeholder="Ej: 2.5" />
 
-            <Label Text="Tickets Ganados" />
-            <Entry Text="{Binding TicketsGanados}" Keyboard="Numeric" Placeholder="Ej: 10" />
+            <Label Text="Tickets Ganados 🎟️" />
+            <Label Text="{Binding TicketsGanados}" FontAttributes="Bold" FontSize="20" TextColor="Green" />
 
             <Button Text="✅ Registrar"
                     Command="{Binding AddRegistroCommand}" 

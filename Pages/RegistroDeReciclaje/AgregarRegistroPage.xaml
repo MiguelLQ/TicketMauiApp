@@ -123,7 +123,7 @@
                                FontSize="32"
                                FontAttributes="Bold"
                                HorizontalOptions="Center"
-                               TextColor="{DynamicResource DarkSecondaryBackground}" />
+                               TextColor="{DynamicResource Primary}" />
                     </VerticalStackLayout>
                 </Frame>
 

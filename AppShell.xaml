@@ -114,6 +114,12 @@
         Icon="{StaticResource IconPremios}"
         ContentTemplate="{DataTemplate premio:ListarPremioPage}"
         Route="premio" />
+
+    <!--<ShellContent
+        Title="Registro De Reciclaje"
+        Icon="{StaticResource IconMeta}"
+        ContentTemplate="{DataTemplate registro:ListarRegistrosPage}"
+        Route="registroDeReciclaje" />-->
     <ShellContent
         Title="Colores"
         Icon="{StaticResource IconColores}"

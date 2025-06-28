@@ -77,8 +77,8 @@
                                        TextColor="{DynamicResource Gray500}" />
 
                                 <!-- Línea divisoria -->
-                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                         HeightRequest="1"
+                                <BoxView Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                                         HeightRequest="5"
                                          BackgroundColor="{DynamicResource Primary}"
                                          Margin="0,10" />
 

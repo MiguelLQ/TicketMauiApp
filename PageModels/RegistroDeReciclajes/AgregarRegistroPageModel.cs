@@ -204,12 +204,23 @@ public partial class AgregarRegistroPageModel : ObservableObject
             var convertidores = await _convertidorRepository.GetAllConvertidorAync();
 
             int ticketsCalculados = 0;
-            foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
+            if (valorTotal >= 100)
             {
-                if (valorTotal >= convertidor.ValorMin && valorTotal <= convertidor.ValorMax)
+                ticketsCalculados = 50;
+            }
+            else if (valorTotal <= 20)
+            {
+                ticketsCalculados = 1;
+            }
+            else
+            {
+                foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
                 {
-                    ticketsCalculados = convertidor.NumeroTicket;
-                    break;
+                    if (valorTotal >= convertidor.ValorMin && valorTotal <= convertidor.ValorMax)
+                    {
+                        ticketsCalculados = convertidor.NumeroTicket;
+                        break;
+                    }
                 }
             }
 

@@ -2,40 +2,150 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.RegistroDeReciclaje.AgregarRegistroPage"
-             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.RegistroDeReciclajes"
-             
-             Title="Registrar Reciclaje">
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Entry Text="{Binding DniBuscado}" Placeholder="DNI del residente" />
-            <Button Text="Buscar Residente" Command="{Binding BuscarPorDniCommand}" />
+             xmlns:converter="clr-namespace:MauiFirebase.Helpers"
+             Title="Registrar Reciclaje"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
 
-            <StackLayout IsVisible="{Binding ResidenteSeleccionado, Converter={StaticResource NullToBoolConverter}}">
-                <Label Text="{Binding ResidenteSeleccionado.NombreResidente, StringFormat='Nombre: {0}'}" />
-                <Label Text="{Binding ResidenteSeleccionado.ApellidoResidente, StringFormat='Apellido: {0}'}" />
-            </StackLayout>
-            
-            <Label Text="Tipo de residuo" />
-            <Picker ItemsSource="{Binding ListaResiduos}"
-                    ItemDisplayBinding="{Binding NombreResiduo}"
-                    SelectedItem="{Binding ResiduoSeleccionado}" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:NullToBoolConverter x:Key="NullToBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-            <Label Text="Peso (Kg)" />
-            <Entry Text="{Binding PesoKilogramo}" Keyboard="Numeric" Placeholder="Ej: 2.5" />
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
 
-            <Label Text="Tickets Ganados 🎟️" />
-            <Label Text="{Binding TicketsGanados}" FontAttributes="Bold" FontSize="20" TextColor="Green" />
+                <!-- Título principal -->
+                <Label Text="📋 Registro de Reciclaje"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="{DynamicResource Primary}" />
 
-            <Button Text="✅ Registrar"
-                    Command="{Binding AddRegistroCommand}" 
-                    BackgroundColor="#4CAF50"
-                    TextColor="White" />
+                <!-- Buscar DNI -->
+                <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="{DynamicResource Primary}"
+                       CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="🔎 Buscar por DNI"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource Primary}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Entry Grid.Column="0"
+                                   Text="{Binding DniBuscado}"
+                                   Placeholder="Ej: 12345678"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="{DynamicResource SecondaryBackground}"
+                                   HeightRequest="40"
+                                   TextColor="{DynamicResource TextColor}" />
+                            <Button Grid.Column="1"
+                                    Text="Buscar"
+                                    Command="{Binding BuscarPorDniCommand}"
+                                    BackgroundColor="{DynamicResource Primary}"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    HeightRequest="40"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <Button Text="Cancelar"
-                    BackgroundColor="Gray"
-                    TextColor="White"
-                    CornerRadius="30"
-                    Clicked="OnCancelarClicked" />
-        </VerticalStackLayout>
-    </ScrollView>
+                <!-- Mostrar residente si fue encontrado -->
+                <Frame IsVisible="{Binding ResidenteSeleccionado, Converter={StaticResource NullToBoolConverter}}"
+                       BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="{DynamicResource CardBorderBrush}"
+                       CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="👤 Residente encontrado"
+                               FontAttributes="Bold"
+                               FontSize="15"
+                               TextColor="{DynamicResource Primary}" />
+                        <Label Text="{Binding ResidenteSeleccionado.NombreResidente, StringFormat='Nombre: {0}'}"
+                               TextColor="{DynamicResource TextColor}" />
+                        <Label Text="{Binding ResidenteSeleccionado.ApellidoResidente, StringFormat='Apellido: {0}'}"
+                               TextColor="{DynamicResource TextColor}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Selección del tipo de residuo -->
+                <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="{DynamicResource CardBorderBrush}"
+                       CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="♻️ Tipo de Residuo"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource TextColor}" />
+                        <Picker ItemsSource="{Binding ListaResiduos}"
+                                ItemDisplayBinding="{Binding NombreResiduo}"
+                                SelectedItem="{Binding ResiduoSeleccionado}"
+                                Title="Seleccione un tipo"
+                                TextColor="{DynamicResource TextColor}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Ingreso de peso -->
+                <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="{DynamicResource CardBorderBrush}"
+                       CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="⚖️ Peso en kilogramos"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource TextColor}" />
+                        <Entry Text="{Binding PesoKilogramo}"
+                               Placeholder="Ej: 2.5"
+                               Keyboard="Numeric"
+                               BackgroundColor="{DynamicResource SecondaryBackground}"
+                               TextColor="{DynamicResource TextColor}"
+                               HeightRequest="40" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Tickets ganados -->
+                <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="{DynamicResource Primary}"
+                       CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout>
+                        <Label Text="🎟️ Tickets Ganados"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource Primary}" />
+                        <Label Text="{Binding TicketsGanados}"
+                               FontSize="32"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{DynamicResource DarkSecondaryBackground}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Botones -->
+                <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                    <Button Text="✅ Registrar"
+                            Command="{Binding AddRegistroCommand}"
+                            BackgroundColor="{DynamicResource Primary}"
+                            TextColor="White"
+                            CornerRadius="20"
+                            WidthRequest="140"
+                            HeightRequest="50" />
+                    <Button Text="❌ Cancelar"
+                            Clicked="OnCancelarClicked"
+                            BackgroundColor="{DynamicResource Gray500}"
+                            TextColor="White"
+                            CornerRadius="20"
+                            WidthRequest="140"
+                            HeightRequest="50" />
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

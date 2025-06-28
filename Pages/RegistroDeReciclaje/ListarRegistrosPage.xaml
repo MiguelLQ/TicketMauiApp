@@ -3,34 +3,107 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.RegistroDeReciclaje.ListarRegistrosPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.RegistroDeReciclajes"
-             Title="Registrosde Reciclaje">
+             Title="Registros de Reciclaje"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
-            <Button Text="Registrar Reciclaje"
-                    Clicked="OnRegistrarReciclajeClicked" />
-            <Label Text="Lista de Registros" FontSize="18" FontAttributes="Bold" />
-            <Entry Placeholder="Buscar por DNI"
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Botón de agregar -->
+            <Button Text="➕ Registrar Reciclaje"
+                    Clicked="OnRegistrarReciclajeClicked"
+                    BackgroundColor="{DynamicResource Primary}"
+                    TextColor="White"
+                    CornerRadius="15"
+                    FontAttributes="Bold"
+                    HeightRequest="45" />
+
+            <!-- Título -->
+            <Label Text="📄 Lista de Registros"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="{DynamicResource Primary}"
+                   HorizontalOptions="Center" />
+
+            <!-- Filtro por DNI -->
+            <Entry Placeholder="🔍 Buscar por DNI"
                    Text="{Binding DniBuscado, Mode=TwoWay}"
-                   TextChanged="OnDniTextChanged"/>
+                   TextChanged="OnDniTextChanged"
+                   BackgroundColor="{DynamicResource SecondaryBackground}"
+                   TextColor="{DynamicResource TextColor}"
+                   HeightRequest="40" />
+
+            <!-- Mensaje de error -->
             <Label Text="{Binding MensajeBusqueda}" 
                    TextColor="Red" 
                    FontAttributes="Italic"
+                   FontSize="13"
                    IsVisible="{Binding MostrarMensaje}" />
 
+            <!-- Lista de registros -->
             <CollectionView ItemsSource="{Binding ListaRegistrosResiduo}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding NombreResidente, StringFormat='Residente: {0}'}" />
-                                <Label Text="{Binding ApellidoResidente, StringFormat='Apellido: {0}'}" />
-                                <Label Text="{Binding DniResidente, StringFormat='DNI: {0}'}" />
-                                <Label Text="{Binding NombreResiduo, StringFormat='Residuo: {0}'}" />
-                                <Label Text="{Binding PesoKilogramo, StringFormat='Peso: {0} Kg'}" />
-                                <Label Text="{Binding TicketsGanados, StringFormat='Tickets: {0}'}" />
-                                <Label Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" />
-                            </VerticalStackLayout>
+                        <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                               BorderColor="{DynamicResource CardBorderBrush}"
+                               CornerRadius="15"
+                               Padding="15"
+                               Margin="0,5"
+                               HasShadow="True">
+
+                            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+
+                                <!-- Icono de reciclaje -->
+                                <Label Text="♻️"
+                                       FontSize="28"
+                                       Grid.RowSpan="5"
+                                       VerticalOptions="Center"
+                                       Margin="0,0,10,0" />
+
+                                <!-- Nombre y Apellido -->
+                                <StackLayout Grid.Column="1" Grid.Row="0" Spacing="2">
+                                    <Label Text="{Binding NombreResidente, StringFormat='Nombre: {0}'}"
+                                           FontAttributes="Bold"
+                                           TextColor="{DynamicResource Primary}" />
+                                    <Label Text="{Binding ApellidoResidente, StringFormat='Apellido: {0}'}"
+                                           TextColor="{DynamicResource Gray700}" />
+                                </StackLayout>
+
+                                <!-- DNI -->
+                                <Label Grid.Column="2" Grid.Row="0"
+                                       Text="{Binding DniResidente, StringFormat='DNI: {0}'}"
+                                       FontSize="13"
+                                       HorizontalOptions="End"
+                                       TextColor="{DynamicResource Gray500}" />
+
+                                <!-- Línea divisoria -->
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                         HeightRequest="1"
+                                         BackgroundColor="{DynamicResource Primary}"
+                                         Margin="0,10" />
+
+                                <!-- Info de reciclaje -->
+                                <StackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="2">
+                                    <Label Text="{Binding NombreResiduo, StringFormat='Residuo: {0}'}"
+                                           FontSize="13"
+                                           TextColor="{DynamicResource TextColor}" />
+                                    <Label Text="{Binding PesoKilogramo, StringFormat='Peso: {0} Kg'}"
+                                           FontSize="13"
+                                           TextColor="{DynamicResource TextColor}" />
+                                    <Label Text="{Binding TicketsGanados, StringFormat='Tickets Ganados: {0}'}"
+                                           FontSize="13"
+                                           TextColor="{DynamicResource TextColor}" />
+                                </StackLayout>
+
+                                <!-- Fecha -->
+                                <Label Grid.Row="3" Grid.Column="2"
+                                       Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}"
+                                       FontSize="12"
+                                       TextColor="{DynamicResource Gray500}"
+                                       HorizontalOptions="End"
+                                       Margin="0,10,0,0" />
+                            </Grid>
+
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

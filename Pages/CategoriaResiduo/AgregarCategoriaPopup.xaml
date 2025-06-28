@@ -44,9 +44,9 @@
                 <Label Text="¿Está activa?" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                 <Switch IsToggled="{Binding EstadoCategoriaResiduo}" />
 
-                <Label Text="Seleccionar Ticket" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                <Label Text="Seleccionar Color" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                 <Picker 
-                    Title="Elige un ticket"
+                    Title="Elige un color"
                     ItemsSource="{Binding ListaTickets}"
                     ItemDisplayBinding="{Binding ColorTicket}"
                     SelectedItem="{Binding TicketSeleccionado}" />

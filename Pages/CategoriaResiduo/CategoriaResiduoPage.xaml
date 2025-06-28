@@ -22,10 +22,10 @@
                 IsVisible="{Binding IsBusy}" 
                 Color="Gray" />
 
-                <Label Text="♻️   Lista de Categorías" 
+                <Label Text="Lista de Categorías" 
                    FontSize="20" 
                    FontAttributes="Bold" 
-                   TextColor="{DynamicResource Gray300}" 
+                   TextColor="{DynamicResource Gray500}" 
                    Margin="0,20,0,0" />
 
                 <CollectionView ItemsSource="{Binding Categorias}">
@@ -82,9 +82,10 @@
 
                                     <!-- Botón de edición (ícono pequeño) -->
                                     <ImageButton 
-                                                Source="edit.png" 
-                                                HeightRequest="10"
-                                                WidthRequest="10"
+                                                Source="editarreal.png" 
+                                                HeightRequest="5"
+                                                WidthRequest="5"
+                                                Scale="0.7"
                                                 BackgroundColor="Transparent"
                                                 Grid.Column="2"
                                                 HorizontalOptions="End"
@@ -107,7 +108,7 @@
                             
 
                                         <Label 
-                            Text="{Binding Ticket.ColorTicket, StringFormat='Color Ticket: {0}'}"
+                            Text="{Binding Ticket.ColorTicket, StringFormat='Color: {0}'}"
                             FontSize="13"
                             TextColor="{DynamicResource Gray500}" />
                                     </StackLayout>
@@ -126,7 +127,7 @@
                                             FontSize="13"
                                             TextColor="#D600AA"
                                             HorizontalOptions="End"
-                                            Margin="100,8,0,0" />
+                                            Margin="180,8,0,0" />
 
                                
                                     </HorizontalStackLayout>

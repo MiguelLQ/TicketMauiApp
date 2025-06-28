@@ -31,7 +31,7 @@
                          CornerRadius="2" BackgroundColor="LightGray"
                          HorizontalOptions="Center" />
 
-                <Label Text="Editar Ticket" FontSize="20" FontAttributes="Bold" />
+                <Label Text="Editar color" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
 
                 <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
                 <Label Text="¿Está activo?" />

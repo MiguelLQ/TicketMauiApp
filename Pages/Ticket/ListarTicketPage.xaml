@@ -29,7 +29,7 @@
                     TextColor="White"
                      />-->
 
-                <Label Text="🎟    Lista de Tickets" 
+                <Label Text="Lista de colores" 
                        FontSize="20" 
                        FontAttributes="Bold" 
                        TextColor="{DynamicResource Gray500}" 
@@ -56,8 +56,8 @@
                                         Margin="0,0,10,0"
                                         VerticalOptions="Start" />-->
                                     <Label 
-                                        Text="🎟" 
-                                        FontSize="26"
+                                        Text="🎨" 
+                                        FontSize="25"
                                         Grid.RowSpan="2"
                                         VerticalOptions="Start"
                                         Margin="0,0,10,0" />
@@ -88,9 +88,10 @@
 
                                     <!-- Menú de opciones -->
                                     <ImageButton 
-                                        Source="edit.png" 
-                                        HeightRequest="10"
-                                        WidthRequest="10"
+                                        Source="editarreal.png" 
+                                        HeightRequest="5"
+                                        WidthRequest="5"
+                                        Scale="0.7"
                                         BackgroundColor="Transparent"
                                         Grid.Column="2"
                                         HorizontalOptions="End"
@@ -119,7 +120,7 @@
 
                                     <!-- Ver más -->
                                     <Label 
-                                        Grid.Column="1" Grid.Row="2"
+                                        Grid.Column="2" Grid.Row="2"
                                         Text="See more >"
                                         FontSize="13"
                                         TextColor="#D600AA"

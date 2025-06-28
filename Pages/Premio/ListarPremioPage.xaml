@@ -103,7 +103,7 @@
 
                                 <!-- Menú de opciones (editar) -->
                                 <ImageButton 
-                                    Source="edit.png" 
+                                    Source="editarreal.png" 
                                     HeightRequest="24"
                                     WidthRequest="24"
                                     BackgroundColor="Transparent"

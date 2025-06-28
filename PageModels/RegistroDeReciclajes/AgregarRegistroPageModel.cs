@@ -4,6 +4,7 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
+
 namespace MauiFirebase.PageModels.RegistroDeReciclajes;
 
 public partial class AgregarRegistroPageModel : ObservableObject
@@ -11,13 +12,15 @@ public partial class AgregarRegistroPageModel : ObservableObject
     private readonly IRegistroDeReciclajeRepository _registroRepository;
     private readonly IResidenteRepository _residenteRepository;
     private readonly IResiduoRepository _residuoRepository;
+    private readonly IConvertidorRepository _convertidorRepository;
     private readonly IAlertaHelper _alertaHelper;
+
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
     public ObservableCollection<RegistroDeReciclaje> ListaRegistroReciclaje { get; } = new();
+
     [ObservableProperty]
     private string _dniBuscado;
-
 
     [ObservableProperty]
     private Residente? _residenteSeleccionado;
@@ -31,20 +34,20 @@ public partial class AgregarRegistroPageModel : ObservableObject
     [ObservableProperty]
     private int _ticketsGanados;
 
-
     public AgregarRegistroPageModel(IRegistroDeReciclajeRepository registroRepository,
                                     IResidenteRepository residenteRepository,
                                     IResiduoRepository residuoRepository,
+                                    IConvertidorRepository convertidorRepository,
                                     IAlertaHelper alertaHelper)
     {
         _registroRepository = registroRepository;
         _residenteRepository = residenteRepository;
         _residuoRepository = residuoRepository;
+        _convertidorRepository = convertidorRepository;
         _alertaHelper = alertaHelper;
     }
 
     [RelayCommand]
-
     public async Task CargarResiduoAsync()
     {
         ListaResiduos.Clear();
@@ -89,14 +92,43 @@ public partial class AgregarRegistroPageModel : ObservableObject
         }
     }
 
-
     [RelayCommand]
     public async Task AddRegistroAsync()
     {
+        if (ResidenteSeleccionado == null || ResiduoSeleccionado == null || PesoKilogramo <= 0)
+        {
+            await _alertaHelper.ShowErrorAsync("Completa todos los campos correctamente.");
+            return;
+        }
+
+        // ✅ 1. Obtener valor del residuo
+        int valorResiduo = ResiduoSeleccionado.ValorResiduo;
+
+        // ✅ 2. Calcular valor total
+        decimal valorTotal = PesoKilogramo * valorResiduo;
+
+        // ✅ 3. Obtener todos los convertidores activos
+        var convertidores = await _convertidorRepository.GetAllConvertidorAync();
+
+        // ✅ 4. Buscar el rango correspondiente
+        int ticketsCalculados = 0;
+        foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
+        {
+            if (valorTotal >= convertidor.ValorMin && valorTotal <= convertidor.ValorMax)
+            {
+                ticketsCalculados = convertidor.NumeroTicket;
+                break;
+            }
+        }
+
+        // ✅ 5. Asignar tickets
+        TicketsGanados = ticketsCalculados;
+
+        // ✅ 6. Crear y guardar registro
         var nuevoRegistro = new RegistroDeReciclaje
         {
-            IdResidente = ResidenteSeleccionado?.IdResidente ?? 0,
-            IdResiduo = ResiduoSeleccionado?.IdResiduo ?? 0,
+            IdResidente = ResidenteSeleccionado.IdResidente,
+            IdResiduo = ResiduoSeleccionado.IdResiduo,
             PesoKilogramo = PesoKilogramo,
             TicketsGanados = TicketsGanados,
             FechaRegistro = DateTime.Now
@@ -104,13 +136,15 @@ public partial class AgregarRegistroPageModel : ObservableObject
 
         await _registroRepository.GuardarAsync(nuevoRegistro);
 
-        ResidenteSeleccionado!.TicketsTotalesGanados += TicketsGanados;
+        // ✅ 7. Sumar al total del residente
+        ResidenteSeleccionado.TicketsTotalesGanados += TicketsGanados;
         await _residenteRepository.GuardarAsync(ResidenteSeleccionado);
 
         LimpiarFormulario();
         await _alertaHelper.ShowSuccessAsync("Registro guardado correctamente.");
         await Shell.Current.GoToAsync("..");
     }
+
     [RelayCommand]
     public async Task BuscarPorDniAsync()
     {
@@ -134,10 +168,57 @@ public partial class AgregarRegistroPageModel : ObservableObject
             return;
         }
     }
+
     private void LimpiarFormulario()
     {
         ResiduoSeleccionado = null;
         PesoKilogramo = 0;
         TicketsGanados = 0;
+    }
+
+    // ✅ NUEVO: Detectar cambios automáticos y calcular tickets
+
+    partial void OnPesoKilogramoChanged(decimal oldValue, decimal newValue)
+    {
+        CalcularTicketsGanados();
+    }
+
+    partial void OnResiduoSeleccionadoChanged(Residuo? oldValue, Residuo? newValue)
+    {
+        CalcularTicketsGanados();
+    }
+
+    private async void CalcularTicketsGanados()
+    {
+        if (ResiduoSeleccionado == null || PesoKilogramo <= 0)
+        {
+            TicketsGanados = 0;
+            return;
+        }
+
+        try
+        {
+            int valorResiduo = ResiduoSeleccionado.ValorResiduo;
+            decimal valorTotal = PesoKilogramo * valorResiduo;
+
+            var convertidores = await _convertidorRepository.GetAllConvertidorAync();
+
+            int ticketsCalculados = 0;
+            foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
+            {
+                if (valorTotal >= convertidor.ValorMin && valorTotal <= convertidor.ValorMax)
+                {
+                    ticketsCalculados = convertidor.NumeroTicket;
+                    break;
+                }
+            }
+
+            TicketsGanados = ticketsCalculados;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error al calcular tickets: {ex.Message}");
+            TicketsGanados = 0;
+        }
     }
 }

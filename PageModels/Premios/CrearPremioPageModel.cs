@@ -55,6 +55,8 @@ public partial class CrearPremioPageModel : ObservableValidator
         if (resultado != null)
         {
             FotoPremio = resultado.FullPath;
+            OnPropertyChanged(nameof(HasFotoError));
+            AddPremioCommand.NotifyCanExecuteChanged();
         }
     }
 

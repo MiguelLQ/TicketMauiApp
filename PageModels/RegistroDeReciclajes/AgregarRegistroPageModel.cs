@@ -20,7 +20,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
     public ObservableCollection<RegistroDeReciclaje> ListaRegistroReciclaje { get; } = new();
 
     [ObservableProperty]
-    private string _dniBuscado;
+    private string? _dniBuscado;
 
     [ObservableProperty]
     private Residente? _residenteSeleccionado;

@@ -2,10 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.AgregarResiduoPage"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
              x:DataType="viewModels:CrearResiduoPageModel"
              Title="Agregar Residuo"
              >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StringToIntConverter x:Key="StringToIntConverter" />
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="24" Spacing="20">
@@ -27,12 +34,15 @@
                     <Label Text="Nombre del residuo"
                            FontSize="14"
                            TextColor="#6B7280" />
-                    <Entry Text="{Binding NombreResiduo}"
+                    <Entry Text="{Binding NombreResiduo, Mode=TwoWay}"
                            FontSize="16"
                            Placeholder="Ej. Botella de plástico"
                            PlaceholderColor="#9CA3AF"
                            TextColor="{DynamicResource Gray500}"
                            BackgroundColor="Transparent" />
+                    <Label Text="{Binding NombreResiduoError}" 
+                           TextColor="Red" FontSize="12" 
+                           IsVisible="{Binding HasNombreResiduoError}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -53,6 +63,10 @@
                             ItemsSource="{Binding ListaCategorias}"
                             ItemDisplayBinding="{Binding NombreCategoria}"
                             SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
+                    <Label Text="Debe seleccionar una categoría"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasCategoriaError}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -66,13 +80,16 @@
                     <Label Text="Valor (en soles)"
                            FontSize="14"
                            TextColor="#6B7280" />
-                    <Entry Text="{Binding ValorResiduo}"
+                    <Entry Text="{Binding ValorResiduo , Mode=TwoWay}"
                            FontSize="16"
                            Keyboard="Numeric"
                            Placeholder="Ej. 0.50"
                            PlaceholderColor="#9CA3AF"
                            TextColor="{DynamicResource Gray500}"
                            BackgroundColor="Transparent" />
+                    <Label Text="{Binding ValorResiduoError}" 
+                           TextColor="Red" FontSize="12" 
+                           IsVisible="{Binding HasValorResiduoError}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -81,7 +98,8 @@
                     Command="{Binding CrearResiduoCommand}"
                     FontSize="16"
                     FontAttributes="Bold"
-                    BackgroundColor="{DynamicResource Primary}"
+                    IsEnabled="{Binding PuedeGuardar}"
+                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}" 
                     TextColor="White"
                     HeightRequest="50"
                     CornerRadius="25"

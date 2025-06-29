@@ -20,7 +20,7 @@
             <!-- Campo: Nombre del Residuo -->
             <Frame 
                      Background="{DynamicResource CardBackgroundBrush}"
-                    BorderColor="{DynamicResource CardBorderBrush}"
+                    BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">
@@ -39,7 +39,7 @@
             <!-- Campo: Categoría -->
             <Frame 
                 Background="{DynamicResource CardBackgroundBrush}"
-                BorderColor="{DynamicResource CardBorderBrush}"
+                BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">
@@ -59,7 +59,7 @@
             <!-- Campo: Valor del Residuo -->
             <Frame 
                Background="{DynamicResource CardBackgroundBrush}"
-                BorderColor="{DynamicResource CardBorderBrush}"
+                BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">

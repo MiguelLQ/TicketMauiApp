@@ -22,7 +22,7 @@
 
             <!-- Campo: Valor Mínimo -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">
@@ -41,7 +41,7 @@
 
             <!-- Campo: Valor Máximo -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">
@@ -60,7 +60,7 @@
 
             <!-- Campo: Número de Tickets -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">

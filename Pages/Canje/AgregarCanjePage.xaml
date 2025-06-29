@@ -29,7 +29,7 @@
 
             <!-- Campo de búsqueda con diseño profesional -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="10">
@@ -47,7 +47,7 @@
                                TextColor="{DynamicResource Gray500}"
                                BackgroundColor="Transparent"
                                FontSize="16"
-                               HorizontalOptions="FillAndExpand" />
+                               HorizontalOptions="Fill" />
                     </HorizontalStackLayout>
 
                     <Button Text="🔍 Buscar Residente"
@@ -70,7 +70,7 @@
 
             <!-- Picker de premios -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="6">

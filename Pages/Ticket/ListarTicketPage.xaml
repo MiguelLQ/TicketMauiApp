@@ -40,7 +40,7 @@
                         <DataTemplate>
                             <Frame 
                                 Background="{DynamicResource CardBackgroundBrush}"
-                                BorderColor="{DynamicResource CardBorderBrush}"
+                                BorderColor="Transparent"
                                 CornerRadius="12"
                                 Padding="12"
                                 Margin="0,8"

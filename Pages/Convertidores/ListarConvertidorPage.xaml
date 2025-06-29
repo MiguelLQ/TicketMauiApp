@@ -19,7 +19,7 @@
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="10">
 
-                <Label Text="Lista Convertidores"
+                <Label Text="Lista de Convertidores"
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}" />
@@ -29,7 +29,7 @@
                         <DataTemplate>
                             <Frame 
                                 Background="{DynamicResource CardBackgroundBrush}"
-                                BorderColor="{DynamicResource CardBorderBrush}"
+                                BorderColor="Transparent"
                                 CornerRadius="12"
                                 Padding="12"
                                 Margin="0,8"
@@ -116,7 +116,7 @@
                                         FontSize="13"
                                         TextColor="#D600AA"
                                         HorizontalOptions="End"
-                                        Margin="0,6,0,0" />
+                                        />
                                 </Grid>
 
                             </Frame>

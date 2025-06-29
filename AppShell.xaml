@@ -35,16 +35,19 @@
     </Shell.TitleView>
 
     <Shell.FlyoutHeader>
-        <Grid Padding="20" BackgroundColor="#3949ab">
+        <Border 
+            Background="#3949ab"
+            StrokeShape="RoundRectangle 0,0,0,60"
+            Padding="20">
+
             <VerticalStackLayout Spacing="10">
                 <Image 
                 Source="userlogo.png" 
                 WidthRequest="64" HeightRequest="64" 
                 HorizontalOptions="Start" 
-                Aspect="AspectFill" 
-                 />
+                Aspect="AspectFill" />
 
-                <Label Text="Hola, Admin@gmail.com"
+                <Label Text="Admin@gmail.com"
                    FontAttributes="Bold"
                    FontSize="18"
                    TextColor="White"
@@ -55,11 +58,13 @@
                    TextColor="White"
                    HorizontalOptions="Start" />
             </VerticalStackLayout>
-        </Grid>
+
+        </Border>
     </Shell.FlyoutHeader>
 
+
     <!-- ✅ FLYOUT CON MULTIPLE TABS SIMULADOS -->
-    <FlyoutItem Title="Inicio" Icon="{StaticResource IconDashboard}" Route="Home">
+    <FlyoutItem Title="Inicio" Icon="{StaticResource IconDashboard}" Route="Home" >
         <ShellContent
             Title="Inicio"
             Icon="casa.png"

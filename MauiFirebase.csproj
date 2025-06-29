@@ -140,7 +140,7 @@
 	  <MauiXaml Update="Pages\RegistroDeReciclaje\ListarRegistrosPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\ResidentesView\ResidenteFromPage.xaml">
+	  <MauiXaml Update="Pages\ResidentesView\ResidenteFormPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ResidentesView\ResidenteListPage.xaml">
@@ -171,6 +171,12 @@
 	  <Folder Include="PageModels\Ticket\" />
 	  <Folder Include="Pages\RegistroReciclaje\" />
 	  <Folder Include="Pages\Residente\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\ResidentesView\ResidenteFormPage.xaml.cs">
+	    <DependentUpon>ResidenteFormPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 	
 </Project>

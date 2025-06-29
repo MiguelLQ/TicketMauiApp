@@ -66,20 +66,9 @@
                            HorizontalOptions="Center" />
                         <BoxView Style="{StaticResource SeparatorStyle}" />
 
-                        <Entry Placeholder="Buscar por Nombre o Apellido"
+                        <Entry Placeholder="Nombre , Apellido o DNI"
                            Text="{Binding BusquedaTexto}"
-                           ReturnCommand="{Binding BuscarResidentesCommand}" />
-
-                        <Grid ColumnDefinitions="*,*">
-                            <Button Text="Buscar"
-                                Command="{Binding BuscarResidentesCommand}"
-                                BackgroundColor="#2196F3"
-                                Grid.Column="0" />
-                            <Button Text="Buscar por DNI"
-                                Command="{Binding BuscarResidentePorDniCommand}"
-                                BackgroundColor="#9C27B0"
-                                Grid.Column="1" />
-                        </Grid>
+                           TextChanged="OnNombreTextChanged" />
 
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="15" Margin="0,10,0,0">
                             <Label Text="Filtrar por Estado:" VerticalOptions="Center" FontSize="Medium" />
@@ -133,7 +122,7 @@
                                     </VerticalStackLayout>
 
                                     <!-- Estado + Tickets -->
-                                    <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                                       <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
                                         <Label Text="{Binding EstadoResidente, Converter={StaticResource BoolToEstadoConverter}}"
                                                FontSize="12"
                                                TextColor="{Binding EstadoResidente, Converter={StaticResource BoolToColorConverter}}" />
@@ -152,7 +141,7 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 FontSize="28"
-                CornerRadius="30"
+                CornerRadius="30"   
                 BackgroundColor="#2196F3"
                 TextColor="White"
                 VerticalOptions="Start"

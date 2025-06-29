@@ -4,10 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
-using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.Residentes
 {
@@ -23,7 +20,7 @@ namespace MauiFirebase.PageModels.Residentes
         private ObservableCollection<Residente> _listaResidentes = new();
 
         [ObservableProperty]
-        private string _busquedaTexto = string.Empty;
+        private string _busquedaTexto;
 
         [ObservableProperty]
         private string _filtroEstadoResidente = "Todos";
@@ -43,8 +40,6 @@ namespace MauiFirebase.PageModels.Residentes
             _residenteRepository = residenteRepository;
             _alertaHelper = alertaHelper;
 
-
-            // Carga diferida en OnAppearing o mediante comando explícito
             WeakReferenceMessenger.Default.Register<Residente, string>(
                 this,
                 "ResidenteActualizado",
@@ -64,7 +59,6 @@ namespace MauiFirebase.PageModels.Residentes
                     {
                         ListaResidentes.Add(residenteActualizado);
                     }
-                    // También actualiza el respaldo para que los filtros funcionen correctamente
                     var index = _todosLosResidentes.FindIndex(r => r.IdResidente == residenteActualizado.IdResidente);
                     if (index >= 0)
                         _todosLosResidentes[index] = residenteActualizado;
@@ -75,13 +69,20 @@ namespace MauiFirebase.PageModels.Residentes
 
         // 🔹 Navegación
         [RelayCommand]
-        private async Task NavigateToRegister()
+        private static async Task NavigateToRegister()
         {
-            await Shell.Current.GoToAsync("residenteForm");
+            try
+            {
+                await Shell.Current.GoToAsync("residenteForm");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Error de navegación: {ex.Message}", "OK");
+            }
         }
 
         [RelayCommand]
-        private async Task NavigateToList()
+        private static async Task NavigateToList()
         {
             await Shell.Current.GoToAsync("residenteList");
         }
@@ -99,33 +100,10 @@ namespace MauiFirebase.PageModels.Residentes
         [RelayCommand]
         public Task BuscarResidentesAsync()
         {
-            AplicarFiltros(); // ahora trabaja sobre la lista en memoria
+            AplicarFiltros(); 
             return Task.CompletedTask;
         }
 
-        // 🔹 Buscar por DNI (consulta individual)
-        [RelayCommand]
-        public async Task BuscarResidentePorDniAsync()
-        {
-            if (string.IsNullOrWhiteSpace(BusquedaTexto))
-            {
-                await Shell.Current.DisplayAlert("Advertencia", "Por favor, ingrese un DNI para buscar.", "OK");
-                return;
-            }
-
-            var residente = await _residenteRepository.GetResidenteByDniAsync(BusquedaTexto);
-            ListaResidentes.Clear();
-
-            if (residente != null)
-            {
-                ListaResidentes.Add(residente);
-            }
-            else
-            {
-                await Shell.Current.DisplayAlert("Información", "No se encontró ningún residente con ese DNI.", "OK");
-                AplicarFiltros(); // mostrar la lista anterior
-            }
-        }
         // Establece el popup actual para poder cerrarlo desde el ViewModel
         public void SetPopupCloser(IClosePopup popup)
         {
@@ -140,7 +118,8 @@ namespace MauiFirebase.PageModels.Residentes
             {
                 filtered = filtered.Where(r =>
                     r.NombreResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase) ||
-                    r.ApellidoResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase));
+                    r.ApellidoResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase) ||
+                    r.DniResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase));
             }
 
             if (FiltroEstadoResidente == "Activos")
@@ -154,10 +133,6 @@ namespace MauiFirebase.PageModels.Residentes
                 ListaResidentes.Add(res);
             }
         }
-
-        // 🔹 Filtrado por texto y estado (en memoria)
-
-
         // 🔹 Cambiar estado activo/inactivo
         [RelayCommand]
         private async Task CambiarEstadoResidente(int idResidente)
@@ -188,7 +163,7 @@ namespace MauiFirebase.PageModels.Residentes
                 return;
             }
 
-            await Shell.Current.GoToAsync($"residenteForm?id={residente.IdResidente}");
+            await Shell.Current.GoToAsync($"residenteForm?id={residente.IdResidente}&modo=editar");
 
             _popupCloser?.ClosePopup(); // ✅ Cerramos el popup actual
             await _alertaHelper.ShowSuccessAsync("Ticket agregado correctamente.");

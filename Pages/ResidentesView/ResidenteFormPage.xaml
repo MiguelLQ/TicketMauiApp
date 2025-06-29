@@ -2,12 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.ResidentesView.ResidenteFormPage"
+             x:Name="ResidenteFormRoot"
              xmlns:viewmodels="clr-namespace:MauiFirebase.PageModels.Residentes"
              xmlns:models="clr-namespace:MauiFirebase.Models"
+             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
              Title="Formulario de Ciudadanos"
              BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
 
     <ContentPage.Resources>
+        <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
+        
+
         <Style TargetType="Entry">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1E1E1E}" />
             <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
@@ -47,7 +52,8 @@
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
 
-            <Label Text="Registrar o Editar Ciudadano"
+            <Label Text="{Binding EsEdicion, Converter={StaticResource BoolToTextConverter}, 
+                                 ConverterParameter='Editar;Registrar'}"
                    FontSize="20"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
@@ -70,16 +76,9 @@
                                 OnColor="Green" />
                     </HorizontalStackLayout>
 
-                    <Grid ColumnDefinitions="*,*">
-                        <Button Text="Crear"
-                                Command="{Binding CrearResidenteCommand}"
-                                BackgroundColor="#4CAF50"
-                                Grid.Column="0" />
-                        <Button Text="Actualizar"
-                                Command="{Binding ActualizarResidenteCommand}"
-                                BackgroundColor="#2196F3"
-                                Grid.Column="2" />
-                    </Grid>
+                    <Button Text="Guardar"
+                            Command="{Binding GuardarResidenteCommand}"
+                            BackgroundColor="#4CAF50" />    
                 </VerticalStackLayout>
             </Border>
 

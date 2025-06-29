@@ -149,10 +149,9 @@ public static class MauiProgram
         builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
         // Residente
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
-        builder.Services.AddTransient<ResidentePageModel>();
         builder.Services.AddTransientWithShellRoute<ResidenteFormPage, ResidenteFormPageModel>("residenteForm");
         builder.Services.AddTransientWithShellRoute<ResidenteListPage, ResidenteListPageModel>("residenteList");
-
+        
         // login
         builder.Services.AddSingleton<LoginPageModel>();
 
@@ -163,6 +162,6 @@ public static class MauiProgram
         // ==========================================================
 
 
-        return builder.Build();
+        return app;
     }
 }

@@ -90,16 +90,17 @@ namespace MauiFirebase.Data.Repositories
                                             .FirstOrDefaultAsync();
         }
 
-        public async Task<Residente?> ObtenerPorDniAsync(string dniResidente)
+        async Task<Residente> IResidenteRepository.ObtenerPorDniAsync(string dniResidente)
         {
             if (string.IsNullOrWhiteSpace(dniResidente))
             {
-                return null;
+                throw new ArgumentException("El DNI no puede ser nulo o vacío.", nameof(dniResidente));
             }
 
             return await _database.Database!.Table<Residente>()
                                             .Where(r => r.DniResidente == dniResidente)
-                                            .FirstOrDefaultAsync();
+                                            .FirstOrDefaultAsync()
+                                            ?? throw new InvalidOperationException("No se encontró un residente con el DNI proporcionado.");
         }
         public async Task GuardarAsync(Residente residenteEncontrado)
         {

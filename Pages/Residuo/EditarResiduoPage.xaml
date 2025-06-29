@@ -19,7 +19,7 @@
             <Frame CornerRadius="12"
                    Padding="12" 
                      Background="{DynamicResource CardBackgroundBrush}"
-                    BorderColor="{DynamicResource CardBorderBrush}"
+                    BorderColor="Transparent"
                    >
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Nombre del residuo"
@@ -33,7 +33,7 @@
 
             <!-- Categoría -->
             <Frame  Background="{DynamicResource CardBackgroundBrush}"
-                BorderColor="{DynamicResource CardBorderBrush}"
+                BorderColor="Transparent"
                 CornerRadius="12" Padding="12" HasShadow="True" >
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Seleccionar categoría"
@@ -49,7 +49,7 @@
             <!-- Valor -->
             <Frame 
                  Background="{DynamicResource CardBackgroundBrush}"
-                    BorderColor="{DynamicResource CardBorderBrush}"
+                    BorderColor="Transparent"
                 CornerRadius="12" Padding="12" HasShadow="True" >
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Valor de Residuo"

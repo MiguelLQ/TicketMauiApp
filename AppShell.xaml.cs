@@ -102,7 +102,16 @@ namespace MauiFirebase
 
         private void SfSegmentedControl_SelectionChanged(object sender, Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {
+            // 1. Cambiar el tema
             Application.Current!.UserAppTheme = e.NewIndex == 0 ? AppTheme.Light : AppTheme.Dark;
+
+            // 2. Forzar actualización del recurso CardBackgroundBrush
+            var isDark = Application.Current.RequestedTheme == AppTheme.Dark;
+
+            Application.Current.Resources["CardBackgroundBrush"] = new SolidColorBrush(
+                (Color)Application.Current.Resources[isDark ? "CardBackgroundDark" : "CardBackgroundLight"]
+            );
         }
+
     }
 }

@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:converterscolor="clr-namespace:MauiFirebase.Helpers"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
              x:Class="MauiFirebase.Pages.Premio.ListarPremioPage"
              x:Name="PremioPage"
@@ -9,146 +10,132 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converterscolor:BoolToColorConverter x:Key="EstadoColorConverter" />
             <converters:BoolToEstadoConverter x:Key="BoolToEstadoConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <Grid>
         <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
-            <Label Text="Lista de Premios"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   Margin="0,30,0,0" />
+            <VerticalStackLayout Padding="20" Spacing="15">
 
-            <CollectionView ItemsSource="{Binding ListaPremios}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Background="{DynamicResource CardBackgroundBrush}"
-                               BorderColor="{DynamicResource CardBorderBrush}"
-                               CornerRadius="12"
-                               Padding="12"
-                               Margin="0,8"
-                               HasShadow="True">
-                            <Grid ColumnDefinitions="Auto,*,Auto"
-                                  RowDefinitions="Auto,Auto,Auto">
+                <!-- Título -->
+                <Label Text="Lista de Premios"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource Gray500}"
+                       Margin="0,20,0,0" />
 
-                                <!-- Imagen dinámica del premio -->
-                                <Image 
-                                    Source="{Binding FotoPremio}"
-                                    HeightRequest="80"
-                                    WidthRequest="80"
-                                    Grid.RowSpan="3"
-                                    Margin="0,0,10,0"
-                                    VerticalOptions="Start"
-                                    Aspect="AspectFill">
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding FotoPremio}" Value="">
-                                            <Setter Property="Source" Value="placeholder.png" />
-                                        </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
+                <CollectionView ItemsSource="{Binding ListaPremios}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame 
+                                Background="{DynamicResource CardBackgroundBrush}"
+                                BorderColor="{DynamicResource CardBorderBrush}"
+                                CornerRadius="12"
+                                Padding="12"
+                                Margin="0,8"
+                                HasShadow="True">
 
-                                <!-- Información del premio -->
-                                <StackLayout Grid.Column="1" Spacing="2">
-                                    <Label Text="{Binding NombrePremio}"
-                                           FontAttributes="Bold"
-                                           FontSize="16"
-                                           TextColor="#0077CC" />
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+
+                                    <!-- Imagen del premio -->
+                                    <Image 
+                                        Source="{Binding FotoPremio}"
+                                        HeightRequest="60"
+                                        WidthRequest="60"
+                                        Grid.RowSpan="2"
+                                        Margin="0,0,10,0"
+                                        VerticalOptions="Start"
+                                        Aspect="AspectFill">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding FotoPremio}" Value="">
+                                                <Setter Property="Source" Value="placeholder.png" />
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+
+                                    <!-- Información -->
+                                    <StackLayout Grid.Column="1" Spacing="2">
+                                        <Label Text="{Binding NombrePremio}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               TextColor="#0077CC" />
+
+                                        <Frame
+                                            Padding="6,2"
+                                            CornerRadius="12"
+                                            HasShadow="False"
+                                            BackgroundColor="{Binding EstadoPremio, Converter={StaticResource EstadoColorConverter}}"
+                                            HorizontalOptions="Start">
+                                            <Label 
+                                                Text="{Binding EstadoPremio, Converter={StaticResource BoolToEstadoConverter}}"
+                                                TextColor="White"
+                                                FontSize="13"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+                                        </Frame>
+
+                                        <Label Text="{Binding DescripcionPremio, StringFormat='Descripción: {0}'}"
+                                               FontSize="13"
+                                               TextColor="{DynamicResource Gray500}" />
+
+                                        <Label Text="{Binding PuntosRequeridos, StringFormat='Puntos: {0}'}"
+                                               FontSize="13"
+                                               TextColor="{DynamicResource Gray500}" />
+                                    </StackLayout>
+
+                                    <!-- Botón Editar -->
+                                    <ImageButton 
+                                        Source="editarreal.png"
+                                        HeightRequest="24"
+                                        WidthRequest="24"
+                                        BackgroundColor="Transparent"
+                                        Grid.Column="2"
+                                        Grid.Row="0"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        Margin="0"
+                                        Padding="6"
+                                        Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.IrAEditarPremioCommand}"
+                                        CommandParameter="{Binding .}" />
 
                                     <!-- Línea divisoria -->
-                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                             HeightRequest="1"
-                                             BackgroundColor="{DynamicResource Primary}"
-                                             HorizontalOptions="Fill"
-                                             Margin="0,0,0,8" />
+                                    <BoxView 
+                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                        HeightRequest="1"
+                                        BackgroundColor="{DynamicResource Primary}"
+                                        HorizontalOptions="Fill"
+                                        Margin="0,8,0,8" />
 
-                                    <Label Text="{Binding DescripcionPremio}" />
-                                    <Label Text="{Binding PuntosRequeridos, StringFormat='Puntos: {0}'}" />
-                                    <Label Text="{Binding EstadoPremio, Converter={StaticResource BoolToEstadoConverter}, StringFormat='Estado: {0}'}" />
-
-                                    <!-- Botón cambiar estado (comentado) -->
-                                    <!--
-                                    <Button 
-                                        Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.CambiarEstadoPremioCommand}"
-                                        CommandParameter="{Binding IdPremio}"
-                                        Padding="6"
-                                        FontSize="12"
-                                        WidthRequest="100"
-                                        HeightRequest="30"
-                                        CornerRadius="8">
-
-                                        <Button.Triggers>
-                                            <DataTrigger TargetType="Button" Binding="{Binding EstadoPremio}" Value="True">
-                                                <Setter Property="Text" Value="Inhabilitar" />
-                                                <Setter Property="BackgroundColor" Value="Red" />
-                                                <Setter Property="TextColor" Value="White" />
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Button" Binding="{Binding EstadoPremio}" Value="False">
-                                                <Setter Property="Text" Value="Habilitar" />
-                                                <Setter Property="BackgroundColor" Value="Green" />
-                                                <Setter Property="TextColor" Value="White" />
-                                            </DataTrigger>
-                                        </Button.Triggers>
-                                    </Button>
-                                    -->
-
-                                    <!-- Botón para editar (comentado) -->
-                                    <!--
-                                    <Button Text="✏️ Editar"
-                                            Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.IrAEditarPremioCommand}"
-                                            CommandParameter="{Binding .}" />
-                                    -->
-                                </StackLayout>
-
-                                <!-- Menú de opciones (editar) -->
-                                <ImageButton 
-                                    Source="edit.png" 
-                                    HeightRequest="24"
-                                    WidthRequest="24"
-                                    BackgroundColor="Transparent"
-                                    Grid.Column="2"
-                                    Grid.Row="0"
-                                    HorizontalOptions="End"
-                                    VerticalOptions="Start"
-                                    Margin="0"
-                                    Padding="6"
-                                    Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.IrAEditarPremioCommand}"
-                                    CommandParameter="{Binding .}" />
-
-                                <!-- Línea divisoria -->
-                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                         HeightRequest="1"
-                                         BackgroundColor="{DynamicResource Primary}"
-                                         HorizontalOptions="Fill"
-                                         Margin="0,0,0,8" />
-
-                                <!-- Ver más -->
-                                <Label Grid.Column="1" Grid.Row="2"
-                                       Text="See more >"
-                                       FontSize="13"
-                                       TextColor="#D600AA"
-                                       HorizontalOptions="End"
-                                       Margin="0,8,0,0" />
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
+                                    <!-- Ver más -->
+                                    <Label 
+                                        Grid.Row="2" Grid.Column="1"
+                                        Text="See more >"
+                                        FontSize="13"
+                                        TextColor="#D600AA"
+                                        HorizontalOptions="End"
+                                        Margin="0,8,0,0" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Botón flotante para agregar -->
-        <Button Text="+"
-                Command="{Binding IrACrearPremioCommand}"
-                BackgroundColor="{DynamicResource Primary}"
-                TextColor="White"
-                FontSize="28"
-                WidthRequest="60"
-                HeightRequest="60"
-                CornerRadius="30"
-                HorizontalOptions="End"
-                VerticalOptions="Start"
-                Margin="0,0,20,20" />
+        <!-- Botón flotante -->
+        <Button
+            Text="+"
+            Command="{Binding IrACrearPremioCommand}"
+            BackgroundColor="{DynamicResource Primary}"
+            TextColor="White"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="0,20,20,0" />
     </Grid>
 </ContentPage>

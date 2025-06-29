@@ -15,7 +15,7 @@
 
             <!-- Valor Mínimo -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">
@@ -34,7 +34,7 @@
 
             <!-- Valor Máximo -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">
@@ -53,7 +53,7 @@
 
             <!-- Tickets -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="{DynamicResource CardBorderBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">

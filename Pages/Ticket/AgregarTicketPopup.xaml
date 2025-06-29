@@ -30,7 +30,7 @@
                          CornerRadius="2" BackgroundColor="LightGray"
                          HorizontalOptions="Center" />
 
-                <Label Text="Agregar Ticket" FontSize="20" FontAttributes="Bold"  />
+                <Label Text="Agregar Color" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
 
                 <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
                 <Label Text="¿Está activo?" />

@@ -19,7 +19,7 @@
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="10">
 
-                <Label Text="⚙️  Lista Convertidores"
+                <Label Text="Lista de Convertidores"
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}" />
@@ -29,7 +29,7 @@
                         <DataTemplate>
                             <Frame 
                                 Background="{DynamicResource CardBackgroundBrush}"
-                                BorderColor="{DynamicResource CardBorderBrush}"
+                                BorderColor="Transparent"
                                 CornerRadius="12"
                                 Padding="12"
                                 Margin="0,8"
@@ -39,7 +39,7 @@
 
                                     <!-- Icono -->
                                     <Label 
-                                        Text="⚙️" 
+                                        Text="🔄" 
                                         FontSize="26"
                                         Grid.RowSpan="2"
                                         VerticalOptions="Start"
@@ -69,21 +69,22 @@
                                     </StackLayout>
 
                                     <!-- Botón Editar -->
-                                    <Button 
-                                        Text="✏️ Editar" 
-                                        Clicked="OnEditarConvertidorClicked" 
-                                        CommandParameter="{Binding .}" 
+                                    <Button
+    
+                                        ImageSource="editarreal.png"
+                                        Clicked="OnEditarConvertidorClicked"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent"
+                                        Padding="0"
+                                        Scale="0.7"
+                                        ContentLayout="Left, 10"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
                                         Grid.Column="2"
                                         Grid.Row="0"
-                                        BackgroundColor="OrangeRed"
-                                        TextColor="White"
-                                        FontSize="13"
-                                        CornerRadius="12"
-                                        Padding="6,2"
                                         HorizontalOptions="End"
-                                        VerticalOptions="Start"
-                                        WidthRequest="70"/>
-
+                                        VerticalOptions="Start"/>
+                                 
                                     <!-- Línea divisoria -->
                                     <BoxView 
                                         Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
@@ -115,7 +116,7 @@
                                         FontSize="13"
                                         TextColor="#D600AA"
                                         HorizontalOptions="End"
-                                        Margin="0,6,0,0" />
+                                        />
                                 </Grid>
 
                             </Frame>

@@ -2,48 +2,75 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Premio.AgregarPremioPage"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
              x:DataType="viewModels:CrearPremioPageModel"
              Title="Agregar Premio">
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StringToIntConverter x:Key="StringToIntConverter" />
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label Text="Nuevo Premio" FontSize="24" FontAttributes="Bold" />
 
         <!-- Nombre del premio -->
         <Entry Placeholder="Nombre del premio"
                Text="{Binding NombrePremio}" />
+        <Label Text="{Binding NombrePremioError}" 
+               TextColor="Red" FontSize="12" 
+               IsVisible="{Binding HasNombrePremioError}" />
 
         <!-- Descripción del premio -->
         <Entry Placeholder="Descripción"
                Text="{Binding DescripcionPremio}" />
+        <Label Text="{Binding DescripcionPremioError}" 
+               TextColor="Red" FontSize="12" 
+               IsVisible="{Binding HasDescripcionPremioError}" />
 
         <!-- Puntos requeridos -->
         <Entry Placeholder="Puntos requeridos"
                Text="{Binding PuntosRequeridos}" Keyboard="Numeric" />
-        
-        
-        <Entry Placeholder="URL de la imagen"
-               Text="{Binding FotoPremio}" />
+        <Label Text="{Binding PuntosRequeridosError}" 
+               TextColor="Red" FontSize="12" 
+               IsVisible="{Binding HasPuntosRequeridosError}" />
 
 
-        <!-- Imagen seleccionada -->
+        <!-- Campo URL con botón pequeño a la derecha -->
+        <HorizontalStackLayout Spacing="10">
+            <Entry Placeholder="URL o seleccionar imagen"
+           Text="{Binding FotoPremio}"
+           HorizontalOptions="FillAndExpand" />
+
+            <Button Text="📁"
+            WidthRequest="40"
+            HeightRequest="40"
+            BackgroundColor="#0077CC"
+            TextColor="White"
+            FontSize="18"
+            Command="{Binding SeleccionarImagenCommand}"
+            VerticalOptions="Center"
+            CornerRadius="20" />
+        </HorizontalStackLayout>
+        <Label Text="Debe seleccionar una imagen." 
+               TextColor="Red" FontSize="12" 
+               IsVisible="{Binding HasFotoError}" />    
+
+        <!-- Vista previa de imagen -->
         <Image Source="{Binding FotoPremio}" 
                HeightRequest="150"
-               Aspect="AspectFit" />
-
-
-        <!-- Botón para seleccionar imagen -->
-        <Button Text="Seleccionar Imagen"
-                Command="{Binding SeleccionarFotoCommand}"
-                BackgroundColor="#0077CC"
-                TextColor="White"
-                CornerRadius="30" />
+               Aspect="AspectFit"
+               Margin="0,10,0,0" />
+        
 
         <!-- Botón Guardar -->
         <Button Text="Guardar"
-                BackgroundColor="DarkBlue"
                 TextColor="White"
                 CornerRadius="30"
+                IsEnabled="{Binding PuedeGuardar}"
+                BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
                 Command="{Binding AddPremioCommand}" />
 
         <!-- Botón Cancelar -->

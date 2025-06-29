@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Canje.AgregarCanjePage"
@@ -13,40 +12,105 @@
             <local:BoolToColorConverter x:Key="BoolToColorConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Nuevo Canje" FontSize="24" FontAttributes="Bold" />
 
-        <Entry Placeholder="DNI del residente"
-               Text="{Binding DniResidente}" />
-        <Button Text="Buscar Residente"
-                Command="{Binding BuscarResidenteCommand}" />
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
 
-        <Label Text="Residente:" FontAttributes="Bold" />
-        <Label Text="{Binding ResidenteEncontrado.NombreResidente}" />
+            <!-- Título con ícono -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Label Text="🎁"
+                       FontSize="28"
+                       VerticalOptions="Center" />
+                <Label Text="Nuevo Canje"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
 
-        <Picker Title="Seleccionar premio"
-                ItemsSource="{Binding PremiosDisponibles}"
-                ItemDisplayBinding="{Binding NombrePremio}"
-                SelectedItem="{Binding PremioSeleccionado}" />
+            <!-- Campo de búsqueda con diseño profesional -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="10">
 
-        <Label Text="No tiene puntos suficientes para canjear ningún premio."
-               TextColor="Red"
-               FontAttributes="Bold"
-               IsVisible="{Binding NoTienePremiosDisponibles}" />
+                    <Label Text="DNI del residente"
+                           FontSize="14"
+                           TextColor="#6B7280" />
 
-        <Button
-            Text="Guardar"
-            IsEnabled="{Binding PuedeGuardar}"
-            BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
-            TextColor="White"
-            CornerRadius="30"
-            Command="{Binding CrearCanjeCommand}" />
+                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                        <Image Source="buscar.png" HeightRequest="20" WidthRequest="20" />
+                        <Entry Placeholder="Ej. 12345678"
+                               Text="{Binding DniResidente}"
+                               Keyboard="Numeric"
+                               PlaceholderColor="#9CA3AF"
+                               TextColor="{DynamicResource Gray500}"
+                               BackgroundColor="Transparent"
+                               FontSize="16"
+                               HorizontalOptions="Fill" />
+                    </HorizontalStackLayout>
 
-        <Button Text="Cancelar"
-                BackgroundColor="Gray"
-                TextColor="White"
-                CornerRadius="30"
-                Clicked="OnCancelarClicked" />
-    </VerticalStackLayout>
+                    <Button Text="🔍 Buscar Residente"
+                            Command="{Binding BuscarResidenteCommand}"
+                            BackgroundColor="{DynamicResource Primary}"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            HeightRequest="45"
+                            CornerRadius="25" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Residente encontrado -->
+            <Label Text="Residente:"
+                   FontAttributes="Bold"
+                   FontSize="14" />
+            <Label Text="{Binding ResidenteEncontrado.NombreResidente}"
+                   FontSize="16"
+                   TextColor="{DynamicResource Gray500}" />
+
+            <!-- Picker de premios -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Seleccionar premio"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Picker Title="Seleccionar premio"
+                            ItemsSource="{Binding PremiosDisponibles}"
+                            ItemDisplayBinding="{Binding NombrePremio}"
+                            SelectedItem="{Binding PremioSeleccionado}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Mensaje si no hay premios -->
+            <Label Text="No tiene puntos suficientes para canjear ningún premio."
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   FontSize="13"
+                   IsVisible="{Binding NoTienePremiosDisponibles}" />
+
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    IsEnabled="{Binding PuedeGuardar}"
+                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    Command="{Binding CrearCanjeCommand}" />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    BackgroundColor="Gray"
+                    TextColor="White"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    Clicked="OnCancelarClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -7,6 +7,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="HeaderOrange">#3949ab</Color>
+            <Color x:Key="Headercolorsaludo">#4c59b2</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -15,36 +16,44 @@
 
             <!--Encabezado con fondo naranja y tarjeta del coche -->
 
-            <Grid HeightRequest="220">
+            <Grid HeightRequest="250">
                 <!-- Fondo naranja superior -->
                 <BoxView 
                     BackgroundColor="{StaticResource HeaderOrange}" 
                     HeightRequest="210" 
-                    VerticalOptions="Start" />
+                    VerticalOptions="Start"
+                    CornerRadius="0,0,30,30"/>
 
                 <!-- Frame superior (dentro del fondo naranja) -->
                 <Frame
-                    Background="{DynamicResource CardBackgroundBrush}"
+                    BackgroundColor="{StaticResource Headercolorsaludo}"
+                    BorderColor="Transparent" 
                     Padding="10"
-                    WidthRequest="330"
+                    WidthRequest="300"
                     HeightRequest="90"
                     CornerRadius="20"
                     HasShadow="True"
                     HorizontalOptions="Center"
                     VerticalOptions="Start"
                     Margin="0,15,0,0">
-                    <!-- Ajusta este margen para ubicarlo más arriba -->
-                    <HorizontalStackLayout HorizontalOptions="Center">
-                        <Label Text="🚗 Vehículos activos"
-                           FontSize="16"
-                           VerticalOptions="Center"
-                           TextColor="{DynamicResource Gray500}" />
+                    <HorizontalStackLayout HorizontalOptions="Start" Padding="6" Margin="20,0,0,0">
+                        <!-- Agrupa verticalmente los dos textos -->
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="Hola, Bienvenido!"
+                               FontSize="20"
+                               TextColor="White" />
+                            <Label Text="Admin@gmail.com"
+                               FontSize="14"
+                               TextColor="{DynamicResource Gray200}" />
+                        </VerticalStackLayout>
                     </HorizontalStackLayout>
+
                 </Frame>
 
                 <!--Frame sobresalido (fuera del fondo naranja) -->
                 <Frame
                     Background="{DynamicResource CardBackgroundBrush}"
+                    BorderColor="Transparent"
                     Padding="10"
                     WidthRequest="330"
                     HeightRequest="160"
@@ -60,19 +69,21 @@
             </Grid>
             
             <!--Contenido existente (no modificado) -->
-            <VerticalStackLayout Spacing="20" Padding="40">
-                
+            <VerticalStackLayout Spacing="10" Padding="20">
+                <Label Text="Registros" FontSize="19" FontAttributes="Bold" />
+
                 <!-- Tarjetas resumen en carrusel -->
-                <CollectionView ItemsLayout="HorizontalList" HeightRequest="130" Margin="0,10"
+                <CollectionView ItemsLayout="HorizontalList" HeightRequest="130" 
                                 ItemsSource="{Binding TarjetasResumen}">
                     
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame Background="{DynamicResource CardBackgroundBrush}"
-                                   WidthRequest="140"
+                                   BorderColor="Transparent"
+                                   WidthRequest="150"
                                    CornerRadius="15"
                                    Margin="5"
-                                   Padding="10"
+                                   Padding="15"
                                    HasShadow="True">
                                 <VerticalStackLayout HorizontalOptions="Center">
                                     <Label Text="{Binding Emoji}" FontSize="25" HorizontalOptions="Center"/>
@@ -85,10 +96,11 @@
                 </CollectionView>
                 <Label Text="Gráfico" FontSize="19" FontAttributes="Bold" />
                 <!-- Gráfico de residuos reciclados -->
-                <!-- Gráfico de residuos reciclados -->
                 <Frame HeightRequest="200" 
                        Background="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="Transparent"
                        CornerRadius="10"
+                       HasShadow="True"
                        Padding="15">
                     <Grid ColumnDefinitions="*, Auto">
                         <!-- Columna izquierda: Datos -->
@@ -108,31 +120,56 @@
                            VerticalOptions="Center" />
                     </Grid>
                 </Frame>
-
-
                 <!-- Registros recientes -->
                 <Grid HeightRequest="44">
-                    <Label Text="Últimos registros de reciclaje" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Label Text="♻️ Actividad reciente de reciclaje" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
                     <ImageButton 
-                        Source="dotnet_bot.png" 
+                        Source="pen.png" 
                         HorizontalOptions="End"
                         VerticalOptions="Center"
-                        HeightRequest="40"
-                        WidthRequest="40"
+                        HeightRequest="10"
+                        WidthRequest="10"
+                        Scale="0.7"
                         BackgroundColor="Transparent" />
-                </Grid>
+                                </Grid>
+
 
                 <VerticalStackLayout Spacing="15">
-                    <Frame CornerRadius="10" Padding="15" Background="{DynamicResource CardBackgroundBrush}" BorderColor="{DynamicResource CardBorderBrush}">
-                        <Label Text="Ana recicló 4.5 kg de plástico" FontSize="16" TextColor="{DynamicResource Gray500}"/>
+                    <!-- Registro 1 -->
+                    <Frame 
+                        CornerRadius="10"
+                        Padding="10"
+                        BackgroundColor="Transparent" 
+                        BorderColor="#2196F3"
+                        HasShadow="True">
+
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="plastico.png" HeightRequest="24" WidthRequest="24"/>
+                            <Label 
+                                Text="Ana recicló 4.5 kg de plástico" 
+                                FontSize="16" 
+                                TextColor="#0D47A1"
+                                VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
                     </Frame>
-                    <Frame CornerRadius="10" Padding="15" Background="{DynamicResource CardBackgroundBrush}" BorderColor="{DynamicResource CardBorderBrush}">
-                        <Label Text="Luis recicló 3 kg de papel" FontSize="16" TextColor="{DynamicResource Gray500}"/>
+
+
+                    <Frame BackgroundColor="Transparent" BorderColor="#8BC34A" Padding="10" CornerRadius="10" HasShadow="True">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="papel.png" HeightRequest="24" WidthRequest="24"/>
+                            <Label Text="Luis recicló 3 kg de papel" FontSize="16" TextColor="#33691E" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
                     </Frame>
-                    <Frame CornerRadius="10" Padding="15" Background="{DynamicResource CardBackgroundBrush}" BorderColor="{DynamicResource CardBorderBrush}">
-                        <Label Text="Marta recicló 7.2 kg de vidrio" FontSize="16" TextColor="{DynamicResource Gray500}"/>
+
+
+                    <Frame BackgroundColor="Transparent" BorderColor="#FF9800" Padding="10" CornerRadius="10" HasShadow="True">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="vidrio.png" HeightRequest="24" WidthRequest="24"/>
+                            <Label Text="Marta recicló 7.2 kg de vidrio" FontSize="16" TextColor="#E65100" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
                     </Frame>
                 </VerticalStackLayout>
+
 
             </VerticalStackLayout>
         </VerticalStackLayout>

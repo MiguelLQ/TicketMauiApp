@@ -35,16 +35,19 @@
     </Shell.TitleView>
 
     <Shell.FlyoutHeader>
-        <Grid Padding="20" BackgroundColor="#3949ab">
+        <Border 
+            Background="#3949ab"
+            StrokeShape="RoundRectangle 0,0,0,60"
+            Padding="20">
+
             <VerticalStackLayout Spacing="10">
                 <Image 
                 Source="userlogo.png" 
                 WidthRequest="64" HeightRequest="64" 
                 HorizontalOptions="Start" 
-                Aspect="AspectFill" 
-                 />
+                Aspect="AspectFill" />
 
-                <Label Text="Hola, Admin@gmail.com"
+                <Label Text="Admin@gmail.com"
                    FontAttributes="Bold"
                    FontSize="18"
                    TextColor="White"
@@ -55,11 +58,13 @@
                    TextColor="White"
                    HorizontalOptions="Start" />
             </VerticalStackLayout>
-        </Grid>
+
+        </Border>
     </Shell.FlyoutHeader>
 
+
     <!-- ✅ FLYOUT CON MULTIPLE TABS SIMULADOS -->
-    <FlyoutItem Title="Inicio" Icon="{StaticResource IconDashboard}" Route="Home">
+    <FlyoutItem Title="Inicio" Icon="{StaticResource IconDashboard}" Route="Home" >
         <ShellContent
             Title="Inicio"
             Icon="casa.png"
@@ -106,7 +111,7 @@
         Route="inicio" />-->
     <ShellContent
         Title="Premios"
-        Icon="{StaticResource IconMeta}"
+        Icon="{StaticResource IconPremios}"
         ContentTemplate="{DataTemplate premio:ListarPremioPage}"
         Route="premio" />
 
@@ -117,17 +122,17 @@
         Route="registroDeReciclaje" />-->
     <ShellContent
         Title="Colores"
-        Icon="{StaticResource IconMeta}"
+        Icon="{StaticResource IconColores}"
         ContentTemplate="{DataTemplate ticket:ListarTicketPage}"
         Route="ticket" />
     <ShellContent
         Title="Categoria Residuo"
-        Icon="{StaticResource IconProjects}"
+        Icon="{StaticResource IconCategoriaResiduos}"
         ContentTemplate="{DataTemplate categoriaresiduo:CategoriaResiduoPage}"
         Route="categoriaResiduo" />
     <ShellContent
         Title="Residuos"
-        Icon="{StaticResource IconMeta}"
+        Icon="{StaticResource IconResiduo}"
         ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
         Route="residuo" />
     
@@ -145,7 +150,7 @@
 
     <ShellContent
     Title="Gestionar conversiones"
-    Icon="{StaticResource IconProjects}"
+    Icon="{StaticResource IconConfiguracion}"
     ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
     Route="conversiones" />
 

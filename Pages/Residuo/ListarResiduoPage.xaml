@@ -23,7 +23,7 @@
             <VerticalStackLayout Padding="20" Spacing="10">
                 <!--<Button Text="Agregar Residuo"
                         Clicked="OnAgregarResiduoClicked" />-->
-                <Label Text="🗑️  Listar Residuos"
+                <Label Text="Lista de Residuos"
                    FontSize="20"
                    FontAttributes="Bold"
                    TextColor="{DynamicResource Gray500}" />
@@ -32,7 +32,7 @@
                         <DataTemplate>
                             <Frame 
                                 Background="{DynamicResource CardBackgroundBrush}"
-                                BorderColor="{DynamicResource CardBorderBrush}"
+                                BorderColor="Transparent"
                                 CornerRadius="12"
                                 Padding="12"
                                 Margin="0,8"
@@ -49,7 +49,7 @@
                                         Margin="0,0,10,0"
                                         VerticalOptions="Start" />-->
                                     <Label 
-                                        Text="🗑️" 
+                                        Text="🚮" 
                                         FontSize="26"
                                         Grid.RowSpan="2"
                                         VerticalOptions="Start"
@@ -79,22 +79,25 @@
                                     </StackLayout>
 
                                     <!-- Botón Editar a la derecha -->
-                                    <Button 
-                                        Text="✏️Editar" 
-                                        Clicked="OnEditarResiduoClicked" 
-                                        CommandParameter="{Binding .}" 
+                                    <Button
+                                        
+                                        ImageSource="editarreal.png"
+                                        Clicked="OnEditarResiduoClicked"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{DynamicResource Gray500}"
+                                        Padding="0"
+                                        Scale="0.7"
+                                        ContentLayout="Left, 10"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
                                         Grid.Column="1"
                                         Grid.Row="0"
                                         HorizontalOptions="End"
-                                        VerticalOptions="Start"
-                                        BackgroundColor="OrangeRed"
-                                        TextColor="White"
-                                        FontSize="13"
-                                        Padding="2,1"
-                                        HeightRequest="10"
-                                        WidthRequest="80"/>
+                                        VerticalOptions="Start"/>
 
-                                    <!-- Línea divisoria -->
+
+                                        <!-- Línea divisoria -->
                                     <BoxView 
                                         Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                                         HeightRequest="1"

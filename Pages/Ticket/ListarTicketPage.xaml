@@ -14,7 +14,7 @@
     </ContentPage.Resources>
     <Grid>
         <ScrollView>
-        
+
             <VerticalStackLayout Padding="20" Spacing="15">
 
                 <ActivityIndicator 
@@ -115,7 +115,7 @@
                                             TextColor="{DynamicResource Gray500}" 
                                             />
 
-                       
+
                                     </StackLayout>
 
                                     <!-- Ver más -->
@@ -148,8 +148,33 @@
             HorizontalOptions="End"
             VerticalOptions="Start"
             Margin="0,20,20,0"
-            />
-    
+        />
+        <!--================================CARGA LOADING====================================================-->
+        <Grid IsVisible="{Binding IsBusy}"
+               BackgroundColor="#80000000"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill">
+            <Frame Padding="20"
+                    BackgroundColor="#222222DD"
+                    CornerRadius="12"
+                    HasShadow="True"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="160"
+                    HeightRequest="120">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
 
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                        Color="White"
+                                        WidthRequest="40"
+                                        HeightRequest="40" />
+                    <Label Text="Cargando..."
+                           TextColor="White"
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold" />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
     </Grid>
 </ContentPage>

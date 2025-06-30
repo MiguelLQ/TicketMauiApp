@@ -45,12 +45,13 @@ namespace MauiFirebase.Data.Repositories
         public async Task<bool> ChangeEstadoResidenteAsync(int id) // O string id, según tu IdResidente
         {
             if (id <= 0)
+            {
                 return false;
+            }
 
             Residente? residente = await _database.Database!.Table<Residente>()
                                                    .Where(r => r.IdResidente == id)
-                                                   .FirstOrDefaultAsync();
-
+                                                .FirstOrDefaultAsync();
             if (residente == null)
             {
                 return false; // Residente no encontrado

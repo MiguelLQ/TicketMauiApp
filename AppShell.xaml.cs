@@ -37,8 +37,9 @@ namespace MauiFirebase
 
             Routing.RegisterRoute(nameof(AgregarCanjePage), typeof(AgregarCanjePage));
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
-            Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
-
+            //Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
+            // En AppShell.xaml.cs
+     
             Routing.RegisterRoute("LoginPage", typeof(LoginPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
 

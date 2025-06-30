@@ -50,25 +50,34 @@ public partial class CanjePageModel : ObservableObject
     [RelayCommand]
     public async Task CargarCanjeAsync()
     {
-        ListaCanjes.Clear();
-        var canjes = await _canjeRepository.GetAllCanjeAync();
-        var premios = await _premioRepository.GetAllPremiosAsync();
-        var residentes = await _residenteRepository.GetAllResidentesAsync();
-        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
-        var premiosDict = premios.ToDictionary(r => r.IdPremio);
-
-        foreach (var item in canjes)
+        try
         {
-            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
-            {
-                item.NombreResidente = residente.NombreResidente;
-            }
+            IsBusy = true;
+            await Task.Delay(800);
+            ListaCanjes.Clear();
+            var canjes = await _canjeRepository.GetAllCanjeAync();
+            var premios = await _premioRepository.GetAllPremiosAsync();
+            var residentes = await _residenteRepository.GetAllResidentesAsync();
+            var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+            var premiosDict = premios.ToDictionary(r => r.IdPremio);
 
-            if (premiosDict.TryGetValue(item.IdPremio, out var premio))
+            foreach (var item in canjes)
             {
-                item.NombrePremio = premio.NombrePremio;
+                if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+                {
+                    item.NombreResidente = residente.NombreResidente;
+                }
+
+                if (premiosDict.TryGetValue(item.IdPremio, out var premio))
+                {
+                    item.NombrePremio = premio.NombrePremio;
+                }
+                ListaCanjes.Add(item);
             }
-            ListaCanjes.Add(item);
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 

@@ -13,6 +13,8 @@ public partial class PremioPageModel : ObservableObject
     public ObservableCollection<Premio> ListaPremios { get; } = new();
 
     private readonly IPremioRepository _premioRepository;
+    [ObservableProperty]
+    private bool _isBusy;
 
     public PremioPageModel(IPremioRepository premioRepository)
     {
@@ -22,11 +24,20 @@ public partial class PremioPageModel : ObservableObject
     [RelayCommand]
     public async Task CargarPremiosAsync()
     {
-        ListaPremios.Clear(); // Limpiamos primero
-        var premios = await _premioRepository.GetAllPremiosAsync(); // Obtenemos desde BD
-        foreach (var p in premios)
+        try
         {
-            ListaPremios.Add(p); // Añadimos a la ObservableCollection
+            IsBusy = true;
+            await Task.Delay(800);
+            ListaPremios.Clear(); // Limpiamos primero
+            var premios = await _premioRepository.GetAllPremiosAsync(); // Obtenemos desde BD
+            foreach (var p in premios)
+            {
+                ListaPremios.Add(p);
+            }
+        }
+        finally
+        {
+            IsBusy = false; 
         }
     }
 

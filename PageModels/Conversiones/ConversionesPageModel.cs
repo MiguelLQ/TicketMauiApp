@@ -11,6 +11,8 @@ public partial class ConversionesPageModel : ObservableObject
     public ObservableCollection<Convertidor> ListaConvertidor { get; } = new();
     private readonly IConvertidorRepository _convertidorRepository;
     private readonly IAlertaHelper _alertaHelper;
+    [ObservableProperty]
+    private bool _isBusy;
     public ConversionesPageModel(IConvertidorRepository convertidorRepository, IAlertaHelper alertaHelper)
     {
         _convertidorRepository = convertidorRepository;
@@ -20,11 +22,20 @@ public partial class ConversionesPageModel : ObservableObject
     [RelayCommand]
     public async Task CargarConvertidoresAsync()
     {
-        ListaConvertidor.Clear();
-        var convertidores = await _convertidorRepository.GetAllConvertidorAync();
-        foreach (var item in convertidores)
+        try
         {
-            ListaConvertidor.Add(item);
+            IsBusy = true;
+            await Task.Delay(800);
+            ListaConvertidor.Clear();
+            var convertidores = await _convertidorRepository.GetAllConvertidorAync();
+            foreach (var item in convertidores)
+            {
+                ListaConvertidor.Add(item);
+            }
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 

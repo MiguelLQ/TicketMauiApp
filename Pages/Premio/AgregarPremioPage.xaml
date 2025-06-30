@@ -54,9 +54,10 @@
             VerticalOptions="Center"
             CornerRadius="20" />
         </HorizontalStackLayout>
-        <Label Text="Debe seleccionar una imagen." 
-               TextColor="Red" FontSize="12" 
-               IsVisible="{Binding HasFotoError}" />    
+        <Label Text="{Binding FotoPremio}"
+               TextColor="Red" 
+               FontSize="12" 
+               IsVisible="{Binding HasFotoError}" />
 
         <!-- Vista previa de imagen -->
         <Image Source="{Binding FotoPremio}" 

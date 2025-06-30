@@ -14,6 +14,9 @@ public partial class ResiduoPageModel : ObservableObject
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
     private readonly IAlertaHelper _alertaHelper;
 
+    [ObservableProperty]
+    private bool isBusy;
+
     public ResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
     {
         _residuoRepository = residuoRepository;
@@ -35,16 +38,24 @@ public partial class ResiduoPageModel : ObservableObject
     [RelayCommand]
     public async Task CargarResiduosAsync()
     {
-        ListaResiduos.Clear();
-
-        var residuos = await _residuoRepository.GetAllResiduoAync();
-        var categorias = await _categoriaResiduoRepository.GetAllCategoriaResiduoAsync();
-
-        foreach (var residuo in residuos)
+        try
         {
-            var categoria = categorias.FirstOrDefault(c => c.IdCategoriaResiduo == residuo.IdCategoriaResiduo);
-            residuo.NombreCategoria = categoria?.NombreCategoria;
-            ListaResiduos.Add(residuo);
+            IsBusy = true;
+            await Task.Delay(800);
+            ListaResiduos.Clear();
+            var residuos = await _residuoRepository.GetAllResiduoAync();
+            var categorias = await _categoriaResiduoRepository.GetAllCategoriaResiduoAsync();
+
+            foreach (var residuo in residuos)
+            {
+                var categoria = categorias.FirstOrDefault(c => c.IdCategoriaResiduo == residuo.IdCategoriaResiduo);
+                residuo.NombreCategoria = categoria?.NombreCategoria;
+                ListaResiduos.Add(residuo);
+            }
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 

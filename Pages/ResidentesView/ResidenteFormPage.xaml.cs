@@ -1,12 +1,15 @@
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 using MauiFirebase.PageModels.Residentes;
 
 namespace MauiFirebase.Pages.ResidentesView;
 
-[QueryProperty(nameof(ResidenteId), "id")]
 public partial class ResidenteFormPage : ContentPage
 {
     private readonly ResidenteFormPageModel _vm;
+    public ResidenteFormPage() : this(MauiProgram.Services.GetRequiredService<ResidenteFormPageModel>())
+    {
+    }
+
 
     public ResidenteFormPage(ResidenteFormPageModel vm)   // DI
     {
@@ -19,15 +22,21 @@ public partial class ResidenteFormPage : ContentPage
         set
         {
             if (int.TryParse(value, out int id))
-                _vm.CargarResidenteParaEdicion(id);
+            {
+                _vm.IdResidente = id; // Dispara OnIdResidenteChanged automáticamente
+            }
         }
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        if (_vm.IdResidente == 0)
+
+        // ⚠️ Solo limpia si no estamos en modo edición
+        if (_vm.IdResidente == 0 && !_vm.EsEdicion)
+        {
             _vm.LimpiarFormularioCommand.Execute(null);
+        }
     }
 }
 

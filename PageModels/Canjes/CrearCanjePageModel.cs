@@ -17,15 +17,17 @@ public partial class CrearCanjePageModel : ObservableObject
     public ObservableCollection<Canje> ListaCanje { get; } = new();
     public ObservableCollection<Premio> PremiosDisponibles { get; } = new();
 
-    [ObservableProperty] 
-    private Premio? _premioSeleccionado;
-    [ObservableProperty] 
+    [ObservableProperty]
+    private Premio? _premioSeleccionado;// idpremio 
+    [ObservableProperty]
     private string _dniResidente = string.Empty;
-    [ObservableProperty] 
-    private Residente? _residenteEncontrado;
-    [ObservableProperty] 
-    private bool _estadoCanje = true;
-    [ObservableProperty] 
+    [ObservableProperty]
+    private Residente? _residenteEncontrado;//idresidente
+    [ObservableProperty]
+    private DateTime _fechaDeCanjeo = DateTime.Now;
+    [ObservableProperty]
+    private bool _estadoCanje = true;//defecto en true
+    [ObservableProperty]
     private bool _noTienePremiosDisponibles;
 
     public bool PuedeGuardar
@@ -131,21 +133,7 @@ public partial class CrearCanjePageModel : ObservableObject
         if (residente != null)
         {
             ResidenteEncontrado = residente;
-            await _alertaHelper.ShowSuccessAsync($"Residente encontrado: {residente.NombreResidente}");
-            PremiosDisponibles.Clear();
-            foreach (var premio in ListaPremios)
-            {
-                if (premio.PuntosRequeridos <= residente.TicketsTotalesGanados)
-                {
-                    PremiosDisponibles.Add(premio);
-                }
-            }
-            NoTienePremiosDisponibles = PremiosDisponibles.Count == 0;
-
-            if (NoTienePremiosDisponibles)
-            {
-                await _alertaHelper.ShowErrorAsync("El residente no tiene puntos suficientes para canjear ningún premio.");
-            }
+            await _alertaHelper.ShowSuccessAsync($"Residente encontrado: {residente.NombreResidente},{residente.ApellidoResidente},{residente.DniResidente}");
         }
         else
         {
@@ -156,36 +144,25 @@ public partial class CrearCanjePageModel : ObservableObject
     [RelayCommand]
     public async Task CrearCanjeAsync()
     {
-        if (ResidenteEncontrado == null)
-        {
-            await _alertaHelper.ShowErrorAsync("Debe buscar un residente antes de crear el canje.");
-            return;
-        }
-
-        if (PremioSeleccionado == null)
-        {
-            await _alertaHelper.ShowErrorAsync("Debe seleccionar un premio para canjear.");
-            return;
-        }
-
-        if (ResidenteEncontrado.TicketsTotalesGanados < PremioSeleccionado.PuntosRequeridos)
+        if (ResidenteEncontrado!.TicketsTotalesGanados < PremioSeleccionado!.PuntosRequeridos)
         {
             await _alertaHelper.ShowErrorAsync($"El residente no tiene suficientes puntos. Tiene {ResidenteEncontrado.TicketsTotalesGanados} y el premio cuesta {PremioSeleccionado.PuntosRequeridos}.");
             return;
         }
-
-        ResidenteEncontrado.TicketsTotalesGanados -= PremioSeleccionado.PuntosRequeridos;
-        await _residenteRepository.UpdateResidenteAsync(ResidenteEncontrado);
-
-        var nuevoCanje = new Canje
+        else
         {
-            FechaCanje = DateTime.Now,
-            EstadoCanje = EstadoCanje,
-            IdPremio = PremioSeleccionado.IdPremio,
-            IdResidente = ResidenteEncontrado.IdResidente
-        };
-        await _canjeRepository.CreateCanjeAsync(nuevoCanje);
-        await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
-        await Shell.Current.GoToAsync("..");
+            ResidenteEncontrado.TicketsTotalesGanados = ResidenteEncontrado.TicketsTotalesGanados - PremioSeleccionado.PuntosRequeridos;
+
+            var nuevoCanje = new Canje
+            {
+                FechaCanje = FechaDeCanjeo,
+                EstadoCanje = EstadoCanje,
+                IdPremio = PremioSeleccionado.IdPremio,
+                IdResidente = ResidenteEncontrado.IdResidente
+            };
+            await _canjeRepository.CreateCanjeAsync(nuevoCanje);
+            await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
+            await Shell.Current.GoToAsync("..");
+        }
     }
 }

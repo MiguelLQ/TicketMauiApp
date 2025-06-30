@@ -62,11 +62,11 @@
                             TextColor="{DynamicResource Gray500}"
                             ItemsSource="{Binding ListaCategorias}"
                             ItemDisplayBinding="{Binding NombreCategoria}"
-                            SelectedItem="{Binding CategoriaResiduoSeleccionada}" />
-                    <Label Text="Debe seleccionar una categoría"
+                            SelectedItem="{Binding CategoriaResiduoSeleccionada, Mode=TwoWay}" />
+                    <Label Text="{Binding CategoriaResiduoError}"
                            TextColor="Red"
                            FontSize="12"
-                           IsVisible="{Binding HasCategoriaError}" />
+                           IsVisible="{Binding HasCategoriaResiduoError}" />
                 </VerticalStackLayout>
             </Frame>
 

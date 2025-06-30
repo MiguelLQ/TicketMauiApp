@@ -12,7 +12,7 @@ public partial class CrearResiduoPageModel : ObservableValidator
 {
     [ObservableProperty]
     [Required(ErrorMessage = "El nombre del residuo es obligatorio.")]
-    [StringLength(20, MinimumLength = 3, ErrorMessage = "El nombre debe tener entre 3 y 20 caracteres.")]
+    [StringLength(50, MinimumLength = 3, ErrorMessage = "El nombre debe tener entre 3 y 20 caracteres.")]
     private string? _nombreResiduo;
 
     [ObservableProperty]
@@ -74,7 +74,18 @@ public partial class CrearResiduoPageModel : ObservableValidator
 
         await _residuoRepository.CreateResiduoAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Residuo creado correctamente.");
+        LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
+    }
+
+
+    private void LimpiarFormulario()
+    {
+        NombreResiduo = null;
+        ValorResiduo = null;
+        CategoriaResiduoSeleccionada = null;
+        EstadoResiduo = true;
+        ClearErrors();
     }
     /*==================================================================================
      *  VALIDACIONES DE PROPIEDADES PARA MOSTRAR ERRORES EN TIEMPO REAL

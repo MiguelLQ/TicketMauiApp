@@ -26,6 +26,8 @@ using MauiFirebase.PageModels.Conversiones;
 using MauiFirebase.Pages.Convertidores;
 
 using MauiFirebase.PageModels.Logins;
+using MauiFirebase.PageModels.Registers;
+using MauiFirebase.Pages.Register;
 
 namespace MauiFirebase;
 
@@ -155,6 +157,11 @@ public static class MauiProgram
 
         // login
         builder.Services.AddSingleton<LoginPageModel>();
+
+        //Registro
+        builder.Services.AddSingleton<RegisterPageModel>();
+        builder.Services.AddSingleton<RegisterPage>(); 
+
 
 
         // ==========================================================

@@ -10,6 +10,7 @@ using Font = Microsoft.Maui.Font;
 using MauiFirebase.Pages.Convertidores;
 
 using MauiFirebase.Pages.Login;
+using MauiFirebase.Pages.Register;
 
 namespace MauiFirebase
 {
@@ -39,6 +40,9 @@ namespace MauiFirebase
             Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
 
             Routing.RegisterRoute("LoginPage", typeof(LoginPage));
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+
+
 
             // Escuchar cambio de rutas
             Navigated += AppShell_Navigated;

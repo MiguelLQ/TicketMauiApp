@@ -22,22 +22,20 @@
                Text="{Binding PuntosRequeridos}" 
                Keyboard="Numeric" />
 
-        <!-- Campo de URL de imagen con botón lateral -->
-        <HorizontalStackLayout Spacing="10">
+        <VerticalStackLayout Spacing="5">
             <Entry Placeholder="URL o seleccionar imagen"
-                   Text="{Binding FotoPremio}"
-                   HorizontalOptions="FillAndExpand" />
+           Text="{Binding FotoPremio}"
+           HorizontalOptions="FillAndExpand" />
 
-            <Button Text="📁"
-                    WidthRequest="40"
-                    HeightRequest="40"
-                    FontSize="18"
-                    BackgroundColor="#0077CC"
-                    TextColor="White"
-                    CornerRadius="20"
-                    Command="{Binding SeleccionarImagenCommand}" />
+            <Button Text="📁 Seleccionar Imagen"
+            WidthRequest="180"
+            BackgroundColor="#0077CC"
+            TextColor="White"
+            CornerRadius="25"
+            FontSize="14"
+            Command="{Binding SeleccionarImagenCommand}" />
+        </VerticalStackLayout>
 
-        </HorizontalStackLayout>
 
         <!-- Vista previa de la imagen -->
         <Image Source="{Binding FotoPremio}"

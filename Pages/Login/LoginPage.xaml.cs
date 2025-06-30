@@ -6,13 +6,8 @@ public partial class LoginPage : ContentPage
 {
     public LoginPage()
     {
-        InitializeComponent(); // ← Esto debe funcionar si el XAML está bien vinculado
-        BindingContext = new LoginPageModel();
-    }
-
-    private async void RegisterTapped(object sender, EventArgs e)
-    {
-        await DisplayAlert("Registro", "Navegar a la página de registro", "OK");
+        InitializeComponent();
+        BindingContext = new LoginPageModel(); // Usa el ViewModel correctamente
     }
 
     private async void FacebookClicked(object sender, EventArgs e)

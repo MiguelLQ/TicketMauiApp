@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Pages.Login;
+using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Ticket;
 
 namespace MauiFirebase.PageModels.Logins
 {
-    public class LoginPageModel: INotifyPropertyChanged
+    public partial class LoginPageModel: INotifyPropertyChanged
     {
         private readonly FirebaseAuthService _authService = new FirebaseAuthService();
 
@@ -103,6 +104,13 @@ namespace MauiFirebase.PageModels.Logins
             OnPropertyChanged(propertyName);
             return true;
         }
-    
+        
+        [RelayCommand]
+        private async Task IrARegistroAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(RegisterPage));
+        }
+
+
     }
 }

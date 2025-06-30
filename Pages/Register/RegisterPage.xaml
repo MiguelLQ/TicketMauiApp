@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Registers"
+             x:Class="MauiFirebase.Pages.Register.RegisterPage"
+             x:DataType="viewModels:RegisterPageModel"
+             Title="Registro">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Crear Cuenta" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <Entry Placeholder="Nombre" Text="{Binding Nombre}" />
+            <Entry Placeholder="Correo" Text="{Binding Email}" Keyboard="Email" />
+            <Entry Placeholder="Contraseña" Text="{Binding Password}" IsPassword="True" />
+
+            <Button Text="Registrarse"
+                    Command="{Binding RegistrarCommand}"
+                    BackgroundColor="#00BFFF"
+                    TextColor="White"
+                    CornerRadius="20"
+                    HeightRequest="45" />
+
+            <Button Text="Cancelar"
+                    Command="{Binding CancelarCommand}"
+                    BackgroundColor="Gray"
+                    TextColor="White"
+                    CornerRadius="20"
+                    HeightRequest="45" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

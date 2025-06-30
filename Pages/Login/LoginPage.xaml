@@ -60,7 +60,7 @@
                         BackgroundColor="#00BFFF"
                         TextColor="White"
                         FontAttributes="Bold"
-                        FontSize="16"
+                        FontSize="16"  
                         HeightRequest="50"
                         CornerRadius="10"
                         Command="{Binding LoginCommand}" />
@@ -77,9 +77,10 @@
                             <Span Text="¿No tienes una cuenta? " />
                             <Span Text="Regístrate aquí"
                                   TextDecorations="Underline"
-                                  TextColor="#00BFFF">
+                                  TextColor="#00BFFF"
+                                  FontAttributes="Bold">
                                 <Span.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="RegisterTapped" />
+                                    <TapGestureRecognizer Command="{Binding IrARegistroCommand}" />
                                 </Span.GestureRecognizers>
                             </Span>
                         </FormattedString>

@@ -54,6 +54,7 @@ namespace MauiFirebase.PageModels.Residentes
                         existente.CorreoResidente = residenteActualizado.CorreoResidente;
                         existente.DireccionResidente = residenteActualizado.DireccionResidente;
                         existente.EstadoResidente = residenteActualizado.EstadoResidente;
+                        existente.TicketsTotalesGanados = residenteActualizado.TicketsTotalesGanados;
                     }
                     else
                     {

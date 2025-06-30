@@ -45,12 +45,13 @@ namespace MauiFirebase.Data.Repositories
         public async Task<bool> ChangeEstadoResidenteAsync(int id) // O string id, según tu IdResidente
         {
             if (id <= 0)
+            {
                 return false;
+            }
 
             Residente? residente = await _database.Database!.Table<Residente>()
                                                    .Where(r => r.IdResidente == id)
-                                                   .FirstOrDefaultAsync();
-
+                                                .FirstOrDefaultAsync();
             if (residente == null)
             {
                 return false; // Residente no encontrado
@@ -90,17 +91,16 @@ namespace MauiFirebase.Data.Repositories
                                             .FirstOrDefaultAsync();
         }
 
-        async Task<Residente> IResidenteRepository.ObtenerPorDniAsync(string dniResidente)
+        public async Task<Residente?> ObtenerPorDniAsync(string dniResidente)
         {
             if (string.IsNullOrWhiteSpace(dniResidente))
             {
-                throw new ArgumentException("El DNI no puede ser nulo o vacío.", nameof(dniResidente));
+                return null;
             }
 
             return await _database.Database!.Table<Residente>()
                                             .Where(r => r.DniResidente == dniResidente)
-                                            .FirstOrDefaultAsync()
-                                            ?? throw new InvalidOperationException("No se encontró un residente con el DNI proporcionado.");
+                                            .FirstOrDefaultAsync();
         }
         public async Task GuardarAsync(Residente residenteEncontrado)
         {

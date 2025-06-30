@@ -123,6 +123,7 @@ public partial class CrearCanjePageModel : ObservableObject
     [RelayCommand]
     public async Task BuscarResidenteAsync()
     {
+        
         if (string.IsNullOrWhiteSpace(DniResidente))
         {
             await _alertaHelper.ShowErrorAsync("Ingrese un DNI válido.");
@@ -133,18 +134,31 @@ public partial class CrearCanjePageModel : ObservableObject
         if (residente != null)
         {
             ResidenteEncontrado = residente;
-            await _alertaHelper.ShowSuccessAsync($"Residente encontrado: {residente.NombreResidente},{residente.ApellidoResidente},{residente.DniResidente}");
+            await _alertaHelper.ShowSuccessAsync($"Residente encontrado");
+            await ActualizarPremiosDisponiblesAsync();
         }
         else
         {
             await _alertaHelper.ShowErrorAsync("Residente no encontrado.");
+            ResidenteEncontrado = null;
+            PremiosDisponibles.Clear();
         }
     }
 
     [RelayCommand]
     public async Task CrearCanjeAsync()
     {
-        if (ResidenteEncontrado!.TicketsTotalesGanados < PremioSeleccionado!.PuntosRequeridos)
+        if(ResidenteEncontrado == null)
+        {
+            await _alertaHelper.ShowErrorAsync("Debe buscar un residente primero.");
+            return;
+        }
+        if (PremioSeleccionado == null)
+        {
+            await _alertaHelper.ShowErrorAsync("Debe seleccionar un premio.");
+            return;
+        }
+        if (ResidenteEncontrado.TicketsTotalesGanados < PremioSeleccionado.PuntosRequeridos)
         {
             await _alertaHelper.ShowErrorAsync($"El residente no tiene suficientes puntos. Tiene {ResidenteEncontrado.TicketsTotalesGanados} y el premio cuesta {PremioSeleccionado.PuntosRequeridos}.");
             return;
@@ -163,6 +177,27 @@ public partial class CrearCanjePageModel : ObservableObject
             await _canjeRepository.CreateCanjeAsync(nuevoCanje);
             await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
             await Shell.Current.GoToAsync("..");
+        }
+    }
+
+    private async Task ActualizarPremiosDisponiblesAsync()
+    {
+        PremiosDisponibles.Clear();
+
+        if (ResidenteEncontrado == null)
+            return;
+
+        var todosLosPremios = await _premioRepository.GetAllPremiosAsync();
+
+        var premiosFiltrados = todosLosPremios
+            .Where(p => ResidenteEncontrado.TicketsTotalesGanados >= p.PuntosRequeridos)
+            .ToList();
+
+        NoTienePremiosDisponibles = !premiosFiltrados.Any();
+
+        foreach (var premio in premiosFiltrados)
+        {
+            PremiosDisponibles.Add(premio);
         }
     }
 }

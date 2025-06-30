@@ -4,7 +4,6 @@
              x:Class="MauiFirebase.Pages.Canje.AgregarCanjePage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Canjes"
              xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
-             x:DataType="viewModels:CrearCanjePageModel"
              Title="Agregar Canje">
 
     <ContentPage.Resources>
@@ -60,13 +59,75 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Residente encontrado -->
-            <Label Text="Residente:"
-                   FontAttributes="Bold"
-                   FontSize="14" />
-            <Label Text="{Binding ResidenteEncontrado.NombreResidente}"
-                   FontSize="16"
-                   TextColor="{DynamicResource Gray500}" />
+            <!-- Tarjeta de información del residente -->
+            <Frame CornerRadius="20"
+                   Padding="25"
+                   Margin="20"
+                   BackgroundColor="Snow"
+                   HasShadow="True"
+                   IsVisible="{Binding ResidenteEncontrado, Converter={StaticResource NullToBoolConverter}}">
+                <StackLayout Spacing="20">
+
+                    <!-- Bienvenida -->
+                    <Label Text="{Binding ResidenteEncontrado.NombreResidente, StringFormat='¡Hola, {0}!'}"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="#2c3e50" />
+                    <Label Text="Estos son tus puntos acumulados"
+                           FontSize="14"
+                           TextColor="#7f8c8d" />
+                    <!-- Card de puntos -->
+                    <Frame BackgroundColor="#e0f7fa"
+                           CornerRadius="15"
+                           Padding="20"
+                           HasShadow="False">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="15">
+                            <Image Source="ticket_icon.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40" />
+                            <StackLayout>
+                                <Label Text="Tus Tickets"
+                                       FontSize="16"
+                                       TextColor="#006064" />
+                                <Label Text="{Binding ResidenteEncontrado.TicketsTotalesGanados}"
+                                       FontSize="30"
+                                       FontAttributes="Bold"
+                                       TextColor="#004d40" />
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Lista de premios disponibles -->
+                    <Label Text="Premios que puedes canjear:"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2c3e50" />
+                    <CollectionView ItemsSource="{Binding PremiosDisponibles}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="15" Margin="5"
+                           CornerRadius="10"
+                           BackgroundColor="#fef9e7"
+                           HasShadow="True">
+                                    <StackLayout Orientation="Horizontal" Spacing="15">
+                                        <Image Source="{Binding Icono}"
+                                               WidthRequest="40"
+                                               HeightRequest="40" />
+                                        <StackLayout>
+                                            <Label Text="{Binding NombrePremio}"
+                                                   FontSize="16"
+                                                   FontAttributes="Bold"
+                                                   TextColor="DarkBlue" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+
+
 
             <!-- Picker de premios -->
             <Frame Background="{DynamicResource CardBackgroundBrush}"
@@ -85,11 +146,11 @@
             </Frame>
 
             <!-- Mensaje si no hay premios -->
-            <Label Text="No tiene puntos suficientes para canjear ningún premio."
+            <!--<Label Text="No tiene puntos suficientes para canjear ningún premio."
                    TextColor="Red"
                    FontAttributes="Bold"
                    FontSize="13"
-                   IsVisible="{Binding NoTienePremiosDisponibles}" />
+                   IsVisible="{Binding NoTienePremiosDisponibles}" />-->
 
             <!-- Botón Guardar -->
             <Button Text="Guardar"

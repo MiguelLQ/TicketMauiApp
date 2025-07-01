@@ -192,5 +192,8 @@
                     HorizontalOptions="Center" />
         </Grid>
     </Shell.FlyoutFooter>
+
+    <!-- ✅ AGREGADO AL FINAL: Rutas ocultas de Login y Registro -->
     
+
 </Shell>

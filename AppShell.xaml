@@ -18,6 +18,7 @@
     xmlns:residente="clr-namespace:MauiFirebase.Pages.ResidentesView"
     xmlns:conversiones="clr-namespace:MauiFirebase.Pages.Convertidores"
     xmlns:inicio="clr-namespace:MauiFirebase.Pages.Home"
+    xmlns:usuario="clr-namespace:MauiFirebase.Pages.usuario"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}">
@@ -47,16 +48,17 @@
                     HorizontalOptions="Start" 
                     Aspect="AspectFill" />
 
-                <Label Text="Admin@gmail.com"
-                    FontAttributes="Bold"
-                    FontSize="18"
-                    TextColor="White"
-                    HorizontalOptions="Start" />
+                <Label x:Name="UserEmailLabel"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   TextColor="White"
+                   HorizontalOptions="Start" />
 
-                <Label Text="Administrador"
+
+                <Label x:Name="UserRoleLabel"
                     FontSize="14"
-                    TextColor="White"
-                    HorizontalOptions="Start" />
+                   TextColor="White"
+                   HorizontalOptions="Start" />
             </VerticalStackLayout>
         </Border>
     </Shell.FlyoutHeader>
@@ -136,10 +138,22 @@
         Route="residente" />-->
 
     <ShellContent
-        Title="Gestionar conversiones"
-        Icon="{StaticResource IconConfiguracion}"
-        ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
-        Route="conversiones" />
+    Title="Gestionar conversiones"
+    Icon="{StaticResource IconConfiguracion}"
+    ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
+    Route="conversiones" />
+    <FlyoutItem Title="Usuarios"
+            x:Name="UsuariosFlyoutItem"
+            Icon="{StaticResource IconConfiguracion}"
+            FlyoutDisplayOptions="AsSingleItem"
+            IsVisible="False"
+             Route="usuarios">
+
+        <ShellContent
+        Title="Usuarios"
+        ContentTemplate="{DataTemplate usuario:ListarUsuarioPage}" />
+    </FlyoutItem>
+
 
     <Shell.FlyoutFooter>
         <Grid Padding="15" RowSpacing="20">

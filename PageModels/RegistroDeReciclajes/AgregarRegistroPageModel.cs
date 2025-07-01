@@ -204,11 +204,11 @@ public partial class AgregarRegistroPageModel : ObservableObject
             var convertidores = await _convertidorRepository.GetAllConvertidorAync();
 
             int ticketsCalculados = 0;
-            if (valorTotal >= 100)
+            if (valorTotal >   400)
             {
-                ticketsCalculados = 50;
+                ticketsCalculados = 5;
             }
-            else if (valorTotal <= 20)
+            else if (valorTotal <= 100)
             {
                 ticketsCalculados = 1;
             }

@@ -166,6 +166,7 @@ public partial class CrearCanjePageModel : ObservableObject
         else
         {
             ResidenteEncontrado.TicketsTotalesGanados = ResidenteEncontrado.TicketsTotalesGanados - PremioSeleccionado.PuntosRequeridos;
+            await _residenteRepository.UpdateResidenteAsync(ResidenteEncontrado);
 
             var nuevoCanje = new Canje
             {
@@ -176,6 +177,7 @@ public partial class CrearCanjePageModel : ObservableObject
             };
             await _canjeRepository.CreateCanjeAsync(nuevoCanje);
             await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
+            
             await Shell.Current.GoToAsync("..");
         }
     }

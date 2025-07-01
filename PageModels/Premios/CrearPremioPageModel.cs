@@ -4,12 +4,13 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using Microsoft.Maui.Storage;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.Premios;
 
-public partial class CrearPremioPageModel : ObservableValidator
+public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyChanged
 {
     [ObservableProperty]
     [Required(ErrorMessage = "El nombre es obligatorio.")]

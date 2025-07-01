@@ -74,8 +74,18 @@ public partial class CrearConvertidorPageModel : ObservableValidator
 
         await _convertidorRepository.CreateConvertidorAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Convertidor creado correctamente.");
+        LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
+    private void LimpiarFormulario()
+    {
+        ValorMin = null;
+        ValorMax = null;
+        NumeroTicket = null;
+        EstadoConvertidor = true;
+        ClearErrors();
+    }
+
     /*==================================================================================
      *  VALIDACIONES DE PROPIEDADES PARA MOSTRAR ERRORES EN TIEMPO REAL
      ================================================================================= */
@@ -126,11 +136,7 @@ public partial class CrearConvertidorPageModel : ObservableValidator
     public string? ValorMinError => GetErrors(nameof(ValorMin)).FirstOrDefault()?.ErrorMessage;
     public string? ValorMaxError => GetErrors(nameof(ValorMax)).FirstOrDefault()?.ErrorMessage;
     public string? NumeroTicketError => GetErrors(nameof(NumeroTicket)).FirstOrDefault()?.ErrorMessage;
-
-
-
-    public bool HasValorMaxMayorQueValorMinError =>
-        !string.IsNullOrEmpty(ValorMaxMayorQueValorMinError);
+    public bool HasValorMaxMayorQueValorMinError => !string.IsNullOrEmpty(ValorMaxMayorQueValorMinError);
     public bool PuedeGuardar => !HasErrors && ValorMin.HasValue && ValorMax.HasValue && NumeroTicket.HasValue && ValorMax > ValorMin;
     public bool HasValorMinError => GetErrors(nameof(ValorMin)).Any();
     public bool HasValorMaxError => GetErrors(nameof(ValorMax)).Any();

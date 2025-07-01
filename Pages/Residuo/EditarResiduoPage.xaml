@@ -2,32 +2,42 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Residuo.EditarResiduoPage"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
              x:DataType="viewModels:EditarResiduoPageModel"
              >
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StringToIntConverter x:Key="StringToIntConverter" />
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="24" Spacing="20">
 
             <Label Text="✏️Editar Residuo"
-               FontSize="26"
-               FontAttributes="Bold"
-               VerticalOptions="Center"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
                    HorizontalOptions="Center"/>
 
             <!-- Nombre del residuo -->
             <Frame CornerRadius="12"
                    Padding="12" 
-                     Background="{DynamicResource CardBackgroundBrush}"
-                    BorderColor="Transparent"
+                   Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
                    >
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Nombre del residuo"
                            FontSize="14" />
                     <Entry Placeholder="Nombre del residuo"
-                           Text="{Binding NombreResiduo}"
+                           Text="{Binding NombreResiduo, Mode=TwoWay}"
                            FontSize="16"
                            BackgroundColor="Transparent" />
+                    <Label Text="{Binding NombreResiduoError}"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasNombreResiduoError}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -41,8 +51,12 @@
                     <Picker Title="Seleccionar categoría"
                             ItemsSource="{Binding ListaCategorias}"
                             ItemDisplayBinding="{Binding NombreCategoria}"
-                            SelectedItem="{Binding CategoriaResiduoSeleccionada}"
+                            SelectedItem="{Binding CategoriaResiduoSeleccionada, Mode=TwoWay}"
                             FontSize="16" />
+                    <Label Text="{Binding CategoriaResiduoError}"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasCategoriaResiduoError}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -55,10 +69,14 @@
                     <Label Text="Valor de Residuo"
                            FontSize="14" />
                     <Entry Placeholder="Valor de Residuo"
-                           Text="{Binding ValorResiduo}"
+                           Text="{Binding ValorResiduo,Mode=TwoWay}"
                            FontSize="16"
                            Keyboard="Numeric"
                            BackgroundColor="Transparent" />
+                    <Label Text="{Binding ValorResiduoError}"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasValorResiduoError}" />
                 </VerticalStackLayout>
             </Frame>
             <!-- Estado -->
@@ -73,7 +91,8 @@
             <!-- Botón Guardar -->
             <Button Text="Guardar"
                     Command="{Binding GuardarCambiosCommand}"
-                    BackgroundColor="{DynamicResource Primary}"
+                    IsEnabled="{Binding PuedeGuardar}"
+                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}" 
                     TextColor="White"
                     FontSize="16"
                     CornerRadius="25"

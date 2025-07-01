@@ -26,8 +26,8 @@
 
             <!-- Campo: Nombre del Residuo -->
             <Frame 
-                     Background="{DynamicResource CardBackgroundBrush}"
-                    BorderColor="Transparent"
+                   Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
                    CornerRadius="12"
                    Padding="16">
                 <VerticalStackLayout Spacing="4">

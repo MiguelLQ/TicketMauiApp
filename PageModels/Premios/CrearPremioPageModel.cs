@@ -88,11 +88,12 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
 
         await _premioRepository.CreatePremioAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Premio creado correctamente.");
+        LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
     private void LimpiarFormulario()
     {
-        IdPremio = 0;
+        IdPremio = 0; ;
         NombrePremio = string.Empty;
         DescripcionPremio = string.Empty;
         PuntosRequeridos = 0;
@@ -140,12 +141,9 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
     public string? NombrePremioError => GetErrors(nameof(NombrePremio)).FirstOrDefault()?.ErrorMessage;
     public string? DescripcionPremioError => GetErrors(nameof(DescripcionPremio)).FirstOrDefault()?.ErrorMessage;
     public string? PuntosRequeridosError => GetErrors(nameof(PuntosRequeridos)).FirstOrDefault()?.ErrorMessage;
-
     public bool HasNombrePremioError => GetErrors(nameof(NombrePremio)).Any();
     public bool HasDescripcionPremioError => GetErrors(nameof(DescripcionPremio)).Any();
     public bool HasPuntosRequeridosError => GetErrors(nameof(PuntosRequeridos)).Any();
     public bool HasFotoError => string.IsNullOrEmpty(FotoPremio);
-
     public bool PuedeGuardar => !HasErrors && !string.IsNullOrWhiteSpace(NombrePremio) && !string.IsNullOrWhiteSpace(DescripcionPremio) && PuntosRequeridos > 0 && !string.IsNullOrEmpty(FotoPremio);
-
 }

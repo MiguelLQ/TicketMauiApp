@@ -161,6 +161,11 @@ public static class MauiProgram
         // login
         builder.Services.AddSingleton<LoginPageModel>();
 
+        //Registro
+        builder.Services.AddSingleton<RegisterPageModel>();
+        builder.Services.AddSingleton<RegisterPage>(); 
+
+
 
         // ==========================================================
         var app = builder.Build();

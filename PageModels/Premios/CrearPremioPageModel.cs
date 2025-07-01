@@ -91,6 +91,7 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
         LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
+    [RelayCommand]
     private void LimpiarFormulario()
     {
         IdPremio = 0; ;

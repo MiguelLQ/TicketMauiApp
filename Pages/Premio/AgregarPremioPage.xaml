@@ -1,84 +1,146 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.Premio.AgregarPremioPage"
-             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
-             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
-             x:DataType="viewModels:CrearPremioPageModel"
-             Title="Agregar Premio">
+<?xml version="1.0" encoding="utf-8" ?><ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             x:Class="MauiFirebase.Pages.Premio.AgregarPremioPage"             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"             x:DataType="viewModels:CrearPremioPageModel"             Title="Agregar Premio"             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
+
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:StringToIntConverter x:Key="StringToIntConverter" />
             <local:BoolToColorConverter x:Key="BoolToColorConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Nuevo Premio" FontSize="24" FontAttributes="Bold" />
 
-        <!-- Nombre del premio -->
-        <Entry Placeholder="Nombre del premio"
-               Text="{Binding NombrePremio}" />
-        <Label Text="{Binding NombrePremioError}" 
-               TextColor="Red" FontSize="12" 
-               IsVisible="{Binding HasNombrePremioError}" />
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
 
-        <!-- Descripción del premio -->
-        <Entry Placeholder="Descripción"
-               Text="{Binding DescripcionPremio}" />
-        <Label Text="{Binding DescripcionPremioError}" 
-               TextColor="Red" FontSize="12" 
-               IsVisible="{Binding HasDescripcionPremioError}" />
+            <!-- Título centrado -->
+            <Label Text="🎁 Nuevo Premio"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
 
-        <!-- Puntos requeridos -->
-        <Entry Placeholder="Puntos requeridos"
-               Text="{Binding PuntosRequeridos}" Keyboard="Numeric" />
-        <Label Text="{Binding PuntosRequeridosError}" 
-               TextColor="Red" FontSize="12" 
-               IsVisible="{Binding HasPuntosRequeridosError}" />
+            <!-- Campo: Nombre del Premio -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Nombre del premio"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding NombrePremio}"
+                           FontSize="16"
+                           Placeholder="Ej. Mochila ecológica"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                    <Label Text="{Binding NombrePremioError}"
+                           TextColor="Red" FontSize="12"
+                           IsVisible="{Binding HasNombrePremioError}" />
+                </VerticalStackLayout>
+            </Frame>
 
+            <!-- Campo: Descripción -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Descripción"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding DescripcionPremio}"
+                           FontSize="16"
+                           Placeholder="Ej. Mochila hecha de materiales reciclados"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                    <Label Text="{Binding DescripcionPremioError}"
+                           TextColor="Red" FontSize="12"
+                           IsVisible="{Binding HasDescripcionPremioError}" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <!-- Campo URL con botón pequeño a la derecha -->
-        <HorizontalStackLayout Spacing="10">
-            <Entry Placeholder="URL o seleccionar imagen"
-           Text="{Binding FotoPremio}"
-           HorizontalOptions="FillAndExpand" />
+            <!-- Campo: Puntos requeridos -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Puntos requeridos"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding PuntosRequeridos}"
+                           FontSize="16"
+                           Keyboard="Numeric"
+                           Placeholder="Ej. 150"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                    <Label Text="{Binding PuntosRequeridosError}"
+                           TextColor="Red" FontSize="12"
+                           IsVisible="{Binding HasPuntosRequeridosError}" />
+                </VerticalStackLayout>
+            </Frame>
 
-            <Button Text="📁"
-            WidthRequest="40"
-            HeightRequest="40"
-            BackgroundColor="#0077CC"
-            TextColor="White"
-            FontSize="18"
-            Command="{Binding SeleccionarImagenCommand}"
-            VerticalOptions="Center"
-            CornerRadius="20" />
-        </HorizontalStackLayout>
-        <Label Text="{Binding FotoPremio}"
-               TextColor="Red" 
-               FontSize="12" 
-               IsVisible="{Binding HasFotoError}" />
+            <!-- Imagen -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Seleccionar imagen"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding FotoPremio}"
+                           FontSize="16"
+                           Placeholder="Ruta de imagen"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                    <Button Text="Seleccionar imagen 📁"
+                            Command="{Binding SeleccionarImagenCommand}"
+                            BackgroundColor="#0077CC"
+                            TextColor="White"
+                            CornerRadius="25"
+                            FontSize="14" />
+                    <Label Text="Debe seleccionar una imagen"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasFotoError}" />
 
-        <!-- Vista previa de imagen -->
-        <Image Source="{Binding FotoPremio}" 
-               HeightRequest="150"
-               Aspect="AspectFit"
-               Margin="0,10,0,0" />
-        
+                    <Image Source="{Binding FotoPremio}"
+                           HeightRequest="150"
+                           Margin="0,10,0,0"
+                           Aspect="AspectFit" />
+                </VerticalStackLayout>
+            </Frame>
 
-        <!-- Botón Guardar -->
-        <Button Text="Guardar"
-                TextColor="White"
-                CornerRadius="30"
-                IsEnabled="{Binding PuedeGuardar}"
-                BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
-                Command="{Binding AddPremioCommand}" />
+            <!-- Estado del premio -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="¿Activo?"
+                       FontSize="14"
+                       TextColor="#6B7280" />
+                <Switch IsToggled="{Binding EstadoPremio}" />
+            </VerticalStackLayout>
 
-        <!-- Botón Cancelar -->
-        <Button Text="Cancelar"
-                BackgroundColor="Gray"
-                TextColor="White"
-                CornerRadius="30"
-                Clicked="OnCancelarClicked" />
-    </VerticalStackLayout>
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding AddPremioCommand}"
+                    IsEnabled="{Binding PuedeGuardar}"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

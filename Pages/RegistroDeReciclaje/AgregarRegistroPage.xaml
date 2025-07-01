@@ -17,7 +17,7 @@
             <VerticalStackLayout Padding="20" Spacing="20">
 
                 <!-- Título principal -->
-                <Label Text="📋 Registro de Reciclaje"
+                <Label Text="📋Registro de Reciclaje"
                        FontSize="26"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
@@ -30,7 +30,7 @@
                        Padding="15"
                        HasShadow="True">
                     <VerticalStackLayout Spacing="10">
-                        <Label Text="🔎 Buscar por DNI"
+                        <Label Text="Buscar por DNI"
                                FontSize="14"
                                FontAttributes="Bold"
                                TextColor="{DynamicResource Primary}" />
@@ -105,7 +105,8 @@
                                Keyboard="Numeric"
                                BackgroundColor="{DynamicResource SecondaryBackground}"
                                TextColor="{DynamicResource TextColor}"
-                               HeightRequest="40" />
+                               HeightRequest="40" 
+                               TextChanged="PesoEntry_TextChanged"/>
                     </VerticalStackLayout>
                 </Frame>
 
@@ -129,14 +130,14 @@
 
                 <!-- Botones -->
                 <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
-                    <Button Text="✅ Registrar"
+                    <Button Text="Registrar"
                             Command="{Binding AddRegistroCommand}"
                             BackgroundColor="{DynamicResource Primary}"
                             TextColor="White"
                             CornerRadius="20"
                             WidthRequest="140"
                             HeightRequest="50" />
-                    <Button Text="❌ Cancelar"
+                    <Button Text="Cancelar"
                             Clicked="OnCancelarClicked"
                             BackgroundColor="{DynamicResource Gray500}"
                             TextColor="White"

@@ -24,4 +24,16 @@ public partial class AgregarRegistroPage : ContentPage
     {
         await Navigation.PopAsync();
     }
+    private void PesoEntry_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var entry = (Entry)sender;
+        string newText = e.NewTextValue;
+
+        // Validar que solo se ingresen números enteros positivos
+        if (!string.IsNullOrWhiteSpace(newText) && !System.Text.RegularExpressions.Regex.IsMatch(newText, @"^\d+$"))
+        {
+            entry.Text = e.OldTextValue;
+        }
+    }
+
 }

@@ -174,6 +174,8 @@ public partial class AgregarRegistroPageModel : ObservableObject
         ResiduoSeleccionado = null;
         PesoKilogramo = 0;
         TicketsGanados = 0;
+        ResidenteSeleccionado = null;
+        DniBuscado = string.Empty;
     }
 
     // ✅ NUEVO: Detectar cambios automáticos y calcular tickets

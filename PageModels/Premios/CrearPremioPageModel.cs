@@ -87,8 +87,10 @@ public partial class CrearPremioPageModel : ObservableValidator
 
         await _premioRepository.CreatePremioAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Premio creado correctamente.");
+        LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
+    [RelayCommand]
     private void LimpiarFormulario()
     {
         IdPremio = 0;

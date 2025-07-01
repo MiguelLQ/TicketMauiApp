@@ -16,7 +16,7 @@ namespace MauiFirebase
             }
             else
             {
-                MainPage = new LoginPage(); // mostrar login
+                MainPage = new NavigationPage(new LoginPage());// mostrar login
             }
         }
 

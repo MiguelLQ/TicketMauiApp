@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.Registers
@@ -22,17 +19,18 @@ namespace MauiFirebase.PageModels.Registers
         [RelayCommand]
         private async Task RegistrarAsync()
         {
-            // Aquí va la lógica de registro
+            // Lógica de registro aquí (agrega validaciones si deseas)
             await Application.Current.MainPage.DisplayAlert("Registro", "Usuario registrado correctamente", "OK");
 
-            // Luego de registrarse, podrías redirigir al login
-            await Shell.Current.GoToAsync(".."); // Regresar a la página anterior
+            // ✅ Regresar al Login usando Navigation
+            await Application.Current.MainPage.Navigation.PopAsync();
         }
 
         [RelayCommand]
         private async Task CancelarAsync()
         {
-            await Shell.Current.GoToAsync(".."); // Regresar a LoginPage
+            // ✅ Cancelar y regresar al Login
+            await Application.Current.MainPage.Navigation.PopAsync();
         }
     }
 }

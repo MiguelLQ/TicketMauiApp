@@ -42,8 +42,8 @@
                                     <!-- Imagen del premio -->
                                     <Image 
                                         Source="{Binding FotoPremio}"
-                                        HeightRequest="60"
-                                        WidthRequest="60"
+                                        HeightRequest="150"
+                                        WidthRequest="150"
                                         Grid.RowSpan="2"
                                         Margin="0,0,10,0"
                                         VerticalOptions="Start"
@@ -102,12 +102,11 @@
 
                                     <!-- Línea divisoria -->
                                     <BoxView 
-                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                        Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                                         HeightRequest="1"
                                         BackgroundColor="{DynamicResource Primary}"
                                         HorizontalOptions="Fill"
                                         Margin="0,8,0,8" />
-
                                     <!-- Ver más -->
                                     <Label 
                                         Grid.Row="2" Grid.Column="1"

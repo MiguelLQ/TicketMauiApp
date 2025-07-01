@@ -90,6 +90,13 @@ namespace MauiFirebase.PageModels.Logins
                 HasError = true;
             }
         }
+        [RelayCommand]
+        private async Task IrARegistroAsync()
+        {
+            // ✅ Navegación directa sin Shell
+            await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+        }
+
 
 
         // Implementación de INotifyPropertyChanged
@@ -103,12 +110,6 @@ namespace MauiFirebase.PageModels.Logins
             backingStore = value;
             OnPropertyChanged(propertyName);
             return true;
-        }
-        
-        [RelayCommand]
-        private async Task IrARegistroAsync()
-        {
-            await Shell.Current.GoToAsync(nameof(RegisterPage));
         }
 
 

@@ -7,6 +7,7 @@ public partial class RegisterPage : ContentPage
     public RegisterPage()
     {
         InitializeComponent();
-        BindingContext = new RegisterPageModel(); // <--- esto es importante
+        BindingContext = MauiProgram.Services.GetService<RegisterPageModel>();
+        // <--- esto es importante
     }
 }

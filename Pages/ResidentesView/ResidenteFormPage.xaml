@@ -11,7 +11,7 @@
 
     <ContentPage.Resources>
         <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
-        
+
 
         <Style TargetType="Entry">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1E1E1E}" />
@@ -78,7 +78,7 @@
 
                     <Button Text="Guardar"
                             Command="{Binding GuardarResidenteCommand}"
-                            BackgroundColor="#4CAF50" />    
+                            BackgroundColor="#4CAF50" />
                 </VerticalStackLayout>
             </Border>
 

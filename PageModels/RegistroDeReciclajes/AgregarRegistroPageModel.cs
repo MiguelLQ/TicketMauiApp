@@ -169,7 +169,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
         }
     }
 
-    private void LimpiarFormulario()
+    public void LimpiarFormulario()
     {
         ResiduoSeleccionado = null;
         PesoKilogramo = 0;

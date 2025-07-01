@@ -26,6 +26,8 @@ using MauiFirebase.PageModels.Conversiones;
 using MauiFirebase.Pages.Convertidores;
 
 using MauiFirebase.PageModels.Logins;
+using MauiFirebase.Pages.usuario;
+using MauiFirebase.PageModels.Usuarios;
 
 namespace MauiFirebase;
 
@@ -140,6 +142,10 @@ public static class MauiProgram
 
         builder.Services.AddTransient<EditarCanjePageModel>();
         builder.Services.AddTransient<EditarCanjePage>();
+        // usuario
+        builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
+        builder.Services.AddSingleton<UsuarioPageModel>();
+        builder.Services.AddSingleton<ListarUsuarioPage>();
 
 
         builder.UseMauiCommunityToolkit(); //  Esto es obligatorio

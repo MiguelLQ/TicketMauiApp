@@ -42,7 +42,7 @@
                             <Label Text="Hola, Bienvenido!"
                                FontSize="20"
                                TextColor="White" />
-                            <Label Text="Admin@gmail.com"
+                            <Label x:Name="CorreoUsuarioLabel"
                                FontSize="14"
                                TextColor="{DynamicResource Gray200}" />
                         </VerticalStackLayout>

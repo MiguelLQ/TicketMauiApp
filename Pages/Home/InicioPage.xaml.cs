@@ -1,4 +1,5 @@
 using MauiFirebase.PageModels.Logins;
+using MauiFirebase.Services;
 
 namespace MauiFirebase.Pages.Home;
 
@@ -9,6 +10,7 @@ public partial class InicioPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = new DashboardPageModel();
+        MostrarCorreoUsuario();
 
     }
     protected override void OnAppearing()
@@ -27,6 +29,11 @@ public partial class InicioPage : ContentPage
         Shell.SetTitleColor(this, Colors.Black);
         Shell.SetForegroundColor(this, Colors.Black);
     }
-
+    private void MostrarCorreoUsuario()
+    {
+        var authService = new FirebaseAuthService();
+        string correo = authService.GetUserEmail();
+        CorreoUsuarioLabel.Text = correo;
+    }
 
 }

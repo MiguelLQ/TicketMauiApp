@@ -10,6 +10,8 @@ using Font = Microsoft.Maui.Font;
 using MauiFirebase.Pages.Convertidores;
 
 using MauiFirebase.Pages.Login;
+using MauiFirebase.Pages.usuario;
+//using Windows.Devices.Sensors;
 
 namespace MauiFirebase
 {
@@ -36,11 +38,13 @@ namespace MauiFirebase
 
             Routing.RegisterRoute(nameof(AgregarCanjePage), typeof(AgregarCanjePage));
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
+            CargarDatosUsuario();
+            MostrarOpcionesSegunRol();
+
             //Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
             // En AppShell.xaml.cs
-     
-            Routing.RegisterRoute("LoginPage", typeof(LoginPage));
 
+            Routing.RegisterRoute("LoginPage", typeof(LoginPage));
             // Escuchar cambio de rutas
             Navigated += AppShell_Navigated;
             var currentTheme = Application.Current!.RequestedTheme;
@@ -111,6 +115,44 @@ namespace MauiFirebase
             Application.Current.Resources["CardBackgroundBrush"] = new SolidColorBrush(
                 (Color)Application.Current.Resources[isDark ? "CardBackgroundDark" : "CardBackgroundLight"]
             );
+        }
+        private void CargarDatosUsuario()
+        {
+            try
+            {
+                var authService = new FirebaseAuthService();
+
+                string correo = authService.GetUserEmail();
+                string rol = Preferences.Get("FirebaseUserRole", string.Empty);
+
+                UserEmailLabel.Text = correo;
+                UserRoleLabel.Text = string.IsNullOrEmpty(rol) ? "Rol desconocido" : rol;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al cargar datos del usuario: " + ex.Message);
+            }
+        }
+
+
+        private void MostrarOpcionesSegunRol()
+        {
+            if (!Preferences.ContainsKey("FirebaseUserRole"))
+            {
+                UsuariosFlyoutItem.IsVisible = false;
+                return;
+            }
+
+            var rol = Preferences.Get("FirebaseUserRole", string.Empty);
+
+            if (rol == "admin")
+            {
+                UsuariosFlyoutItem.IsVisible = true;
+            }
+            else
+            {
+                UsuariosFlyoutItem.IsVisible = false;
+            }
         }
 
     }

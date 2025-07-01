@@ -162,8 +162,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<LoginPageModel>();
 
         //Registro
-        builder.Services.AddSingleton<RegisterPageModel>();
-        builder.Services.AddSingleton<RegisterPage>(); 
+        //builder.Services.AddSingleton<RegisterPageModel>();
+        //builder.Services.AddSingleton<RegisterPage>(); 
 
 
 

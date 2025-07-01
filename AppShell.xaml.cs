@@ -11,6 +11,7 @@ using MauiFirebase.Pages.Convertidores;
 
 using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.usuario;
+using MauiFirebase.Pages.Register;
 //using Windows.Devices.Sensors;
 
 namespace MauiFirebase
@@ -38,6 +39,10 @@ namespace MauiFirebase
 
             Routing.RegisterRoute(nameof(AgregarCanjePage), typeof(AgregarCanjePage));
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
+            //para register page
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+
+
             CargarDatosUsuario();
             MostrarOpcionesSegunRol();
 
@@ -99,7 +104,8 @@ namespace MauiFirebase
             var authService = new FirebaseAuthService();
             authService.Logout();
 
-            Application.Current.MainPage = new LoginPage();
+            //Application.Current.MainPage = new LoginPage();
+            Application.Current.MainPage = new NavigationPage(new LoginPage());
         }
 
 

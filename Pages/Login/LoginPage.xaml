@@ -3,7 +3,7 @@
              xmlns:vm="clr-namespace:MauiFirebase.PageModels.Logins"
              x:Class="MauiFirebase.Pages.Login.LoginPage"
              x:DataType="vm:LoginPageModel"
-             Shell.NavBarIsVisible="False">
+             NavigationPage.HasNavigationBar="False">
 
     <!-- Fondo con gradiente azul-verde -->
     <ContentPage.Background>

@@ -28,6 +28,8 @@ using MauiFirebase.Pages.Convertidores;
 using MauiFirebase.PageModels.Logins;
 using MauiFirebase.Pages.usuario;
 using MauiFirebase.PageModels.Usuarios;
+using MauiFirebase.PageModels.Registers;
+using MauiFirebase.Pages.Register;
 
 namespace MauiFirebase;
 

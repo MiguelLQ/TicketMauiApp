@@ -42,6 +42,7 @@ namespace MauiFirebase
             //para register page
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
 
+
             CargarDatosUsuario();
             MostrarOpcionesSegunRol();
 
@@ -103,7 +104,8 @@ namespace MauiFirebase
             var authService = new FirebaseAuthService();
             authService.Logout();
 
-            Application.Current.MainPage = new LoginPage();
+            //Application.Current.MainPage = new LoginPage();
+            Application.Current.MainPage = new NavigationPage(new LoginPage());
         }
 
 

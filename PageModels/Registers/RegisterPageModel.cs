@@ -30,7 +30,8 @@ namespace MauiFirebase.PageModels.Registers
         private async Task CancelarAsync()
         {
             // ✅ Cancelar y regresar al Login
-            await Application.Current.MainPage.Navigation.PopAsync();
+            await Application.Current.MainPage.Navigation.PopAsync(); // volver al login
+
         }
     }
 }

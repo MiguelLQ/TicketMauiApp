@@ -194,11 +194,6 @@
     </Shell.FlyoutFooter>
 
     <!-- ✅ AGREGADO AL FINAL: Rutas ocultas de Login y Registro -->
-    <ShellContent Route="LoginPage"
-                  ContentTemplate="{DataTemplate login:LoginPage}"
-                  IsVisible="False" />
+    
 
-    <ShellContent Route="RegisterPage"
-                  ContentTemplate="{DataTemplate register:RegisterPage}"
-                  IsVisible="False" />
 </Shell>

@@ -203,19 +203,13 @@ public partial class AgregarRegistroPageModel : ObservableObject
             int valorResiduo = ResiduoSeleccionado.ValorResiduo;
             decimal valorTotal = PesoKilogramo * valorResiduo;
 
-            var convertidores = await _convertidorRepository.GetAllConvertidorAync();// 
+            var convertidores = await _convertidorRepository.GetAllConvertidorAync();
 
             int ticketsCalculados = 0;
             if (valorTotal > 400)
             {
                 ticketsCalculados = 5;
             }
-
-            else if (valorTotal <= 100)
-            {
-                ticketsCalculados = 1;
-            }
-
             else
             {
                 foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))

@@ -48,5 +48,10 @@ namespace MauiFirebase.Data.Repositories
             await _database.Database!.UpdateAsync(premio);
             return true;
         }
+        public async Task<int> ObtenerCantidadPremios()
+        {
+            var premios = await _database.Database!.Table<Premio>().ToListAsync();
+            return premios.Count;
+        }
     }
 }

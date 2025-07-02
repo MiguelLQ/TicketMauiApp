@@ -153,7 +153,7 @@
                    IsVisible="{Binding NoTienePremiosDisponibles}" />-->
 
             <!-- Botón Guardar -->
-            <Button Text="Guardar"
+            <Button Text="Canjear"
                     IsEnabled="{Binding PuedeGuardar}"
                     BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
                     TextColor="White"

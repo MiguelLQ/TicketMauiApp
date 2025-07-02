@@ -35,4 +35,6 @@ public interface IResidenteRepository
     Task<Residente?> GetResidenteByDniAsync(string dni);
     Task<Residente?> ObtenerPorDniAsync(string dniResidente);
     Task GuardarAsync(Residente residenteEncontrado);
+
+    Task<int> TotalResidentes();
 }

@@ -1,5 +1,4 @@
 using MauiFirebase.PageModels.Logins;
-using MauiFirebase.Services;
 
 namespace MauiFirebase.Pages.Home;
 
@@ -35,5 +34,4 @@ public partial class InicioPage : ContentPage
         string correo = authService.GetUserEmail();
         CorreoUsuarioLabel.Text = correo;
     }
-
 }

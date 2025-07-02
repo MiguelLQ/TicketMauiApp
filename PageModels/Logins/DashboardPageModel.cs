@@ -56,7 +56,7 @@ namespace MauiFirebase.PageModels.Logins
             int totalPremios = await _premioRepository.ObtenerCantidadPremios();
             return new List<TarjetaResumen>
             {
-                new() { Titulo = "Residentes", Valor = totalResidentes.ToString(), Emoji = "👥" },
+                new() { Titulo = "Ciudadanos", Valor = totalResidentes.ToString(), Emoji = "👥" },
                 new() { Titulo = "Reciclaje", Valor = $"{totalReciclado} kg", Emoji = "♻️" },
                 //new() { Titulo = "Tickets", Valor = totalTickets.ToString(), Emoji = "🎟️" },
                 new() { Titulo = "Premios", Valor = totalPremios.ToString(), Emoji = "🏆" }

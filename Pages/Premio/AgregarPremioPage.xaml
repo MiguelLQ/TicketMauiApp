@@ -88,36 +88,45 @@
             </Frame>
 
             <!-- Imagen -->
-            <Frame CornerRadius="12"
-            Padding="12"
-            Background="{DynamicResource CardBackgroundBrush}"
-            BorderColor="Transparent">
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Imagen del premio" FontSize="14" />
-                    <Entry Placeholder="Ruta de la imagen"
-                        Text="{Binding FotoPremio}"
-                        FontSize="16"
-                        BackgroundColor="Transparent" />
+                    <Label Text="Seleccionar imagen"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Text="{Binding FotoPremio}"
+                           FontSize="16"
+                           Placeholder="Ruta de imagen"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
                     <Button Text="Seleccionar imagen 📁"
-                         Command="{Binding SeleccionarImagenCommand}"
-                         BackgroundColor="#0077CC"
-                         TextColor="White"
-                         CornerRadius="25"
-                         FontSize="14" />
+                            Command="{Binding SeleccionarImagenCommand}"
+                            BackgroundColor="#0077CC"
+                            TextColor="White"
+                            CornerRadius="25"
+                            FontSize="14" />
+                    <Label Text="Debe seleccionar una imagen"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasFotoError}" />
+
                     <Image Source="{Binding FotoPremio}"
-                        HeightRequest="150"
-                        Margin="0,10,0,0"
-                        Aspect="AspectFit" />
+                           HeightRequest="150"
+                           Margin="0,10,0,0"
+                           Aspect="AspectFit" />
                 </VerticalStackLayout>
             </Frame>
 
             <!-- Estado del premio -->
-           <!-- <VerticalStackLayout Spacing="4">
+            <VerticalStackLayout Spacing="4">
                 <Label Text="¿Activo?"
                        FontSize="14"
                        TextColor="#6B7280" />
                 <Switch IsToggled="{Binding EstadoPremio}" />
-            </VerticalStackLayout>-->
+            </VerticalStackLayout>
 
             <!-- Botón Guardar -->
             <Button Text="Guardar"
@@ -125,7 +134,7 @@
                     IsEnabled="{Binding PuedeGuardar}"
                     FontSize="16"
                     FontAttributes="Bold"
-                    BackgroundColor="{DynamicResource Primary}"
+                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
                     TextColor="White"
                     HeightRequest="50"
                     CornerRadius="25" />
@@ -135,7 +144,7 @@
                     Clicked="OnCancelarClicked"
                     FontSize="16"
                     FontAttributes="Bold"
-                    BackgroundColor="{DynamicResource Gray500}"
+                    BackgroundColor="Red"
                     TextColor="White"
                     HeightRequest="50"
                     CornerRadius="25" />

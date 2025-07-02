@@ -3,112 +3,116 @@
              xmlns:vm="clr-namespace:MauiFirebase.PageModels.Logins"
              x:Class="MauiFirebase.Pages.Login.LoginPage"
              x:DataType="vm:LoginPageModel"
-             NavigationPage.HasNavigationBar="False">
-
-    <!-- Fondo con gradiente azul-verde -->
-    <ContentPage.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#92FE9D" Offset="0.0" />
-            <GradientStop  Color="#01C9FF"  Offset="1.0" />
-        </LinearGradientBrush>
-    </ContentPage.Background>
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#E3F2FD">
 
     <ScrollView>
-        <Grid Padding="50">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <!-- Encabezado -->
-            <VerticalStackLayout Grid.Row="0" Spacing="10" HorizontalOptions="Center">
-                <Image Source="logosanji.png" HeightRequest="100" />
-                <Label Text="Bienvenido"
-                       FontSize="26"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center" />
-                <!-- Imagen del camión debajo del logo -->
-                <Image Source="camion.png"
-                       Aspect="AspectFit"
-                       HeightRequest="100"
-                       HorizontalOptions="Center" />
+        <Grid>
+            <!-- Encabezado con logo y camión -->
+            <VerticalStackLayout Padding="30,60,30,10" Spacing="12" HorizontalOptions="Center">
+                <Image Source="logosanji.png" HeightRequest="100" SemanticProperties.Description="Logo Municipalidad San Jerónimo" />
+                <Image Source="camion.png" HeightRequest="90" Aspect="AspectFit" SemanticProperties.Description="Camión recolector" />
             </VerticalStackLayout>
 
-            <!-- Formulario -->
-            <VerticalStackLayout Grid.Row="1" Spacing="20" VerticalOptions="Center">
+            <!-- Formulario blanco flotante -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="40"
+                   Margin="30,280,30,50"
+                   Padding="28"
+                   HasShadow="True"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Start">
 
-                <!-- Correo -->
-                <Frame CornerRadius="10" Padding="10" BackgroundColor="White" HasShadow="False">
-                    <Entry Placeholder="Correo"
-                           BackgroundColor="Transparent"
-                           FontSize="16"
-                           Keyboard="Email"
-                           Text="{Binding Email}" />
-                </Frame>
+                <VerticalStackLayout Spacing="20">
 
-                <!-- Contraseña -->
-                <Frame CornerRadius="10" Padding="10" BackgroundColor="White" HasShadow="False">
-                    <Entry Placeholder="Contraseña"
-                           IsPassword="True"
-                           BackgroundColor="Transparent"
-                           FontSize="16"
-                           Text="{Binding Password}" />
-                </Frame>
+                    <!-- Correo -->
+                    <Frame CornerRadius="10" Padding="8" BackgroundColor="White" HasShadow="False">
+                        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                            <Image Source="email_icon.png" HeightRequest="20" WidthRequest="20" />
+                            <Entry Placeholder="Correo"
+                                   Text="{Binding Email}"
+                                   FontSize="15"
+                                   PlaceholderColor="Gray"
+                                   Keyboard="Email"
+                                   TextColor="Black"
+                                   AutomationId="emailEntry" />
+                        </HorizontalStackLayout>
+                    </Frame>
 
-                <!-- Botón Iniciar Sesión -->
-                <Button Text="INICIAR SESIÓN"
-                        BackgroundColor="#00BFFF"
-                        TextColor="White"
-                        FontAttributes="Bold"
-                        FontSize="16"  
-                        HeightRequest="50"
-                        CornerRadius="10"
-                        Command="{Binding LoginCommand}" />
+                    <!-- Contraseña -->
+                    <Frame CornerRadius="10" Padding="8" BackgroundColor="White" HasShadow="False">
+                        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                            <Image Source="lock_icon.png" HeightRequest="20" WidthRequest="20" />
+                            <Entry Placeholder="Contraseña"
+                                   Text="{Binding Password}"
+                                   IsPassword="True"
+                                   FontSize="15"
+                                   PlaceholderColor="Gray"
+                                   TextColor="Black"
+                                   AutomationId="passwordEntry" />
+                        </HorizontalStackLayout>
+                    </Frame>
 
-                <!-- Mensaje de error -->
-                <Label Text="{Binding ErrorMessage}"
-                       TextColor="Red"
-                       IsVisible="{Binding HasError}" />
+                    <!-- Botón Login -->
+                    <Button Text="INICIAR SESIÓN"
+                            BackgroundColor="#1a2980"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            HeightRequest="48"
+                            CornerRadius="8"
+                            Command="{Binding LoginCommand}"
+                            AutomationId="loginButton" />
 
-                <!-- Registro -->
-                <Label HorizontalOptions="Center" FontSize="14" TextColor="White">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="¿No tienes una cuenta? " />
-                            <Span Text="Regístrate aquí"
-                                  TextDecorations="Underline"
-                                  TextColor="#00BFFF"
-                                  FontAttributes="Bold">
-                                <Span.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding IrARegistroCommand}" />
-                                </Span.GestureRecognizers>
-                            </Span>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                    <!-- Mensaje de error -->
+                    <Label Text="{Binding ErrorMessage}"
+                           TextColor="Red"
+                           FontAttributes="Italic"
+                           IsVisible="{Binding HasError}"
+                           FontSize="13"
+                           HorizontalOptions="Center" />
 
-                <!-- Línea divisoria -->
-                <BoxView HeightRequest="1" Color="#B0C4DE" />
+                    <!-- Enlace a registro -->
+                    <Label HorizontalOptions="Center" FontSize="14" TextColor="Black">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="¿No tienes una cuenta? " />
+                                <Span Text="Regístrate aquí"
+                                      TextDecorations="Underline"
+                                      TextColor="#00BFFF"
+                                      FontAttributes="Bold">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding IrARegistroCommand}" />
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
 
-                <!-- Social login -->
-                <Label Text="o inicia sesión con"
-                       FontSize="14"
-                       TextColor="White"
-                       HorizontalOptions="Center" />
+                    <!-- Social login -->
+                    <Label Text="o inicia sesión con"
+                           FontSize="13"
+                           TextColor="#7b8ca5"
+                           HorizontalOptions="Center"
+                           Margin="0,5,0,0" />
 
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
-                    <ImageButton Source="facebook.png"
-                                 HeightRequest="40"
-                                 WidthRequest="40"
-                                 BackgroundColor="Transparent"
-                                 Clicked="FacebookClicked" />
-                    <ImageButton Source="google.png"
-                                 HeightRequest="40"
-                                 WidthRequest="40"
-                                 BackgroundColor="Transparent"
-                                 Clicked="GoogleClicked" />
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="15" Margin="0,0,0,0">
+                        <ImageButton Source="facebook.png"
+                                     HeightRequest="36"
+                                     WidthRequest="36"
+                                     BackgroundColor="Transparent"
+                                     Clicked="FacebookClicked"
+                                     SemanticProperties.Description="Iniciar sesión con Facebook" />
+                        <ImageButton Source="google.png"
+                                     HeightRequest="36"
+                                     WidthRequest="36"
+                                     BackgroundColor="Transparent"
+                                     Clicked="GoogleClicked"
+                                     SemanticProperties.Description="Iniciar sesión con Google" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
         </Grid>
     </ScrollView>
 </ContentPage>

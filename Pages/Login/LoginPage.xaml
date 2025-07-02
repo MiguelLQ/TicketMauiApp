@@ -4,45 +4,56 @@
              x:Class="MauiFirebase.Pages.Login.LoginPage"
              x:DataType="vm:LoginPageModel"
              NavigationPage.HasNavigationBar="False"
-             BackgroundColor="#E3F2FD">
+             BackgroundColor="#EAEFEF">
 
-    <ScrollView>
-        <Grid>
-            <!-- Encabezado con logo y camión -->
-            <VerticalStackLayout Padding="30,60,30,10" Spacing="12" HorizontalOptions="Center">
-                <Image Source="logosanji.png" HeightRequest="100" SemanticProperties.Description="Logo Municipalidad San Jerónimo" />
-                <Image Source="camion.png" HeightRequest="90" Aspect="AspectFit" SemanticProperties.Description="Camión recolector" />
-            </VerticalStackLayout>
+    <Grid RowDefinitions="Auto,*">
 
-            <!-- Formulario blanco flotante -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="40"
-                   Margin="30,280,30,50"
-                   Padding="28"
-                   HasShadow="True"
-                   HorizontalOptions="Fill"
-                   VerticalOptions="Start">
+        <!-- 🟦 Logo y camión -->
+        <VerticalStackLayout Grid.Row="0"
+                             Padding="5,60,30,10"
+                             Spacing="12"
+                             HorizontalOptions="Center">
+            <Image Source="logosanji.png"
+                   HeightRequest="100"
+                   SemanticProperties.Description="Logo Municipalidad San Jerónimo" />
+            <Image Source="camion.png"
+                   HeightRequest="90"
+                   Aspect="AspectFit"
+                   SemanticProperties.Description="Camión recolector" />
+        </VerticalStackLayout>
 
+        <!-- 🟩 Formulario blanco flotante con bordes redondeados -->
+        <Frame
+               BackgroundColor="White"
+                CornerRadius="30"
+                BorderColor="Transparent"
+                Margin="20,280,20,20"
+                Padding="28"
+                HasShadow="True"
+                HorizontalOptions="Fill"
+                VerticalOptions="Start">
+
+            <ScrollView>
                 <VerticalStackLayout Spacing="20">
 
                     <!-- Correo -->
-                    <Frame CornerRadius="10" Padding="8" BackgroundColor="White" HasShadow="False">
+                    <Frame CornerRadius="30" Padding="8" BackgroundColor="White" HasShadow="False">
                         <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                            <Image Source="email_icon.png" HeightRequest="20" WidthRequest="20" />
+
+                            <Label Text="👤" FontSize="25" />
                             <Entry Placeholder="Correo"
                                    Text="{Binding Email}"
                                    FontSize="15"
                                    PlaceholderColor="Gray"
                                    Keyboard="Email"
-                                   TextColor="Black"
-                                   AutomationId="emailEntry" />
+                                   TextColor="Black" />
                         </HorizontalStackLayout>
                     </Frame>
 
                     <!-- Contraseña -->
-                    <Frame CornerRadius="10" Padding="8" BackgroundColor="White" HasShadow="False">
+                    <Frame CornerRadius="30" Padding="8" BackgroundColor="White" HasShadow="False">
                         <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                            <Image Source="lock_icon.png" HeightRequest="20" WidthRequest="20" />
+                            <Label Text="🔒" FontSize="25" />
                             <Entry Placeholder="Contraseña"
                                    Text="{Binding Password}"
                                    IsPassword="True"
@@ -60,7 +71,7 @@
                             FontAttributes="Bold"
                             FontSize="16"
                             HeightRequest="48"
-                            CornerRadius="8"
+                            CornerRadius="30"
                             Command="{Binding LoginCommand}"
                             AutomationId="loginButton" />
 
@@ -76,7 +87,8 @@
                     <Label HorizontalOptions="Center" FontSize="14" TextColor="Black">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="¿No tienes una cuenta? " />
+                                <Span Text="¿No tienes una cuenta? "
+                                      TextColor="Black" />
                                 <Span Text="Regístrate aquí"
                                       TextDecorations="Underline"
                                       TextColor="#00BFFF"
@@ -88,6 +100,9 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+                    <!-- Separador -->
+                    <BoxView HeightRequest="1" Color="#B0C4DE" HorizontalOptions="Fill" />
+
 
                     <!-- Social login -->
                     <Label Text="o inicia sesión con"
@@ -96,7 +111,7 @@
                            HorizontalOptions="Center"
                            Margin="0,5,0,0" />
 
-                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="15" Margin="0,0,0,0">
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="15" Margin="0,0,0,10">
                         <ImageButton Source="facebook.png"
                                      HeightRequest="36"
                                      WidthRequest="36"
@@ -112,7 +127,7 @@
                     </HorizontalStackLayout>
 
                 </VerticalStackLayout>
-            </Frame>
-        </Grid>
-    </ScrollView>
+            </ScrollView>
+        </Frame>
+    </Grid>
 </ContentPage>

@@ -100,7 +100,23 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
         PuntosRequeridos = 0;
         EstadoPremio = false;
         FotoPremio = string.Empty;
+       /* LimpiarErrores();*/
     }
+    /*private void LimpiarErrores()
+    {
+        foreach (var property in new[] { nameof(NombrePremio), nameof(DescripcionPremio), nameof(PuntosRequeridos), nameof(FotoPremio) })
+        {
+            ClearErrors(property);
+        }
+        ValidateAllProperties(); // Opcional, si quieres reiniciar validación
+        OnPropertyChanged(nameof(NombrePremioError));
+        OnPropertyChanged(nameof(DescripcionPremioError));
+        OnPropertyChanged(nameof(PuntosRequeridosError));
+        OnPropertyChanged(nameof(HasNombrePremioError));
+        OnPropertyChanged(nameof(HasDescripcionPremioError));
+        OnPropertyChanged(nameof(HasPuntosRequeridosError));
+        OnPropertyChanged(nameof(HasFotoError));
+    }*/
 
     /*==================================================================================
      *  VALIDACIONES DE PROPIEDADES PARA MOSTRAR ERRORES EN TIEMPO REAL

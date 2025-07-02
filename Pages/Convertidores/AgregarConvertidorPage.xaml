@@ -5,7 +5,8 @@
              xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Conversiones"
              x:DataType="viewModels:CrearConvertidorPageModel"
-             >
+             Title="Nuevo Convertidor"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -15,35 +16,34 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="20">
+        <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- Título con ícono -->
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
-                <Label Text="🔁"
-                       FontSize="28"
-                       VerticalOptions="Center" />
-                <Label Text="Nuevo Convertidor"
-                       FontSize="28"
-                       FontAttributes="Bold"
-                       VerticalOptions="Center" />
-            </HorizontalStackLayout>
+            <!-- Título -->
+            <Label Text="🔁 Nuevo Convertidor"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="{DynamicResource Primary}" />
 
             <!-- Campo: Valor Mínimo -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
+            <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="15"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="6">
                     <Label Text="Valor mínimo"
                            FontSize="14"
-                           TextColor="#6B7280" />
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource TextColor}" />
                     <Entry Text="{Binding ValorMin, Mode=TwoWay, Converter={StaticResource StringToIntConverter}}"
                            FontSize="16"
                            Keyboard="Numeric"
                            Placeholder="Ej. 0.00"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
+                           PlaceholderColor="{DynamicResource PlaceholderTextColor}"
+                           TextColor="{DynamicResource TextColor}"
+                           BackgroundColor="{DynamicResource SecondaryBackground}"
+                           HeightRequest="40" />
                     <Label Text="{Binding ValorMinError}"
                            TextColor="Red"
                            FontSize="12"
@@ -52,27 +52,28 @@
             </Frame>
 
             <!-- Campo: Valor Máximo -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
+            <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="15"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="6">
                     <Label Text="Valor máximo"
                            FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding ValorMax,Mode=TwoWay,Converter={StaticResource StringToIntConverter}}"
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource TextColor}" />
+                    <Entry Text="{Binding ValorMax, Mode=TwoWay, Converter={StaticResource StringToIntConverter}}"
                            FontSize="16"
                            Keyboard="Numeric"
                            Placeholder="Ej. 10.00"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
-
+                           PlaceholderColor="{DynamicResource PlaceholderTextColor}"
+                           TextColor="{DynamicResource TextColor}"
+                           BackgroundColor="{DynamicResource SecondaryBackground}"
+                           HeightRequest="40" />
                     <Label Text="{Binding ValorMaxError}"
                            TextColor="Red"
                            FontSize="12"
                            IsVisible="{Binding HasValorMaxError}" />
-
                     <Label Text="{Binding ValorMaxMayorQueValorMinError}"
                            TextColor="Red"
                            FontSize="12"
@@ -81,22 +82,24 @@
             </Frame>
 
             <!-- Campo: Número de Tickets -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
+            <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="15"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="6">
                     <Label Text="Número de Tickets"
                            FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding NumeroTicket,Mode=TwoWay,Converter={StaticResource StringToIntConverter}}"
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource TextColor}" />
+                    <Entry Text="{Binding NumeroTicket, Mode=TwoWay, Converter={StaticResource StringToIntConverter}}"
                            FontSize="16"
                            Keyboard="Numeric"
                            Placeholder="Ej. 5"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
-
+                           PlaceholderColor="{DynamicResource PlaceholderTextColor}"
+                           TextColor="{DynamicResource TextColor}"
+                           BackgroundColor="{DynamicResource SecondaryBackground}"
+                           HeightRequest="40" />
                     <Label Text="{Binding NumeroTicketError}"
                            TextColor="Red"
                            FontSize="12"
@@ -104,26 +107,25 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Botón Guardar -->
-            <Button Text="Guardar"
-                    Command="{Binding CrearConvertidorCommand}"
-                    IsEnabled="{Binding PuedeGuardar}"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25" />
+            <!-- Botones -->
+            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                <Button Text="Guardar"
+                        Command="{Binding CrearConvertidorCommand}"
+                        IsEnabled="{Binding PuedeGuardar}"
+                        BackgroundColor="{DynamicResource Primary}"
+                        TextColor="White"
+                        WidthRequest="140"
+                        HeightRequest="50"
+                        CornerRadius="20" />
+                <Button Text="Cancelar"
+                        Clicked="OnCancelarClicked"
+                        BackgroundColor="{DynamicResource Gray500}"
+                        TextColor="White"
+                        WidthRequest="140"
+                        HeightRequest="50"
+                        CornerRadius="20" />
+            </HorizontalStackLayout>
 
-            <!-- Botón Cancelar -->
-            <Button Text="Cancelar"
-                    Clicked="OnCancelarClicked"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    BackgroundColor="red"
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8" ?><ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             x:Class="MauiFirebase.Pages.Premio.AgregarPremioPage"             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"             x:DataType="viewModels:CrearPremioPageModel"             Title="Agregar Premio"             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Premio.AgregarPremioPage"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
+             x:DataType="viewModels:CrearPremioPageModel"
+             Title="Agregar Premio"
+             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -80,45 +88,36 @@
             </Frame>
 
             <!-- Imagen -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
+            <Frame CornerRadius="12"
+        Padding="12"
+        Background="{DynamicResource CardBackgroundBrush}"
+        BorderColor="Transparent">
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Seleccionar imagen"
-                           FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding FotoPremio}"
-                           FontSize="16"
-                           Placeholder="Ruta de imagen"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
+                    <Label Text="Imagen del premio" FontSize="14" />
+                    <Entry Placeholder="Ruta de la imagen"
+                Text="{Binding FotoPremio}"
+                FontSize="16"
+                BackgroundColor="Transparent" />
                     <Button Text="Seleccionar imagen 📁"
-                            Command="{Binding SeleccionarImagenCommand}"
-                            BackgroundColor="#0077CC"
-                            TextColor="White"
-                            CornerRadius="25"
-                            FontSize="14" />
-                    <Label Text="Debe seleccionar una imagen"
-                           TextColor="Red"
-                           FontSize="12"
-                           IsVisible="{Binding HasFotoError}" />
-
+                 Command="{Binding SeleccionarImagenCommand}"
+                 BackgroundColor="#0077CC"
+                 TextColor="White"
+                 CornerRadius="25"
+                 FontSize="14" />
                     <Image Source="{Binding FotoPremio}"
-                           HeightRequest="150"
-                           Margin="0,10,0,0"
-                           Aspect="AspectFit" />
+                HeightRequest="150"
+                Margin="0,10,0,0"
+                Aspect="AspectFit" />
                 </VerticalStackLayout>
             </Frame>
 
             <!-- Estado del premio -->
-            <VerticalStackLayout Spacing="4">
+           <!-- <VerticalStackLayout Spacing="4">
                 <Label Text="¿Activo?"
                        FontSize="14"
                        TextColor="#6B7280" />
                 <Switch IsToggled="{Binding EstadoPremio}" />
-            </VerticalStackLayout>
+            </VerticalStackLayout>-->
 
             <!-- Botón Guardar -->
             <Button Text="Guardar"
@@ -126,7 +125,7 @@
                     IsEnabled="{Binding PuedeGuardar}"
                     FontSize="16"
                     FontAttributes="Bold"
-                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                    BackgroundColor="{DynamicResource Primary}"
                     TextColor="White"
                     HeightRequest="50"
                     CornerRadius="25" />
@@ -136,7 +135,7 @@
                     Clicked="OnCancelarClicked"
                     FontSize="16"
                     FontAttributes="Bold"
-                    BackgroundColor="Red"
+                    BackgroundColor="{DynamicResource Gray500}"
                     TextColor="White"
                     HeightRequest="50"
                     CornerRadius="25" />

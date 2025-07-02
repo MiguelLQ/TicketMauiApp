@@ -1,26 +1,25 @@
 using MauiFirebase.PageModels.Logins;
-using MauiFirebase.Services;
 
 namespace MauiFirebase.Pages.Home;
 
 public partial class InicioPage : ContentPage
 {
-
-	public InicioPage()
+    private readonly DashboardPageModel _viewModel;
+	public InicioPage(DashboardPageModel viewModel)
 	{
-		InitializeComponent();
-        BindingContext = new DashboardPageModel();
-        MostrarCorreoUsuario();
-
+        InitializeComponent();
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
     }
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-
-        Shell.SetBackgroundColor(this, Color.FromArgb("#3949ab")); // Tu color morado personalizado
-        // Shell.SetTitleColor(this, Colors.White); Color del título
-        Shell.SetForegroundColor(this, Colors.White); // Iconos y botones
+        Shell.SetBackgroundColor(this, Color.FromArgb("#3949ab"));                                                      
+        Shell.SetForegroundColor(this, Colors.White); 
+        await _viewModel.InicializarAsync();  
+        MostrarCorreoUsuario();  
     }
+
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
@@ -35,5 +34,4 @@ public partial class InicioPage : ContentPage
         string correo = authService.GetUserEmail();
         CorreoUsuarioLabel.Text = correo;
     }
-
 }

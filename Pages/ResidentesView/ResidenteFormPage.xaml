@@ -76,9 +76,13 @@
                                 OnColor="Green" />
                     </HorizontalStackLayout>
 
-                    <Button Text="Guardar"
+                    <Button Text="Registrar"
                             Command="{Binding GuardarResidenteCommand}"
-                            BackgroundColor="#4CAF50" />
+                            BackgroundColor="{DynamicResource Primary}"
+                            TextColor="White"
+                            CornerRadius="20"
+                            WidthRequest="140"
+                            HeightRequest="50" />
                 </VerticalStackLayout>
             </Border>
 

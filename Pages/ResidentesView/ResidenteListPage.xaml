@@ -142,7 +142,7 @@
                 HeightRequest="60"
                 FontSize="28"
                 CornerRadius="30"   
-                BackgroundColor="#2196F3"
+                BackgroundColor="{DynamicResource Primary}"
                 TextColor="White"
                 VerticalOptions="Start"
                 HorizontalOptions="End"

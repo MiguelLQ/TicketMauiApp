@@ -94,9 +94,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
         builder.Services.AddSingleton<PremioPageModel>();
         builder.Services.AddSingleton<EditarPremioPageModel>();
-        builder.Services.AddSingleton<CrearPremioPageModel>();
         builder.Services.AddSingleton<ListarPremioPage>();
-        builder.Services.AddSingleton<AgregarPremioPage>();
+        builder.Services.AddTransient<AgregarPremioPage>();
+        builder.Services.AddTransient<CrearPremioPageModel>();
         builder.Services.AddSingleton<EditarPremioPage>();
 
         // convertidor
@@ -163,6 +163,8 @@ public static class MauiProgram
         
         // login
         builder.Services.AddSingleton<LoginPageModel>();
+        builder.Services.AddSingleton<DashboardPageModel>();
+        
 
         //Registro
         //builder.Services.AddSingleton<RegisterPageModel>();

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,33 +14,53 @@ namespace MauiFirebase.PageModels.Logins
 {
     public class TarjetaResumen
     {
-        public string Titulo { get; set; }
-        public string Valor { get; set; }
-        public string Icono { get; set; } // Usa imágenes o emojis
-        public string Emoji { get; set; } // nuevo campo
+        public string? Titulo { get; set; }
+        public string? Valor { get; set; }
+        public string? Icono { get; set; } // Usa imágenes o emojis
+        public string? Emoji { get; set; } // nuevo campo
     }
 
-    public class DashboardPageModel : INotifyPropertyChanged
+    public class DashboardPageModel : ObservableObject
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly IResidenteRepository _residenteRepository;
+        private readonly IRegistroDeReciclajeRepository _registroDeReciclajeRepository;
+        private readonly IPremioRepository _premioRepository;
+        private readonly ITicketRepository _ticketRepository;
 
-        public ObservableCollection<TarjetaResumen> TarjetasResumen { get; set; }
+        public ObservableCollection<TarjetaResumen> TarjetasResumen { get; set; } = new();
 
-        public DashboardPageModel()
+        public DashboardPageModel(IResidenteRepository residenteRepository, IRegistroDeReciclajeRepository registroDeReciclajeRepository, IPremioRepository premioRepository, ITicketRepository ticketRepository)
         {
-            // Datos simulados
-            TarjetasResumen = new ObservableCollection<TarjetaResumen>
-{
-                new TarjetaResumen { Titulo = "Residentes", Valor = "25", Emoji = "👥" },
-                new TarjetaResumen { Titulo = "Reciclaje", Valor = "234.5 kg", Emoji = "♻️" },
-                new TarjetaResumen { Titulo = "Tickets", Valor = "19", Emoji = "🎟️" },
-                new TarjetaResumen { Titulo = "Premios", Valor = "7", Emoji = "🏆" },
-            };
+            _residenteRepository = residenteRepository;
+            _registroDeReciclajeRepository = registroDeReciclajeRepository;
+            _premioRepository = premioRepository;
+            _ticketRepository = ticketRepository;
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string name = "")
+        public async Task InicializarAsync()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            var tarjetas = await ObtenerTarjetasAsync();
+            TarjetasResumen.Clear();
+
+            foreach (var tarjeta in tarjetas)
+            {
+                TarjetasResumen.Add(tarjeta);
+            }
+        }
+
+        private async Task<List<TarjetaResumen>> ObtenerTarjetasAsync()
+        {
+            int totalResidentes = await _residenteRepository.TotalResidentes();
+            decimal totalReciclado = await _registroDeReciclajeRepository.ObtenerTotalRecicladoKg();
+            //int totalTickets = await _ticketRepository.ObtenerCantidadTickets();
+            int totalPremios = await _premioRepository.ObtenerCantidadPremios();
+            return new List<TarjetaResumen>
+            {
+                new() { Titulo = "Ciudadanos", Valor = totalResidentes.ToString(), Emoji = "👥" },
+                new() { Titulo = "Reciclaje", Valor = $"{totalReciclado} kg", Emoji = "♻️" },
+                //new() { Titulo = "Tickets", Valor = totalTickets.ToString(), Emoji = "🎟️" },
+                new() { Titulo = "Premios", Valor = totalPremios.ToString(), Emoji = "🏆" }
+            };
         }
     }
 }

@@ -7,6 +7,7 @@ namespace MauiFirebase.Data.Interfaces
         Task<List<RegistroDeReciclaje>> ObtenerTodosAsync();      
         Task<RegistroDeReciclaje?> ObtenerPorIdAsync(int id);     
         Task GuardarAsync(RegistroDeReciclaje registro);          
-        Task EliminarAsync(int id);                                
+        Task EliminarAsync(int id);
+        Task<decimal> ObtenerTotalRecicladoKg();
     }
 }

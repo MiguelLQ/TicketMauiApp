@@ -48,7 +48,7 @@
                                     <!-- Contenido -->
                                     <StackLayout Grid.Column="1" Spacing="2">
                                         <Label 
-                                            Text="{Binding IdConvertidor, StringFormat='ID: {0}'}" 
+                                            Text="{Binding IdConvertidor, StringFormat='Convertidor: {0}'}" 
                                             FontAttributes="Bold"
                                             FontSize="16"
                                             TextColor="#0077CC" />

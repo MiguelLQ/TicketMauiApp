@@ -203,7 +203,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
             int valorResiduo = ResiduoSeleccionado.ValorResiduo;
             decimal valorTotal = PesoKilogramo * valorResiduo;
 
-            var convertidores = await _convertidorRepository.GetAllConvertidorAync();// 
+            var convertidores = await _convertidorRepository.GetAllConvertidorAync();
 
             int ticketsCalculados = 0;
             if (valorTotal > 400)
@@ -221,7 +221,6 @@ public partial class AgregarRegistroPageModel : ObservableObject
                     }
                 }
             }
-
 
             TicketsGanados = ticketsCalculados;
         }

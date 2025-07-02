@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?><ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             x:Class="MauiFirebase.Pages.Premio.EditarPremioPage"             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"             x:DataType="viewModels:EditarPremioPageModel"             Title="Editar Premio"             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Premio.EditarPremioPage"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
+             x:DataType="viewModels:EditarPremioPageModel"
+             Title="Editar Premio"
+             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
 
     <ScrollView>
         <VerticalStackLayout Padding="24" Spacing="20">
@@ -93,7 +100,7 @@
 
             <Button Text="Cancelar"
                     Clicked="OnCancelarClicked"
-                    BackgroundColor="Red"
+                    BackgroundColor="{DynamicResource Gray500}"
                     TextColor="White"
                     FontSize="16"
                     CornerRadius="25"

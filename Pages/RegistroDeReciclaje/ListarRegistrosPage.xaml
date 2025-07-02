@@ -17,13 +17,24 @@
                        HorizontalOptions="Center" />
 
                 <!-- Filtro por DNI -->
-                <Entry Placeholder="Buscar por DNI"
-                       Text="{Binding DniBuscado, Mode=TwoWay}"
-                       TextChanged="OnDniTextChanged"
-                       Keyboard="Numeric"
-                       BackgroundColor="{DynamicResource SecondaryBackground}"
-                       TextColor="{DynamicResource TextColor}"
-                       HeightRequest="40" />
+                <!-- Filtro por DNI en un Frame estilizado (corregido) -->
+                <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
+                       BorderColor="{DynamicResource Primary}"
+                       CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True"
+                       Margin="0,10">
+                    <VerticalStackLayout Spacing="10">
+                        <Entry Placeholder="Buscar por DNI"
+                               Text="{Binding DniBuscado, Mode=TwoWay}"
+                               TextChanged="OnDniTextChanged"
+                               Keyboard="Numeric"
+                               BackgroundColor="{DynamicResource SecondaryBackground}"
+                               TextColor="{DynamicResource TextColor}"
+                               HeightRequest="40" />
+                    </VerticalStackLayout>
+                </Frame>
+
 
                 <!-- Mensaje de error -->
                 <Label Text="{Binding MensajeBusqueda}" 
@@ -89,7 +100,7 @@
 
                                     <!-- Fecha -->
                                     <Label Grid.Row="3" Grid.Column="2"
-                                           Text="{Binding FechaRegistro, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}"
+                                           Text="{Binding FechaRegistro, StringFormat='Fecha de Creación: {0:dd/MM/yyyy HH:mm}'}"
                                            FontSize="12"
                                            TextColor="{DynamicResource Gray500}"
                                            HorizontalOptions="End"

@@ -27,7 +27,6 @@ public partial class PremioPageModel : ObservableObject
         try
         {
             IsBusy = true;
-            await Task.Delay(800);
             ListaPremios.Clear(); // Limpiamos primero
             var premios = await _premioRepository.GetAllPremiosAsync(); // Obtenemos desde BD
             foreach (var p in premios)

@@ -53,7 +53,6 @@ public partial class CanjePageModel : ObservableObject
         try
         {
             IsBusy = true;
-            await Task.Delay(800);
             ListaCanjes.Clear();
             var canjes = await _canjeRepository.GetAllCanjeAync();
             var premios = await _premioRepository.GetAllPremiosAsync();

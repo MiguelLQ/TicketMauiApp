@@ -25,7 +25,6 @@ public partial class ConversionesPageModel : ObservableObject
         try
         {
             IsBusy = true;
-            //await Task.Delay(800);
             ListaConvertidor.Clear();
             var convertidores = await _convertidorRepository.GetAllConvertidorAync();
             foreach (var item in convertidores)

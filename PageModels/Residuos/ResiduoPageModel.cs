@@ -41,7 +41,6 @@ public partial class ResiduoPageModel : ObservableObject
         try
         {
             IsBusy = true;
-            //await Task.Delay(800);
             ListaResiduos.Clear();
             var residuos = await _residuoRepository.GetAllResiduoAync();
             var categorias = await _categoriaResiduoRepository.GetAllCategoriaResiduoAsync();

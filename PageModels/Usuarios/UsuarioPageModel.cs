@@ -7,12 +7,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MauiFirebase.Data.Repositories;
+using MauiFirebase.Helpers.Interface;
 
 namespace MauiFirebase.PageModels.Usuarios
 {
     public class UsuarioPageModel: INotifyPropertyChanged
     {
         private readonly UsuarioRepository _usuarioRepository;
+        private readonly IAlertaHelper _alertaHelper;
 
         public ObservableCollection<Models.Usuario> Usuarios { get; } = new();
 
@@ -26,10 +28,28 @@ namespace MauiFirebase.PageModels.Usuarios
                 OnPropertyChanged();
             }
         }
+        private Models.Usuario _usuarioNuevo = new();
+        public Models.Usuario UsuarioNuevo
+        {
+            get => _usuarioNuevo;
+            set
+            {
+                _usuarioNuevo = value;
+                OnPropertyChanged();
+            }
+        }
+        public Command GuardarUsuarioCommand { get; }
+        public Command IrAgregarUsuarioCommand { get; }
 
-        public UsuarioPageModel()
+
+        public UsuarioPageModel(IAlertaHelper alertaHelper)
         {
             _usuarioRepository = new UsuarioRepository();
+            GuardarUsuarioCommand = new Command(async () => await GuardarUsuarioAsync());
+            IrAgregarUsuarioCommand = new Command(async () => await IrAgregarUsuarioAsync());
+
+            _alertaHelper = alertaHelper;
+
             _ = CargarUsuariosAsync(); // No espera, pero ejecuta
         }
 
@@ -55,6 +75,52 @@ namespace MauiFirebase.PageModels.Usuarios
             {
                 IsBusy = false;
             }
+        }
+        public async Task<bool> GuardarUsuarioAsync()
+        {
+            try
+            {
+                if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+                {
+                    await _alertaHelper.ShowErrorAsync("No tienes conexión a internet.");
+                    return false;
+                }
+                if (string.IsNullOrWhiteSpace(UsuarioNuevo.Nombre) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Correo) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Rol))
+                {
+                    await _alertaHelper.ShowErrorAsync("Completa todos los campos.");
+                    return false;
+                }
+
+                var uid = await _usuarioRepository.AgregarUsuarioAsync(UsuarioNuevo);
+                if (!string.IsNullOrEmpty(uid))
+                {
+                    UsuarioNuevo.Uid = uid;
+                    Usuarios.Add(UsuarioNuevo); // Lo agregas en memoria
+                    UsuarioNuevo = new();       // Limpiar formulario
+
+                    await _alertaHelper.ShowSuccessAsync("Usuario creado correctamente.");
+                    await Shell.Current.GoToAsync("..");
+                    return true;
+                }
+                else
+                {
+                    await _alertaHelper.ShowErrorAsync("No se pudo crear el usuario.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al guardar usuario: " + ex.Message);
+                await _alertaHelper.ShowErrorAsync("Error al guardar usuario.");
+                return false;
+            }
+        }
+
+        private async Task IrAgregarUsuarioAsync()
+        {
+            await Shell.Current.GoToAsync("///usuarios/ListarUsuarioPage");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

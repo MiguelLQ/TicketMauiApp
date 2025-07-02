@@ -10,5 +10,7 @@ namespace MauiFirebase.Data.Interfaces
     public interface IUsuarioRepository
     {
         Task<List<Usuario>> GetUsuariosAsync();
+        Task<string?> AgregarUsuarioAsync(Usuario usuario);
+
     }
 }

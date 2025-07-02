@@ -33,7 +33,6 @@ namespace MauiFirebase.PageModels.Logins
                 new TarjetaResumen { Titulo = "Tickets", Valor = "19", Emoji = "🎟️" },
                 new TarjetaResumen { Titulo = "Premios", Valor = "7", Emoji = "🏆" },
             };
-
         }
 
         protected void OnPropertyChanged([CallerMemberName] string name = "")

@@ -41,7 +41,9 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
             //para register page
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
-
+            //Usuario
+            Routing.RegisterRoute(nameof(AgregarUsuarioPage), typeof(AgregarUsuarioPage));
+            Routing.RegisterRoute("usuarios/agregar", typeof(AgregarUsuarioPage));
 
             CargarDatosUsuario();
             MostrarOpcionesSegunRol();

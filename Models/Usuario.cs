@@ -10,9 +10,13 @@ namespace MauiFirebase.Models
     public class Usuario
     {
         [PrimaryKey]
+        [NotNull]
         public string? Uid { get; set; }
+        [NotNull]
         public string? Nombre { get; set; }
+        [NotNull]
         public string? Correo { get; set; }
+        [NotNull]
         public string? Rol { get; set; }
     }
 }

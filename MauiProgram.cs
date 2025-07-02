@@ -148,6 +148,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
         builder.Services.AddSingleton<UsuarioPageModel>();
         builder.Services.AddSingleton<ListarUsuarioPage>();
+        builder.Services.AddSingleton<AgregarUsuarioPage>();
 
 
         builder.UseMauiCommunityToolkit(); //  Esto es obligatorio

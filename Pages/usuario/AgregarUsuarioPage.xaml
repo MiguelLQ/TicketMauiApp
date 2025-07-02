@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.usuario.AgregarUsuarioPage"
+             xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
+           >
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Nombre" />
+            <Entry Placeholder="Ingrese el nombre" Text="{Binding UsuarioNuevo.Nombre}" />
+
+            <Label Text="Correo" />
+            <Entry Placeholder="Ingrese el correo" Keyboard="Email" Text="{Binding UsuarioNuevo.Correo}" />
+
+            <Label Text="Rol" />
+            <Entry Placeholder="admin / user" Text="{Binding UsuarioNuevo.Rol}" />
+
+            <Button Text="Guardar Usuario"
+                    Command="{Binding GuardarUsuarioCommand}"
+                    BackgroundColor="#3949ab"
+                    TextColor="White"
+                    CornerRadius="10" />
+            <Button Text="Volver"
+                    Clicked="OnVolverClicked"
+                    BackgroundColor="#b0bec5"
+                    TextColor="Black"
+                    CornerRadius="10" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

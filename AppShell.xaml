@@ -138,20 +138,21 @@
         Route="residente" />-->
 
     <ShellContent
-    Title="Gestionar conversiones"
-    Icon="{StaticResource IconConfiguracion}"
-    ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
-    Route="conversiones" />
+        Title="Gestionar conversiones"
+        Icon="{StaticResource IconConfiguracion}"
+        ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
+        Route="conversiones" />
     <FlyoutItem Title="Usuarios"
             x:Name="UsuariosFlyoutItem"
             Icon="{StaticResource IconConfiguracion}"
             FlyoutDisplayOptions="AsSingleItem"
-            IsVisible="False"
-             Route="usuarios">
+            IsVisible="True"
+            Route="usuarios">
 
         <ShellContent
-        Title="Usuarios"
-        ContentTemplate="{DataTemplate usuario:ListarUsuarioPage}" />
+            Title="Usuarios"
+            Route="ListarUsuarioPage"
+            ContentTemplate="{DataTemplate usuario:ListarUsuarioPage}" />
     </FlyoutItem>
 
 

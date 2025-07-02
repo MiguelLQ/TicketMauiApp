@@ -5,20 +5,106 @@
              xmlns:model="clr-namespace:MauiFirebase.Models"
              xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
              x:DataType="viewModel:UsuarioPageModel"
+             x:Name="UsuarioPage"
              Title="Usuarios Registrados">
 
-    <CollectionView x:Name="UsuariosCollectionView" ItemsSource="{Binding Usuarios}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="model:Usuario">
-                <Frame BorderColor="Gray" CornerRadius="10" Margin="10">
-                    <VerticalStackLayout Padding="10">
-                        <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="18"/>
-                        <Label Text="{Binding Correo}" FontSize="14"/>
-                        <Label Text="{Binding Rol}" FontSize="14" TextColor="Gray"/>
-                    </VerticalStackLayout>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <Grid>
+        <!-- Lista principal con scroll -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
+                <!-- Indicador de carga -->
+                <ActivityIndicator 
+                    IsRunning="{Binding IsBusy}" 
+                    IsVisible="{Binding IsBusy}" 
+                    Color="Gray" />
 
+                <Label Text="Lista de usuarios"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="Blue"
+                       Margin="0,10,0,0" />
+
+                <!-- Tarjetas de usuario -->
+                <CollectionView ItemsSource="{Binding Usuarios}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Usuario">
+                            <Frame 
+                                Background="{DynamicResource CardBackgroundBrush}"
+                                   CornerRadius="12"
+                                   Padding="12"
+                                   Margin="0,8"
+                                BorderColor="Transparent"
+                                   HasShadow="True"
+                                   >
+
+                                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                                    <!-- Ícono -->
+                                    <Label Text="👤"
+                                           FontSize="24"
+                                           Grid.RowSpan="2"
+                                           VerticalOptions="Start"
+                                           Margin="0,0,10,0" />
+
+                                    <!-- Datos -->
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label Text="{Binding Nombre}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               TextColor="#333" />
+                                        <Label Text="{Binding Correo}"
+                                               FontSize="14"
+                                               TextColor="#666" />
+                                        <Label Text="{Binding Rol}"
+                                               FontSize="13"
+                                               TextColor="#888" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Botón flotante -->
+        <Button
+            Text="+"
+            Clicked="OnAgregarUsuarioClicked"
+            BackgroundColor="#3949ab"
+            TextColor="White"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="0,0,20,20" />
+
+        <!-- Cargando... sobre pantalla -->
+        <Grid IsVisible="{Binding IsBusy}"
+              BackgroundColor="#80000000"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill">
+            <Frame Padding="20"
+                   BackgroundColor="#222222DD"
+                   CornerRadius="12"
+                   HasShadow="True"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   WidthRequest="160"
+                   HeightRequest="120">
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+                    <ActivityIndicator IsRunning="True"
+                                       Color="White"
+                                       WidthRequest="40"
+                                       HeightRequest="40" />
+                    <Label Text="Cargando..."
+                           TextColor="White"
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold" />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
 </ContentPage>

@@ -49,5 +49,23 @@ namespace MauiFirebase.Data.Repositories
                 return await _db.Table<Usuario>().ToListAsync();
             }
         }
+        public async Task<string?> AgregarUsuarioAsync(Usuario usuario)
+        {
+            var token = Preferences.Get("FirebaseToken", string.Empty);
+            if (string.IsNullOrEmpty(token))
+                return null;
+
+            var uid = await _firebaseService.AgregarUsuarioAsync(usuario, token);
+
+            if (!string.IsNullOrEmpty(uid))
+            {
+                usuario.Uid = uid;
+                await _db.InsertAsync(usuario);
+                return uid;
+            }
+
+            return null;
+        }
+
     }
 }

@@ -210,12 +210,6 @@ public partial class AgregarRegistroPageModel : ObservableObject
             {
                 ticketsCalculados = 5;
             }
-
-            else if (valorTotal <= 100)
-            {
-                ticketsCalculados = 1;
-            }
-
             else
             {
                 foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
@@ -227,6 +221,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
                     }
                 }
             }
+
 
             TicketsGanados = ticketsCalculados;
         }

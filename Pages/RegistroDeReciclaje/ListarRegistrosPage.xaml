@@ -15,8 +15,6 @@
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Primary}"
                        HorizontalOptions="Center" />
-
-                <!-- Filtro por DNI -->
                 <!-- Filtro por DNI en un Frame estilizado (corregido) -->
                 <Frame BackgroundColor="{DynamicResource CardBackgroundBrush}"
                        BorderColor="{DynamicResource Primary}"
@@ -29,6 +27,7 @@
                                Text="{Binding DniBuscado, Mode=TwoWay}"
                                TextChanged="OnDniTextChanged"
                                Keyboard="Numeric"
+                               MaxLength="8"
                                BackgroundColor="{DynamicResource SecondaryBackground}"
                                TextColor="{DynamicResource TextColor}"
                                HeightRequest="40" />

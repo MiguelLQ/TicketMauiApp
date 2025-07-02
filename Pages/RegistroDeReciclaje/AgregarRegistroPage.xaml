@@ -39,6 +39,7 @@
                                    Text="{Binding DniBuscado}"
                                    Placeholder="Ej: 12345678"
                                    Keyboard="Numeric"
+                                   MaxLength="8"
                                    BackgroundColor="{DynamicResource SecondaryBackground}"
                                    HeightRequest="40"
                                    TextColor="{DynamicResource TextColor}" />

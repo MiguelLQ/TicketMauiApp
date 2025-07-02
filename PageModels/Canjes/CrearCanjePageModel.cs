@@ -187,7 +187,9 @@ public partial class CrearCanjePageModel : ObservableObject
         PremiosDisponibles.Clear();
 
         if (ResidenteEncontrado == null)
+        {
             return;
+        }
 
         var todosLosPremios = await _premioRepository.GetAllPremiosAsync();
 

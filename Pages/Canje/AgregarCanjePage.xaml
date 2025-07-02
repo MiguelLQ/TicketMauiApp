@@ -114,10 +114,30 @@
                                                WidthRequest="40"
                                                HeightRequest="40" />
                                         <StackLayout>
-                                            <Label Text="{Binding NombrePremio}"
+                                            <HorizontalStackLayout Padding="10" Spacing="10">
+                                                <Image 
+                                                    Source="{Binding FotoPremio}"
+                                                    HeightRequest="50"
+                                                    WidthRequest="50"
+                                                    Grid.RowSpan="2"
+                                                    Margin="-50,0,0,0"
+                                                    VerticalOptions="Start"
+                                                    Aspect="AspectFill">
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding FotoPremio}" Value="">
+                                                            <Setter Property="Source" Value="placeholder.png" />
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+
+                                                <Label Text="{Binding NombrePremio}"
+                                                   Margin="0,12,0,0"
                                                    FontSize="16"
                                                    FontAttributes="Bold"
+                                                   VerticalOptions="Start"
                                                    TextColor="DarkBlue" />
+                                            </HorizontalStackLayout>
+
                                         </StackLayout>
                                     </StackLayout>
                                 </Frame>

@@ -1,63 +1,94 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.usuario.ListarUsuarioPage"
              xmlns:model="clr-namespace:MauiFirebase.Models"
              xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
+             x:Class="MauiFirebase.Pages.usuario.ListarUsuarioPage"
              x:DataType="viewModel:UsuarioPageModel"
              x:Name="UsuarioPage"
              Title="Usuarios Registrados">
 
     <Grid>
-        <!-- Lista principal con scroll -->
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
+
                 <!-- Indicador de carga -->
                 <ActivityIndicator 
                     IsRunning="{Binding IsBusy}" 
                     IsVisible="{Binding IsBusy}" 
                     Color="Gray" />
 
+                <!-- Título -->
                 <Label Text="Lista de usuarios"
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}"
                        Margin="0,10,0,0" />
 
-                <!-- Tarjetas de usuario -->
+                <!-- Lista de usuarios -->
                 <CollectionView ItemsSource="{Binding Usuarios}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Usuario">
                             <Frame 
                                 Background="{DynamicResource CardBackgroundBrush}"
-                                   CornerRadius="12"
-                                   Padding="12"
-                                   Margin="0,8"
-                                BorderColor="Transparent"
-                                   HasShadow="True"
-                                   >
+                                BorderColor="{DynamicResource CardBorderBrush}"
+                                CornerRadius="12"
+                                Padding="12"
+                                Margin="0,8"
+                                HasShadow="True">
 
-                                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
-                                    <!-- Ícono -->
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+
+                                    <!-- Ícono usuario -->
                                     <Label Text="👤"
-                                           FontSize="24"
+                                           FontSize="25"
                                            Grid.RowSpan="2"
                                            VerticalOptions="Start"
                                            Margin="0,0,10,0" />
 
-                                    <!-- Datos -->
-                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <!-- Datos del usuario -->
+                                    <StackLayout Grid.Column="1" Spacing="2">
                                         <Label Text="{Binding Nombre}"
                                                FontAttributes="Bold"
                                                FontSize="16"
-                                               TextColor="#333" />
+                                               TextColor="#0077CC" />
                                         <Label Text="{Binding Correo}"
-                                               FontSize="14"
-                                               TextColor="#666" />
-                                        <Label Text="{Binding Rol}"
                                                FontSize="13"
-                                               TextColor="#888" />
-                                    </VerticalStackLayout>
+                                               TextColor="{DynamicResource Gray500}" />
+                                        <Label Text="{Binding Rol, StringFormat='Rol: {0}'}"
+                                               FontSize="13"
+                                               TextColor="{DynamicResource Gray500}" />
+                                    </StackLayout>
+
+                                    <!-- Botón Editar -->
+                                    <ImageButton 
+                                        Source="editarreal.png" 
+                                        HeightRequest="24"
+                                        WidthRequest="24"
+                                        BackgroundColor="Transparent"
+                                        Grid.Column="2"
+                                        Grid.Row="0"
+                                        Scale="0.7"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        Margin="0" />
+
+                                    <!-- Línea divisoria -->
+                                    <BoxView 
+                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                        HeightRequest="1"
+                                        BackgroundColor="{DynamicResource Primary}"
+                                        HorizontalOptions="Fill"
+                                        Margin="0,8,0,8" />
+
+                                    <!-- See more -->
+                                    <Label 
+                                        Grid.Row="2" Grid.Column="2"
+                                        Text="See more >"
+                                        FontSize="13"
+                                        TextColor="#D600AA"
+                                        HorizontalOptions="End"
+                                        Margin="0,0,0,0" />
                                 </Grid>
                             </Frame>
                         </DataTemplate>

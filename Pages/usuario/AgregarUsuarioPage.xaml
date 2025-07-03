@@ -3,38 +3,111 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.usuario.AgregarUsuarioPage"
              xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
-           >
+             x:DataType="viewModel:UsuarioPageModel"
+             Title="Agregar Usuario">
+
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="24" Spacing="20">
 
-            <Label Text="Nombre" />
-            <Entry Placeholder="Ingrese el nombre" Text="{Binding UsuarioNuevo.Nombre}" />
+            <!-- Título con ícono -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Label Text="👤"
+                       FontSize="28"
+                       VerticalOptions="Center" />
+                <Label Text="Nuevo Usuario"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
 
-            <Label Text="Correo" />
-            <Entry Placeholder="Ingrese el correo" Keyboard="Email" Text="{Binding UsuarioNuevo.Correo}" />
-            <Entry Placeholder="Contraseña"
-               IsPassword="True"
-               Text="{Binding UsuarioNuevo.Contraseña}" />
+            <!-- Campo: Nombre -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Nombre"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Placeholder="Ingrese el nombre"
+                           Text="{Binding UsuarioNuevo.Nombre}"
+                           FontSize="16"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
+            <!-- Campo: Correo -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Correo"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Placeholder="Ingrese el correo"
+                           Keyboard="Email"
+                           Text="{Binding UsuarioNuevo.Correo}"
+                           FontSize="16"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-            <Label Text="Rol" />
+            <!-- Campo: Contraseña -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Contraseña"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Entry Placeholder="Ingrese una contraseña"
+                           IsPassword="True"
+                           Text="{Binding UsuarioNuevo.Contraseña}"
+                           FontSize="16"
+                           TextColor="{DynamicResource Gray500}"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Frame>
 
-            <Picker 
-                Title="Selecciona un rol"
-                ItemsSource="{Binding RolesDisponibles}"
-                SelectedItem="{Binding UsuarioNuevo.Rol}" />
+            <!-- Campo: Rol -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="{DynamicResource CardBorderBrush}"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Rol"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Picker 
+                        Title="Selecciona un rol"
+                        ItemsSource="{Binding RolesDisponibles}"
+                        SelectedItem="{Binding UsuarioNuevo.Rol}" />
+                </VerticalStackLayout>
+            </Frame>
 
-
+            <!-- Botón Guardar -->
             <Button Text="Guardar Usuario"
                     Command="{Binding GuardarUsuarioCommand}"
-                    BackgroundColor="#3949ab"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="{DynamicResource Primary}"
                     TextColor="White"
-                    CornerRadius="10" />
+                    HeightRequest="50"
+                    CornerRadius="25" />
+
+            <!-- Botón Cancelar -->
             <Button Text="Volver"
                     Clicked="OnVolverClicked"
-                    BackgroundColor="#b0bec5"
-                    TextColor="Black"
-                    CornerRadius="10" />
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="Gray"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
 
         </VerticalStackLayout>
     </ScrollView>

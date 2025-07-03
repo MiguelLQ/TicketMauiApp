@@ -1,11 +1,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.usuario.ListarUsuarioPage"
-             xmlns:model="clr-namespace:MauiFirebase.Models"
-             xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
-             x:DataType="viewModel:UsuarioPageModel"
-             x:Name="UsuarioPage"
-             Title="Usuarios Registrados">
+             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
+             x:Class="MauiFirebase.Pages.Ticket.ListarTicketPage"
+             x:Name="TicketPage"
+             Title="Tickets">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToEstadoConverter x:Key="EstadoConverter" />
+            <converters:BoolToColorConverter x:Key="EstadoColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid>
         <ScrollView>
@@ -16,75 +21,90 @@
                     IsVisible="{Binding IsBusy}" 
                     Color="Gray" />
 
-                <Label Text="Lista de usuarios"
+                <Label Text="Lista de colores"
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}"
-                       Margin="0,10,0,0" />
+                       Margin="0,20,0,0" />
 
-                <CollectionView ItemsSource="{Binding Usuarios}">
+                <CollectionView ItemsSource="{Binding Tickets}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Usuario">
-                            <Frame 
-                                Background="{DynamicResource CardBackgroundBrush}"
-                                BorderColor="{DynamicResource CardBorderBrush}"
-                                CornerRadius="12"
-                                Padding="12"
-                                Margin="0,8"
-                                HasShadow="True">
+                        <DataTemplate>
+                            <Frame CornerRadius="12" Padding="12" Margin="0,8"
+                                   Background="{DynamicResource CardBackgroundBrush}"
+                                   BorderColor="{DynamicResource CardBorderBrush}"
+                                   HasShadow="True">
 
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
-                                    <!-- Ícono -->
-                                    <Label Text="👤"
-                                           FontSize="24"
+                                    <!-- Emoji -->
+                                    <Label Text="🎨" FontSize="25"
                                            Grid.RowSpan="2"
                                            VerticalOptions="Start"
                                            Margin="0,0,10,0" />
 
-                                    <!-- Datos principales -->
+                                    <!-- ColorTicket y Estado -->
                                     <StackLayout Grid.Column="1" Spacing="2">
-                                        <Label Text="{Binding Nombre}"
+                                        <Label Text="{Binding ColorTicket}"
                                                FontAttributes="Bold"
                                                FontSize="16"
                                                TextColor="#0077CC" />
-                                        <Label Text="{Binding Correo}"
-                                               FontSize="14"
-                                               TextColor="{DynamicResource Gray500}" />
-                                        <Label Text="{Binding Rol, StringFormat='Rol: {0}'}"
+                                        <Frame Padding="6,2"
+                                               CornerRadius="12"
+                                               HasShadow="False"
+                                               BackgroundColor="{Binding EstadoTicket, Converter={StaticResource EstadoColorConverter}}"
+                                               HorizontalOptions="Start">
+                                            <Label Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}"
+                                                   TextColor="White"
+                                                   FontSize="13"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Frame>
+                                    </StackLayout>
+
+                                    <!-- Botón editar -->
+                                    <ImageButton 
+                                        Source="editarreal.png"
+                                        Scale="0.7"
+                                        BackgroundColor="Transparent"
+                                        Grid.Column="2"
+                                        HeightRequest="5"
+                                        WidthRequest="5"
+                                        Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
+                                        CommandParameter="{Binding .}" />
+
+                                    <!-- Línea divisoria -->
+                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                             HeightRequest="1"
+                                             BackgroundColor="{DynamicResource Primary}"
+                                             HorizontalOptions="Fill"
+                                             Margin="0,0,0,8" />
+
+                                    <!-- Fecha -->
+                                    <StackLayout Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,8,0,0" Spacing="2">
+                                        <Label Text="{Binding FechaRegistro, StringFormat='Fecha de Creación: {0:dd/MM/yyyy}'}"
                                                FontSize="13"
                                                TextColor="{DynamicResource Gray500}" />
                                     </StackLayout>
 
-                                    <!-- Línea divisoria -->
-                                    <BoxView 
-                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                        HeightRequest="1"
-                                        BackgroundColor="{DynamicResource Primary}"
-                                        HorizontalOptions="Fill"
-                                        Margin="0,8,0,8" />
-
                                     <!-- Ver más -->
-                                    <Label 
-                                        Grid.Row="2" Grid.Column="1"
-                                        Text="See more >"
-                                        FontSize="13"
-                                        TextColor="#D600AA"
-                                        HorizontalOptions="End"
-                                        Margin="0,6,0,0" />
+                                    <Label Grid.Column="2" Grid.Row="2"
+                                           Text="See more >"
+                                           FontSize="13"
+                                           TextColor="#D600AA"
+                                           HorizontalOptions="End"
+                                           Margin="0,8,0,0" />
                                 </Grid>
-
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
             </VerticalStackLayout>
         </ScrollView>
 
         <!-- Botón flotante -->
         <Button
-            Text="＋"
-            Clicked="OnAgregarUsuarioClicked"
+            Text="+"
+            Command="{Binding MostrarAgregarTicketCommand}"
             BackgroundColor="{DynamicResource Primary}"
             TextColor="White"
             FontSize="28"

@@ -145,21 +145,33 @@ namespace MauiFirebase
 
         private void MostrarOpcionesSegunRol()
         {
-            if (!Preferences.ContainsKey("FirebaseUserRole"))
-            {
-                UsuariosFlyoutItem.IsVisible = false;
-                return;
-            }
-
             var rol = Preferences.Get("FirebaseUserRole", string.Empty);
 
+            // Primero ocultar todo lo controlado por rol
+            UsuariosFlyoutItem.IsVisible = false;
+            CategoriaResiduoShellContent.IsVisible = false;
+            ColoresShellContent.IsVisible = false;
+            ResiduosShellContent.IsVisible = false;
+            ConversionesShellContent.IsVisible = false;
+            RegisterFlyoutItem.IsVisible = false;
+            AdminFlyoutItem.IsVisible = false;
+
+            // Mostrar solo lo correspondiente al rol
             if (rol == "admin")
             {
+                AdminFlyoutItem.IsVisible = true;
                 UsuariosFlyoutItem.IsVisible = true;
+                CategoriaResiduoShellContent.IsVisible = true;
+                ColoresShellContent.IsVisible = true;
+                ResiduosShellContent.IsVisible = true;
+                ConversionesShellContent.IsVisible = true;
+
             }
-            else
+            else if (rol == "register")
             {
-                UsuariosFlyoutItem.IsVisible = false;
+                RegisterFlyoutItem.IsVisible = true;
+                AdminFlyoutItem.IsVisible = false;
+
             }
         }
 

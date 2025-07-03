@@ -66,8 +66,13 @@
                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                      Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
                      Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconUsuarios"
+                 Glyph="{x:Static f:FluentUI.person_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
 
-        <FontImageSource x:Key="IconResiduo"
+    <FontImageSource x:Key="IconResiduo"
                      Glyph="{x:Static f:FluentUI.delete_24_regular}"
                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                      Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"

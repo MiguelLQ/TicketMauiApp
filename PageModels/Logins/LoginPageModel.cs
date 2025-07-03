@@ -68,28 +68,34 @@ namespace MauiFirebase.PageModels.Logins
             var success = await _authService.LoginAsync(Email, Password);
             if (success)
             {
-                // Mostrar pantalla de carga
+                // Mostrar pantalla de carga temporal
                 Application.Current.MainPage = new LoadingPage();
-
-                // Pequeño delay opcional para mostrar el loading
                 await Task.Delay(500);
 
-                // Cargar el shell
+                // Establecer el Shell
                 Application.Current.MainPage = new AppShell();
 
+                // Leer el rol desde Preferences
+                var rol = Preferences.Get("FirebaseUserRole", string.Empty);
+
+                // Navegar según el rol
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
                 {
-                    await Shell.Current.GoToAsync("//Home/inicio");
+                    if (rol == "admin")
+                        await Shell.Current.GoToAsync("//adminHome/inicio");
+                    else if (rol == "register")
+                        await Shell.Current.GoToAsync("//registerHome/inicio");
+                    else
+                        await Shell.Current.DisplayAlert("Rol desconocido", "No se pudo determinar tu panel de acceso.", "OK");
                 });
             }
-
-
             else
             {
                 ErrorMessage = "Correo o contraseña incorrectos.";
                 HasError = true;
             }
         }
+
         [RelayCommand]
         private async Task IrARegistroAsync()
         {

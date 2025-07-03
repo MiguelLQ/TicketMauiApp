@@ -127,6 +127,30 @@ namespace MauiFirebase.Services
 
             return newIdToken;
         }
+        public async Task<string?> RegistrarAuthUsuarioAsync(string email, string password)
+        {
+            var url = $"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={ApiKey}";
+
+            var payload = new
+            {
+                email,
+                password,
+                returnSecureToken = true
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = new HttpClient();
+
+            var response = await client.PostAsync(url, content);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var result = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(result);
+
+            return doc.RootElement.GetProperty("localId").GetString(); // el UID del usuario
+        }
 
         public void Logout()
         {

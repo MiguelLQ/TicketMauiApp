@@ -52,21 +52,28 @@ namespace MauiFirebase.Data.Repositories
 
         public async Task<bool> AgregarUsuarioAsync(Usuario usuario)
         {
-            var token = await _authService.ObtenerIdTokenSeguroAsync();
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrWhiteSpace(usuario.Correo) || string.IsNullOrWhiteSpace(usuario.Contraseña))
                 return false;
 
-            var uid = await _firebaseService.AgregarUsuarioAsync(usuario, token);
+            // 1. Crear en Firebase Auth
+            var uid = await _authService.RegistrarAuthUsuarioAsync(usuario.Correo, usuario.Contraseña);
+            if (string.IsNullOrEmpty(uid))
+                return false;
 
-            if (!string.IsNullOrEmpty(uid))
+            // 2. Usar el token actual (puedes omitir si solo usas modo Admin)
+            var token = await _authService.ObtenerIdTokenSeguroAsync();
+
+            // 3. Guardar en Firestore
+            usuario.Uid = uid;
+            var resultado = await _firebaseService.AgregarUsuarioAsync(usuario, token);
+
+            if (!string.IsNullOrEmpty(resultado))
             {
-                usuario.Uid = uid;
                 await _db.InsertAsync(usuario); // Guardar local
                 return true;
             }
 
             return false;
         }
-
     }
 }

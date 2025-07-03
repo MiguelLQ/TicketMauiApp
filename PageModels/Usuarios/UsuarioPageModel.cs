@@ -38,6 +38,12 @@ namespace MauiFirebase.PageModels.Usuarios
                 OnPropertyChanged();
             }
         }
+        public List<string> RolesDisponibles { get; } = new()
+        {
+            "admin",
+            "register"
+        };
+
         public Command GuardarUsuarioCommand { get; }
         public Command IrAgregarUsuarioCommand { get; }
 
@@ -85,18 +91,20 @@ namespace MauiFirebase.PageModels.Usuarios
                     await _alertaHelper.ShowErrorAsync("No tienes conexión a internet.");
                     return false;
                 }
+
                 if (string.IsNullOrWhiteSpace(UsuarioNuevo.Nombre) ||
                     string.IsNullOrWhiteSpace(UsuarioNuevo.Correo) ||
-                    string.IsNullOrWhiteSpace(UsuarioNuevo.Rol))
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Rol) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Contraseña))
                 {
-                    await _alertaHelper.ShowErrorAsync("Completa todos los campos.");
+                    await _alertaHelper.ShowErrorAsync("Completa todos los campos, incluyendo la contraseña.");
                     return false;
                 }
 
                 var agregado = await _usuarioRepository.AgregarUsuarioAsync(UsuarioNuevo);
                 if (agregado)
                 {
-                    Usuarios.Add(UsuarioNuevo); // Ya viene con el UID asignado en el repositorio
+                    Usuarios.Add(UsuarioNuevo); // Ya viene con UID desde Auth
                     UsuarioNuevo = new();       // Limpiar formulario
                     await _alertaHelper.ShowSuccessAsync("Usuario creado correctamente.");
                     await Shell.Current.GoToAsync("..");
@@ -107,7 +115,6 @@ namespace MauiFirebase.PageModels.Usuarios
                     await _alertaHelper.ShowErrorAsync("No se pudo crear el usuario.");
                     return false;
                 }
-
             }
             catch (Exception ex)
             {
@@ -116,6 +123,7 @@ namespace MauiFirebase.PageModels.Usuarios
                 return false;
             }
         }
+
 
         private async Task IrAgregarUsuarioAsync()
         {

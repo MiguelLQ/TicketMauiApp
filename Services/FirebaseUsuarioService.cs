@@ -10,6 +10,8 @@ namespace MauiFirebase.Services
     {
         private readonly HttpClient _httpClient = new();
         private const string ApiKey = "AIzaSyBLh0YLNn_t2Se1s4jPmZl7wpHjvZp7txQ";
+        private const string projectId = "ticketapp-c31cf";
+
 
         public async Task<List<Usuario>> ObtenerUsuariosDesdeFirestoreAsync(string idToken)
         {
@@ -47,40 +49,30 @@ namespace MauiFirebase.Services
         }
         public async Task<string?> AgregarUsuarioAsync(Usuario usuario, string idToken)
         {
-            var url = "https://firestore.googleapis.com/v1/projects/ticketapp-c31cf/databases/(default)/documents/usuarios";
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", idToken);
 
-            var payload = new
+            var firestoreData = new
             {
                 fields = new
                 {
                     nombre = new { stringValue = usuario.Nombre },
-                    email = new { stringValue = usuario.Correo },
+                    correo = new { stringValue = usuario.Correo },
                     rol = new { stringValue = usuario.Rol }
                 }
             };
 
-            var json = JsonSerializer.Serialize(payload);
+            var json = JsonSerializer.Serialize(firestoreData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", idToken);
+            // ⚠️ Aquí está la clave: usar el UID como ID del documento
+            var url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/usuarios/{usuario.Uid}";
 
-            var response = await client.PostAsync(url, content);
-
-            if (!response.IsSuccessStatusCode)
-                return null;
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-
-            using var document = JsonDocument.Parse(responseBody);
-            var name = document.RootElement.GetProperty("name").GetString();
-
-            // name = "projects/xxx/databases/(default)/documents/usuarios/ABC123"
-            var uid = name?.Split('/').Last();
-
-            return uid;
+            var response = await client.PatchAsync(url, content); // PATCH: si existe actualiza, si no, crea
+            return response.IsSuccessStatusCode ? usuario.Uid : null;
         }
+
 
         public async Task<string?> RefreshIdTokenAsync()
         {

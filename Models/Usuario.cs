@@ -18,5 +18,7 @@ namespace MauiFirebase.Models
         public string? Correo { get; set; }
         [NotNull]
         public string? Rol { get; set; }
+        
+        public string? Contraseña { get; set; }
     }
 }

@@ -12,9 +12,18 @@
 
             <Label Text="Correo" />
             <Entry Placeholder="Ingrese el correo" Keyboard="Email" Text="{Binding UsuarioNuevo.Correo}" />
+            <Entry Placeholder="Contraseña"
+               IsPassword="True"
+               Text="{Binding UsuarioNuevo.Contraseña}" />
+
 
             <Label Text="Rol" />
-            <Entry Placeholder="admin / user" Text="{Binding UsuarioNuevo.Rol}" />
+
+            <Picker 
+                Title="Selecciona un rol"
+                ItemsSource="{Binding RolesDisponibles}"
+                SelectedItem="{Binding UsuarioNuevo.Rol}" />
+
 
             <Button Text="Guardar Usuario"
                     Command="{Binding GuardarUsuarioCommand}"

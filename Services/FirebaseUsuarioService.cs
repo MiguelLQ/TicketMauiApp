@@ -9,6 +9,7 @@ namespace MauiFirebase.Services
     public class FirebaseUsuarioService
     {
         private readonly HttpClient _httpClient = new();
+        private const string ApiKey = "AIzaSyBLh0YLNn_t2Se1s4jPmZl7wpHjvZp7txQ";
 
         public async Task<List<Usuario>> ObtenerUsuariosDesdeFirestoreAsync(string idToken)
         {
@@ -81,6 +82,39 @@ namespace MauiFirebase.Services
             return uid;
         }
 
+        public async Task<string?> RefreshIdTokenAsync()
+        {
+            var refreshToken = Preferences.Get("FirebaseRefreshToken", string.Empty);
+            if (string.IsNullOrEmpty(refreshToken))
+                return null;
+
+            var payload = new
+            {
+                grant_type = "refresh_token",
+                refresh_token = refreshToken
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = new HttpClient();
+            var response = await client.PostAsync($"https://securetoken.googleapis.com/v1/token?key={ApiKey}", content);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var result = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(result);
+
+            var newIdToken = doc.RootElement.GetProperty("id_token").GetString();
+            var newRefreshToken = doc.RootElement.GetProperty("refresh_token").GetString();
+
+            // Guardar los nuevos tokens
+            Preferences.Set("FirebaseToken", newIdToken);
+            Preferences.Set("FirebaseRefreshToken", newRefreshToken);
+
+            return newIdToken;
+        }
 
     }
 }

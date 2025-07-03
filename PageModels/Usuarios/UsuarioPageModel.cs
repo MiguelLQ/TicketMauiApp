@@ -93,13 +93,11 @@ namespace MauiFirebase.PageModels.Usuarios
                     return false;
                 }
 
-                var uid = await _usuarioRepository.AgregarUsuarioAsync(UsuarioNuevo);
-                if (!string.IsNullOrEmpty(uid))
+                var agregado = await _usuarioRepository.AgregarUsuarioAsync(UsuarioNuevo);
+                if (agregado)
                 {
-                    UsuarioNuevo.Uid = uid;
-                    Usuarios.Add(UsuarioNuevo); // Lo agregas en memoria
+                    Usuarios.Add(UsuarioNuevo); // Ya viene con el UID asignado en el repositorio
                     UsuarioNuevo = new();       // Limpiar formulario
-
                     await _alertaHelper.ShowSuccessAsync("Usuario creado correctamente.");
                     await Shell.Current.GoToAsync("..");
                     return true;
@@ -109,6 +107,7 @@ namespace MauiFirebase.PageModels.Usuarios
                     await _alertaHelper.ShowErrorAsync("No se pudo crear el usuario.");
                     return false;
                 }
+
             }
             catch (Exception ex)
             {

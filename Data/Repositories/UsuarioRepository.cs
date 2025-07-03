@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
@@ -11,9 +10,10 @@ using SQLite;
 
 namespace MauiFirebase.Data.Repositories
 {
-    public class UsuarioRepository:IUsuarioRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         private readonly FirebaseUsuarioService _firebaseService = new();
+        private readonly FirebaseAuthService _authService = new();
         private readonly SQLiteAsyncConnection _db;
 
         public UsuarioRepository()
@@ -22,49 +22,50 @@ namespace MauiFirebase.Data.Repositories
             var database = new AppDatabase(dbPath);
             _db = database.Database!;
         }
+
         public async Task<List<Usuario>> GetUsuariosAsync()
         {
-            var token = Preferences.Get("FirebaseToken", string.Empty);
+            var token = await _authService.ObtenerIdTokenSeguroAsync();
+
             if (string.IsNullOrEmpty(token))
             {
-                // Sin token, cargar desde SQLite
+                // No hay token: cargar desde SQLite
                 return await _db.Table<Usuario>().ToListAsync();
             }
 
             try
             {
-                // Obtener desde Firebase
                 var usuariosFirebase = await _firebaseService.ObtenerUsuariosDesdeFirestoreAsync(token);
 
-                //Guardar localmente
-                await _db.DeleteAllAsync<Usuario>(); // Limpia y sincroniza
+                // Sincronizar localmente
+                await _db.DeleteAllAsync<Usuario>();
                 await _db.InsertAllAsync(usuariosFirebase);
 
                 return usuariosFirebase;
             }
             catch (Exception ex)
             {
-                //Error al conectar, usar datos locales
                 Console.WriteLine($"Error Firebase: {ex.Message}");
-                return await _db.Table<Usuario>().ToListAsync();
+                return await _db.Table<Usuario>().ToListAsync(); // fallback local
             }
         }
-        public async Task<string?> AgregarUsuarioAsync(Usuario usuario)
+
+        public async Task<bool> AgregarUsuarioAsync(Usuario usuario)
         {
-            var token = Preferences.Get("FirebaseToken", string.Empty);
+            var token = await _authService.ObtenerIdTokenSeguroAsync();
             if (string.IsNullOrEmpty(token))
-                return null;
+                return false;
 
             var uid = await _firebaseService.AgregarUsuarioAsync(usuario, token);
 
             if (!string.IsNullOrEmpty(uid))
             {
                 usuario.Uid = uid;
-                await _db.InsertAsync(usuario);
-                return uid;
+                await _db.InsertAsync(usuario); // Guardar local
+                return true;
             }
 
-            return null;
+            return false;
         }
 
     }

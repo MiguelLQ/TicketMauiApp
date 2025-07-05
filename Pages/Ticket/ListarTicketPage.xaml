@@ -31,12 +31,17 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame CornerRadius="12" Padding="12" Margin="0,8"
-                                   Background="{DynamicResource CardBackgroundBrush}"
-                                   BorderColor="{DynamicResource CardBorderBrush}"
-                                   HasShadow="True">
-
+                               Background="{DynamicResource CardBackgroundBrush}"
+                               BorderColor="Transparent"
+                               HasShadow="False">
+                                <Frame.Shadow>
+                                    <Shadow Brush="Black" 
+                                        Opacity="0.50" 
+                                        Radius="10" 
+                                        Offset="5,5" />
+                                </Frame.Shadow>
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
-                                    <!-- Emoji -->
+                                    
                                     <Label Text="🎨" FontSize="25"
                                            Grid.RowSpan="2"
                                            VerticalOptions="Start"
@@ -45,59 +50,63 @@
                                     <!-- ColorTicket y Estado -->
                                     <StackLayout Grid.Column="1" Spacing="2">
                                         <Label Text="{Binding ColorTicket}"
-                                               FontAttributes="Bold"
-                                               FontSize="16"
-                                               TextColor="#0077CC" />
+                                           FontAttributes="Bold"
+                                           FontSize="16"
+                                           TextColor="{DynamicResource Gray500}" />
                                         <Frame Padding="6,2"
                                                CornerRadius="12"
                                                HasShadow="False"
                                                BackgroundColor="{Binding EstadoTicket, Converter={StaticResource EstadoColorConverter}}"
                                                HorizontalOptions="Start">
                                             <Label Text="{Binding EstadoTicket, Converter={StaticResource EstadoConverter}}"
-                                                   TextColor="White"
-                                                   FontSize="13"
-                                                   HorizontalOptions="Center"
-                                                   VerticalOptions="Center" />
+                                               TextColor="{DynamicResource Gray600}"
+                                               FontSize="13"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
                                         </Frame>
                                     </StackLayout>
 
                                     <!-- Botón editar -->
                                     <ImageButton 
-                                        Source="editarreal.png"
-                                        Scale="0.7"
+                                        Source="editicon.png"
+                                        Scale="0.6"
                                         BackgroundColor="Transparent"
                                         Grid.Column="2"
-                                        HeightRequest="5"
-                                        WidthRequest="5"
+                                        HeightRequest="20"
+                                        WidthRequest="20"
                                         Command="{Binding Source={x:Reference TicketPage}, Path=BindingContext.EditTicketCommand}"
                                         CommandParameter="{Binding .}" />
 
                                     <!-- Línea divisoria -->
-                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                             HeightRequest="1"
-                                             BackgroundColor="{DynamicResource Primary}"
-                                             HorizontalOptions="Fill"
-                                             Margin="0,0,0,8" />
+                                    <BoxView Grid.Row="1" Grid.ColumnSpan="3"
+                                         HeightRequest="1"
+                                         Background="#919191"
+                                             Opacity="0.3"
+                                         HorizontalOptions="Fill"
+                                         Margin="14,0,14,0"  />
 
                                     <!-- Fecha -->
-                                    <StackLayout Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,8,0,0" Spacing="2">
-                                        <Label Text="{Binding FechaRegistro, StringFormat='Fecha de Creación: {0:dd/MM/yyyy}'}"
+                                    <StackLayout Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,28,0,0" Spacing="2">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconFechaCreacion}"
+                                               WidthRequest="18"
+                                               HeightRequest="18"
+                                               VerticalOptions="Center" />
+                                            <Label Text="{Binding FechaRegistro, StringFormat='Fecha de Creación: {0:dd/MM/yyyy}'}"
                                                FontSize="13"
-                                               TextColor="{DynamicResource Gray500}" />
+                                               TextColor="#4b5563"
+                                               VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
                                     </StackLayout>
 
-                                    <!-- Ver más -->
-                                    <Label Grid.Column="2" Grid.Row="2"
-                                           Text="See more >"
-                                           FontSize="13"
-                                           TextColor="#D600AA"
-                                           HorizontalOptions="End"
-                                           Margin="0,8,0,0" />
+
+
                                 </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
             </VerticalStackLayout>
         </ScrollView>
 

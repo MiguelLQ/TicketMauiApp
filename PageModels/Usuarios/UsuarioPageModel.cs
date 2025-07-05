@@ -86,28 +86,39 @@ namespace MauiFirebase.PageModels.Usuarios
         {
             try
             {
+                // 1. Verificar conexión
                 if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
                 {
                     await _alertaHelper.ShowErrorAsync("No tienes conexión a internet.");
                     return false;
                 }
 
+                // 2. Validar campos obligatorios
                 if (string.IsNullOrWhiteSpace(UsuarioNuevo.Nombre) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Apellido) ||
                     string.IsNullOrWhiteSpace(UsuarioNuevo.Correo) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Telefono) ||
                     string.IsNullOrWhiteSpace(UsuarioNuevo.Rol) ||
                     string.IsNullOrWhiteSpace(UsuarioNuevo.Contraseña))
                 {
-                    await _alertaHelper.ShowErrorAsync("Completa todos los campos, incluyendo la contraseña.");
+                    await _alertaHelper.ShowErrorAsync("Completa todos los campos obligatorios.");
                     return false;
                 }
 
+                // 3. Establecer valores por defecto
+                UsuarioNuevo.Foto = "userlogo.png"; // imagen local embebida
+                UsuarioNuevo.Estado = true;
+
+                // 4. Guardar en Firebase (excepto la foto) y en SQLite (con foto local)
                 var agregado = await _usuarioRepository.AgregarUsuarioAsync(UsuarioNuevo);
+
                 if (agregado)
                 {
-                    Usuarios.Add(UsuarioNuevo); // Ya viene con UID desde Auth
-                    UsuarioNuevo = new();       // Limpiar formulario
+                    Usuarios.Add(UsuarioNuevo);     // Agregar a la lista local
+                    UsuarioNuevo = new();           // Limpiar el formulario
+
                     await _alertaHelper.ShowSuccessAsync("Usuario creado correctamente.");
-                    await Shell.Current.GoToAsync("..");
+                    await Shell.Current.GoToAsync(".."); // volver atrás
                     return true;
                 }
                 else
@@ -123,7 +134,6 @@ namespace MauiFirebase.PageModels.Usuarios
                 return false;
             }
         }
-
 
         private async Task IrAgregarUsuarioAsync()
         {

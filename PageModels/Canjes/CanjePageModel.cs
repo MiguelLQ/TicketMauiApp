@@ -65,6 +65,7 @@ public partial class CanjePageModel : ObservableObject
                 if (residentesDict.TryGetValue(item.IdResidente, out var residente))
                 {
                     item.NombreResidente = residente.NombreResidente;
+                    item.ApellidoResidente = residente.ApellidoResidente;
                 }
 
                 if (premiosDict.TryGetValue(item.IdPremio, out var premio))

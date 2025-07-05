@@ -29,6 +29,6 @@ public class AppDatabase
         _database.CreateTableAsync<Residente>().Wait();
         _database.CreateTableAsync<Premio>().Wait();
         _database.CreateTableAsync<Usuario>().Wait();
-
+       
     }
 }

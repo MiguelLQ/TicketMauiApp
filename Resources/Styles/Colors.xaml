@@ -6,14 +6,14 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#3949ab</Color>
+    <Color x:Key="Primary">#5061c8</Color>
     <Color x:Key="PrimaryDark">#ac99ea</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>
 
-    <Color x:Key="DarkBackground">#17171a</Color>
+    <Color x:Key="DarkBackground">#121212</Color>
     <Color x:Key="LightOnDarkBackground">#C3C3C3</Color>
     <Color x:Key="LightBackground">#F2F2F2</Color>
     <Color x:Key="DarkOnLightBackground">#0D0D0D</Color>
@@ -35,10 +35,15 @@
     <Color x:Key="Gray600">#404040</Color>
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
-    <Color x:Key="CardBackgroundLight">#e3e4e6</Color>
-    <Color x:Key="CardBackgroundDark">#222228</Color>
+    <Color x:Key="CardBackgroundLight">#ffffff</Color>
+    <Color x:Key="CardBackgroundDark">#1e1e1e</Color>
     <Color x:Key="BorderLight">#d2d3d6</Color>
     <Color x:Key="BorderDark">#444444</Color>
+    <!-- Fondo de Entry para tema claro -->
+    <Color x:Key="EntryBackgroundLight">#f0f0f0</Color>
+
+    <!-- Fondo de Entry para tema oscuro -->
+    <Color x:Key="EntryBackgroundDark">#2c2c2c</Color>
     <Color x:Key="FlyoutLight">#EDEDED</Color>
     <!-- gris claro -->
     <Color x:Key="FlyoutDark">#2A2A2E</Color>
@@ -50,7 +55,9 @@
     <SolidColorBrush x:Key="CardBorderBrush" Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
     <SolidColorBrush x:Key="FlyoutBackgroundBrush"
                  Color="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}" />
-
+    <!-- Brocha dinámica para fondo de Entry -->
+    <SolidColorBrush x:Key="EntryBackgroundBrush"
+    Color="{AppThemeBinding Light={StaticResource EntryBackgroundLight}, Dark={StaticResource EntryBackgroundDark}}" />
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>

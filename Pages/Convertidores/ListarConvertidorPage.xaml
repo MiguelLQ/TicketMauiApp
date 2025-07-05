@@ -33,7 +33,14 @@
                                 CornerRadius="12"
                                 Padding="12"
                                 Margin="0,8"
-                                HasShadow="True">
+                                HasShadow="False">
+
+                                <Frame.Shadow>
+                                    <Shadow Brush="Black" 
+                                            Opacity="0.50" 
+                                            Radius="10" 
+                                            Offset="5,5" />
+                                </Frame.Shadow>
 
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
 
@@ -51,7 +58,7 @@
                                             Text="{Binding IdConvertidor, StringFormat='Convertidor: {0}'}" 
                                             FontAttributes="Bold"
                                             FontSize="16"
-                                            TextColor="#0077CC" />
+                                            TextColor="{DynamicResource Gray500}" />
 
                                         <Frame
                                             Padding="6,2"
@@ -61,7 +68,7 @@
                                             HorizontalOptions="Start">
                                             <Label 
                                                 Text="{Binding EstadoConvertidor, Converter={StaticResource BoolToEstadoConverter}}"
-                                                TextColor="White"
+                                                TextColor="{DynamicResource Gray600}"
                                                 FontSize="13"
                                                 HorizontalOptions="Center"
                                                 VerticalOptions="Center" />
@@ -70,16 +77,15 @@
 
                                     <!-- Botón Editar -->
                                     <Button
-    
-                                        ImageSource="editarreal.png"
+                                        ImageSource="editicon.png"
                                         Clicked="OnEditarConvertidorClicked"
                                         CommandParameter="{Binding .}"
                                         BackgroundColor="Transparent"
                                         Padding="0"
-                                        Scale="0.7"
+                                        Scale="0.6"
                                         ContentLayout="Left, 10"
-                                        HeightRequest="30"
-                                        WidthRequest="30"
+                                        HeightRequest="20"
+                                        WidthRequest="20"
                                         Grid.Column="2"
                                         Grid.Row="0"
                                         HorizontalOptions="End"
@@ -89,34 +95,40 @@
                                     <BoxView 
                                         Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                                         HeightRequest="1"
-                                        BackgroundColor="{DynamicResource Primary}"
+                                        BackgroundColor="#919191"
+                                        Opacity="0.3"
                                         HorizontalOptions="Fill"
-                                        Margin="0,8,0,8" />
+                                        Margin="14,8,14,8" />
 
                                     <!-- Datos adicionales -->
-                                    <StackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="2">
-                                        <Label 
-                                            Text="{Binding ValorMin, StringFormat='Valor Mínimo: {0}'}" 
-                                            FontSize="13"
-                                            TextColor="{DynamicResource Gray500}" />
-                                        <Label 
-                                            Text="{Binding ValorMax, StringFormat='Valor Máximo: {0}'}" 
-                                            FontSize="13"
-                                            TextColor="{DynamicResource Gray500}" />
-                                        <Label 
-                                            Text="{Binding NumeroTicket, StringFormat='Tickets: {0}'}" 
-                                            FontSize="13"
-                                            TextColor="{DynamicResource Gray500}" />
+                                    <StackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="6">
+
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconValorMin}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                                            <Label Text="{Binding ValorMin, StringFormat='Valor Mínimo: {0}'}"
+                                               FontSize="13"
+                                               TextColor="#4b5563"
+                                               VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconValorMax}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                                            <Label Text="{Binding ValorMax, StringFormat='Valor Máximo: {0}'}"
+                                               FontSize="13"
+                                               TextColor="#4b5563"
+                                               VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconTicket}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                                            <Label Text="{Binding NumeroTicket, StringFormat='Convierte en: {0} Tickets'}"
+                                               FontSize="13"
+                                               TextColor="#4b5563"
+                                               VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
                                     </StackLayout>
 
-                                    <!-- See more -->
-                                    <Label 
-                                        Grid.Row="3" Grid.Column="2"
-                                        Text="See more >"
-                                        FontSize="13"
-                                        TextColor="#D600AA"
-                                        HorizontalOptions="End"
-                                        />
                                 </Grid>
 
                             </Frame>
@@ -141,32 +153,7 @@
             Margin="0,0,20,0"
             ZIndex="1" />
 
-        <!--=============================================CARGA LOADING=====================================================-->
-        <Grid IsVisible="{Binding IsBusy}"
-      BackgroundColor="#80000000"
-      HorizontalOptions="Fill"
-      VerticalOptions="Fill">
-            <Frame Padding="20"
-           BackgroundColor="#222222DD"
-           CornerRadius="12"
-           HasShadow="True"
-           HorizontalOptions="Center"
-           VerticalOptions="Center"
-           WidthRequest="160"
-           HeightRequest="120">
-                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
-                    <ActivityIndicator IsRunning="{Binding IsBusy}"
-                               Color="White"
-                               WidthRequest="40"
-                               HeightRequest="40" />
-                    <Label Text="Cargando..."
-                   TextColor="White"
-                   FontSize="16"
-                   HorizontalOptions="Center"
-                   FontAttributes="Bold" />
-                </VerticalStackLayout>
-            </Frame>
-        </Grid>
+        
 
     </Grid>
 </ContentPage>

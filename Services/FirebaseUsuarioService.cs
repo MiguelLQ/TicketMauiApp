@@ -30,23 +30,34 @@ namespace MauiFirebase.Services
                 foreach (var docItem in doc.RootElement.GetProperty("documents").EnumerateArray())
                 {
                     var fields = docItem.GetProperty("fields");
-                    var nombre = fields.GetProperty("nombre").GetProperty("stringValue").GetString();
-                    var correo = fields.GetProperty("email").GetProperty("stringValue").GetString();
-                    var rol = fields.GetProperty("rol").GetProperty("stringValue").GetString();
-                    var uid = docItem.GetProperty("name").ToString().Split('/').Last();
+
+                    string uid = docItem.GetProperty("name").ToString().Split('/').Last();
+
+                    string nombre = fields.GetProperty("nombre").GetProperty("stringValue").GetString() ?? "";
+                    string apellido = fields.TryGetProperty("apellido", out var ap) ? ap.GetProperty("stringValue").GetString() ?? "" : "";
+                    string correo = fields.TryGetProperty("correo", out var co) ? co.GetProperty("stringValue").GetString() ?? "" : "";
+                    string telefono = fields.TryGetProperty("telefono", out var tel) ? tel.GetProperty("stringValue").GetString() ?? "" : "";
+                    string rol = fields.TryGetProperty("rol", out var rl) ? rl.GetProperty("stringValue").GetString() ?? "" : "";
+                    string foto = fields.TryGetProperty("foto", out var ft) ? ft.GetProperty("stringValue").GetString() ?? "" : "";
+                    bool estado = fields.TryGetProperty("estado", out var es) && es.TryGetProperty("booleanValue", out var bval) && bval.GetBoolean();
 
                     usuarios.Add(new Usuario
                     {
                         Uid = uid,
                         Nombre = nombre,
+                        Apellido = apellido,
                         Correo = correo,
-                        Rol = rol
+                        Telefono = telefono,
+                        Rol = rol,
+                        Foto = foto,
+                        Estado = estado
                     });
                 }
             }
 
             return usuarios;
         }
+
         public async Task<string?> AgregarUsuarioAsync(Usuario usuario, string idToken)
         {
             var client = new HttpClient();
@@ -58,8 +69,12 @@ namespace MauiFirebase.Services
                 fields = new
                 {
                     nombre = new { stringValue = usuario.Nombre },
+                    apellido = new { stringValue = usuario.Apellido },
                     correo = new { stringValue = usuario.Correo },
-                    rol = new { stringValue = usuario.Rol }
+                    rol = new { stringValue = usuario.Rol },
+                    telefono = new { stringValue = usuario.Telefono },
+                    estado = new { booleanValue = usuario.Estado },
+                    //foto = new { stringValue = usuario.Foto ?? "" }
                 }
             };
 

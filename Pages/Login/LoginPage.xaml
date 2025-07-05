@@ -37,31 +37,42 @@
                 <VerticalStackLayout Spacing="20">
 
                     <!-- Correo -->
-                    <Frame CornerRadius="30" Padding="8" BackgroundColor="White" HasShadow="False">
-                        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-
-                            <Label Text="👤" FontSize="25" />
+                    <Frame CornerRadius="30" Padding="10" BackgroundColor="White" HasShadow="False">
+                        <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center">
+                            <Image Source="admi.png"
+                                   HeightRequest="20"
+                                   WidthRequest="20"
+                                   VerticalOptions="Center"
+                                   Margin="5"
+                                   Grid.Column="0" />
                             <Entry Placeholder="Correo"
-                                   Text="{Binding Email}"
-                                   FontSize="15"
-                                   PlaceholderColor="Gray"
+                                   FontSize="16"
                                    Keyboard="Email"
-                                   TextColor="Black" />
-                        </HorizontalStackLayout>
+                                   TextColor="Black"
+                                   BackgroundColor="Transparent"
+                                   Text="{Binding Email}"
+                                   Grid.Column="1" />
+                        </Grid>
                     </Frame>
 
+
                     <!-- Contraseña -->
-                    <Frame CornerRadius="30" Padding="8" BackgroundColor="White" HasShadow="False">
-                        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                            <Label Text="🔒" FontSize="25" />
+                    <Frame CornerRadius="30" Padding="10" BackgroundColor="White" HasShadow="False">
+                        <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center">
+                            <Image Source="password.png"
+                                   HeightRequest="20"
+                                   WidthRequest="20"
+                                   VerticalOptions="Center"
+                                   Margin="5"
+                                   Grid.Column="0" />
                             <Entry Placeholder="Contraseña"
-                                   Text="{Binding Password}"
                                    IsPassword="True"
-                                   FontSize="15"
-                                   PlaceholderColor="Gray"
+                                   FontSize="16"
                                    TextColor="Black"
-                                   AutomationId="passwordEntry" />
-                        </HorizontalStackLayout>
+                                   BackgroundColor="Transparent"
+                                   Text="{Binding Password}"
+                                   Grid.Column="1" />
+                        </Grid>
                     </Frame>
 
                     <!-- Botón Login -->
@@ -91,7 +102,7 @@
                                       TextColor="Black" />
                                 <Span Text="Regístrate aquí"
                                       TextDecorations="Underline"
-                                      TextColor="#00BFFF"
+                                      TextColor="#1a2980"
                                       FontAttributes="Bold">
                                     <Span.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding IrARegistroCommand}" />

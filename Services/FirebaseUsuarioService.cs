@@ -9,6 +9,9 @@ namespace MauiFirebase.Services
     public class FirebaseUsuarioService
     {
         private readonly HttpClient _httpClient = new();
+        private const string ApiKey = "AIzaSyBLh0YLNn_t2Se1s4jPmZl7wpHjvZp7txQ";
+        private const string projectId = "ticketapp-c31cf";
+
 
         public async Task<List<Usuario>> ObtenerUsuariosDesdeFirestoreAsync(string idToken)
         {
@@ -27,60 +30,98 @@ namespace MauiFirebase.Services
                 foreach (var docItem in doc.RootElement.GetProperty("documents").EnumerateArray())
                 {
                     var fields = docItem.GetProperty("fields");
-                    var nombre = fields.GetProperty("nombre").GetProperty("stringValue").GetString();
-                    var correo = fields.GetProperty("email").GetProperty("stringValue").GetString();
-                    var rol = fields.GetProperty("rol").GetProperty("stringValue").GetString();
-                    var uid = docItem.GetProperty("name").ToString().Split('/').Last();
+
+                    string uid = docItem.GetProperty("name").ToString().Split('/').Last();
+
+                    string nombre = fields.GetProperty("nombre").GetProperty("stringValue").GetString() ?? "";
+                    string apellido = fields.TryGetProperty("apellido", out var ap) ? ap.GetProperty("stringValue").GetString() ?? "" : "";
+                    string correo = fields.TryGetProperty("correo", out var co) ? co.GetProperty("stringValue").GetString() ?? "" : "";
+                    string telefono = fields.TryGetProperty("telefono", out var tel) ? tel.GetProperty("stringValue").GetString() ?? "" : "";
+                    string rol = fields.TryGetProperty("rol", out var rl) ? rl.GetProperty("stringValue").GetString() ?? "" : "";
+                    string foto = fields.TryGetProperty("foto", out var ft) ? ft.GetProperty("stringValue").GetString() ?? "" : "";
+                    bool estado = fields.TryGetProperty("estado", out var es) && es.TryGetProperty("booleanValue", out var bval) && bval.GetBoolean();
 
                     usuarios.Add(new Usuario
                     {
                         Uid = uid,
                         Nombre = nombre,
+                        Apellido = apellido,
                         Correo = correo,
-                        Rol = rol
+                        Telefono = telefono,
+                        Rol = rol,
+                        Foto = foto,
+                        Estado = estado
                     });
                 }
             }
 
             return usuarios;
         }
+
         public async Task<string?> AgregarUsuarioAsync(Usuario usuario, string idToken)
         {
-            var url = "https://firestore.googleapis.com/v1/projects/ticketapp-c31cf/databases/(default)/documents/usuarios";
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", idToken);
 
-            var payload = new
+            var firestoreData = new
             {
                 fields = new
                 {
                     nombre = new { stringValue = usuario.Nombre },
-                    email = new { stringValue = usuario.Correo },
-                    rol = new { stringValue = usuario.Rol }
+                    apellido = new { stringValue = usuario.Apellido },
+                    correo = new { stringValue = usuario.Correo },
+                    rol = new { stringValue = usuario.Rol },
+                    telefono = new { stringValue = usuario.Telefono },
+                    estado = new { booleanValue = usuario.Estado },
+                    //foto = new { stringValue = usuario.Foto ?? "" }
                 }
+            };
+
+            var json = JsonSerializer.Serialize(firestoreData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // ⚠️ Aquí está la clave: usar el UID como ID del documento
+            var url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/usuarios/{usuario.Uid}";
+
+            var response = await client.PatchAsync(url, content); // PATCH: si existe actualiza, si no, crea
+            return response.IsSuccessStatusCode ? usuario.Uid : null;
+        }
+
+
+        public async Task<string?> RefreshIdTokenAsync()
+        {
+            var refreshToken = Preferences.Get("FirebaseRefreshToken", string.Empty);
+            if (string.IsNullOrEmpty(refreshToken))
+                return null;
+
+            var payload = new
+            {
+                grant_type = "refresh_token",
+                refresh_token = refreshToken
             };
 
             var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", idToken);
-
-            var response = await client.PostAsync(url, content);
+            var response = await client.PostAsync($"https://securetoken.googleapis.com/v1/token?key={ApiKey}", content);
 
             if (!response.IsSuccessStatusCode)
                 return null;
 
-            var responseBody = await response.Content.ReadAsStringAsync();
+            var result = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(result);
 
-            using var document = JsonDocument.Parse(responseBody);
-            var name = document.RootElement.GetProperty("name").GetString();
+            var newIdToken = doc.RootElement.GetProperty("id_token").GetString();
+            var newRefreshToken = doc.RootElement.GetProperty("refresh_token").GetString();
 
-            // name = "projects/xxx/databases/(default)/documents/usuarios/ABC123"
-            var uid = name?.Split('/').Last();
+            // Guardar los nuevos tokens
+            Preferences.Set("FirebaseToken", newIdToken);
+            Preferences.Set("FirebaseRefreshToken", newRefreshToken);
 
-            return uid;
+            return newIdToken;
         }
-
 
     }
 }

@@ -9,6 +9,7 @@ public partial class ListarUsuarioPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = _viewModel = viewModel;
+        VerificarPermiso();
     }
     public async void OnAgregarUsuarioClicked(object sender, EventArgs e)
     {
@@ -23,5 +24,14 @@ public partial class ListarUsuarioPage : ContentPage
     }
 
 
+    private async void VerificarPermiso()
+    {
+        var rol = Preferences.Get("FirebaseUserRole", string.Empty);
 
+        if (rol != "admin")
+        {
+            await DisplayAlert("Acceso denegado", "No tienes permiso para acceder a esta página.", "OK");
+            await Shell.Current.GoToAsync(".."); // O navega al home
+        }
+    }
 }

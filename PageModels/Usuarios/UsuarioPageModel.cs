@@ -38,6 +38,12 @@ namespace MauiFirebase.PageModels.Usuarios
                 OnPropertyChanged();
             }
         }
+        public List<string> RolesDisponibles { get; } = new()
+        {
+            "admin",
+            "register"
+        };
+
         public Command GuardarUsuarioCommand { get; }
         public Command IrAgregarUsuarioCommand { get; }
 
@@ -80,28 +86,39 @@ namespace MauiFirebase.PageModels.Usuarios
         {
             try
             {
+                // 1. Verificar conexión
                 if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
                 {
                     await _alertaHelper.ShowErrorAsync("No tienes conexión a internet.");
                     return false;
                 }
+
+                // 2. Validar campos obligatorios
                 if (string.IsNullOrWhiteSpace(UsuarioNuevo.Nombre) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Apellido) ||
                     string.IsNullOrWhiteSpace(UsuarioNuevo.Correo) ||
-                    string.IsNullOrWhiteSpace(UsuarioNuevo.Rol))
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Telefono) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Rol) ||
+                    string.IsNullOrWhiteSpace(UsuarioNuevo.Contraseña))
                 {
-                    await _alertaHelper.ShowErrorAsync("Completa todos los campos.");
+                    await _alertaHelper.ShowErrorAsync("Completa todos los campos obligatorios.");
                     return false;
                 }
 
-                var uid = await _usuarioRepository.AgregarUsuarioAsync(UsuarioNuevo);
-                if (!string.IsNullOrEmpty(uid))
+                // 3. Establecer valores por defecto
+                UsuarioNuevo.Foto = "userlogo.png"; // imagen local embebida
+                UsuarioNuevo.Estado = true;
+
+                // 4. Guardar en Firebase (excepto la foto) y en SQLite (con foto local)
+                var agregado = await _usuarioRepository.AgregarUsuarioAsync(UsuarioNuevo);
+
+                if (agregado)
                 {
-                    UsuarioNuevo.Uid = uid;
-                    Usuarios.Add(UsuarioNuevo); // Lo agregas en memoria
-                    UsuarioNuevo = new();       // Limpiar formulario
+                    Usuarios.Add(UsuarioNuevo);     // Agregar a la lista local
+                    UsuarioNuevo = new();           // Limpiar el formulario
 
                     await _alertaHelper.ShowSuccessAsync("Usuario creado correctamente.");
-                    await Shell.Current.GoToAsync("..");
+                    await Shell.Current.GoToAsync(".."); // volver atrás
                     return true;
                 }
                 else

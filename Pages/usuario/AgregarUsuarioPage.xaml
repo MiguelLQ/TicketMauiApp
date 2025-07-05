@@ -3,30 +3,113 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.usuario.AgregarUsuarioPage"
              xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
-           >
+             x:DataType="viewModel:UsuarioPageModel"
+             Title="Agregar Usuario">
+
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="20" Spacing="0" HorizontalOptions="Center">
 
-            <Label Text="Nombre" />
-            <Entry Placeholder="Ingrese el nombre" Text="{Binding UsuarioNuevo.Nombre}" />
+            <!-- Contenedor visual principal con sombra y borde redondeado -->
+            <Frame CornerRadius="16"
+                   HasShadow="True"
+                   BorderColor="Transparent"
+                   Background="{StaticResource CardBackgroundBrush}"
+                   WidthRequest="360">
 
-            <Label Text="Correo" />
-            <Entry Placeholder="Ingrese el correo" Keyboard="Email" Text="{Binding UsuarioNuevo.Correo}" />
+                <VerticalStackLayout Spacing="8" Padding="10">
 
-            <Label Text="Rol" />
-            <Entry Placeholder="admin / user" Text="{Binding UsuarioNuevo.Rol}" />
+                    <!-- Imagen de usuario centrada -->
+                    <Frame WidthRequest="90" HeightRequest="90"
+                           CornerRadius="45"
+                           BorderColor="#ccc"
+                           BackgroundColor="Transparent"
+                           Padding="0"
+                           HorizontalOptions="Center">
+                        <Image Source="perfil.png"
+                               Aspect="AspectFill" />
+                    </Frame>
 
-            <Button Text="Guardar Usuario"
-                    Command="{Binding GuardarUsuarioCommand}"
-                    BackgroundColor="#3949ab"
-                    TextColor="White"
-                    CornerRadius="10" />
-            <Button Text="Volver"
-                    Clicked="OnVolverClicked"
-                    BackgroundColor="#b0bec5"
-                    TextColor="Black"
-                    CornerRadius="10" />
+                    <!-- Título centrado -->
+                    <Label Text="Registrar Usuario"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#3f51b5" />
 
+                    <!-- Campo: Nombre -->
+                    <VerticalStackLayout HorizontalOptions="Fill">
+                        <Label Text="Nombres" FontSize="13" TextColor="#3f51b5" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconNombre}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ingrese Apellidos" Margin="8,0" Style="{StaticResource EntrySinLinea}" Text="{Binding UsuarioNuevo.Nombre}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Apellido -->
+                    <VerticalStackLayout HorizontalOptions="Fill">
+                        <Label Text="Apellidos" FontSize="13" TextColor="#3f51b5" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconApellido}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ingrese Apellidos" Margin="8,0" Style="{StaticResource EntrySinLinea}" Text="{Binding UsuarioNuevo.Apellido}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Correo con ícono -->
+                    <VerticalStackLayout>
+                        <Label Text="Correo" FontSize="13" TextColor="#3f51b5" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconCorreo}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ingrese el correo" Keyboard="Email" Margin="8,0" Text="{Binding UsuarioNuevo.Correo}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Teléfono -->
+                    <VerticalStackLayout>
+                        <Label Text="Teléfono" FontSize="13" TextColor="#3f51b5" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconTelefono}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ingrese el número" Keyboard="Telephone" Margin="8,0" Text="{Binding UsuarioNuevo.Telefono}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Contraseña -->
+                    <VerticalStackLayout>
+                        <Label Text="Contraseña" FontSize="13" TextColor="#3f51b5" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconContrasena}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ingrese una contraseña" IsPassword="True" Margin="8,0" Text="{Binding UsuarioNuevo.Contraseña}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Rol en una línea -->
+                    <VerticalStackLayout>
+                        <Label Text="Rol" FontSize="13" TextColor="#3f51b5" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="6,0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconRol}" WidthRequest="20" HeightRequest="20" Margin="4,0" VerticalOptions="Center" />
+                                <Picker ItemsSource="{Binding RolesDisponibles}" SelectedItem="{Binding UsuarioNuevo.Rol}" WidthRequest="200" TextColor="#666" FontSize="12" BackgroundColor="Transparent" Title="Seleccione un rol" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Botones en una sola fila -->
+                    <HorizontalStackLayout Spacing="16" Margin="0,10,0,0" HorizontalOptions="Center">
+                        <Button Text="Agregar" Command="{Binding GuardarUsuarioCommand}" FontSize="14" FontAttributes="Bold" BackgroundColor="#3f51b5" TextColor="White" HeightRequest="48" CornerRadius="8" WidthRequest="140" />
+                        <Button Text="Cancelar" Clicked="OnVolverClicked" FontSize="14" FontAttributes="Bold" BackgroundColor="#e0e0e0" TextColor="#333" HeightRequest="48" CornerRadius="8" WidthRequest="140" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using MauiFirebase.Data.Interfaces;
+﻿using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
-using MauiFirebase.Services;
 using SQLite;
 
 namespace MauiFirebase.Data.Repositories

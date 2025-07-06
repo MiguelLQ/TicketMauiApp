@@ -28,8 +28,10 @@ using MauiFirebase.Pages.Convertidores;
 using MauiFirebase.PageModels.Logins;
 using MauiFirebase.Pages.usuario;
 using MauiFirebase.PageModels.Usuarios;
-using MauiFirebase.PageModels.Registers;
-using MauiFirebase.Pages.Register;
+using MauiFirebase.PageModels.Vehiculos;
+using MauiFirebase.Pages.Vehiculo;
+using MauiFirebase.PageModels.Trabajadores;
+using MauiFirebase.Pages.Trabajador;
 
 namespace MauiFirebase;
 
@@ -165,6 +167,24 @@ public static class MauiProgram
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();
         
+        //Vehiculo
+        builder.Services.AddSingleton<IVehiculoRepository, VehiculoRepository>();
+        builder.Services.AddSingleton<VehiculoPageModel>();
+        builder.Services.AddSingleton<EditarVehiculoPageModel>();
+        builder.Services.AddSingleton<CrearVehiculoPageModel>();
+        builder.Services.AddSingleton<ListarVehiculoPage>();
+        builder.Services.AddSingleton<AgregarVehiculoPage>();
+        builder.Services.AddSingleton<EditarVehiculoPageModel>();
+
+        //Trabajador
+        builder.Services.AddSingleton<ITrabajadorRepository, TrabajadorRepository>();
+        builder.Services.AddSingleton<TrabajadorPageModel>();
+        builder.Services.AddSingleton<EditarTrabajadorPageModel>();
+        builder.Services.AddSingleton<CrearTrabajadorPageModel>();
+        builder.Services.AddSingleton<ListarTrabajadorPage>();
+        builder.Services.AddSingleton<AgregarTrabajadorPage>();
+        builder.Services.AddSingleton<EditarTrabajadorPage>();
+
 
         //Registro
         //builder.Services.AddSingleton<RegisterPageModel>();

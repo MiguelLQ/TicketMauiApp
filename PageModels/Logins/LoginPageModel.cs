@@ -1,57 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.Register;
-using MauiFirebase.Pages.Ticket;
 
 namespace MauiFirebase.PageModels.Logins
 {
-    public partial class LoginPageModel: INotifyPropertyChanged
+    public partial class LoginPageModel : ObservableObject
     {
         private readonly FirebaseAuthService _authService = new FirebaseAuthService();
 
+        [ObservableProperty]
         private string email;
+
+        [ObservableProperty]
         private string password;
+
+        [ObservableProperty]
         private string errorMessage;
+
+        [ObservableProperty]
         private bool hasError;
-
-        public string Email
-        {
-            get => email;
-            set => SetProperty(ref email, value);
-        }
-
-        public string Password
-        {
-            get => password;
-            set => SetProperty(ref password, value);
-        }
-
-        public string ErrorMessage
-        {
-            get => errorMessage;
-            set => SetProperty(ref errorMessage, value);
-        }
-
-        public bool HasError
-        {
-            get => hasError;
-            set => SetProperty(ref hasError, value);
-        }
-
-        public ICommand LoginCommand { get; }
 
         public LoginPageModel()
         {
             LoginCommand = new AsyncRelayCommand(LoginAsync);
         }
+
+        public ICommand LoginCommand { get; }
 
         private async Task LoginAsync()
         {
@@ -99,25 +75,7 @@ namespace MauiFirebase.PageModels.Logins
         [RelayCommand]
         private async Task IrARegistroAsync()
         {
-            // ✅ Navegación directa sin Shell
             await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
         }
-
-
-
-        // Implementación de INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
-        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value)) return false;
-            backingStore = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-
     }
 }

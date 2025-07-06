@@ -2,7 +2,6 @@
 using CommunityToolkit.Maui.Core;
 using MauiFirebase.Pages.Canje;
 using MauiFirebase.Pages.Premio;
-using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.Pages.RegistroDeReciclaje;
@@ -12,6 +11,8 @@ using MauiFirebase.Pages.Convertidores;
 using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.usuario;
 using MauiFirebase.Pages.Register;
+using MauiFirebase.Pages.Vehiculo;
+using MauiFirebase.Pages.Trabajador;
 //using Windows.Devices.Sensors;
 
 namespace MauiFirebase
@@ -25,7 +26,13 @@ namespace MauiFirebase
       
             Routing.RegisterRoute(nameof(EditarResiduoPage), typeof(EditarResiduoPage));
             Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage));
-
+            //vehiculo
+            Routing.RegisterRoute(nameof(EditarVehiculoPage), typeof(EditarVehiculoPage));
+            Routing.RegisterRoute(nameof(AgregarVehiculoPage), typeof(AgregarVehiculoPage));
+            //trabajador
+            Routing.RegisterRoute(nameof(EditarTrabajadorPage), typeof(EditarTrabajadorPage));
+            Routing.RegisterRoute(nameof(AgregarTrabajadorPage), typeof(AgregarTrabajadorPage));
+            //convertidor
             Routing.RegisterRoute(nameof(EditarConvertidorPage), typeof(EditarConvertidorPage));
             Routing.RegisterRoute(nameof(AgregarConvertidorPage), typeof(AgregarConvertidorPage));
 

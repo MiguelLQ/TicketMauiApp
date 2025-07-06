@@ -1,5 +1,4 @@
 ﻿using MauiFirebase.Models;
-using Microsoft.Maui.Animations;
 using SQLite;
 
 namespace MauiFirebase.Data.Sources;
@@ -20,6 +19,7 @@ public class AppDatabase
         /*======================================================  
           Aquí se agrega más tablas  
          =========================================================*/
+        _database.CreateTableAsync<Rol>().Wait();
         _database.CreateTableAsync<Residuo>().Wait();
         _database.CreateTableAsync<Convertidor>().Wait();
         _database.CreateTableAsync<Ticket>().Wait();
@@ -28,7 +28,8 @@ public class AppDatabase
         _database.CreateTableAsync<Canje>().Wait();
         _database.CreateTableAsync<Residente>().Wait();
         _database.CreateTableAsync<Premio>().Wait();
+        _database.CreateTableAsync<Trabajador>().Wait();
+        _database.CreateTableAsync<Vehiculo>().Wait();
         _database.CreateTableAsync<Usuario>().Wait();
-       
     }
 }

@@ -19,6 +19,8 @@
     xmlns:conversiones="clr-namespace:MauiFirebase.Pages.Convertidores"
     xmlns:inicio="clr-namespace:MauiFirebase.Pages.Home"
     xmlns:usuario="clr-namespace:MauiFirebase.Pages.usuario"
+    xmlns:vehiculo="clr-namespace:MauiFirebase.Pages.Vehiculo"
+    xmlns:trabajador="clr-namespace:MauiFirebase.Pages.Trabajador"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}">
@@ -101,6 +103,18 @@
                   Icon="veci.png"
                   ContentTemplate="{DataTemplate residente:ResidenteListPage}"
                   Route="residente" />
+
+        <!--Vehiculos -->
+        <ShellContent Title="Vehiculos"
+            Icon="veci.png"
+            ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}"
+            Route="vehiculo" />
+
+        <!--Vehiculos -->
+        <ShellContent Title="Trabajadores"
+             Icon="veci.png"
+             ContentTemplate="{DataTemplate trabajador:ListarTrabajadorPage}"
+             Route="trabajador" />
     </FlyoutItem>
 
 
@@ -233,6 +247,6 @@
     </Shell.FlyoutFooter>
 
     <!-- ✅ AGREGADO AL FINAL: Rutas ocultas de Login y Registro -->
-    
+
 
 </Shell>

@@ -65,22 +65,40 @@
 	<ItemGroup>
 	  <AndroidResource Remove="PageModels\Canje\**" />
 	  <AndroidResource Remove="PageModels\CategoriaResiduo\**" />
+	  <AndroidResource Remove="PageModels\RegistroReciclaje\**" />
 	  <AndroidResource Remove="PageModels\Residente\**" />
+	  <AndroidResource Remove="Pages\RegistroReciclaje\**" />
+	  <AndroidResource Remove="Pages\Residente\**" />
 	  <Compile Remove="PageModels\Canje\**" />
 	  <Compile Remove="PageModels\CategoriaResiduo\**" />
+	  <Compile Remove="PageModels\RegistroReciclaje\**" />
 	  <Compile Remove="PageModels\Residente\**" />
+	  <Compile Remove="Pages\RegistroReciclaje\**" />
+	  <Compile Remove="Pages\Residente\**" />
 	  <EmbeddedResource Remove="PageModels\Canje\**" />
 	  <EmbeddedResource Remove="PageModels\CategoriaResiduo\**" />
+	  <EmbeddedResource Remove="PageModels\RegistroReciclaje\**" />
 	  <EmbeddedResource Remove="PageModels\Residente\**" />
+	  <EmbeddedResource Remove="Pages\RegistroReciclaje\**" />
+	  <EmbeddedResource Remove="Pages\Residente\**" />
 	  <MauiCss Remove="PageModels\Canje\**" />
 	  <MauiCss Remove="PageModels\CategoriaResiduo\**" />
+	  <MauiCss Remove="PageModels\RegistroReciclaje\**" />
 	  <MauiCss Remove="PageModels\Residente\**" />
+	  <MauiCss Remove="Pages\RegistroReciclaje\**" />
+	  <MauiCss Remove="Pages\Residente\**" />
 	  <MauiXaml Remove="PageModels\Canje\**" />
 	  <MauiXaml Remove="PageModels\CategoriaResiduo\**" />
+	  <MauiXaml Remove="PageModels\RegistroReciclaje\**" />
 	  <MauiXaml Remove="PageModels\Residente\**" />
+	  <MauiXaml Remove="Pages\RegistroReciclaje\**" />
+	  <MauiXaml Remove="Pages\Residente\**" />
 	  <None Remove="PageModels\Canje\**" />
 	  <None Remove="PageModels\CategoriaResiduo\**" />
+	  <None Remove="PageModels\RegistroReciclaje\**" />
 	  <None Remove="PageModels\Residente\**" />
+	  <None Remove="Pages\RegistroReciclaje\**" />
+	  <None Remove="Pages\Residente\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -171,6 +189,21 @@
 	  <MauiXaml Update="Pages\Ticket\ListarTicketPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Trabajador\EditarTrabajadorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Trabajador\ListarTrabajadorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Users\CrearUserPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Users\EditarUserPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Users\ListarUserPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\usuario\AgregarUsuarioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -180,13 +213,16 @@
 	  <MauiXaml Update="Pages\usuario\ListarUsuarioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Vehiculo\AgregarVehiculoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Vehiculo\ListarVehiculoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="PageModels\RegistroReciclaje\" />
 	  <Folder Include="PageModels\Ticket\" />
-	  <Folder Include="Pages\RegistroReciclaje\" />
-	  <Folder Include="Pages\Residente\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Vehiculos"
+             x:Class="MauiFirebase.Pages.Vehiculo.EditarVehiculoPage"
+             x:DataType="viewModel:EditarVehiculoPageModel"
+             Title="Editar Veh�culo">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Label Text="Editar Veh�culo" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Entry Placeholder="Placa" Text="{Binding PlacaVehiculo}" />
+            <Entry Placeholder="Marca" Text="{Binding MarcaVehiculo}" />
+            <Entry Placeholder="Modelo" Text="{Binding ModeloVehiculo}" />
+            <Entry Placeholder="ID Trabajador" Keyboard="Numeric" Text="{Binding IdTrabajador}" />
+            <Switch IsToggled="{Binding EstadoVehiculo}" />
+            <Button Text="Guardar Cambios" Command="{Binding EditarVehiculoCommand}" />
+            <Button Text="Cancelar" Clicked="OnVolverClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

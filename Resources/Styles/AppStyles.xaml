@@ -50,6 +50,12 @@
         <OnIdiom.Desktop>15</OnIdiom.Desktop>
     </OnIdiom>
     <!--iconos entry-->
+    <FontImageSource x:Key="IconPeso"
+                 Glyph="{x:Static f:FluentUI.gauge_24_regular}" 
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
     <FontImageSource x:Key="IconNombre"
                  Glyph="{x:Static f:FluentUI.person_24_regular}"
                  FontFamily="{x:Static f:FluentUI.FontFamily}"

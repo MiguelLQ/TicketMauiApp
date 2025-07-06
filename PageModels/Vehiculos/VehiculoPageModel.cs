@@ -10,15 +10,21 @@ namespace MauiFirebase.PageModels.Vehiculos;
 public partial class VehiculoPageModel : ObservableObject
 {
     public ObservableCollection<Vehiculo> ListaVehiculos { get; } = new();
+
     private readonly IVehiculoRepository _vehiculoRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
     private readonly IAlertaHelper _alertaHelper;
 
     [ObservableProperty]
     private bool isBusy;
 
-    public VehiculoPageModel(IVehiculoRepository vehiculoRepository, IAlertaHelper alertaHelper)
+    public VehiculoPageModel(
+        IVehiculoRepository vehiculoRepository,
+        IUsuarioRepository usuarioRepository,
+        IAlertaHelper alertaHelper)
     {
         _vehiculoRepository = vehiculoRepository;
+        _usuarioRepository = usuarioRepository;
         _alertaHelper = alertaHelper;
     }
 
@@ -29,9 +35,15 @@ public partial class VehiculoPageModel : ObservableObject
         {
             IsBusy = true;
             ListaVehiculos.Clear();
+
             var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
+            var usuarios = await _usuarioRepository.GetUsuariosAsync();
+
             foreach (var vehiculo in vehiculos)
             {
+                Usuario? usuario = usuarios.FirstOrDefault(u => u.Uid == vehiculo.IdUsuario);
+                vehiculo.Nombre = usuario?.Nombre ?? "Usuario no encontrado";
+
                 ListaVehiculos.Add(vehiculo);
             }
         }
@@ -45,7 +57,7 @@ public partial class VehiculoPageModel : ObservableObject
     public async Task CambiarEstadoVehiculoAsync(int id)
     {
         await _vehiculoRepository.ChangeEstadoVehiculoAsync(id);
-        await _alertaHelper.ShowSuccessAsync("Se cambió el estado del vehículo correctamente");
+        await _alertaHelper.ShowSuccessAsync("Se cambió el estado del vehículo correctamente.");
         await CargarVehiculosAsync();
     }
 
@@ -53,5 +65,11 @@ public partial class VehiculoPageModel : ObservableObject
     public async Task IrACrearVehiculoAsync()
     {
         await Shell.Current.GoToAsync("AgregarVehiculoPage");
+    }
+
+    [RelayCommand]
+    public async Task IrAEditarVehiculoAsync(int idVehiculo)
+    {
+        await Shell.Current.GoToAsync($"EditarVehiculoPage?id={idVehiculo}");
     }
 }

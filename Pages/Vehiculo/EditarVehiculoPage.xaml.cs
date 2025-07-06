@@ -8,10 +8,21 @@ public partial class EditarVehiculoPage : ContentPage
     public EditarVehiculoPage(EditarVehiculoPageModel viewModel)
     {
         InitializeComponent();
-        BindingContext = _viewModel = viewModel;
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
     }
     private async void OnVolverClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is EditarVehiculoPageModel vm)
+        {
+            await vm.InicializarAsync();
+        }
     }
 }

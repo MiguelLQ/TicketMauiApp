@@ -12,18 +12,18 @@ public partial class CrearVehiculoPageModel : ObservableValidator
 {
     [ObservableProperty]
     [Required(ErrorMessage = "La placa es obligatoria.")]
-    public string? placaVehiculo;
+    private string? placaVehiculo;
 
     [ObservableProperty]
     [Required(ErrorMessage = "La marca es obligatoria.")]
-    public string? marcaVehiculo;
+    private string? marcaVehiculo;
 
     [ObservableProperty]
     [Required(ErrorMessage = "El modelo es obligatorio.")]
-    public string? modeloVehiculo;
+    private string? modeloVehiculo;
 
     [ObservableProperty]
-    public bool estadoVehiculo = true;
+    private bool estadoVehiculo = true;
 
     [ObservableProperty]
     [Required(ErrorMessage = "Debe seleccionar un usuario.")]
@@ -32,13 +32,11 @@ public partial class CrearVehiculoPageModel : ObservableValidator
     [ObservableProperty]
     private DateTime fechaRegistro = DateTime.Now;
 
+    public ObservableCollection<Usuario> ListaUsuario { get; } = new();
+
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IAlertaHelper _alertaHelper;
-
-    public ObservableCollection<Vehiculo> ListaVehiculo { get; set; } = new();
-    public ObservableCollection<Usuario> ListaUsuario { get; set; } = new();
-
 
     public CrearVehiculoPageModel(
         IVehiculoRepository vehiculoRepository,
@@ -62,20 +60,16 @@ public partial class CrearVehiculoPageModel : ObservableValidator
     }
 
     [RelayCommand]
-    public async Task CargarVehiculosAsync()
-    {
-        ListaVehiculo.Clear();
-        var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
-        foreach (var vehiculo in vehiculos)
-        {
-            ListaVehiculo.Add(vehiculo);
-        }
-    }
-
-
-    [RelayCommand]
     public async Task CrearVehiculoAsync()
     {
+        ValidateAllProperties();
+
+        if (HasErrors)
+        {
+            var errores = string.Join("\n", GetErrors().Select(e => e.ErrorMessage));
+            await _alertaHelper.ShowErrorAsync($"Errores de validación:\n{errores}");
+            return;
+        }
 
         var nuevoVehiculo = new Vehiculo
         {
@@ -93,6 +87,7 @@ public partial class CrearVehiculoPageModel : ObservableValidator
         LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
+
     public void LimpiarFormulario()
     {
         PlacaVehiculo = string.Empty;
@@ -102,4 +97,61 @@ public partial class CrearVehiculoPageModel : ObservableValidator
         UsuarioSeleccionado = null;
         ClearErrors();
     }
+
+    /* ===================================================================================
+     * VALIDACIONES EN TIEMPO REAL
+    =================================================================================== */
+
+    partial void OnPlacaVehiculoChanged(string? value)
+    {
+        ValidateProperty(value, nameof(PlacaVehiculo));
+        OnPropertyChanged(nameof(PlacaVehiculoError));
+        OnPropertyChanged(nameof(HasPlacaVehiculoError));
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
+
+    partial void OnMarcaVehiculoChanged(string? value)
+    {
+        ValidateProperty(value, nameof(MarcaVehiculo));
+        OnPropertyChanged(nameof(MarcaVehiculoError));
+        OnPropertyChanged(nameof(HasMarcaVehiculoError));
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
+
+    partial void OnModeloVehiculoChanged(string? value)
+    {
+        ValidateProperty(value, nameof(ModeloVehiculo));
+        OnPropertyChanged(nameof(ModeloVehiculoError));
+        OnPropertyChanged(nameof(HasModeloVehiculoError));
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
+
+    partial void OnUsuarioSeleccionadoChanged(Usuario? value)
+    {
+        ValidateProperty(value, nameof(UsuarioSeleccionado));
+        OnPropertyChanged(nameof(UsuarioError));
+        OnPropertyChanged(nameof(HasUsuarioError));
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
+
+    /* ===================================================================================
+     * PROPIEDADES DE ERROR PARA EL XAML
+    =================================================================================== */
+
+    public string? PlacaVehiculoError => GetErrors(nameof(PlacaVehiculo)).FirstOrDefault()?.ErrorMessage;
+    public string? MarcaVehiculoError => GetErrors(nameof(MarcaVehiculo)).FirstOrDefault()?.ErrorMessage;
+    public string? ModeloVehiculoError => GetErrors(nameof(ModeloVehiculo)).FirstOrDefault()?.ErrorMessage;
+    public string? UsuarioError => GetErrors(nameof(UsuarioSeleccionado)).FirstOrDefault()?.ErrorMessage;
+
+    public bool HasPlacaVehiculoError => GetErrors(nameof(PlacaVehiculo)).Any();
+    public bool HasMarcaVehiculoError => GetErrors(nameof(MarcaVehiculo)).Any();
+    public bool HasModeloVehiculoError => GetErrors(nameof(ModeloVehiculo)).Any();
+    public bool HasUsuarioError => GetErrors(nameof(UsuarioSeleccionado)).Any();
+
+    public bool PuedeGuardar =>
+        !HasErrors &&
+        !string.IsNullOrWhiteSpace(PlacaVehiculo) &&
+        !string.IsNullOrWhiteSpace(MarcaVehiculo) &&
+        !string.IsNullOrWhiteSpace(ModeloVehiculo) &&
+        UsuarioSeleccionado != null;
 }

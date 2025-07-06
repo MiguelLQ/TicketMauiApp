@@ -10,4 +10,6 @@ public interface IVehiculoRepository
     Task<Vehiculo?> GetVehiculoByIdAsync(int id);
     Task<int> UpdateVehiculoAsync(Vehiculo vehiculo);
     Task<bool> ChangeEstadoVehiculoAsync(int id);
+    Task<Vehiculo?> GetVehiculoPorPlacaAsync(string placa);
+
 }

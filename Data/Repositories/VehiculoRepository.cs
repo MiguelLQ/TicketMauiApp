@@ -50,4 +50,11 @@ public class VehiculoRepository : IVehiculoRepository
         var resultado = await _database.Database!.UpdateAsync(vehiculo);
         return resultado;
     }
+    public async Task<Vehiculo?> GetVehiculoPorPlacaAsync(string placa)
+    {
+        var resultado = await _database.Database!.Table<Vehiculo>()
+            .Where(v => v.PlacaVehiculo == placa)
+            .FirstOrDefaultAsync();
+        return resultado;
+    }
 }

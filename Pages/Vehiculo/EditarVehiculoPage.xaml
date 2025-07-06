@@ -35,15 +35,23 @@
                     <VerticalStackLayout>
                         <Label Text="Placa" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
-                               Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                               Background="{StaticResource EntryBackgroundBrush}" 
+                               HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
                                 <Image Source="{StaticResource IconPlaca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
                                 <Entry Placeholder="Ej. ABC-123"
                                        Text="{Binding PlacaVehiculo, Mode=TwoWay}"
-                                       FontSize="14" TextColor="#333" BackgroundColor="Transparent" Margin="8,0" />
+                                       FontSize="14" TextColor="#333" 
+                                       BackgroundColor="Transparent" 
+                                       Margin="8,0" />
                             </HorizontalStackLayout>
                         </Frame>
                         <Label Text="{Binding PlacaVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasPlacaVehiculoError}" />
+                        <Label Text="{Binding PlacaDuplicadaError}" 
+                               TextColor="Red" 
+                               FontSize="12" 
+                               IsVisible="{Binding HasPlacaDuplicadaError}" />
+
                     </VerticalStackLayout>
 
                     <!-- Marca -->

@@ -116,19 +116,6 @@
                                             <Label Text="{Binding Nombre, StringFormat='Usuario: {0}'}" FontSize="13" TextColor="#4b5563"/>
                                         </HorizontalStackLayout>
                                     </StackLayout>
-
-                                    <!-- Botón Cambiar Estado -->
-                                    <Button Text="Cambiar Estado"
-                                            Clicked="OnCambiarEstadoVehiculoClicked"
-                                            CommandParameter="{Binding IdVehiculo}"
-                                            Grid.Row="3"
-                                            Grid.Column="1"
-                                            Margin="0,10,0,0"
-                                            BackgroundColor="{DynamicResource Secondary}"
-                                            TextColor="White"
-                                            FontSize="12"
-                                            CornerRadius="6"
-                                            HorizontalOptions="Start"/>
                                 </Grid>
                             </Frame>
                         </DataTemplate>

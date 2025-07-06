@@ -20,6 +20,7 @@ public partial class EditarVehiculoPageModel : ObservableValidator
 
     [ObservableProperty]
     [Required(ErrorMessage = "La placa es obligatoria.")]
+    [StringLength(6, MinimumLength = 6, ErrorMessage = "La placa debe tener exactamente 6 caracteres.")]
     private string? placaVehiculo;
 
     [ObservableProperty]
@@ -42,6 +43,10 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     [ObservableProperty]
     [Required(ErrorMessage = "Debe seleccionar un usuario.")]
     private Usuario? usuarioSeleccionado;
+    [ObservableProperty]
+    private string? placaDuplicadaError;
+
+    public bool HasPlacaDuplicadaError => !string.IsNullOrWhiteSpace(PlacaDuplicadaError);
 
 
     public EditarVehiculoPageModel(
@@ -64,7 +69,8 @@ public partial class EditarVehiculoPageModel : ObservableValidator
             ModeloVehiculo = vehiculo.ModeloVehiculo;
             EstadoVehiculo = vehiculo.EstadoVehiculo;
             var usuarios = await _usuarioRepositorio.GetUsuariosAsync();
-            ListaUsuario = new ObservableCollection<Usuario>(usuarios);
+            var conductores = usuarios.Where(c => c.Rol?.ToLower() == "conductor").ToList();
+            ListaUsuario = new ObservableCollection<Usuario>(conductores);
             UsuarioSeleccionado = ListaUsuario.FirstOrDefault(u => u.Uid == vehiculo.IdUsuario);
         }
     }
@@ -73,6 +79,7 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     public async Task EditarVehiculoAsync()
     {
         ValidateAllProperties();
+
         if (HasErrors)
         {
             var errores = string.Join("\n", GetErrors().Select(e => e.ErrorMessage));
@@ -102,7 +109,15 @@ public partial class EditarVehiculoPageModel : ObservableValidator
 
     partial void OnPlacaVehiculoChanged(string? value)
     {
-        ValidateProperty(value, nameof(PlacaVehiculo));
+        if (!string.IsNullOrEmpty(value))
+        {
+            PlacaVehiculo = value.ToUpper();
+        }
+
+        ValidateProperty(PlacaVehiculo, nameof(PlacaVehiculo));
+
+        _ = VerificarPlacaDuplicadaAsync(PlacaVehiculo);
+
         OnPropertyChanged(nameof(PlacaVehiculoError));
         OnPropertyChanged(nameof(HasPlacaVehiculoError));
         OnPropertyChanged(nameof(PuedeGuardar));
@@ -132,6 +147,25 @@ public partial class EditarVehiculoPageModel : ObservableValidator
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
+    private async Task VerificarPlacaDuplicadaAsync(string? placa)
+    {
+        PlacaDuplicadaError = null;
+
+        if (!string.IsNullOrWhiteSpace(placa) && placa.Length == 6)
+        {
+            var existente = await _vehiculoRepository.GetVehiculoPorPlacaAsync(placa);
+            if (existente != null && existente.IdVehiculo != IdVehiculo)
+            {
+                PlacaDuplicadaError = "Ya existe un vehículo registrado con esta placa.";
+            }
+        }
+
+        OnPropertyChanged(nameof(PlacaDuplicadaError));
+        OnPropertyChanged(nameof(HasPlacaDuplicadaError));
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
+
+
     /* ===================================================================================
      * ERRORES DE PROPIEDADES PARA USO EN XAML
     =================================================================================== */
@@ -147,9 +181,11 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     public bool HasIdUsuarioError => GetErrors(nameof(IdUsuario)).Any();
 
     public bool PuedeGuardar =>
-        !HasErrors &&
-        !string.IsNullOrWhiteSpace(PlacaVehiculo) &&
-        !string.IsNullOrWhiteSpace(MarcaVehiculo) &&
-        !string.IsNullOrWhiteSpace(ModeloVehiculo) &&
-        !string.IsNullOrWhiteSpace(IdUsuario);
+     !HasErrors &&
+     !HasPlacaDuplicadaError &&
+     !string.IsNullOrWhiteSpace(PlacaVehiculo) &&
+     !string.IsNullOrWhiteSpace(MarcaVehiculo) &&
+     !string.IsNullOrWhiteSpace(ModeloVehiculo) &&
+     !string.IsNullOrWhiteSpace(IdUsuario);
+
 }

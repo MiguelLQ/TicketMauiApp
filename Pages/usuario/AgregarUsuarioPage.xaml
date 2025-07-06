@@ -42,7 +42,7 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
                                 <Image Source="{StaticResource IconNombre}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
-                                <Entry Placeholder="Ingrese Apellidos" Margin="8,0" Style="{StaticResource EntrySinLinea}" Text="{Binding UsuarioNuevo.Nombre}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                                <Entry Placeholder="Ingrese Apellidos" Margin="8,0" Style="{StaticResource EntrySinLinea}" Text="{Binding UsuarioNuevo.Nombre}" FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" />
                             </HorizontalStackLayout>
                         </Frame>
                     </VerticalStackLayout>
@@ -53,7 +53,7 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
                                 <Image Source="{StaticResource IconApellido}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
-                                <Entry Placeholder="Ingrese Apellidos" Margin="8,0" Style="{StaticResource EntrySinLinea}" Text="{Binding UsuarioNuevo.Apellido}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                                <Entry Placeholder="Ingrese Apellidos" Margin="8,0" Style="{StaticResource EntrySinLinea}" Text="{Binding UsuarioNuevo.Apellido}" FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" />
                             </HorizontalStackLayout>
                         </Frame>
                     </VerticalStackLayout>
@@ -64,7 +64,7 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
                             <HorizontalStackLayout>
                                 <Image Source="{StaticResource IconCorreo}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
-                                <Entry Placeholder="Ingrese el correo" Keyboard="Email" Margin="8,0" Text="{Binding UsuarioNuevo.Correo}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                                <Entry Placeholder="Ingrese el correo" Keyboard="Email" Margin="8,0" Text="{Binding UsuarioNuevo.Correo}" FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" />
                             </HorizontalStackLayout>
                         </Frame>
                     </VerticalStackLayout>
@@ -75,7 +75,7 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
                             <HorizontalStackLayout>
                                 <Image Source="{StaticResource IconTelefono}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
-                                <Entry Placeholder="Ingrese el número" Keyboard="Telephone" Margin="8,0" Text="{Binding UsuarioNuevo.Telefono}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                                <Entry Placeholder="Ingrese el número" Keyboard="Telephone" Margin="8,0" Text="{Binding UsuarioNuevo.Telefono}" FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" />
                             </HorizontalStackLayout>
                         </Frame>
                     </VerticalStackLayout>
@@ -86,7 +86,7 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
                             <HorizontalStackLayout>
                                 <Image Source="{StaticResource IconContrasena}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
-                                <Entry Placeholder="Ingrese una contraseña" IsPassword="True" Margin="8,0" Text="{Binding UsuarioNuevo.Contraseña}" FontSize="14" TextColor="#333" BackgroundColor="Transparent" />
+                                <Entry Placeholder="Ingrese una contraseña" IsPassword="True" Margin="8,0" Text="{Binding UsuarioNuevo.Contraseña}" FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" />
                             </HorizontalStackLayout>
                         </Frame>
                     </VerticalStackLayout>
@@ -97,7 +97,7 @@
                         <Frame CornerRadius="8" Padding="6,0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
                             <HorizontalStackLayout>
                                 <Image Source="{StaticResource IconRol}" WidthRequest="20" HeightRequest="20" Margin="4,0" VerticalOptions="Center" />
-                                <Picker ItemsSource="{Binding RolesDisponibles}" SelectedItem="{Binding UsuarioNuevo.Rol}" WidthRequest="200" TextColor="#666" FontSize="12" BackgroundColor="Transparent" Title="Seleccione un rol" />
+                                <Picker ItemsSource="{Binding RolesDisponibles}" SelectedItem="{Binding UsuarioNuevo.Rol}" WidthRequest="200" TextColor="{DynamicResource Gray400}" FontSize="12" BackgroundColor="Transparent" Title="Seleccione un rol" />
                             </HorizontalStackLayout>
                         </Frame>
                     </VerticalStackLayout>

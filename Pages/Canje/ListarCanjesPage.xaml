@@ -96,23 +96,18 @@
 
                                     </StackLayout>
 
-                                    <!-- Botón Editar -->
-                                    <Button
-    
-                                        ImageSource="editicon.png"
-                                        Clicked="OnEditarCanjeClicked"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="Transparent"
-                                        Padding="0"
-                                        Scale="0.6"
-                                        ContentLayout="Left, 10"
-                                        HeightRequest="30"
-                                        WidthRequest="30"
-                                        Grid.Column="2"
-                                        Grid.Row="0"
-                                        HorizontalOptions="End"
-                                         VerticalOptions="Start"/>
-
+                                    
+                                    <!-- Ícono emoji -->
+                                    <Label 
+                                         Text="Ciudadano"
+                                         FontSize="15"
+                                         TextColor="{StaticResource Primary}"
+                                         Grid.Row="0"
+                                         Grid.Column="2"
+                                         Background="{StaticResource EntryBackgroundBrush}"
+                                         HorizontalOptions="End"
+                                         VerticalOptions="Start"
+                                         Margin="0,0,10,0" />
                                     <!-- fecha -->
                                     <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Spacing="6" Margin="0,2,0,0">
                                         <Image Source="{StaticResource IconFechaCreacion}"

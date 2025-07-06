@@ -71,6 +71,7 @@ public partial class CanjePageModel : ObservableObject
                 if (premiosDict.TryGetValue(item.IdPremio, out var premio))
                 {
                     item.NombrePremio = premio.NombrePremio;
+                    item.DescripcionPremio = premio.NombrePremio;
                 }
                 ListaCanjes.Add(item);
             }

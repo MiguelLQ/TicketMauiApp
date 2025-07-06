@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.Residuo.AgregarResiduoPage"
              xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
+             x:Class="MauiFirebase.Pages.Residuo.AgregarResiduoPage"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Residuos"
              x:DataType="viewModels:CrearResiduoPageModel"
-             Title="Agregar Residuo"
-             >
+             Title="Agregar Residuo">
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:StringToIntConverter x:Key="StringToIntConverter" />
@@ -15,107 +15,99 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="20">
+        <VerticalStackLayout Padding="20" Spacing="0" HorizontalOptions="Center">
 
-            <!-- Título centrado -->
-            <Label Text="🧴 Nuevo Residuo"
-                   FontSize="28"
-                   FontAttributes="Bold"
-                   
-                   HorizontalOptions="Center" />
-
-            <!-- Campo: Nombre del Residuo -->
-            <Frame 
-                   Background="{DynamicResource CardBackgroundBrush}"
+            <Frame CornerRadius="16"
+                   HasShadow="True"
                    BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Nombre del residuo"
-                           FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding NombreResiduo, Mode=TwoWay}"
-                           FontSize="16"
-                           Placeholder="Ej. Botella de plástico"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
-                    <Label Text="{Binding NombreResiduoError}" 
-                           TextColor="Red" FontSize="12" 
-                           IsVisible="{Binding HasNombreResiduoError}" />
+                   Background="{StaticResource CardBackgroundBrush}"
+                   WidthRequest="360">
+
+                <VerticalStackLayout Spacing="16" Padding="10">
+
+                    <!-- Título -->
+                    <Label Text="🧴 Nuevo Residuo"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{DynamicResource Primary}" />
+
+                    <!-- Campo: Nombre del Residuo -->
+                    <VerticalStackLayout>
+                        <Label Text="Nombre del residuo" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
+                               Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconResiduo}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ej. Botella de plástico"
+                                       Text="{Binding NombreResiduo, Mode=TwoWay}"
+                                       FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding NombreResiduoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasNombreResiduoError}" />
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Categoría -->
+                    <VerticalStackLayout>
+                        <Label Text="Categoría" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="6,0" BorderColor="Transparent"
+                               Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconCategoria}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Picker ItemsSource="{Binding ListaCategorias}"
+                                        SelectedItem="{Binding CategoriaResiduoSeleccionada, Mode=TwoWay}"
+                                        ItemDisplayBinding="{Binding NombreCategoria}"
+                                        Title="Seleccionar categoría"
+                                        FontSize="13"
+                                        TextColor="{DynamicResource Gray400}"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="240" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding CategoriaResiduoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasCategoriaResiduoError}" />
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Valor -->
+                    <VerticalStackLayout>
+                        <Label Text="Valor (en soles)" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
+                               Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconValor}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ej. 0.50"
+                                       Keyboard="Numeric"
+                                       Text="{Binding ValorResiduo , Mode=TwoWay}"
+                                       FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding ValorResiduoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasValorResiduoError}" />
+                    </VerticalStackLayout>
+
+                    <!-- Botones -->
+                    <HorizontalStackLayout Spacing="16" Margin="0,10,0,0" HorizontalOptions="Center">
+                        <Button Text="Guardar"
+                                Command="{Binding CrearResiduoCommand}"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                                TextColor="White"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140"
+                                IsEnabled="{Binding PuedeGuardar}" />
+                        <Button Text="Cancelar"
+                                Clicked="OnCancelarClicked"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="#e0e0e0"
+                                TextColor="#333"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140" />
+                    </HorizontalStackLayout>
+
                 </VerticalStackLayout>
             </Frame>
-
-            <!-- Campo: Categoría -->
-            <Frame 
-                Background="{DynamicResource CardBackgroundBrush}"
-                BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Categoría"
-                           FontSize="14"
-                           TextColor="#6B7280" />
-                    <Picker Title="Seleccionar categoría"
-                            FontSize="16"
-                            TitleColor="#9CA3AF"
-                            TextColor="{DynamicResource Gray500}"
-                            ItemsSource="{Binding ListaCategorias}"
-                            ItemDisplayBinding="{Binding NombreCategoria}"
-                            SelectedItem="{Binding CategoriaResiduoSeleccionada, Mode=TwoWay}" />
-                    <Label Text="{Binding CategoriaResiduoError}"
-                           TextColor="Red"
-                           FontSize="12"
-                           IsVisible="{Binding HasCategoriaResiduoError}" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Campo: Valor del Residuo -->
-            <Frame 
-               Background="{DynamicResource CardBackgroundBrush}"
-                BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Valor (en soles)"
-                           FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding ValorResiduo , Mode=TwoWay}"
-                           FontSize="16"
-                           Keyboard="Numeric"
-                           Placeholder="Ej. 0.50"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
-                    <Label Text="{Binding ValorResiduoError}" 
-                           TextColor="Red" FontSize="12" 
-                           IsVisible="{Binding HasValorResiduoError}" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Botón Guardar -->
-            <Button Text="Guardar"
-                    Command="{Binding CrearResiduoCommand}"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    IsEnabled="{Binding PuedeGuardar}"
-                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}" 
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25"
-                     />
-
-            <!-- Botón Cancelar -->
-            <Button Text="Cancelar"
-                    Clicked="OnCancelarClicked"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    BackgroundColor="red"
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25"
-                    />
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

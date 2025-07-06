@@ -22,5 +22,8 @@ namespace MauiFirebase.Models
         public string? ApellidoResidente { get; set; }
         [Ignore] // SQLite ignores this property
         public string? NombrePremio { get; set; }
+        [Ignore]
+        public string? DescripcionPremio { get; set; }
+
     }
 }

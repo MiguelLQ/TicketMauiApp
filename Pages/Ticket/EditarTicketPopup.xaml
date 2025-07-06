@@ -31,29 +31,36 @@
                          CornerRadius="2" BackgroundColor="LightGray"
                          HorizontalOptions="Center" />
 
-                <Label Text="Editar color" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
+                <Label Text="Editar color" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"  TextColor="#3f51b5"/>
 
-                <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" />
-                <Label Text="¿Está activo?" />
+                <Entry Placeholder="Color del Ticket" Text="{Binding ColorTicket}" TextColor="{DynamicResource Gray500}" />
+                <Label Text="Estado" TextColor="{DynamicResource Gray500}" />
                 <Switch IsToggled="{Binding EstadoTicket}" />
 
-                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
                     <Button 
-                        Text="Guardar"
-                        Command="{Binding GuardarEdicionTicketCommand}"
-                        BackgroundColor="{DynamicResource Primary}"
-                        TextColor="White"
-                        CornerRadius="20"
-                        WidthRequest="120" />
+        Text="Guardar"
+        Command="{Binding GuardarEdicionTicketCommand}"
+        BackgroundColor="{DynamicResource Primary}"
+        TextColor="White"
+        FontAttributes="Bold"
+        FontSize="16"
+        HeightRequest="50"
+        WidthRequest="140"
+        CornerRadius="8" />
 
                     <Button 
-                        Text="Cancelar"
-                        Clicked="OnCancelarClicked"
-                        BackgroundColor="red"
-                        TextColor="White"
-                        CornerRadius="20"
-                        WidthRequest="120" />
+        Text="Cancelar"
+        Clicked="OnCancelarClicked"
+        BackgroundColor="{DynamicResource Gray500}"
+        TextColor="White"
+        FontAttributes="Bold"
+        FontSize="16"
+        HeightRequest="50"
+        WidthRequest="140"
+        CornerRadius="8" />
                 </HorizontalStackLayout>
+
             </VerticalStackLayout>
         </Border>
 

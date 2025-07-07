@@ -35,6 +35,8 @@ using MauiFirebase.Pages.Trabajador;
 using MauiFirebase.PageModels.Registers;
 using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Home;
+using MauiFirebase.Pages.RegistroCiudadano;
+using MauiFirebase.Pages.Mapa;
 
 namespace MauiFirebase;
 
@@ -192,8 +194,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<RegisterPageModel>();
         builder.Services.AddSingleton<RegisterPage>();
         builder.Services.AddSingleton<inicioCiudadanoPage>();
-
-
+        builder.Services.AddSingleton<RegistroCiudadanoPage>();
+        builder.Services.AddSingleton<MonitorearCamionPage>();
         // ==========================================================
         var app = builder.Build();
         Services = app.Services;

@@ -1,43 +1,120 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Home.inicioCiudadanoPage"
-             Title="Inicio Ciudadano"
-             BackgroundColor="#F0F6FF">
+             >
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center">
+        <VerticalStackLayout>
 
-            <!-- Imagen de bienvenida -->
-            <Image Source="ciudadano.png"
-                   HeightRequest="160"
-                   HorizontalOptions="Center"
-                   Aspect="AspectFit" />
+            <!-- Encabezado -->
+            <Grid Background="{StaticResource Primary}" Padding="20,20,40,90">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Label Text="Bienvenido, Ciudadano"
+                           FontSize="20"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Gracias por ayudar al medio ambiente"
+                           FontSize="15"
+                           TextColor="White"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
 
-            <!-- Título -->
-            <Label Text="¡Bienvenido, ciudadano!"
-                   FontSize="26"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   TextColor="#0077CC" />
+            <!-- Card blanca sobresaliente -->
+            <Frame Margin="15,-60,15,30"
+                   CornerRadius="35"
+                   HasShadow="False"
+                   Background="{StaticResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   Padding="20"
+                   HorizontalOptions="Fill">
 
-            <!-- Texto descriptivo -->
-            <Label Text="Gracias por ser parte de nuestra comunidad ambiental. Aquí podrás consultar tu información personal, conocer tus tickets acumulados y más."
-                   FontSize="16"
-                   TextColor="#444"
-                   HorizontalTextAlignment="Center" />
+                <VerticalStackLayout Spacing="20">
 
-            <!-- Botón de ejemplo sin funcionalidad -->
-            <Button Text="Explorar"
-                    BackgroundColor="#0077CC"
-                    TextColor="White"
-                    CornerRadius="20"
-                    HeightRequest="48"
-                    FontSize="16"
-                    HorizontalOptions="Center"
-                    IsEnabled="False" />
-            <!-- Sin funcionalidad aún -->
+                    <CarouselView HeightRequest="200"
+                      IndicatorView="carouselIndicators"
+                      Loop="True"
+                      HorizontalOptions="Fill">
+                        <CarouselView.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>caroucel1.jpg</x:String>
+                                <x:String>caroucel2.jpg</x:String>
+                                <x:String>caroucel3.jpg</x:String>
+                            </x:Array>
+                        </CarouselView.ItemsSource>
 
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame CornerRadius="16"
+                   Padding="0"
+                   Margin="10"
+                   HasShadow="True"
+                   IsClippedToBounds="True"
+                   BorderColor="#CCCCCC"
+                   BackgroundColor="White">
+                                    <Image Source="{Binding .}"
+                       Aspect="AspectFill"
+                       HeightRequest="200"
+                       WidthRequest="400"
+                       HorizontalOptions="Fill"
+                       VerticalOptions="Center" />
+                                </Frame>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+
+
+                    <!-- Indicadores del carrusel -->
+                    <IndicatorView x:Name="carouselIndicators"
+                                   HorizontalOptions="Center"
+                                   IndicatorColor="#ccc"
+                                   SelectedIndicatorColor="#0077CC" />
+
+                    <!-- Estadísticas -->
+                    <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                        <Frame Background="{StaticResource EntryBackgroundBrush}"
+                               CornerRadius="12"
+                               Padding="10"
+                               WidthRequest="140">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="🎟 Tickets"
+                                       FontSize="13"
+                                       TextColor="#888" />
+                                <Label Text="12"
+                                       FontSize="22"
+                                       FontAttributes="Bold"
+                                       TextColor="#0077CC" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame Background="{StaticResource EntryBackgroundBrush}"
+                               CornerRadius="12"
+                               Padding="10"
+                               WidthRequest="140">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="♻ Reciclajes"
+                                       FontSize="13"
+                                       TextColor="#888" />
+                                <Label Text="6"
+                                       FontSize="22"
+                                       FontAttributes="Bold"
+                                       TextColor="#0077CC" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </HorizontalStackLayout>
+
+                    <!-- Botón ver historial -->
+                    <Button Text="Ver historial"
+                            BackgroundColor="#0077CC"
+                            TextColor="White"
+                            CornerRadius="20"
+                            HeightRequest="48"
+                            FontSize="16"
+                            IsEnabled="False"
+                            Opacity="0.6" />
+                </VerticalStackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

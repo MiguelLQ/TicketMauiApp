@@ -10,4 +10,8 @@ public partial class RegisterPage : ContentPage
         BindingContext = MauiProgram.Services.GetService<RegisterPageModel>();
         // <--- esto es importante
     }
+    private async void OnCancelarClicked(object sender, EventArgs e)
+    {
+        await Navigation.PopAsync();
+    }
 }

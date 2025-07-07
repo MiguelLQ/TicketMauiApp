@@ -32,6 +32,9 @@ using MauiFirebase.PageModels.Vehiculos;
 using MauiFirebase.Pages.Vehiculo;
 using MauiFirebase.PageModels.Trabajadores;
 using MauiFirebase.Pages.Trabajador;
+using MauiFirebase.PageModels.Registers;
+using MauiFirebase.Pages.Register;
+using MauiFirebase.Pages.Home;
 
 namespace MauiFirebase;
 
@@ -166,7 +169,6 @@ public static class MauiProgram
         // login
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();
-        
         //Vehiculo
         builder.Services.AddSingleton<IVehiculoRepository, VehiculoRepository>();
         builder.Services.AddSingleton<VehiculoPageModel>();
@@ -186,10 +188,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<EditarTrabajadorPage>();
 
 
-        //Registro
-        //builder.Services.AddSingleton<RegisterPageModel>();
-        //builder.Services.AddSingleton<RegisterPage>(); 
-
+        //Registro ciudadano
+        builder.Services.AddSingleton<RegisterPageModel>();
+        builder.Services.AddSingleton<RegisterPage>();
+        builder.Services.AddSingleton<inicioCiudadanoPage>();
 
 
         // ==========================================================

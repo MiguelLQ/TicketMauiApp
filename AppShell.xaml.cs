@@ -13,6 +13,7 @@ using MauiFirebase.Pages.usuario;
 using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Vehiculo;
 using MauiFirebase.Pages.Trabajador;
+using MauiFirebase.Pages.Home;
 //using Windows.Devices.Sensors;
 
 namespace MauiFirebase
@@ -48,6 +49,8 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
             //para register page
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(inicioCiudadanoPage), typeof(inicioCiudadanoPage));
+
             //Usuario
             Routing.RegisterRoute(nameof(AgregarUsuarioPage), typeof(AgregarUsuarioPage));
             Routing.RegisterRoute("usuarios/agregar", typeof(AgregarUsuarioPage));
@@ -150,7 +153,7 @@ namespace MauiFirebase
         }
 
 
-        private void MostrarOpcionesSegunRol()
+        public void MostrarOpcionesSegunRol()
         {
             var rol = Preferences.Get("FirebaseUserRole", string.Empty);
 
@@ -162,7 +165,7 @@ namespace MauiFirebase
             ConversionesShellContent.IsVisible = false;
             RegisterFlyoutItem.IsVisible = false;
             AdminFlyoutItem.IsVisible = false;
-
+            CiudadanoFlyoutItem.IsVisible = false;
             // Mostrar solo lo correspondiente al rol
             if (rol == "admin")
             {
@@ -172,13 +175,17 @@ namespace MauiFirebase
                 ColoresShellContent.IsVisible = true;
                 ResiduosShellContent.IsVisible = true;
                 ConversionesShellContent.IsVisible = true;
-
+                CiudadanoFlyoutItem.IsVisible = false;
             }
             else if (rol == "register")
             {
                 RegisterFlyoutItem.IsVisible = true;
                 AdminFlyoutItem.IsVisible = false;
-
+                CiudadanoFlyoutItem.IsVisible = false;
+            }
+            else
+            {
+                CiudadanoFlyoutItem.IsVisible = true;
             }
         }
 

@@ -21,6 +21,7 @@
     xmlns:usuario="clr-namespace:MauiFirebase.Pages.usuario"
     xmlns:vehiculo="clr-namespace:MauiFirebase.Pages.Vehiculo"
     xmlns:trabajador="clr-namespace:MauiFirebase.Pages.Trabajador"
+    xmlns:iciciociudadano="clr-namespace:MauiFirebase.Pages.Home"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}">
@@ -64,6 +65,18 @@
             </VerticalStackLayout>
         </Border>
     </Shell.FlyoutHeader>
+    <!-- FLYOUT Ciudadano -->
+    <FlyoutItem Title="Panel Ciudadano"
+            x:Name="CiudadanoFlyoutItem"
+            Icon="{StaticResource IconDashboard}"
+            Route="ciudadanoHome"
+            IsVisible="true">
+
+        <ShellContent Title="Inicio"
+                  Icon="casa.png"
+                  ContentTemplate="{DataTemplate iciciociudadano:inicioCiudadanoPage}"
+                  Route="inicioCiudadano" />
+    </FlyoutItem>
 
     <!-- FLYOUT Register -->
     <FlyoutItem Title="Panel Register"

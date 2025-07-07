@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.Register;
+using Microsoft.Maui.Networking;
 
 namespace MauiFirebase.PageModels.Logins
 {
@@ -34,6 +35,15 @@ namespace MauiFirebase.PageModels.Logins
             HasError = false;
             ErrorMessage = string.Empty;
 
+            // ✅ 1. Validar conexión a Internet
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                ErrorMessage = "No hay conexión a Internet.";
+                HasError = true;
+                return;
+            }
+
+            // ✅ 2. Validar campos
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
                 ErrorMessage = "Debes ingresar tus datos.";
@@ -41,20 +51,20 @@ namespace MauiFirebase.PageModels.Logins
                 return;
             }
 
+            // ✅ 3. Intentar login
             var success = await _authService.LoginAsync(Email, Password);
             if (success)
             {
-                // Mostrar pantalla de carga temporal
+                // Pantalla de carga
                 Application.Current.MainPage = new LoadingPage();
                 await Task.Delay(500);
 
-                // Establecer el Shell
+                // AppShell
                 Application.Current.MainPage = new AppShell();
+                ((AppShell)Application.Current.MainPage).MostrarOpcionesSegunRol(); // Asegúrate de mostrar menú según rol
 
-                // Leer el rol desde Preferences
                 var rol = Preferences.Get("FirebaseUserRole", string.Empty);
 
-                // Navegar según el rol
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
                 {
                     if (rol == "admin")
@@ -62,7 +72,7 @@ namespace MauiFirebase.PageModels.Logins
                     else if (rol == "register")
                         await Shell.Current.GoToAsync("//registerHome/inicio");
                     else
-                        await Shell.Current.DisplayAlert("Rol desconocido", "No se pudo determinar tu panel de acceso.", "OK");
+                        await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");
                 });
             }
             else
@@ -71,6 +81,7 @@ namespace MauiFirebase.PageModels.Logins
                 HasError = true;
             }
         }
+
 
         [RelayCommand]
         private async Task IrARegistroAsync()

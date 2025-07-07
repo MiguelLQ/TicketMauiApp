@@ -14,6 +14,8 @@ using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Vehiculo;
 using MauiFirebase.Pages.Trabajador;
 using MauiFirebase.Pages.Home;
+using MauiFirebase.Pages.RegistroCiudadano;
+using MauiFirebase.Pages.Mapa;
 using MauiFirebase.Pages.ResidentesView;
 //using Windows.Devices.Sensors;
 
@@ -50,9 +52,12 @@ namespace MauiFirebase
 
             Routing.RegisterRoute(nameof(AgregarCanjePage), typeof(AgregarCanjePage));
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
-            //para register page
+            //para register page y ciudadano
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(inicioCiudadanoPage), typeof(inicioCiudadanoPage));
+            Routing.RegisterRoute(nameof(RegistroCiudadanoPage), typeof(RegistroCiudadanoPage));
+            Routing.RegisterRoute(nameof(MonitorearCamionPage), typeof(MonitorearCamionPage));
+
 
             //Usuario
             Routing.RegisterRoute(nameof(AgregarUsuarioPage), typeof(AgregarUsuarioPage));

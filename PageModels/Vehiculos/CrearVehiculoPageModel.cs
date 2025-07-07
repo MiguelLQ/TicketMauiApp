@@ -17,10 +17,12 @@ public partial class CrearVehiculoPageModel : ObservableValidator
 
     [ObservableProperty]
     [Required(ErrorMessage = "La marca es obligatoria.")]
+    [StringLength(30, MinimumLength = 3, ErrorMessage = "La marca debe tener entre 3 y 30 caracteres.")]
     private string? marcaVehiculo;
 
     [ObservableProperty]
     [Required(ErrorMessage = "El modelo es obligatorio.")]
+    [StringLength(30, MinimumLength = 3, ErrorMessage = "El modelo debe tener entre 3 y 30 caracteres.")]
     private string? modeloVehiculo;
 
     [ObservableProperty]

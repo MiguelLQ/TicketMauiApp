@@ -137,5 +137,4 @@ public partial class EditarResiduoPageModel : ObservableValidator
     public bool HasValorResiduoError => GetErrors(nameof(ValorResiduo)).Any();
     public bool HasCategoriaResiduoError => GetErrors(nameof(CategoriaResiduoSeleccionada)).Any();
     public bool PuedeGuardar => !HasErrors && !string.IsNullOrWhiteSpace(NombreResiduo) && ValorResiduo > 0 && CategoriaResiduoSeleccionada != null;
-
 }

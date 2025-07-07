@@ -11,15 +11,10 @@ public partial class AgregarVehiculoPage : ContentPage
         _viewModel = viewModel;
         BindingContext = _viewModel;
     }
-    private async void OnVolverClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("..");
-    }
-
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.CargarUsuariosAsync(); // Carga lista de usuarios al aparecer
+        await _viewModel.CargarUsuariosAsync();
     }
 
     private async void OnCancelarClicked(object sender, EventArgs e)

@@ -1,63 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.Register;
-using MauiFirebase.Pages.Ticket;
+using Microsoft.Maui.Networking;
 
 namespace MauiFirebase.PageModels.Logins
 {
-    public partial class LoginPageModel: INotifyPropertyChanged
+    public partial class LoginPageModel : ObservableObject
     {
         private readonly FirebaseAuthService _authService = new FirebaseAuthService();
 
+        [ObservableProperty]
         private string email;
+
+        [ObservableProperty]
         private string password;
+
+        [ObservableProperty]
         private string errorMessage;
+
+        [ObservableProperty]
         private bool hasError;
-
-        public string Email
-        {
-            get => email;
-            set => SetProperty(ref email, value);
-        }
-
-        public string Password
-        {
-            get => password;
-            set => SetProperty(ref password, value);
-        }
-
-        public string ErrorMessage
-        {
-            get => errorMessage;
-            set => SetProperty(ref errorMessage, value);
-        }
-
-        public bool HasError
-        {
-            get => hasError;
-            set => SetProperty(ref hasError, value);
-        }
-
-        public ICommand LoginCommand { get; }
 
         public LoginPageModel()
         {
             LoginCommand = new AsyncRelayCommand(LoginAsync);
         }
 
+        public ICommand LoginCommand { get; }
+
         private async Task LoginAsync()
         {
             HasError = false;
             ErrorMessage = string.Empty;
 
+            // ✅ 1. Validar conexión a Internet
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                ErrorMessage = "No hay conexión a Internet.";
+                HasError = true;
+                return;
+            }
+
+            // ✅ 2. Validar campos
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
                 ErrorMessage = "Debes ingresar tus datos.";
@@ -65,53 +51,42 @@ namespace MauiFirebase.PageModels.Logins
                 return;
             }
 
+            // ✅ 3. Intentar login
             var success = await _authService.LoginAsync(Email, Password);
             if (success)
             {
-                // Mostrar pantalla de carga
+                // Pantalla de carga
                 Application.Current.MainPage = new LoadingPage();
-
-                // Pequeño delay opcional para mostrar el loading
                 await Task.Delay(500);
 
-                // Cargar el shell
+                // AppShell
                 Application.Current.MainPage = new AppShell();
+                ((AppShell)Application.Current.MainPage).MostrarOpcionesSegunRol(); // Asegúrate de mostrar menú según rol
+
+                var rol = Preferences.Get("FirebaseUserRole", string.Empty);
 
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
                 {
-                    await Shell.Current.GoToAsync("//Home/inicio");
+                    if (rol == "admin")
+                        await Shell.Current.GoToAsync("//adminHome/inicio");
+                    else if (rol == "register")
+                        await Shell.Current.GoToAsync("//registerHome/inicio");
+                    else
+                        await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");
                 });
             }
-
-
             else
             {
                 ErrorMessage = "Correo o contraseña incorrectos.";
                 HasError = true;
             }
         }
+
+
         [RelayCommand]
         private async Task IrARegistroAsync()
         {
-            // ✅ Navegación directa sin Shell
             await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
         }
-
-
-
-        // Implementación de INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
-        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value)) return false;
-            backingStore = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-
     }
 }

@@ -31,43 +31,51 @@
                      CornerRadius="2" BackgroundColor="LightGray"
                      HorizontalOptions="Center" />
 
-                <Label Text="Agregar Categoría" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
-
+                <Label Text="Agregar Categoría" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#3f51b5"/>
+                <Label Text="Nombre de Categoría" TextColor="#3f51b5" />
                 <Entry 
-                    Placeholder="Nombre de Categoría"
+                    Placeholder="Ingrese Nombre"
                     Text="{Binding NombreCategoria}"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}"
-                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                    Background="{StaticResource EntryBackgroundBrush}"
+                    TextColor="{DynamicResource Gray400}"
                     HeightRequest="40"
+                    
                      />
-
-                <Label Text="¿Está activa?" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
-                <Switch IsToggled="{Binding EstadoCategoriaResiduo}" />
-
-                <Label Text="Seleccionar Color" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                <Label Text="Seleccionar Color" TextColor="#3f51b5" />
                 <Picker 
                     Title="Elige un color"
                     ItemsSource="{Binding ListaTickets}"
                     ItemDisplayBinding="{Binding ColorTicket}"
-                    SelectedItem="{Binding TicketSeleccionado}" />
+                    SelectedItem="{Binding TicketSeleccionado}" >
+                    
+                </Picker>
+                <Label Text="Estado" TextColor="{DynamicResource Gray500}" />
+                    <Switch IsToggled="{Binding EstadoCategoriaResiduo}" />
 
-                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
                     <Button 
                         Text="Guardar"
                         Command="{Binding GuardarNuevaCategoriaCommand}"
                         BackgroundColor="{DynamicResource Primary}"
                         TextColor="White"
-                        CornerRadius="20"
-                        WidthRequest="120" />
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        WidthRequest="140"
+                        CornerRadius="8" />
 
                     <Button 
                         Text="Cancelar"
                         Clicked="OnCancelarClicked"
-                        BackgroundColor="red"
+                        BackgroundColor="{DynamicResource Gray500}"
                         TextColor="White"
-                        CornerRadius="20"
-                        WidthRequest="120" />
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        WidthRequest="140"
+                        CornerRadius="8" />
                 </HorizontalStackLayout>
+
 
             </VerticalStackLayout>
         </Border>

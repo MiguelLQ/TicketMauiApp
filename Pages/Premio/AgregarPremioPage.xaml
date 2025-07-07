@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
              x:DataType="viewModels:CrearPremioPageModel"
              Title="Agregar Premio"
-             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
+             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#121212}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -15,131 +15,201 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="20">
+        <VerticalStackLayout Padding="20" HorizontalOptions="Center">
 
-            <!-- Título centrado -->
-            <Label Text="🎁 Nuevo Premio"
-                   FontSize="28"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
-
-            <!-- Campo: Nombre del Premio -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
+            <!-- Contenedor visual principal con fondo blanco y sombra -->
+            <Frame CornerRadius="16"
+                   HasShadow="True"
                    BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Nombre del premio"
-                           FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding NombrePremio}"
-                           FontSize="16"
-                           Placeholder="Ej. Mochila ecológica"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
-                    <Label Text="{Binding NombrePremioError}"
-                           TextColor="Red" FontSize="12"
+                   Background="{StaticResource CardBackgroundBrush}"
+                   WidthRequest="350">
+
+                <VerticalStackLayout Padding="10" Spacing="10">
+
+                    <!-- Título -->
+                    <Label Text="🎁 Nuevo Premio"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#3f51b5" />
+
+                    <!-- Campo: Nombre del Premio -->
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Nombre del premio"
+                           FontSize="13"
+                           Margin="28,0,0,0"
+                           TextColor="#3f51b5" />
+
+                        <Frame CornerRadius="8"
+                           Padding="0"
+                           Background="{StaticResource EntryBackgroundBrush}"
+                           HasShadow="False"
+                           HeightRequest="48"
+                           BorderColor="Transparent">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconPremios}"
+                                   WidthRequest="20"
+                                   HeightRequest="20"
+                                   Margin="10,0"
+                                   VerticalOptions="Center" />
+                                <Entry Text="{Binding NombrePremio}"
+                                   FontSize="14"
+                                   Placeholder="Ej. Mochila ecológica"
+                                   PlaceholderColor="#9CA3AF"
+                                   TextColor="{DynamicResource Gray500}"
+                                   BackgroundColor="Transparent"
+                                   Margin="8,0"
+                                   HorizontalOptions="Fill" />
+                            </HorizontalStackLayout>
+                        </Frame>
+
+                        <Label Text="{Binding NombrePremioError}"
+                           TextColor="Red"
+                           FontSize="12"
                            IsVisible="{Binding HasNombrePremioError}" />
-                </VerticalStackLayout>
-            </Frame>
+                    </VerticalStackLayout>
 
-            <!-- Campo: Descripción -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Descripción"
-                           FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding DescripcionPremio}"
-                           FontSize="16"
-                           Placeholder="Ej. Mochila hecha de materiales reciclados"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
-                    <Label Text="{Binding DescripcionPremioError}"
-                           TextColor="Red" FontSize="12"
+
+                    <!-- Campo: Descripción -->
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Descripción"
+                           FontSize="13"
+                           Margin="28,0,0,0"
+                           TextColor="#3f51b5" />
+
+                        <Frame CornerRadius="8"
+                           Padding="0"
+                           Background="{StaticResource EntryBackgroundBrush}"
+                           HasShadow="False"
+                           HeightRequest="48"
+                           BorderColor="Transparent">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconDescripcion}"
+                                   WidthRequest="20"
+                                   HeightRequest="20"
+                                   Margin="10,0"
+                                   VerticalOptions="Center" />
+                                <Entry Text="{Binding DescripcionPremio}"
+                                   FontSize="14"
+                                   Placeholder="Ej. color verde"
+                                   PlaceholderColor="#9CA3AF"
+                                   TextColor="{DynamicResource Gray500}"
+                                   BackgroundColor="Transparent"
+                                   Margin="8,0"
+                                   HorizontalOptions="Fill" />
+                            </HorizontalStackLayout>
+                        </Frame>
+
+                        <Label Text="{Binding DescripcionPremioError}"
+                           TextColor="Red"
+                           FontSize="12"
                            IsVisible="{Binding HasDescripcionPremioError}" />
-                </VerticalStackLayout>
-            </Frame>
+                    </VerticalStackLayout>
 
-            <!-- Campo: Puntos requeridos -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Puntos requeridos"
-                           FontSize="14"
-                           TextColor="#6B7280" />
-                    <Entry Text="{Binding PuntosRequeridos}"
-                           FontSize="16"
-                           Keyboard="Numeric"
-                           Placeholder="Ej. 150"
-                           PlaceholderColor="#9CA3AF"
-                           TextColor="{DynamicResource Gray500}"
-                           BackgroundColor="Transparent" />
-                    <Label Text="{Binding PuntosRequeridosError}"
-                           TextColor="Red" FontSize="12"
+                    <!-- Campo: Puntos requeridos -->
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Tickets requeridos"
+                           FontSize="13"
+                           Margin="28,0,0,0"
+                           TextColor="#3f51b5" />
+
+                        <Frame CornerRadius="8"
+                           Padding="0"
+                           Background="{StaticResource EntryBackgroundBrush}"
+                           HasShadow="False"
+                           HeightRequest="48"
+                           BorderColor="Transparent">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconTicket}"
+                                   WidthRequest="20"
+                                   HeightRequest="20"
+                                   Margin="10,0"
+                                   VerticalOptions="Center" />
+                                <Entry Text="{Binding PuntosRequeridos}"
+                                       FontSize="14"
+                                       Keyboard="Numeric"
+                                       Placeholder="Ej. 5"
+                                       PlaceholderColor="#9CA3AF"
+                                       TextColor="{DynamicResource Gray500}"
+                                       BackgroundColor="Transparent"
+                                       Margin="8,0"
+                                       HorizontalOptions="Fill" />
+                            </HorizontalStackLayout>
+                        </Frame>
+
+                        <Label Text="{Binding PuntosRequeridosError}"
+                           TextColor="Red"
+                           FontSize="12"
                            IsVisible="{Binding HasPuntosRequeridosError}" />
+                    </VerticalStackLayout>
+
+
+                    <!-- Campo: Selección de imagen -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Imagen del premio"
+                               FontSize="13"
+                               Margin="28,0,0,0"
+                               TextColor="#3f51b5" />
+                        <Frame CornerRadius="8"
+                               Padding="8,0"
+                               Background="{StaticResource EntryBackgroundBrush}"
+                               HasShadow="False"
+                               BorderColor="Transparent"
+                               HeightRequest="48">
+                            <HorizontalStackLayout Spacing="10">
+                                <Entry Text="{Binding FotoPremio}"
+                                       Placeholder="Ruta de la imagen"
+                                       FontSize="14"
+                                       BackgroundColor="Transparent"
+                                       TextColor="{StaticResource Gray500}"
+                                       PlaceholderColor="#9CA3AF"
+                                       HorizontalOptions="Fill" />
+                                <Button Text="📁"
+                                        Command="{Binding SeleccionarImagenCommand}"
+                                        BackgroundColor="#3f51b5"
+                                        TextColor="White"
+                                        WidthRequest="42"
+                                        HeightRequest="38"
+                                        FontSize="16"
+                                        CornerRadius="8"
+                                        Padding="0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <!-- Vista previa de imagen -->
+                        <Image Source="{Binding FotoPremio}"
+                               HeightRequest="150"
+                               Margin="0,10,0,0"
+                               Aspect="AspectFit" />
+                    </VerticalStackLayout>
+
+                    <!-- Botones en una sola fila -->
+                    <HorizontalStackLayout Spacing="16" HorizontalOptions="Center">
+                        <Button Text="Guardar"
+            Command="{Binding AddPremioCommand}"
+            IsEnabled="{Binding PuedeGuardar}"
+            FontSize="16"
+            FontAttributes="Bold"
+            BackgroundColor="{DynamicResource Primary}"
+            TextColor="White"
+            HeightRequest="50"
+            WidthRequest="140"
+            CornerRadius="8" />
+
+                        <Button Text="Cancelar"
+            Clicked="OnCancelarClicked"
+            FontSize="16"
+            FontAttributes="Bold"
+            BackgroundColor="#e0e0e0"
+            TextColor="#333"
+            HeightRequest="50"
+            WidthRequest="140"
+            CornerRadius="8" />
+                    </HorizontalStackLayout>
+
+
                 </VerticalStackLayout>
+
             </Frame>
-
-            <!-- Imagen -->
-            <Frame CornerRadius="12"
-        Padding="12"
-        Background="{DynamicResource CardBackgroundBrush}"
-        BorderColor="Transparent">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Imagen del premio" FontSize="14" />
-                    <Entry Placeholder="Ruta de la imagen"
-                Text="{Binding FotoPremio}"
-                FontSize="16"
-                BackgroundColor="Transparent" />
-                    <Button Text="Seleccionar imagen 📁"
-                 Command="{Binding SeleccionarImagenCommand}"
-                 BackgroundColor="#0077CC"
-                 TextColor="White"
-                 CornerRadius="25"
-                 FontSize="14" />
-                    <Image Source="{Binding FotoPremio}"
-                HeightRequest="150"
-                Margin="0,10,0,0"
-                Aspect="AspectFit" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Estado del premio -->
-           <!-- <VerticalStackLayout Spacing="4">
-                <Label Text="¿Activo?"
-                       FontSize="14"
-                       TextColor="#6B7280" />
-                <Switch IsToggled="{Binding EstadoPremio}" />
-            </VerticalStackLayout>-->
-
-            <!-- Botón Guardar -->
-            <Button Text="Guardar"
-                    Command="{Binding AddPremioCommand}"
-                    IsEnabled="{Binding PuedeGuardar}"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    BackgroundColor="{DynamicResource Primary}"
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25" />
-
-            <!-- Botón Cancelar -->
-            <Button Text="Cancelar"
-                    Clicked="OnCancelarClicked"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    BackgroundColor="{DynamicResource Gray500}"
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25" />
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

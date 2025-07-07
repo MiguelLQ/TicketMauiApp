@@ -9,7 +9,12 @@ namespace MauiFirebase.Helpers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool estado = value is bool b && b;
-            return estado ? Colors.Green : Colors.Red;
+
+            // ✅ Colores más suaves
+            Color verdeSuave = Color.FromArgb("#02f765"); // verde menta claro
+            Color rojoSuave = Color.FromArgb("#ff0d65");  // rojo coral claro
+
+            return estado ? verdeSuave : rojoSuave;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

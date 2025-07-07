@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Home.inicioCiudadanoPage"
+             Title="Inicio Ciudadano"
+             BackgroundColor="#F0F6FF">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center">
+
+            <!-- Imagen de bienvenida -->
+            <Image Source="ciudadano.png"
+                   HeightRequest="160"
+                   HorizontalOptions="Center"
+                   Aspect="AspectFit" />
+
+            <!-- Título -->
+            <Label Text="¡Bienvenido, ciudadano!"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="#0077CC" />
+
+            <!-- Texto descriptivo -->
+            <Label Text="Gracias por ser parte de nuestra comunidad ambiental. Aquí podrás consultar tu información personal, conocer tus tickets acumulados y más."
+                   FontSize="16"
+                   TextColor="#444"
+                   HorizontalTextAlignment="Center" />
+
+            <!-- Botón de ejemplo sin funcionalidad -->
+            <Button Text="Explorar"
+                    BackgroundColor="#0077CC"
+                    TextColor="White"
+                    CornerRadius="20"
+                    HeightRequest="48"
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    IsEnabled="False" />
+            <!-- Sin funcionalidad aún -->
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

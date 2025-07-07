@@ -2,7 +2,6 @@
 using CommunityToolkit.Maui.Core;
 using MauiFirebase.Pages.Canje;
 using MauiFirebase.Pages.Premio;
-using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ticket;
 using MauiFirebase.Pages.RegistroDeReciclaje;
@@ -12,6 +11,9 @@ using MauiFirebase.Pages.Convertidores;
 using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.usuario;
 using MauiFirebase.Pages.Register;
+using MauiFirebase.Pages.Vehiculo;
+using MauiFirebase.Pages.Trabajador;
+using MauiFirebase.Pages.Home;
 //using Windows.Devices.Sensors;
 
 namespace MauiFirebase
@@ -25,7 +27,13 @@ namespace MauiFirebase
       
             Routing.RegisterRoute(nameof(EditarResiduoPage), typeof(EditarResiduoPage));
             Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage));
-
+            //vehiculo
+            Routing.RegisterRoute(nameof(EditarVehiculoPage), typeof(EditarVehiculoPage));
+            Routing.RegisterRoute(nameof(AgregarVehiculoPage), typeof(AgregarVehiculoPage));
+            //trabajador
+            Routing.RegisterRoute(nameof(EditarTrabajadorPage), typeof(EditarTrabajadorPage));
+            Routing.RegisterRoute(nameof(AgregarTrabajadorPage), typeof(AgregarTrabajadorPage));
+            //convertidor
             Routing.RegisterRoute(nameof(EditarConvertidorPage), typeof(EditarConvertidorPage));
             Routing.RegisterRoute(nameof(AgregarConvertidorPage), typeof(AgregarConvertidorPage));
 
@@ -41,6 +49,8 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(EditarCanjePage), typeof(EditarCanjePage));
             //para register page
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(inicioCiudadanoPage), typeof(inicioCiudadanoPage));
+
             //Usuario
             Routing.RegisterRoute(nameof(AgregarUsuarioPage), typeof(AgregarUsuarioPage));
             Routing.RegisterRoute("usuarios/agregar", typeof(AgregarUsuarioPage));
@@ -143,23 +153,39 @@ namespace MauiFirebase
         }
 
 
-        private void MostrarOpcionesSegunRol()
+        public void MostrarOpcionesSegunRol()
         {
-            if (!Preferences.ContainsKey("FirebaseUserRole"))
-            {
-                UsuariosFlyoutItem.IsVisible = false;
-                return;
-            }
-
             var rol = Preferences.Get("FirebaseUserRole", string.Empty);
 
+            // Primero ocultar todo lo controlado por rol
+            UsuariosFlyoutItem.IsVisible = false;
+            CategoriaResiduoShellContent.IsVisible = false;
+            ColoresShellContent.IsVisible = false;
+            ResiduosShellContent.IsVisible = false;
+            ConversionesShellContent.IsVisible = false;
+            RegisterFlyoutItem.IsVisible = false;
+            AdminFlyoutItem.IsVisible = false;
+            CiudadanoFlyoutItem.IsVisible = false;
+            // Mostrar solo lo correspondiente al rol
             if (rol == "admin")
             {
+                AdminFlyoutItem.IsVisible = true;
                 UsuariosFlyoutItem.IsVisible = true;
+                CategoriaResiduoShellContent.IsVisible = true;
+                ColoresShellContent.IsVisible = true;
+                ResiduosShellContent.IsVisible = true;
+                ConversionesShellContent.IsVisible = true;
+                CiudadanoFlyoutItem.IsVisible = false;
+            }
+            else if (rol == "register")
+            {
+                RegisterFlyoutItem.IsVisible = true;
+                AdminFlyoutItem.IsVisible = false;
+                CiudadanoFlyoutItem.IsVisible = false;
             }
             else
             {
-                UsuariosFlyoutItem.IsVisible = false;
+                CiudadanoFlyoutItem.IsVisible = true;
             }
         }
 

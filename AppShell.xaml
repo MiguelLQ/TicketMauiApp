@@ -19,6 +19,9 @@
     xmlns:conversiones="clr-namespace:MauiFirebase.Pages.Convertidores"
     xmlns:inicio="clr-namespace:MauiFirebase.Pages.Home"
     xmlns:usuario="clr-namespace:MauiFirebase.Pages.usuario"
+    xmlns:vehiculo="clr-namespace:MauiFirebase.Pages.Vehiculo"
+    xmlns:trabajador="clr-namespace:MauiFirebase.Pages.Trabajador"
+    xmlns:iciciociudadano="clr-namespace:MauiFirebase.Pages.Home"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}">
@@ -62,14 +65,71 @@
             </VerticalStackLayout>
         </Border>
     </Shell.FlyoutHeader>
+    <!-- FLYOUT Ciudadano -->
+    <FlyoutItem Title="Panel Ciudadano"
+            x:Name="CiudadanoFlyoutItem"
+            Icon="{StaticResource IconDashboard}"
+            Route="ciudadanoHome"
+            IsVisible="true">
 
-    <!-- ✅ FLYOUT CON MULTIPLE TABS SIMULADOS -->
-    <FlyoutItem Title="Inicio" Icon="{StaticResource IconDashboard}" Route="Home">
+        <ShellContent Title="Inicio"
+                  Icon="casa.png"
+                  ContentTemplate="{DataTemplate iciciociudadano:inicioCiudadanoPage}"
+                  Route="inicioCiudadano" />
+    </FlyoutItem>
+
+    <!-- FLYOUT Register -->
+    <FlyoutItem Title="Panel Register"
+            x:Name="RegisterFlyoutItem"
+            Icon="{StaticResource IconDashboard}"
+            Route="registerHome"
+            IsVisible="true">
+
         <ShellContent Title="Inicio" Icon="casa.png" ContentTemplate="{DataTemplate inicio:InicioPage}" Route="inicio" />
-        <ShellContent Title="canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />
+        <!--<ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />-->
         <ShellContent Title="Registro" Icon="regi.png" ContentTemplate="{DataTemplate registro:ListarRegistrosPage}" Route="registro" />
         <ShellContent Title="Ciudadanos" Icon="veci.png" ContentTemplate="{DataTemplate residente:ResidenteListPage}" Route="residente" />
     </FlyoutItem>
+    <!-- FLYOUT Admin -->
+    <FlyoutItem Title="Panel Admin"
+            x:Name="AdminFlyoutItem"
+            Icon="{StaticResource IconDashboard}"
+            Route="adminHome"
+            IsVisible="true">
+        <!--Oculto por defecto -->
+        <ShellContent Title="Inicio"
+              Icon="casa.png"
+              ContentTemplate="{DataTemplate inicio:InicioPage}"
+              Route="inicio" />
+        <!--Canje -->
+        <ShellContent Title="Canje"
+                  Icon="premio.png"
+                  ContentTemplate="{DataTemplate canje:ListarCanjePage}"
+                  Route="canje" />
+        <!--Premios -->
+        <ShellContent Title="Premios"
+                  Icon="{StaticResource IconPremios}"
+                  ContentTemplate="{DataTemplate premio:ListarPremioPage}"
+                  Route="premio" />
+        <!--Ciudadanos -->
+        <ShellContent Title="Ciudadanos"
+                  Icon="veci.png"
+                  ContentTemplate="{DataTemplate residente:ResidenteListPage}"
+                  Route="residente" />
+
+        <!--Vehiculos -->
+        <ShellContent Title="Vehiculos"
+            Icon="veci.png"
+            ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}"
+            Route="vehiculo" />
+
+        <!--Vehiculos -->
+        <ShellContent Title="Trabajadores"
+             Icon="veci.png"
+             ContentTemplate="{DataTemplate trabajador:ListarTrabajadorPage}"
+             Route="trabajador" />
+    </FlyoutItem>
+
 
     <!--<ShellContent
         Title="Dashboard"
@@ -95,11 +155,12 @@
         ContentTemplate="{DataTemplate inicio:InicioPage}"
         Route="inicio" />-->
 
-    <ShellContent
+    <!--<ShellContent
         Title="Premios"
+        x:Name="PremiosShellContent"
         Icon="{StaticResource IconPremios}"
         ContentTemplate="{DataTemplate premio:ListarPremioPage}"
-        Route="premio" />
+        Route="premio" />-->
 
     <!--<ShellContent
         Title="Registro De Reciclaje"
@@ -110,17 +171,20 @@
     <ShellContent
         Title="Colores"
         Icon="{StaticResource IconColores}"
+        x:Name="ColoresShellContent"
         ContentTemplate="{DataTemplate ticket:ListarTicketPage}"
         Route="ticket" />
 
     <ShellContent
         Title="Categoria Residuo"
+        x:Name="CategoriaResiduoShellContent"
         Icon="{StaticResource IconCategoriaResiduos}"
         ContentTemplate="{DataTemplate categoriaresiduo:CategoriaResiduoPage}"
         Route="categoriaResiduo" />
 
     <ShellContent
         Title="Residuos"
+        x:Name="ResiduosShellContent"
         Icon="{StaticResource IconResiduo}"
         ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
         Route="residuo" />
@@ -139,12 +203,13 @@
 
     <ShellContent
         Title="Gestionar conversiones"
+        x:Name="ConversionesShellContent"
         Icon="{StaticResource IconConfiguracion}"
         ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
         Route="conversiones" />
     <FlyoutItem Title="Usuarios"
             x:Name="UsuariosFlyoutItem"
-            Icon="{StaticResource IconConfiguracion}"
+            Icon="{StaticResource IconUsuarios}"
             FlyoutDisplayOptions="AsSingleItem"
             IsVisible="True"
             Route="usuarios">
@@ -195,6 +260,6 @@
     </Shell.FlyoutFooter>
 
     <!-- ✅ AGREGADO AL FINAL: Rutas ocultas de Login y Registro -->
-    
+
 
 </Shell>

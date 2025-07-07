@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Vehiculos"
+             x:Class="MauiFirebase.Pages.Vehiculo.EditarVehiculoPage"
+             x:DataType="viewModel:EditarVehiculoPageModel"
+             Title="Editar Vehículo">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="0" HorizontalOptions="Center">
+
+            <Frame CornerRadius="16"
+                   HasShadow="True"
+                   BorderColor="Transparent"
+                   Background="{StaticResource CardBackgroundBrush}"
+                   WidthRequest="360">
+
+                <VerticalStackLayout Spacing="16" Padding="10">
+
+                    <!-- Título -->
+                    <Label Text="🚗 Editar Vehículo"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{DynamicResource Primary}" />
+
+                    <!-- Placa -->
+                    <VerticalStackLayout>
+                        <Label Text="Placa" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
+                               Background="{StaticResource EntryBackgroundBrush}" 
+                               HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <!--<Image Source="{StaticResource IconPlaca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />-->
+                                <Entry Placeholder="Ej. ABC-123"
+                                       Text="{Binding PlacaVehiculo, Mode=TwoWay}"
+                                       FontSize="14" TextColor="{DynamicResource Gray400}"
+                                       BackgroundColor="Transparent" 
+                                       Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding PlacaVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasPlacaVehiculoError}" />
+                        <Label Text="{Binding PlacaDuplicadaError}" 
+                               TextColor="Red" 
+                               FontSize="12" 
+                               IsVisible="{Binding HasPlacaDuplicadaError}" />
+
+                    </VerticalStackLayout>
+                    
+
+                    <!-- Marca -->
+                    <VerticalStackLayout>
+                        <Label Text="Marca" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
+                               Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <!--<Image Source="{StaticResource IconMarca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />-->
+                                <Entry Placeholder="Ej. Toyota"
+                                       Text="{Binding MarcaVehiculo, Mode=TwoWay}"
+                                       FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding MarcaVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasMarcaVehiculoError}" />
+                    </VerticalStackLayout>
+                    
+
+                    <!-- Modelo -->
+                    <VerticalStackLayout>
+                        <Label Text="Modelo" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
+                               Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <!--<Image Source="{StaticResource IconModelo}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />-->
+                                <Entry Placeholder="Ej. Corolla"
+                                       Text="{Binding ModeloVehiculo, Mode=TwoWay}"
+                                       FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding ModeloVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasModeloVehiculoError}" />
+                    </VerticalStackLayout>
+                    
+
+                    <!-- Usuario (Picker) -->
+                    <VerticalStackLayout>
+                        <Label Text="Asignar a usuario" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="6,0" BorderColor="Transparent"
+                               Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
+                            <HorizontalStackLayout>
+                                <Picker Title="Seleccionar usuario"
+                                        ItemsSource="{Binding ListaUsuario}"
+                                        ItemDisplayBinding="{Binding Nombre}" 
+                                        SelectedItem="{Binding UsuarioSeleccionado, Mode=TwoWay}"
+                                        FontSize="13"
+                                        TextColor="{DynamicResource Gray400}"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="240" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding UsuarioSeleccionadoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasUsuarioSeleccionadoError}" />
+                    </VerticalStackLayout>
+
+                    <!-- Estado -->
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Estado del Vehículo"
+                               FontSize="14"
+                               TextColor="#6B7280" />
+                        <Switch IsToggled="{Binding EstadoVehiculo}" />
+                    </VerticalStackLayout>
+
+                    <!-- Botones -->
+                    <HorizontalStackLayout Spacing="16" Margin="0,10,0,0" HorizontalOptions="Center">
+                        <Button Text="Guardar"
+                                Command="{Binding GuardarCambiosCommand}"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                                TextColor="White"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140"
+                                IsEnabled="{Binding PuedeGuardar}" />
+                        <Button Text="Cancelar"
+                                Clicked="OnVolverClicked"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="#e0e0e0"
+                                TextColor="#333"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

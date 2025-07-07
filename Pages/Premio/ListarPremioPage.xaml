@@ -30,93 +30,126 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame 
-                                Background="{DynamicResource CardBackgroundBrush}"
-                                BorderColor="{DynamicResource CardBorderBrush}"
+                                Background="{StaticResource CardBackgroundBrush}"
+                                BorderColor="Transparent"
                                 CornerRadius="12"
                                 Padding="12"
                                 Margin="0,8"
-                                HasShadow="True">
+                                HasShadow="False">
+                                <Frame.Shadow>
+                                    <Shadow Brush="Black" Opacity="0.50" Radius="10" Offset="5,5" />
+                                </Frame.Shadow>
 
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
 
-                                    <!-- Imagen del premio -->
-                                    <Image 
-                                        Source="{Binding FotoPremio}"
-                                        HeightRequest="150"
-                                        WidthRequest="150"
-                                        Grid.RowSpan="2"
-                                        Margin="0,0,10,0"
-                                        VerticalOptions="Start"
-                                        Aspect="AspectFill">
-                                        <Image.Triggers>
-                                            <DataTrigger TargetType="Image" Binding="{Binding FotoPremio}" Value="">
-                                                <Setter Property="Source" Value="placeholder.png" />
-                                            </DataTrigger>
-                                        </Image.Triggers>
-                                    </Image>
+                                    <!-- Imagen del premio dentro de un Frame con bordes -->
+                                    <Frame Grid.RowSpan="3" Grid.Column="0"
+                                       Padding="0"
+                                       CornerRadius="25"
+                                       HasShadow="False"
+                                       BorderColor="#ccc"
+                                       WidthRequest="150"
+                                       HeightRequest="150"
+                                       VerticalOptions="Start"
+                                       Margin="0,0,10,0">
+                                        <Image 
+                                            Source="{Binding FotoPremio}"
+                                            Aspect="AspectFill"
+                                            WidthRequest="150"
+                                            HeightRequest="150">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image" Binding="{Binding FotoPremio}" Value="">
+                                                    <Setter Property="Source" Value="placeholder.png" />
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Frame>
 
-                                    <!-- Información -->
-                                    <StackLayout Grid.Column="1" Spacing="2">
+                                    <!-- Información textual -->
+                                    <StackLayout Grid.Column="1" Grid.Row="0" Spacing="2">
                                         <Label Text="{Binding NombrePremio}"
-                                               FontAttributes="Bold"
-                                               FontSize="16"
-                                               TextColor="#0077CC" />
+                                           FontAttributes="Bold"
+                                           FontSize="16"
+                                           TextColor="{DynamicResource Gray500}" />
 
-                                        <Frame
-                                            Padding="6,2"
-                                            CornerRadius="12"
-                                            HasShadow="False"
-                                            BackgroundColor="{Binding EstadoPremio, Converter={StaticResource EstadoColorConverter}}"
-                                            HorizontalOptions="Start">
-                                            <Label 
-                                                Text="{Binding EstadoPremio, Converter={StaticResource BoolToEstadoConverter}}"
-                                                TextColor="White"
-                                                FontSize="13"
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center" />
+                                        <Frame Padding="6,2"
+                                           CornerRadius="12"
+                                           HasShadow="False"
+                                           BackgroundColor="{Binding EstadoPremio, Converter={StaticResource EstadoColorConverter}}"
+                                           HorizontalOptions="Start">
+                                            <Label Text="{Binding EstadoPremio, Converter={StaticResource BoolToEstadoConverter}}"
+                                               TextColor="{DynamicResource Gray600}"
+                                               FontSize="13"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
                                         </Frame>
-
-                                        <Label Text="{Binding DescripcionPremio, StringFormat='Descripción: {0}'}"
-                                               FontSize="13"
-                                               TextColor="{DynamicResource Gray500}" />
-
-                                        <Label Text="{Binding PuntosRequeridos, StringFormat='Puntos: {0}'}"
-                                               FontSize="13"
-                                               TextColor="{DynamicResource Gray500}" />
                                     </StackLayout>
 
                                     <!-- Botón Editar -->
                                     <ImageButton 
-                                        Source="editarreal.png"
+                                        Source="editicon.png"
                                         HeightRequest="24"
                                         WidthRequest="24"
                                         BackgroundColor="Transparent"
                                         Grid.Column="2"
                                         Grid.Row="0"
+                                        Scale="0.6"
                                         HorizontalOptions="End"
                                         VerticalOptions="Start"
                                         Margin="0"
-                                        Padding="6"
+                                        Padding="0"
                                         Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.IrAEditarPremioCommand}"
                                         CommandParameter="{Binding .}" />
 
-                                    <!-- Línea divisoria -->
-                                    <BoxView 
-                                        Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
-                                        HeightRequest="1"
-                                        BackgroundColor="{DynamicResource Primary}"
-                                        HorizontalOptions="Fill"
-                                        Margin="0,8,0,8" />
-                                    <!-- Ver más -->
-                                    <Label 
-                                        Grid.Row="2" Grid.Column="1"
-                                        Text="See more >"
-                                        FontSize="13"
-                                        TextColor="#D600AA"
-                                        HorizontalOptions="End"
-                                        Margin="0,8,0,0" />
+                                    <!-- Línea divisoria: solo en columna de texto -->
+                                    <BoxView Grid.Row="0" Grid.Column="1"
+                                         HeightRequest="1"
+                                         Background="#919191"
+                                         Opacity="0.3"
+                                         HorizontalOptions="Fill"
+                                         Margin="0,46,0,0" />
+
+                                    <!-- Descripción y puntos -->
+                                    <StackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Spacing="2">
+                                        <VerticalStackLayout Margin="0,2,0,0" Spacing="2">
+                                            <!-- Línea de título con ícono -->
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Image Source="{StaticResource IconDescripcion}"
+                                                   WidthRequest="18"
+                                                   HeightRequest="18"
+                                                   VerticalOptions="Center" />
+                                                <Label Text="Descripción:"
+                                                   FontSize="13"
+                                                   TextColor="#4b5563"
+                                                   FontAttributes="Bold"
+                                                   VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+
+                                            <!-- Contenido de la descripción -->
+                                            <Label Text="{Binding DescripcionPremio}"
+                                               FontSize="13"
+                                               TextColor="#4b5563"
+                                               LineBreakMode="WordWrap"
+                                               HorizontalOptions="Fill"
+                                               VerticalOptions="Start"
+                                               Margin="24,0,0,0"/>
+                                        </VerticalStackLayout>
+
+
+
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconTicket}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                                            <Label Text="{Binding PuntosRequeridos, StringFormat='Tickets Requeridos: {0}'}"
+                                               FontSize="13"
+                                               TextColor="#4b5563"
+                                                   FontAttributes="Bold"
+                                               VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+                                    </StackLayout>
+
                                 </Grid>
                             </Frame>
+
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

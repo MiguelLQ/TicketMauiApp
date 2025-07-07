@@ -49,6 +49,107 @@
              Default="5">
         <OnIdiom.Desktop>15</OnIdiom.Desktop>
     </OnIdiom>
+    <!--iconos entry-->
+    <FontImageSource x:Key="IconPeso"
+                 Glyph="{x:Static f:FluentUI.gauge_24_regular}" 
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <FontImageSource x:Key="IconNombre"
+                 Glyph="{x:Static f:FluentUI.person_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconBuscar"
+                 Glyph="{x:Static f:FluentUI.search_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <!-- Apellido (puede usar el mismo que nombre si no hay otro mejor) -->
+    <FontImageSource x:Key="IconApellido"
+                 Glyph="{x:Static f:FluentUI.contact_card_24_regular}"
+                    FontFamily="{x:Static f:FluentUI.FontFamily}"
+                    Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                    Size="{StaticResource IconSize}" />
+    <!-- Correo -->
+    <FontImageSource x:Key="IconCorreo"
+                 Glyph="{x:Static f:FluentUI.mail_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+        <!-- Teléfono -->
+    <FontImageSource x:Key="IconTelefono"
+                 Glyph="{x:Static f:FluentUI.call_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+    <!-- Contraseña (candado cerrado) -->
+    <FontImageSource x:Key="IconContrasena"
+                 Glyph="{x:Static f:FluentUI.lock_closed_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <!-- Rol (etiqueta) -->
+    <FontImageSource x:Key="IconRol"
+                 Glyph="{x:Static f:FluentUI.people_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <!-- Valor Mínimo (flecha hacia abajo) -->
+    <FontImageSource x:Key="IconValorMin"
+                 Glyph="{x:Static f:FluentUI.arrow_down_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <!-- Valor Máximo (flecha hacia arriba) -->
+    <FontImageSource x:Key="IconValorMax"
+                 Glyph="{x:Static f:FluentUI.arrow_up_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <!-- Tickets (boleto o premio, se usará "ticket_diagonal" si lo tienes, si no, un sustituto como "gift" o "ribbon") -->
+    <FontImageSource x:Key="IconTicket"
+                 Glyph="{x:Static f:FluentUI.ticket_diagonal_24_regular}" 
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconFechaCreacion"
+                 Glyph="{x:Static f:FluentUI.calendar_ltr_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <!-- Categoría (ícono de etiqueta) -->
+    <FontImageSource x:Key="IconCategoria"
+                 Glyph="{x:Static f:FluentUI.tag_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
+    <!-- Valor (ícono de dinero o número) -->
+    <FontImageSource x:Key="IconValor"
+                 Glyph="{x:Static f:FluentUI.number_symbol_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconPuntos"
+        Glyph="{x:Static f:FluentUI.star_24_regular}"
+        FontFamily="{x:Static f:FluentUI.FontFamily}"
+        Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+        Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconDescripcion"
+    Glyph="{x:Static f:FluentUI.note_24_regular}"
+    FontFamily="{x:Static f:FluentUI.FontFamily}"
+    Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+    Size="{StaticResource IconSize}" />
+
+    <!--iconos sidebar-->
         <FontImageSource x:Key="IconReciclaje"
                      Glyph="&#xEAD3;"
                      FontFamily="FluentUI"
@@ -66,8 +167,13 @@
                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                      Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
                      Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconUsuarios"
+                 Glyph="{x:Static f:FluentUI.person_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
 
-        <FontImageSource x:Key="IconResiduo"
+    <FontImageSource x:Key="IconResiduo"
                      Glyph="{x:Static f:FluentUI.delete_24_regular}"
                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                      Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
@@ -319,5 +425,13 @@
         <Setter Property="PullingThreshold" Value="100"/>
         <Setter Property="ProgressColor" Value="{StaticResource Primary}"/>
     </Style>
+    <Style x:Key="EntrySinLinea" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="PlaceholderColor" Value="#999999" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HeightRequest" Value="40" />
+    </Style>
+
+
 
 </ResourceDictionary>

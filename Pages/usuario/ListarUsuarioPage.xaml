@@ -1,64 +1,93 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.usuario.ListarUsuarioPage"
              xmlns:model="clr-namespace:MauiFirebase.Models"
              xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
+             x:Class="MauiFirebase.Pages.usuario.ListarUsuarioPage"
              x:DataType="viewModel:UsuarioPageModel"
+             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
              x:Name="UsuarioPage"
-             Title="Usuarios Registrados">
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToEstadoConverter x:Key="EstadoConverter" />
+            <converters:BoolToColorConverter x:Key="EstadoColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid>
-        <!-- Lista principal con scroll -->
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
-                <!-- Indicador de carga -->
-                <ActivityIndicator 
-                    IsRunning="{Binding IsBusy}" 
-                    IsVisible="{Binding IsBusy}" 
-                    Color="Gray" />
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Gray" />
 
-                <Label Text="Lista de usuarios"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="{DynamicResource Gray500}"
-                       Margin="0,10,0,0" />
+                <Label Text="Lista de Usuarios" FontSize="22" FontAttributes="Bold" TextColor="{DynamicResource Gray400}" HorizontalOptions="Start"/>
 
-                <!-- Tarjetas de usuario -->
                 <CollectionView ItemsSource="{Binding Usuarios}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Usuario">
-                            <Frame 
-                                Background="{DynamicResource CardBackgroundBrush}"
-                                   CornerRadius="12"
-                                   Padding="12"
-                                   Margin="0,8"
-                                BorderColor="Transparent"
-                                   HasShadow="True"
-                                   >
+                            <Frame Background="{StaticResource CardBackgroundBrush}" BorderColor="Transparent" CornerRadius="16" Padding="10" Margin="4,8" HasShadow="False">
+                                <Frame.Shadow>
+                                    <Shadow Brush="Black" 
+                                        Opacity="0.50" 
+                                        Radius="10" 
+                                        Offset="5,5" />
+                                </Frame.Shadow>
+                                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8" RowSpacing="6">
+                                    <!-- Foto del usuario -->
+                                    <Frame Grid.RowSpan="2" Grid.Column="0" WidthRequest="48" HeightRequest="48"
+                                           CornerRadius="24" BackgroundColor="{DynamicResource Gray400}" Padding="0" VerticalOptions="Start">
+                                        <Image Source="perfil.png" Aspect="AspectFit" Margin="2" />
+                                    </Frame>
 
-                                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
-                                    <!-- Ícono -->
-                                    <Label Text="👤"
-                                           FontSize="24"
-                                           Grid.RowSpan="2"
-                                           VerticalOptions="Start"
-                                           Margin="0,0,10,0" />
+                                    <!-- Nombre, Apellido y Estado -->
+                                    <StackLayout Grid.Column="1" Grid.Row="0" Spacing="2">
+                                        <Label Text="{Binding Nombre}" FontSize="16" FontAttributes="Bold" TextColor="{DynamicResource Gray500}" />
+                                        <Label Text="{Binding Apellido}" FontSize="16" FontAttributes="Bold" TextColor="{DynamicResource Gray500}" />
+                                        <Frame Padding="4,2"
+                                           BackgroundColor="{Binding Estado, Converter={StaticResource EstadoColorConverter}}"
+                                           CornerRadius="999"
+                                           HasShadow="False"
+                                           HorizontalOptions="Start">
+                                            <Label Text="{Binding Estado, Converter={StaticResource EstadoConverter}}" TextColor="{DynamicResource Gray600}" FontSize="12" />
+                                        </Frame>
+                                    </StackLayout>
 
-                                    <!-- Datos -->
-                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
-                                        <Label Text="{Binding Nombre}"
-                                               FontAttributes="Bold"
-                                               FontSize="16"
-                                               TextColor="#333" />
-                                        <Label Text="{Binding Correo}"
-                                               FontSize="14"
-                                               TextColor="#666" />
-                                        <Label Text="{Binding Rol}"
-                                               FontSize="13"
-                                               TextColor="#888" />
-                                    </VerticalStackLayout>
+
+                                    <!-- Botón Editar -->
+                                    <ImageButton Grid.Column="2" Grid.Row="0" Source="editicon.png"
+                                         WidthRequest="28" HeightRequest="28" Scale="0.6"
+                                         BackgroundColor="Transparent" HorizontalOptions="End"
+                                         Margin="0"
+                                         Command="{Binding Source={x:Reference UsuarioPage}, Path=EditarUsuarioCommand}"
+                                         CommandParameter="{Binding .}" />
+
+                                    <!-- Línea divisora (DESPUÉS del estado) -->
+                                    <BoxView Grid.Row="1" Grid.ColumnSpan="3"
+                                         HeightRequest="1"
+                                         Background="#919191"
+                                             Opacity="0.3"
+                                         HorizontalOptions="Fill"
+                                         Margin="14,2,14,0" />
+
+                                    <StackLayout Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Spacing="6" Margin="0,2,0,0">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconCorreo}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                                            <Label Text="{Binding Correo}" FontSize="14" TextColor="#4b5563" VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconTelefono}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                                            <Label Text="{Binding Telefono}" FontSize="14" TextColor="#4b5563" VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="{StaticResource IconRol}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                                            <Label Text="{Binding Rol, StringFormat='Rol: {0}'}" FontSize="14" TextColor="#4b5563" VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+                                    </StackLayout>
+
                                 </Grid>
+
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -67,17 +96,16 @@
         </ScrollView>
 
         <!-- Botón flotante -->
-        <Button
-            Text="+"
-            Clicked="OnAgregarUsuarioClicked"
-            BackgroundColor="{DynamicResource Primary}"
-            TextColor="White"
-            FontSize="28"
-            WidthRequest="60"
-            HeightRequest="60"
-            CornerRadius="30"
-            HorizontalOptions="End"
-            VerticalOptions="Start"
-            Margin="0,20,20,0" />
+        <Button Text="+"
+                Clicked="OnAgregarUsuarioClicked"
+                BackgroundColor="#3f51b5"
+                TextColor="White"
+                FontSize="28"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                Margin="0,5,20,0" />
     </Grid>
 </ContentPage>

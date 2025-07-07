@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLite;
+﻿using SQLite;
 
-namespace MauiFirebase.Models
+namespace MauiFirebase.Models;
+
+public class Ticket
 {
-        public class Ticket
-        {
-            [PrimaryKey, AutoIncrement]
-            public int IdTicket { get; set; }
+    [PrimaryKey, AutoIncrement]
+    public int IdTicket { get; set; }
 
-            [MaxLength(50)]
-            public string? ColorTicket { get; set; }
+    [MaxLength(50)]
+    public string? ColorTicket { get; set; }
 
-            public bool EstadoTicket { get; set; }
+    public bool EstadoTicket { get; set; }
 
-            public DateTime FechaRegistro { get; set; }
-        }
+    public DateTime FechaRegistro { get; set; }
 }

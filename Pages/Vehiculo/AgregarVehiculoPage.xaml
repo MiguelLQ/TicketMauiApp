@@ -37,10 +37,10 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
-                                <Image Source="{StaticResource IconPlaca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <!--<Image Source="{StaticResource IconPlaca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />-->
                                 <Entry MaxLength="6" Placeholder="Ej. ABC-123"
                                        Text="{Binding PlacaVehiculo, Mode=TwoWay}"
-                                       FontSize="14" TextColor="#333" BackgroundColor="Transparent" Margin="8,0" />
+                                      FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
                             </HorizontalStackLayout>
                         </Frame>
                         <Label Text="{Binding PlacaVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasPlacaVehiculoError}" />
@@ -54,10 +54,10 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
-                                <Image Source="{StaticResource IconMarca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <!--<Image Source="{StaticResource IconMarca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />-->
                                 <Entry Placeholder="Ej. Toyota"
                                        Text="{Binding MarcaVehiculo, Mode=TwoWay}"
-                                       FontSize="14" TextColor="#333" BackgroundColor="Transparent" Margin="8,0" />
+                                       FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
                             </HorizontalStackLayout>
                         </Frame>
                         <Label Text="{Binding MarcaVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasMarcaVehiculoError}" />
@@ -69,10 +69,10 @@
                         <Frame CornerRadius="8" Padding="0" BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
-                                <Image Source="{StaticResource IconModelo}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <!--<Image Source="{StaticResource IconModelo}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />-->
                                 <Entry Placeholder="Ej. Corolla"
                                        Text="{Binding ModeloVehiculo, Mode=TwoWay}"
-                                       FontSize="14" TextColor="#333" BackgroundColor="Transparent" Margin="8,0" />
+                                      FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
                             </HorizontalStackLayout>
                         </Frame>
                         <Label Text="{Binding ModeloVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasModeloVehiculoError}" />
@@ -84,13 +84,12 @@
                         <Frame CornerRadius="8" Padding="6,0" BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
-                                <Image Source="{StaticResource IconUsuario}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
                                 <Picker ItemsSource="{Binding ListaUsuario}"
                                         SelectedItem="{Binding UsuarioSeleccionado, Mode=TwoWay}"
                                         ItemDisplayBinding="{Binding Nombre}"
                                         Title="Seleccionar usuario"
                                         FontSize="13"
-                                        TextColor="#333"
+                                        TextColor="{DynamicResource Gray400}"
                                         BackgroundColor="Transparent"
                                         WidthRequest="240" />
                             </HorizontalStackLayout>
@@ -99,12 +98,12 @@
                     </VerticalStackLayout>
 
                     <!-- Estado -->
-                    <VerticalStackLayout Spacing="4">
+                    <!--<VerticalStackLayout Spacing="4">
                         <Label Text="Estado del Vehículo"
                                FontSize="14"
                                TextColor="#6B7280" />
                         <Switch IsToggled="{Binding EstadoVehiculo}" />
-                    </VerticalStackLayout>
+                    </VerticalStackLayout>-->
 
                     <!-- Botones -->
                     <HorizontalStackLayout Spacing="16" Margin="0,10,0,0" HorizontalOptions="Center">
@@ -119,7 +118,7 @@
                                 WidthRequest="140"
                                 IsEnabled="{Binding PuedeGuardar}" />
                         <Button Text="Cancelar"
-                                Clicked="OnVolverClicked"
+                                Clicked="OnCancelarClicked"
                                 FontSize="14"
                                 FontAttributes="Bold"
                                 BackgroundColor="#e0e0e0"
@@ -128,7 +127,6 @@
                                 CornerRadius="8"
                                 WidthRequest="140" />
                     </HorizontalStackLayout>
-
                 </VerticalStackLayout>
             </Frame>
         </VerticalStackLayout>

@@ -40,7 +40,7 @@
                                 <!--<Image Source="{StaticResource IconPlaca}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />-->
                                 <Entry MaxLength="6" Placeholder="Ej. ABC-123"
                                        Text="{Binding PlacaVehiculo, Mode=TwoWay}"
-                                      FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
+                                       FontSize="14" TextColor="{DynamicResource Gray400}" BackgroundColor="Transparent" Margin="8,0" />
                             </HorizontalStackLayout>
                         </Frame>
                         <Label Text="{Binding PlacaVehiculoError}" TextColor="Red" FontSize="12" IsVisible="{Binding HasPlacaVehiculoError}" />

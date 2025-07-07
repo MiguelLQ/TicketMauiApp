@@ -15,6 +15,8 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     private readonly IAlertaHelper _alertaHelper;
     private readonly IUsuarioRepository _usuarioRepositorio;
 
+    public ObservableCollection<Usuario> ListaUsuario { get; } = new();
+
     [ObservableProperty]
     private int idVehiculo;
 
@@ -36,18 +38,12 @@ public partial class EditarVehiculoPageModel : ObservableValidator
 
     [ObservableProperty]
     [Required(ErrorMessage = "Debe seleccionar un usuario.")]
-    private string? idUsuario;
-    [ObservableProperty]
-    private ObservableCollection<Usuario> listaUsuario = new();
-
-    [ObservableProperty]
-    [Required(ErrorMessage = "Debe seleccionar un usuario.")]
     private Usuario? usuarioSeleccionado;
+
     [ObservableProperty]
     private string? placaDuplicadaError;
 
     public bool HasPlacaDuplicadaError => !string.IsNullOrWhiteSpace(PlacaDuplicadaError);
-
 
     public EditarVehiculoPageModel(
         IVehiculoRepository vehiculoRepository,
@@ -62,60 +58,63 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     public async Task InicializarAsync()
     {
         var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(IdVehiculo);
+        var usuarios = await _usuarioRepositorio.GetUsuariosAsync();
+
+        var conductores = usuarios.Where(u => u.Rol?.ToLower() == "conductor").ToList();
+        foreach (var usuario in conductores)
+            ListaUsuario.Add(usuario);
+
         if (vehiculo != null)
         {
             PlacaVehiculo = vehiculo.PlacaVehiculo;
             MarcaVehiculo = vehiculo.MarcaVehiculo;
             ModeloVehiculo = vehiculo.ModeloVehiculo;
             EstadoVehiculo = vehiculo.EstadoVehiculo;
-            var usuarios = await _usuarioRepositorio.GetUsuariosAsync();
-            var conductores = usuarios.Where(c => c.Rol?.ToLower() == "conductor").ToList();
-            ListaUsuario = new ObservableCollection<Usuario>(conductores);
             UsuarioSeleccionado = ListaUsuario.FirstOrDefault(u => u.Uid == vehiculo.IdUsuario);
         }
     }
 
     [RelayCommand]
-    public async Task EditarVehiculoAsync()
+    public async Task GuardarCambiosAsync()
     {
         ValidateAllProperties();
 
-        if (HasErrors)
+        if (HasErrors || HasPlacaDuplicadaError)
         {
             var errores = string.Join("\n", GetErrors().Select(e => e.ErrorMessage));
+            if (HasPlacaDuplicadaError)
+                errores += $"\n{PlacaDuplicadaError}";
+
             await _alertaHelper.ShowErrorAsync($"Errores de validación:\n{errores}");
             return;
         }
 
-        var actualizado = new Vehiculo
+        var vehiculo = new Vehiculo
         {
             IdVehiculo = IdVehiculo,
             PlacaVehiculo = PlacaVehiculo!,
             MarcaVehiculo = MarcaVehiculo!,
             ModeloVehiculo = ModeloVehiculo!,
             EstadoVehiculo = EstadoVehiculo,
-            IdUsuario = IdUsuario!,
+            IdUsuario = UsuarioSeleccionado!.Uid,
             FechaRegistroVehiculo = DateTime.Now
         };
 
-        await _vehiculoRepository.UpdateVehiculoAsync(actualizado);
+        await _vehiculoRepository.UpdateVehiculoAsync(vehiculo);
         await _alertaHelper.ShowSuccessAsync("Vehículo actualizado correctamente.");
         await Shell.Current.GoToAsync("..");
     }
 
-    /* ===================================================================================
-     * VALIDACIONES EN TIEMPO REAL (XAML Binding Friendly)
-    =================================================================================== */
+    /* =============================================
+     * VALIDACIONES EN TIEMPO REAL
+    ============================================= */
 
     partial void OnPlacaVehiculoChanged(string? value)
     {
-        if (!string.IsNullOrEmpty(value))
-        {
+        if (!string.IsNullOrWhiteSpace(value))
             PlacaVehiculo = value.ToUpper();
-        }
 
         ValidateProperty(PlacaVehiculo, nameof(PlacaVehiculo));
-
         _ = VerificarPlacaDuplicadaAsync(PlacaVehiculo);
 
         OnPropertyChanged(nameof(PlacaVehiculoError));
@@ -139,11 +138,11 @@ public partial class EditarVehiculoPageModel : ObservableValidator
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
-    partial void OnIdUsuarioChanged(string? value)
+    partial void OnUsuarioSeleccionadoChanged(Usuario? value)
     {
-        ValidateProperty(value, nameof(IdUsuario));
-        OnPropertyChanged(nameof(IdUsuarioError));
-        OnPropertyChanged(nameof(HasIdUsuarioError));
+        ValidateProperty(value, nameof(UsuarioSeleccionado));
+        OnPropertyChanged(nameof(UsuarioSeleccionadoError));
+        OnPropertyChanged(nameof(HasUsuarioSeleccionadoError));
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
@@ -155,9 +154,7 @@ public partial class EditarVehiculoPageModel : ObservableValidator
         {
             var existente = await _vehiculoRepository.GetVehiculoPorPlacaAsync(placa);
             if (existente != null && existente.IdVehiculo != IdVehiculo)
-            {
                 PlacaDuplicadaError = "Ya existe un vehículo registrado con esta placa.";
-            }
         }
 
         OnPropertyChanged(nameof(PlacaDuplicadaError));
@@ -165,27 +162,25 @@ public partial class EditarVehiculoPageModel : ObservableValidator
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
-
-    /* ===================================================================================
-     * ERRORES DE PROPIEDADES PARA USO EN XAML
-    =================================================================================== */
+    /* =============================================
+     * ERRORES PARA EL XAML
+    ============================================= */
 
     public string? PlacaVehiculoError => GetErrors(nameof(PlacaVehiculo)).FirstOrDefault()?.ErrorMessage;
     public string? MarcaVehiculoError => GetErrors(nameof(MarcaVehiculo)).FirstOrDefault()?.ErrorMessage;
     public string? ModeloVehiculoError => GetErrors(nameof(ModeloVehiculo)).FirstOrDefault()?.ErrorMessage;
-    public string? IdUsuarioError => GetErrors(nameof(IdUsuario)).FirstOrDefault()?.ErrorMessage;
+    public string? UsuarioSeleccionadoError => GetErrors(nameof(UsuarioSeleccionado)).FirstOrDefault()?.ErrorMessage;
 
     public bool HasPlacaVehiculoError => GetErrors(nameof(PlacaVehiculo)).Any();
     public bool HasMarcaVehiculoError => GetErrors(nameof(MarcaVehiculo)).Any();
     public bool HasModeloVehiculoError => GetErrors(nameof(ModeloVehiculo)).Any();
-    public bool HasIdUsuarioError => GetErrors(nameof(IdUsuario)).Any();
+    public bool HasUsuarioSeleccionadoError => GetErrors(nameof(UsuarioSeleccionado)).Any();
 
     public bool PuedeGuardar =>
-     !HasErrors &&
-     !HasPlacaDuplicadaError &&
-     !string.IsNullOrWhiteSpace(PlacaVehiculo) &&
-     !string.IsNullOrWhiteSpace(MarcaVehiculo) &&
-     !string.IsNullOrWhiteSpace(ModeloVehiculo) &&
-     !string.IsNullOrWhiteSpace(IdUsuario);
-
+        !HasErrors &&
+        !HasPlacaDuplicadaError &&
+        !string.IsNullOrWhiteSpace(PlacaVehiculo) &&
+        !string.IsNullOrWhiteSpace(MarcaVehiculo) &&
+        !string.IsNullOrWhiteSpace(ModeloVehiculo) &&
+        UsuarioSeleccionado != null;
 }

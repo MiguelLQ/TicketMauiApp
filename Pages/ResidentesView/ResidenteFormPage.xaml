@@ -65,7 +65,7 @@
 
                     <Entry Placeholder="Nombre" Text="{Binding NombreResidente}" />
                     <Entry Placeholder="Apellido" Text="{Binding ApellidoResidente}" />
-                    <Entry Placeholder="DNI" Text="{Binding DniResidente}" Keyboard="Numeric" MaxLength="10" />
+                    <Entry Placeholder="DNI" Text="{Binding DniResidente}" Keyboard="Numeric" MaxLength="8" />
                     <Entry Placeholder="Correo Electrónico" Text="{Binding CorreoResidente}" Keyboard="Email" />
                     <Entry Placeholder="Dirección" Text="{Binding DireccionResidente}" />
 

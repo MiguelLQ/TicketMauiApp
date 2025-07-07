@@ -1,18 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
-using MauiFirebase.Models;
 using MauiFirebase.Helpers.Interface;
+using MauiFirebase.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace MauiFirebase.PageModels.Residentes;
-
-public partial class ResidenteFormPageModel : ObservableValidator
+namespace MauiFirebase.PageModels.Ciudadanos;
+public partial class AgregarCiudadanosPageModel: ObservableValidator
 {
     private readonly IResidenteRepository _residenteRepository;
     private readonly IAlertaHelper _alertaHelper;
 
-    public ResidenteFormPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
+    public AgregarCiudadanosPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
     {
         _residenteRepository = residenteRepository;
         _alertaHelper = alertaHelper;
@@ -49,6 +48,18 @@ public partial class ResidenteFormPageModel : ObservableValidator
 
     // ====================== COMANDOS ======================
 
+    [RelayCommand]
+    public void LimpiarFormulario()
+    {
+        NombreResidente = string.Empty;
+        ApellidoResidente = string.Empty;
+        DniResidente = string.Empty;
+        CorreoResidente = string.Empty;
+        DireccionResidente = string.Empty;
+        EstadoResidente = true;
+        DniDuplicadoError = null;
+        ClearErrors();
+    }
 
     [RelayCommand]
     public async Task CrearResidenteAsync()
@@ -76,20 +87,9 @@ public partial class ResidenteFormPageModel : ObservableValidator
         await _residenteRepository.CreateResidenteAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Ciudadano Registrado Correctamente.");
         LimpiarFormulario();
-        // Navega explícitamente a la lista de residentes
-        await Shell.Current.GoToAsync("//residente");
+        await Shell.Current.GoToAsync("..");
     }
-    public void LimpiarFormulario()
-    {
-        NombreResidente = string.Empty;
-        ApellidoResidente = string.Empty;
-        DniResidente = string.Empty;
-        CorreoResidente = string.Empty;
-        DireccionResidente = string.Empty;
-        EstadoResidente = true;
-        DniDuplicadoError = null;
-        ClearErrors();
-    }
+
     // ====================== VALIDACIÓN EN TIEMPO REAL ======================
 
     partial void OnNombreResidenteChanged(string value)

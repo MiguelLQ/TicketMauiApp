@@ -1,42 +1,24 @@
-﻿using Microsoft.Maui.Controls;
-using MauiFirebase.PageModels.Residentes;
+﻿using MauiFirebase.PageModels.Residentes;
 
 namespace MauiFirebase.Pages.ResidentesView;
 
 public partial class ResidenteFormPage : ContentPage
 {
-    private readonly ResidenteFormPageModel _vm;
-    public ResidenteFormPage() : this(MauiProgram.Services.GetRequiredService<ResidenteFormPageModel>())
-    {
-    }
+    private readonly ResidenteFormPageModel _viewModel;
+   
 
-
-    public ResidenteFormPage(ResidenteFormPageModel vm)   // DI
+    public ResidenteFormPage(ResidenteFormPageModel viewModel)  
     {
         InitializeComponent();
-        _vm = vm;
-        BindingContext = _vm;
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
     }
-    public string ResidenteId
+    private async void OnCancelarClicked(object sender, EventArgs e)
     {
-        set
-        {
-            if (int.TryParse(value, out int id))
-            {
-                _vm.IdResidente = id; // Dispara OnIdResidenteChanged automáticamente
-            }
-        }
-    }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-
-        // ⚠️ Solo limpia si no estamos en modo edición
-        if (_vm.IdResidente == 0 && !_vm.EsEdicion)
-        {
-            _vm.LimpiarFormularioCommand.Execute(null);
-        }
+        // Navega explícitamente a la página de listado de residentes
+        await Shell.Current.GoToAsync("//residente");
+        //await Shell.Current.GoToAsync("..");
+       
     }
 }
 

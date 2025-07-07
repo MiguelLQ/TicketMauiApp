@@ -1,173 +1,123 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace MauiFirebase.PageModels.Residentes
+namespace MauiFirebase.PageModels.Residentes;
+
+public partial class ResidenteListPageModel : ObservableValidator
 {
-    public partial class ResidenteListPageModel : ObservableObject
+    private readonly IResidenteRepository _residenteRepository;
+    private readonly IAlertaHelper _alertaHelper;
+
+    public ObservableCollection<Residente> ListaResidentes { get; } = new();
+
+    [ObservableProperty]
+    private bool isBusy;
+
+    [ObservableProperty]
+    private string filtro = "Todos";
+
+    [ObservableProperty]
+    [CustomValidation(typeof(ResidenteListPageModel), nameof(ValidarDni))]
+    private string textoBusqueda = string.Empty;
+
+    private List<Residente> _respaldoResidentes = new();
+
+    public ResidenteListPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
     {
-        private IClosePopup? _popupCloser; // 🔧 Instancia UI del popup actual
-        private readonly IResidenteRepository _residenteRepository;
-        private readonly IAlertaHelper _alertaHelper;
+        _residenteRepository = residenteRepository;
+        _alertaHelper = alertaHelper;
+    }
 
-        private List<Residente> _todosLosResidentes = new(); // respaldo en memoria
-
-        [ObservableProperty]
-        private ObservableCollection<Residente> _listaResidentes = new();
-
-        [ObservableProperty]
-        private string _busquedaTexto;
-
-        [ObservableProperty]
-        private string _filtroEstadoResidente = "Todos";
-        
-
-        partial void OnFiltroEstadoResidenteChanged(string value)
+    // ===============================
+    // Validación personalizada de DNI
+    // ===============================
+    public static ValidationResult? ValidarDni(string dni, ValidationContext context)
+    {
+        if (string.IsNullOrWhiteSpace(dni))
         {
-            AplicarFiltros();
+            return ValidationResult.Success;
         }
-        partial void OnBusquedaTextoChanged(string value)
+        if (dni.Length != 8 || !dni.All(char.IsDigit))
         {
-            AplicarFiltros();
+            return new ValidationResult("El DNI debe tener exactamente 8 dígitos numéricos.");
         }
+        return ValidationResult.Success;
+    }
 
-        public ResidenteListPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
+
+
+    [RelayCommand]
+    public async Task CargarResidentesAsync()
+    {
+        try
         {
-            _residenteRepository = residenteRepository;
-            _alertaHelper = alertaHelper;
-
-            WeakReferenceMessenger.Default.Register<Residente, string>(
-                this,
-                "ResidenteActualizado",
-                (recipient, residenteActualizado) =>
-                {
-                    var existente = ListaResidentes.FirstOrDefault(r => r.IdResidente == residenteActualizado.IdResidente);
-                    if (existente != null)
-                    {
-                        existente.NombreResidente = residenteActualizado.NombreResidente;
-                        existente.ApellidoResidente = residenteActualizado.ApellidoResidente;
-                        existente.DniResidente = residenteActualizado.DniResidente;
-                        existente.CorreoResidente = residenteActualizado.CorreoResidente;
-                        existente.DireccionResidente = residenteActualizado.DireccionResidente;
-                        existente.EstadoResidente = residenteActualizado.EstadoResidente;
-                        existente.TicketsTotalesGanados = residenteActualizado.TicketsTotalesGanados;
-                    }
-                    else
-                    {
-                        ListaResidentes.Add(residenteActualizado);
-                    }
-                    var index = _todosLosResidentes.FindIndex(r => r.IdResidente == residenteActualizado.IdResidente);
-                    if (index >= 0)
-                        _todosLosResidentes[index] = residenteActualizado;
-                    AplicarFiltros();
-                });
-
-        }
-
-        // 🔹 Navegación
-        [RelayCommand]
-        private static async Task NavigateToRegister()
-        {
-            try
-            {
-                await Shell.Current.GoToAsync("residenteForm");
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", $"Error de navegación: {ex.Message}", "OK");
-            }
-        }
-
-        [RelayCommand]
-        private static async Task NavigateToList()
-        {
-            await Shell.Current.GoToAsync("residenteList");
-        }
-
-        // 🔹 Cargar y mantener los residentes en memoria
-        [RelayCommand]
-        public async Task CargarResidentesAsync()
-        {
-            var residentes = await _residenteRepository.GetAllResidentesAsync();
-            _todosLosResidentes = residentes.OrderBy(r => r.NombreResidente).ToList();
-            AplicarFiltros();
-        }
-
-        // 🔹 Buscar por nombre o apellido
-        [RelayCommand]
-        public Task BuscarResidentesAsync()
-        {
-            AplicarFiltros(); 
-            return Task.CompletedTask;
-        }
-
-        // Establece el popup actual para poder cerrarlo desde el ViewModel
-        public void SetPopupCloser(IClosePopup popup)
-        {
-            _popupCloser = popup;
-        }
-        [RelayCommand]
-        public void AplicarFiltros()
-        {
-            IEnumerable<Residente> filtered = _todosLosResidentes;
-
-            if (!string.IsNullOrWhiteSpace(BusquedaTexto))
-            {
-                filtered = filtered.Where(r =>
-                    r.NombreResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase) ||
-                    r.ApellidoResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase) ||
-                    r.DniResidente.Contains(BusquedaTexto, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (FiltroEstadoResidente == "Activos")
-                filtered = filtered.Where(r => r.EstadoResidente);
-            else if (FiltroEstadoResidente == "Inactivos")
-                filtered = filtered.Where(r => !r.EstadoResidente);
-
+            IsBusy = true;
             ListaResidentes.Clear();
-            foreach (var res in filtered)
-            {
-                ListaResidentes.Add(res);
-            }
+
+            var residentes = await _residenteRepository.GetAllResidentesAsync();
+            _respaldoResidentes = residentes.ToList();
+
+            AplicarFiltros();
         }
-        // 🔹 Cambiar estado activo/inactivo
-        [RelayCommand]
-        private async Task CambiarEstadoResidente(int idResidente)
+        finally
         {
-            var residente = await _residenteRepository.GetResidenteByIdAsync(idResidente);
-            if (residente != null)
-            {
-                residente.EstadoResidente = !residente.EstadoResidente;
-                await _residenteRepository.UpdateResidenteAsync(residente);
-
-                await Shell.Current.DisplayAlert(
-                    "Estado Actualizado",
-                    $"El estado de {residente.NombreResidente} ahora es: {(residente.EstadoResidente ? "Activo" : "Inactivo")}",
-                    "OK"
-                );
-
-                await CargarResidentesAsync(); // recargar lista actualizada
-            }
-        }
-
-        // 🔹 Editar residente (navegación con parámetro)
-        [RelayCommand]
-        private async Task EditarResidente(Residente residente)
-        {
-            if (residente == null)
-            {
-                await Shell.Current.DisplayAlert("Error", "El residente recibido es null", "OK");
-                return;
-            }
-
-            await Shell.Current.GoToAsync($"residenteForm?id={residente.IdResidente}&modo=editar");
-
-            _popupCloser?.ClosePopup(); // ✅ Cerramos el popup actual
-            await _alertaHelper.ShowSuccessAsync("Ticket agregado correctamente.");
+            IsBusy = false;
         }
     }
+
+    [RelayCommand]
+    public void AplicarFiltros()
+    {
+
+        if (HasTextoBusquedaError)
+        {
+            ListaResidentes.Clear();
+            return;
+        }
+
+        var filtrados = string.IsNullOrWhiteSpace(TextoBusqueda)
+            ? _respaldoResidentes
+            : _respaldoResidentes.Where(r => r.DniResidente != null && r.DniResidente.Contains(TextoBusqueda, StringComparison.OrdinalIgnoreCase));
+
+        ListaResidentes.Clear();
+        foreach (var r in filtrados)
+        {
+            ListaResidentes.Add(r);
+        }
+        if (!filtrados.Any() && !string.IsNullOrWhiteSpace(TextoBusqueda))
+        {
+            _ = _alertaHelper.ShowErrorAsync("No se encontró ningún residente con ese número de DNI");
+        }
+    }
+
+
+    [RelayCommand]
+    public async Task IrACrearResidenteAsync()
+    {
+        await Shell.Current.GoToAsync("ResidenteFormPage");
+    }
+
+    // ===================================
+    // Manejo de cambios en tiempo real
+    // ==================================
+    partial void OnTextoBusquedaChanged(string value)
+    {
+        ValidateProperty(value, nameof(TextoBusqueda));
+        OnPropertyChanged(nameof(TextoBusquedaError));
+        OnPropertyChanged(nameof(HasTextoBusquedaError));
+
+        AplicarFiltros();
+    }
+
+
+    // ==========================================
+    // Propiedades para errores en XAML
+    // ===========================================
+    public string? TextoBusquedaError => GetErrors(nameof(TextoBusqueda)).FirstOrDefault()?.ErrorMessage;
+    public bool HasTextoBusquedaError => GetErrors(nameof(TextoBusqueda)).Any();
 }

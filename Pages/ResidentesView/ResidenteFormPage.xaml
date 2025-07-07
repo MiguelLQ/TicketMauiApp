@@ -5,87 +5,145 @@
              x:Name="ResidenteFormRoot"
              xmlns:viewmodels="clr-namespace:MauiFirebase.PageModels.Residentes"
              xmlns:models="clr-namespace:MauiFirebase.Models"
-             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
-             Title="Formulario de Ciudadanos"
-             BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#121212}">
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
+             x:DataType="viewmodels:ResidenteFormPageModel"
+             Title="Formulario de Ciudadanos">
 
     <ContentPage.Resources>
-        <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
-
-
-        <Style TargetType="Entry">
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1E1E1E}" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
-            <Setter Property="PlaceholderColor" Value="Gray" />
-            <Setter Property="HeightRequest" Value="45" />
-            <Setter Property="Margin" Value="0,6" />
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-
-        <Style TargetType="Button">
-            <Setter Property="TextColor" Value="White" />
-            <Setter Property="CornerRadius" Value="10" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="HeightRequest" Value="50" />
-            <Setter Property="Margin" Value="5" />
-        </Style>
-
-        <Style TargetType="Border">
-            <Setter Property="Stroke" Value="{AppThemeBinding Light=#E0E0E0, Dark=#333}" />
-            <Setter Property="StrokeShape" Value="RoundRectangle 12" />
-            <Setter Property="Padding" Value="20" />
-            <Setter Property="Margin" Value="0,10" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1C1C1C}" />
-            <Setter Property="Shadow">
-                <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
-            </Setter>
-        </Style>
-
-        <Style x:Key="SeparatorStyle" TargetType="BoxView">
-            <Setter Property="HeightRequest" Value="1" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#DDDDDD, Dark=#444}" />
-            <Setter Property="Margin" Value="0,8" />
-        </Style>
+        <ResourceDictionary>
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
     </ContentPage.Resources>
-
     <ScrollView>
-        <VerticalStackLayout Spacing="15" Padding="20">
+        <VerticalStackLayout Padding="20" Spacing="0" HorizontalOptions="Center">
+            <Frame CornerRadius="16"
+                   HasShadow="True"
+                   BorderColor="Transparent"
+                   Background="{StaticResource CardBackgroundBrush}"
+                   WidthRequest="360">
 
-            <Label Text="{Binding EsEdicion, Converter={StaticResource BoolToTextConverter}, 
-                                 ConverterParameter='Editar;Registrar'}"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                <VerticalStackLayout Spacing="16" Padding="10">
 
-            <Border>
-                <VerticalStackLayout Spacing="12">
-                    <BoxView Style="{StaticResource SeparatorStyle}" />
+                    <!-- ✅ Título fijo -->
+                    <Label Text="🧍 Registrar Ciudadano"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{DynamicResource Primary}" />
 
-                    <Entry Placeholder="Nombre" Text="{Binding NombreResidente}" />
-                    <Entry Placeholder="Apellido" Text="{Binding ApellidoResidente}" />
-                    <Entry Placeholder="DNI" Text="{Binding DniResidente}" Keyboard="Numeric" MaxLength="10" />
-                    <Entry Placeholder="Correo Electrónico" Text="{Binding CorreoResidente}" Keyboard="Email" />
-                    <Entry Placeholder="Dirección" Text="{Binding DireccionResidente}" />
+                    <!-- Nombre -->
+                    <VerticalStackLayout>
+                        <Label Text="Nombre" FontSize="13" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" Background="{StaticResource EntryBackgroundBrush}" HeightRequest="48" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconNombre}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ej. Juan"
+                                       Text="{Binding NombreResidente, Mode=TwoWay}"
+                                       BackgroundColor="Transparent"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource Gray400}"
+                                       Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding NombreResidenteError}" FontSize="12" TextColor="Red" IsVisible="{Binding NombreResidenteError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    </VerticalStackLayout>
 
-                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                        <Label Text="Estado Activo:" VerticalOptions="Center" FontSize="16" />
-                        <Switch IsToggled="{Binding EstadoResidente}"
-                                ThumbColor="{AppThemeBinding Light=Blue, Dark=LightBlue}"
-                                OnColor="Green" />
+                    <!-- Apellido -->
+                    <VerticalStackLayout>
+                        <Label Text="Apellido" FontSize="13" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" Background="{StaticResource EntryBackgroundBrush}" HeightRequest="48" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconApellido}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ej. Pérez"
+                                       Text="{Binding ApellidoResidente, Mode=TwoWay}"
+                                       BackgroundColor="Transparent"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource Gray400}"
+                                       Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding ApellidoResidenteError}" FontSize="12" TextColor="Red" IsVisible="{Binding ApellidoResidenteError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    </VerticalStackLayout>
+
+                    <!-- DNI -->
+                    <VerticalStackLayout>
+                        <Label Text="DNI" FontSize="13" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" Background="{StaticResource EntryBackgroundBrush}" HeightRequest="48" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Entry Placeholder="Ej. 12345678"
+                                       Text="{Binding DniResidente, Mode=TwoWay}"
+                                       Keyboard="Numeric"
+                                       MaxLength="8"
+                                       BackgroundColor="Transparent"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource Gray400}"
+                                       Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding DniResidenteError}" FontSize="12" TextColor="Red" IsVisible="{Binding DniResidenteError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                        <Label Text="{Binding DniDuplicadoError}" FontSize="12" TextColor="Red" IsVisible="{Binding HasDniDuplicadoError}" />
+                    </VerticalStackLayout>
+
+                    <!-- Correo -->
+                    <VerticalStackLayout>
+                        <Label Text="Correo Electrónico" FontSize="13" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" Background="{StaticResource EntryBackgroundBrush}" HeightRequest="48" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconCorreo}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ej. ejemplo@mail.com"
+                                       Text="{Binding CorreoResidente, Mode=TwoWay}"
+                                       Keyboard="Email"
+                                       BackgroundColor="Transparent"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource Gray400}"
+                                       Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding CorreoResidenteError}" FontSize="12" TextColor="Red" IsVisible="{Binding CorreoResidenteError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    </VerticalStackLayout>
+
+                    <!-- Dirección -->
+                    <VerticalStackLayout>
+                        <Label Text="Dirección" FontSize="13" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="0" Background="{StaticResource EntryBackgroundBrush}" HeightRequest="48" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconDireccion}" WidthRequest="20" HeightRequest="20" Margin="10,0" VerticalOptions="Center" />
+                                <Entry Placeholder="Ej. Calle Falsa 123"
+                                       Text="{Binding DireccionResidente, Mode=TwoWay}"
+                                       BackgroundColor="Transparent"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource Gray400}"
+                                       Margin="8,0" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Label Text="{Binding DireccionResidenteError}" FontSize="12" TextColor="Red" IsVisible="{Binding DireccionResidenteError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    </VerticalStackLayout>
+
+                    <!-- Botones -->
+                    <HorizontalStackLayout Spacing="16" Margin="0,10,0,0" HorizontalOptions="Center">
+                        <Button Text="Registrar"
+                                Command="{Binding CrearResidenteCommand}"
+                                IsEnabled="{Binding PuedeGuardar}"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                                TextColor="White"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140" />
+                        <Button Text="Cancelar"
+                                Clicked="OnCancelarClicked"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="#e0e0e0"
+                                TextColor="#333"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140" />
                     </HorizontalStackLayout>
 
-                    <Button Text="Registrar"
-                            Command="{Binding GuardarResidenteCommand}"
-                            BackgroundColor="{DynamicResource Primary}"
-                            TextColor="White"
-                            CornerRadius="20"
-                            WidthRequest="140"
-                            HeightRequest="50" />
                 </VerticalStackLayout>
-            </Border>
-
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -16,6 +16,7 @@ using MauiFirebase.Pages.Trabajador;
 using MauiFirebase.Pages.Home;
 using MauiFirebase.Pages.RegistroCiudadano;
 using MauiFirebase.Pages.Mapa;
+using MauiFirebase.Pages.ResidentesView;
 //using Windows.Devices.Sensors;
 
 namespace MauiFirebase
@@ -26,7 +27,9 @@ namespace MauiFirebase
         public AppShell()
         {
             InitializeComponent();
-      
+            //residente
+            Routing.RegisterRoute(nameof(ResidenteFormPage), typeof(ResidenteFormPage));
+            //residuo
             Routing.RegisterRoute(nameof(EditarResiduoPage), typeof(EditarResiduoPage));
             Routing.RegisterRoute(nameof(AgregarResiduoPage), typeof(AgregarResiduoPage));
             //vehiculo

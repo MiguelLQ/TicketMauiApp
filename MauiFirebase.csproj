@@ -233,6 +233,7 @@
 	<ItemGroup>
 	  <Folder Include="PageModels\Ticket\" />
 	  <Folder Include="Utilities\" />
+	  <Folder Include="Pages\Ciudadanos\" />
 	</ItemGroup>
 
 	<ItemGroup>

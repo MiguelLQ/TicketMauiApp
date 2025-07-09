@@ -200,6 +200,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CamScanerPage>();
         builder.Services.AddTransient<CamScanerPageModel>();
 
+        builder.Services.AddSingleton<RegistroCiudadanoPageModel>();
         // ==========================================================
         var app = builder.Build();
         Services = app.Services;

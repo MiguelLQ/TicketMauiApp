@@ -15,11 +15,30 @@ public partial class PremioPageModel : ObservableObject
     private readonly IPremioRepository _premioRepository;
     [ObservableProperty]
     private bool _isBusy;
+  
 
     public PremioPageModel(IPremioRepository premioRepository)
     {
         _premioRepository = premioRepository;
     }
+    [ObservableProperty]
+    private bool esAdmin;
+
+    public void VerificarRol()
+    {
+        var rol = Preferences.Get("FirebaseUserRole", string.Empty);
+        EsAdmin = rol == "admin";
+
+        System.Diagnostics.Debug.WriteLine($"👮 ROL detectado en ViewModel: {rol} - ¿EsAdmin?: {EsAdmin}");
+    }
+
+
+
+    partial void OnEsAdminChanged(bool oldValue, bool newValue)
+    {
+        OnPropertyChanged(nameof(EsAdmin)); // Forzar el refresco
+    }
+
 
     [RelayCommand]
     public async Task CargarPremiosAsync()

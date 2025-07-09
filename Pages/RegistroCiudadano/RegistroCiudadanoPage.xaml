@@ -1,12 +1,105 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Registers"
+             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
              x:Class="MauiFirebase.Pages.RegistroCiudadano.RegistroCiudadanoPage"
-             Title="RegistroCiudadanoPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Registro ciudadano Page!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="viewModel:RegistroCiudadanoPageModel"
+             Title="Registro de Ciudadano">
+
+    <!-- Recursos -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- ✅ Formulario (solo si MostrarFormulario = true) -->
+            <VerticalStackLayout IsVisible="{Binding MostrarFormulario}" Spacing="15">
+                <Label Text="Registro de Ciudadano"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="#0077CC"
+                       HorizontalOptions="Center" />
+
+                <Entry Placeholder="Nombre"
+                       Text="{Binding Nombre}" />
+
+                <Entry Placeholder="Apellido"
+                       Text="{Binding Apellido}" />
+
+                <Entry Placeholder="DNI"
+                       Text="{Binding Dni}"
+                       Keyboard="Numeric" />
+
+                <Entry Placeholder="Correo"
+                       Text="{Binding Correo}"
+                       Keyboard="Email" />
+
+                <Entry Placeholder="Dirección"
+                       Text="{Binding Direccion}" />
+
+                <!-- Switch de estado -->
+                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                    <Label Text="¿Está activo?" VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding EstadoResidente}" />
+                </StackLayout>
+
+                <Button Text="Guardar"
+                        Command="{Binding GuardarCiudadanoCommand}"
+                        BackgroundColor="#0077CC"
+                        TextColor="White"
+                        CornerRadius="10"
+                        FontAttributes="Bold"
+                        HeightRequest="45" />
+            </VerticalStackLayout>
+
+            <!-- ✅ Código QR (solo si MostrarFormulario = false) -->
+            <StackLayout IsVisible="{Binding MostrarFormulario, Converter={StaticResource InverseBoolConverter}}" 
+                         HorizontalOptions="Center"
+                         Margin="0,30,0,0">
+                <Label Text="Tu código QR"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       HorizontalOptions="Center" />
+                <Image Source="{Binding QrBase64}" 
+                       HeightRequest="250" 
+                       WidthRequest="250" />
+                <!-- Card con datos personales -->
+                <Frame BackgroundColor="White"
+           BorderColor="#0077CC"
+           CornerRadius="20"
+           HasShadow="True"
+           Padding="20"
+           Margin="0,20,0,0">
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Label Text="{Binding NombreResidenteLocal}" 
+                   FontSize="18" 
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   HorizontalOptions="Center" />
+
+                        <Label Text="{Binding ApellidoResidenteLocal}" 
+                   FontSize="16"
+                   TextColor="Black"
+                   HorizontalOptions="Center" />
+
+                        <Label Text="{Binding CorreoResidenteLocal}" 
+                   FontSize="14"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+
+                        <Label Text="{Binding DireccionResidenteLocal}" 
+                   FontSize="14"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+            </StackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

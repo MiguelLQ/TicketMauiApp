@@ -17,6 +17,7 @@ using MauiFirebase.Pages.Home;
 using MauiFirebase.Pages.RegistroCiudadano;
 using MauiFirebase.Pages.Mapa;
 using MauiFirebase.Pages.ResidentesView;
+using MauiFirebase.Pages.CamScaner;
 //using Windows.Devices.Sensors;
 
 namespace MauiFirebase
@@ -58,6 +59,8 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(inicioCiudadanoPage), typeof(inicioCiudadanoPage));
             Routing.RegisterRoute(nameof(RegistroCiudadanoPage), typeof(RegistroCiudadanoPage));
             Routing.RegisterRoute(nameof(MonitorearCamionPage), typeof(MonitorearCamionPage));
+            //para scanear QR
+            Routing.RegisterRoute(nameof(CamScanerPage), typeof(CamScanerPage));
 
 
             //Usuario

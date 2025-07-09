@@ -37,6 +37,9 @@ using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Home;
 using MauiFirebase.Pages.RegistroCiudadano;
 using MauiFirebase.Pages.Mapa;
+using ZXing.Net.Maui.Controls;
+using MauiFirebase.Pages.CamScaner;
+using MauiFirebase.PageModels.CamScaners;
 
 namespace MauiFirebase;
 
@@ -49,6 +52,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
+            .UseBarcodeReader()
             .ConfigureSyncfusionToolkit()
             .ConfigureMauiHandlers(handlers =>
             {
@@ -154,7 +158,7 @@ public static class MauiProgram
 
         // Residente
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
-        builder.Services.AddSingleton<ResidenteFormPage, ResidenteFormPageModel>();
+        builder.Services.AddTransient<ResidenteFormPage, ResidenteFormPageModel>();
         builder.Services.AddSingleton<ResidenteListPage, ResidenteListPageModel>();
        
 
@@ -186,6 +190,11 @@ public static class MauiProgram
         builder.Services.AddSingleton<inicioCiudadanoPage>();
         builder.Services.AddSingleton<RegistroCiudadanoPage>();
         builder.Services.AddSingleton<MonitorearCamionPage>();
+
+        //para scaner qr
+        builder.Services.AddTransient<CamScanerPage>();
+        builder.Services.AddTransient<CamScanerPageModel>();
+
         // ==========================================================
         var app = builder.Build();
         Services = app.Services;

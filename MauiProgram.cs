@@ -2,24 +2,41 @@
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
-using MauiFirebase.PageModels.CategoriaResiduos;
-using MauiFirebase.PageModels.RegistroDeReciclajes;
-using MauiFirebase.PageModels.Residuos;
-using MauiFirebase.PageModels.Ticket;
-using MauiFirebase.PageModels.Canjes;
-using MauiFirebase.Pages.CategoriaResiduo;
-using MauiFirebase.Pages.RegistroDeReciclaje;
-using MauiFirebase.Pages.Premio;
-using MauiFirebase.Pages.Residuo;
-using MauiFirebase.Pages.Canje;
-using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Toolkit.Hosting;
-using MauiFirebase.PageModels.Premios;
-using MauiFirebase.Pages.Ticket;
-using MauiFirebase.PageModels.Residentes;
-using MauiFirebase.Pages.ResidentesView;
-using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Helpers;
+using MauiFirebase.Helpers.Interface;
+using MauiFirebase.PageModels.Canjes;
+using MauiFirebase.PageModels.CategoriaResiduos;
+using MauiFirebase.PageModels.Conversiones;
+using MauiFirebase.PageModels.Logins;
+using MauiFirebase.PageModels.Premios;
+using MauiFirebase.PageModels.Registers;
+using MauiFirebase.PageModels.RegistroDeReciclajes;
+using MauiFirebase.PageModels.Residentes;
+using MauiFirebase.PageModels.Residuos;
+using MauiFirebase.PageModels.Rutas;
+using MauiFirebase.PageModels.Ticket;
+using MauiFirebase.PageModels.Trabajadores;
+using MauiFirebase.PageModels.Usuarios;
+using MauiFirebase.PageModels.Vehiculos;
+using MauiFirebase.Pages.Canje;
+using MauiFirebase.Pages.CategoriaResiduo;
+using MauiFirebase.Pages.Convertidores;
+using MauiFirebase.Pages.Home;
+using MauiFirebase.Pages.Mapa;
+using MauiFirebase.Pages.Premio;
+using MauiFirebase.Pages.Register;
+using MauiFirebase.Pages.RegistroCiudadano;
+using MauiFirebase.Pages.RegistroDeReciclaje;
+using MauiFirebase.Pages.ResidentesView;
+using MauiFirebase.Pages.Residuo;
+using MauiFirebase.Pages.Ruta;
+using MauiFirebase.Pages.Ticket;
+using MauiFirebase.Pages.Trabajador;
+using MauiFirebase.Pages.usuario;
+using MauiFirebase.Pages.Vehiculo;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Hosting;
+using Syncfusion.Maui.Toolkit.Hosting;
 using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
 
 using MauiFirebase.PageModels.Conversiones;
@@ -52,6 +69,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+           // .UseMauiMaps()
             .UseMauiCommunityToolkit()
             .UseBarcodeReader()
             .ConfigureSyncfusionToolkit()
@@ -148,6 +166,14 @@ public static class MauiProgram
 
         builder.Services.AddTransient<EditarCanjePageModel>();
         builder.Services.AddTransient<EditarCanjePage>();
+        //Rutas
+        builder.Services.AddSingleton<IRutaRepository, RutaRepository>();
+        builder.Services.AddSingleton<CrearRutaPageModel>();
+        builder.Services.AddSingleton<EditarRutaPageModel>();
+        builder.Services.AddSingleton<RutaPageModel>();
+        builder.Services.AddSingleton<AgregarRutaPage>();
+        builder.Services.AddSingleton<EditarRutaPage>();
+        builder.Services.AddSingleton<ListarRutaPage>();
         // usuario
         builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
         builder.Services.AddSingleton<UsuarioPageModel>();

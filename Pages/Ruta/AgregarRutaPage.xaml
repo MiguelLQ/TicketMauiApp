@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Ruta.AgregarRutaPage"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Rutas"
+             x:DataType="viewModels:CrearRutaPageModel"
+             Title="Agregar Ruta">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+            <Label Text="🚛 Nueva Ruta"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <!-- Selector de Vehículo -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Vehículo"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Picker ItemsSource="{Binding ListaVehiculos}"
+                            ItemDisplayBinding="{Binding Nombre}"
+                            SelectedItem="{Binding VehiculoSeleccionado, Mode=TwoWay}" />
+                </VerticalStackLayout>
+            </Frame>
+
+
+            <!-- Campo: Días de Recolección -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Días de recolección"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Picker ItemsSource="{Binding DiasOpciones}"
+                            SelectedItem="{Binding DiasDeRecoleccion, Mode=TwoWay}"
+                            FontSize="16"
+                            Title="Selecciona días de recolección"
+                            TextColor="{DynamicResource Gray500}"
+                            BackgroundColor="Transparent" />
+                    <Label Text="{Binding DiasDeRecoleccionError}"
+                           TextColor="Red" FontSize="12"
+                           IsVisible="{Binding HasDiasDeRecoleccionError}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Campo: Puntos de Ruta -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Puntos de ruta (JSON)"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    <Editor Text="{Binding PuntosRutaJson, Mode=TwoWay}"
+                            FontSize="16"
+                            Placeholder="Puntos de la ruta en formato JSON"
+                            PlaceholderColor="#9CA3AF"
+                            TextColor="{DynamicResource Gray500}"
+                            BackgroundColor="Transparent"
+                            HeightRequest="100" />
+                </VerticalStackLayout>
+            </Frame>
+            <!-- Campo: Estado de la Ruta -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="16">
+                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                    <Label Text="Ruta activa"
+                           FontSize="14"
+                           TextColor="#6B7280"
+                           VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding EstadoRuta, Mode=TwoWay}" />
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding CrearRutaCommand}"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    IsEnabled="{Binding PuedeGuardar}"
+                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="red"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

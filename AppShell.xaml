@@ -79,7 +79,7 @@
                   Icon="casa.png"
                   ContentTemplate="{DataTemplate iciciociudadano:inicioCiudadanoPage}"
                   Route="inicioCiudadano" />
-        <!--<ShellContent Title="Regístrate" Icon="regi.png" ContentTemplate="{DataTemplate registrociudadano:RegistroCiudadanoPage}" Route="registrociudadano" /> -->
+        <ShellContent Title="Regístrate" Icon="regi.png" ContentTemplate="{DataTemplate registrociudadano:RegistroCiudadanoPage}" Route="registrociudadano" /> 
         <ShellContent Title="Monitorear" Icon="compactador.png" ContentTemplate="{DataTemplate vermapaciudadano:MonitorearCamionPage}" Route="monitorearcamion" />
     </FlyoutItem>
     
@@ -91,16 +91,14 @@
             IsVisible="true">
 
         <ShellContent Title="Inicio" Icon="casa.png" ContentTemplate="{DataTemplate inicio:InicioPage}" Route="inicio" />
-        <!--<ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />-->
+        <ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />
         <ShellContent Title="Registro" Icon="regi.png" ContentTemplate="{DataTemplate registro:ListarRegistrosPage}" Route="registro" />
         <ShellContent Title="Ciudadanos" Icon="veci.png" ContentTemplate="{DataTemplate residente:ResidenteListPage}" Route="residente" />
-        <ShellContent Title="Scanear" Icon=" " ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}" Route="camscaner" />
-        <!--CamScaner -->
         <ShellContent Title="Escanear QR"
-                  x:Name="ScanearShellContent"
-                  Icon="qr.png"
-                  ContentTemplate="{DataTemplate camscaner:CamScanerPage}"
-                  Route="scaner" />
+              Icon="qr.png"
+              ContentTemplate="{DataTemplate camscaner:CamScanerPage}"
+              Route="camscaner" />
+        
     </FlyoutItem>
     
     <!-- FLYOUT Admin -->

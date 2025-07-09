@@ -37,6 +37,7 @@ using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Home;
 using MauiFirebase.Pages.RegistroCiudadano;
 using MauiFirebase.Pages.Mapa;
+using MauiFirebase.PageModels.Mapas;
 using ZXing.Net.Maui.Controls;
 using MauiFirebase.Pages.CamScaner;
 using MauiFirebase.PageModels.CamScaners;
@@ -54,6 +55,7 @@ public static class MauiProgram
             .UseMauiCommunityToolkit()
             .UseBarcodeReader()
             .ConfigureSyncfusionToolkit()
+            .UseMauiMaps()
             .ConfigureMauiHandlers(handlers =>
             {
 #if IOS || MACCATALYST
@@ -189,7 +191,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<RegisterPage>();
         builder.Services.AddSingleton<inicioCiudadanoPage>();
         builder.Services.AddSingleton<RegistroCiudadanoPage>();
+        //camion
+        builder.Services.AddSingleton<IUbicacionVehiculo, UbicacionVehiculoRepository>();
         builder.Services.AddSingleton<MonitorearCamionPage>();
+        builder.Services.AddSingleton<UbicacionVehiculoPageModel>();
 
         //para scaner qr
         builder.Services.AddTransient<CamScanerPage>();

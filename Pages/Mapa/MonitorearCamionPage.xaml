@@ -2,11 +2,36 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Mapa.MonitorearCamionPage"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              Title="MonitorearCamionPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Vista para que el vecino monitoree el camion!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="10">
+
+        <!--<StackLayout Orientation="Horizontal" Spacing="15" Grid.Row="0">
+            <Button Text="Refrescar" Command="{Binding RefrescarCommand}" />
+            <Button Text="{Binding IsPolling, ConverterParameter='Detener,Iniciar'}"
+                    Command="{Binding IsPolling, ConverterParameter='StopPollingCommand,StartPollingCommand'}" />
+        </StackLayout>-->
+
+        <maps:Map x:Name="map"
+                  Grid.Row="1"
+                  IsShowingUser="True"
+                  IsZoomEnabled="True"
+                  IsScrollEnabled="True"
+                  IsTrafficEnabled="True"
+                  MapType="Hybrid"
+                  VerticalOptions="Fill" />
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Ubicaciones}" HeightRequest="150">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding Nombre}" FontAttributes="Bold" />
+                        <Label Text="Lat: {Binding Latitud}, Lng: {Binding Longitud}" FontSize="Small" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
 </ContentPage>

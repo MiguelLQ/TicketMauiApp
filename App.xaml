@@ -6,8 +6,8 @@
              x:Class="MauiFirebase.App">
     <Application.Resources>
         <ResourceDictionary>
-            <helpers:NullToBoolConverter x:Key="NullToBoolConverter" />
             <helpers:BoolToEstadoConverter x:Key="BoolToEstadoConverter" />
+            <helpers:NullToBoolConverter x:Key="NullToBoolConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

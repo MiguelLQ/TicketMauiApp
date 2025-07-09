@@ -135,7 +135,7 @@
                                                    WidthRequest="120"
                                                    HeightRequest="50">         
                                                 <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
-                                                    <Image Source="ticketicon.png" WidthRequest="24" HeightRequest="24" />
+                                                    <!--<Image Source="ticketicon.png" WidthRequest="24" HeightRequest="24" />-->
                                                     <Label Text="{Binding TicketsTotalesGanados, StringFormat='Tickets: {0}'}"
                                                            FontSize="16" TextColor="Green" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                                                 </HorizontalStackLayout>

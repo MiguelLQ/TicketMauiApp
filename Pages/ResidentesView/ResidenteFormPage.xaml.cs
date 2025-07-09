@@ -16,9 +16,8 @@ public partial class ResidenteFormPage : ContentPage
     private async void OnCancelarClicked(object sender, EventArgs e)
     {
         // Navega explícitamente a la página de listado de residentes
-        await Shell.Current.GoToAsync("//residente");
-        //await Shell.Current.GoToAsync("..");
-       
+        //await Shell.Current.GoToAsync("//residente");
+        await Shell.Current.GoToAsync("..");
     }
 }
 

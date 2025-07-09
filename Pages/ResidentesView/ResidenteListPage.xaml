@@ -5,7 +5,6 @@
              x:Name="ResidenteListRoot"
              xmlns:viewmodels="clr-namespace:MauiFirebase.PageModels.Residentes"
              xmlns:models="clr-namespace:MauiFirebase.Models"
-             xmlns:converters="clr-namespace:MauiFirebase.Helpers"
              Title="Lista de Ciudadanos">
 
 
@@ -78,7 +77,7 @@
                                     </StackLayout>
 
 
-                                    <!-- Botón Editar -->
+                                    <!-- Botón Editar 
                                     <Button ImageSource="editicon.png"
                                             BackgroundColor="Transparent"
                                             Padding="0"
@@ -89,7 +88,7 @@
                                             Command="{Binding Source={x:Reference ResidentePage}, Path=BindingContext.IrAEditarResidenteCommand}"
                                             CommandParameter="{Binding .}"
                                             HorizontalOptions="End"
-                                            VerticalOptions="Start" />
+                                            VerticalOptions="Start" />-->
 
                                     <!-- Separador -->
                                     <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
@@ -154,7 +153,6 @@
         <!-- Botón flotante de agregar -->
         <Button Text="+"
                 Clicked="OnAgregarResidenteClicked"
-                Command="{Binding IrACrearResidenteCommand}"
                 BackgroundColor="{DynamicResource Primary}"
                 TextColor="White"
                 FontSize="28"

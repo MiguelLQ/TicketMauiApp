@@ -74,10 +74,9 @@ public partial class ResidenteFormPageModel : ObservableValidator
         
         await _residenteRepository.CreateResidenteAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Ciudadano Registrado Correctamente.");
-        LimpiarFormulario();
-        // Navega explícitamente a la lista de residentes
+        
         await Shell.Current.GoToAsync("..");
-        //await Shell.Current.GoToAsync("//residente");
+        
     }
     public void LimpiarFormulario()
     {

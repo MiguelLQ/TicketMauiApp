@@ -158,7 +158,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
         builder.Services.AddSingleton<ResidenteFormPage, ResidenteFormPageModel>();
         builder.Services.AddSingleton<ResidenteListPage, ResidenteListPageModel>();
-        
+       
+
         // login
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();

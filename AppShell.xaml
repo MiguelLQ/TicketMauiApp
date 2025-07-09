@@ -6,7 +6,6 @@
     xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
     xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Toolkit;assembly=Syncfusion.Maui.Toolkit"
     xmlns:toolkit="clr-namespace:Syncfusion.Maui.Toolkit;assembly=Syncfusion.Maui.Toolkit"
-    xmlns:pages="clr-namespace:MauiFirebase.Pages"
     xmlns:premio="clr-namespace:MauiFirebase.Pages.Premio"
     xmlns:registro="clr-namespace:MauiFirebase.Pages.RegistroDeReciclaje"
     xmlns:ticket="clr-namespace:MauiFirebase.Pages.Ticket"

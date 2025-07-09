@@ -25,7 +25,6 @@ namespace MauiFirebase.Models
                     ? ImageSource.FromUri(new Uri(Foto))
                     : ImageSource.FromFile(Foto));
 
-
         [NotNull]
         public string? Telefono { get; set; }
         [NotNull]

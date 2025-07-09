@@ -49,7 +49,6 @@ public partial class ResidenteFormPageModel : ObservableValidator
 
     // ====================== COMANDOS ======================
 
-
     [RelayCommand]
     public async Task CrearResidenteAsync()
     {
@@ -73,11 +72,12 @@ public partial class ResidenteFormPageModel : ObservableValidator
             FechaRegistroResidente = DateTime.Now
         };
 
+        
         await _residenteRepository.CreateResidenteAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Ciudadano Registrado Correctamente.");
-        LimpiarFormulario();
-        // Navega explícitamente a la lista de residentes
-        await Shell.Current.GoToAsync("//residente");
+        
+        await Shell.Current.GoToAsync("..");
+        
     }
     public void LimpiarFormulario()
     {
@@ -127,6 +127,7 @@ public partial class ResidenteFormPageModel : ObservableValidator
     {
         ValidateProperty(value, nameof(DireccionResidente));
         OnPropertyChanged(nameof(DireccionResidenteError));
+        OnPropertyChanged(nameof(HasDireccionResidenteError));
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
@@ -148,18 +149,16 @@ public partial class ResidenteFormPageModel : ObservableValidator
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
-    // ====================== ERRORES PARA XAML ======================
+    // =======================================================
+                    // ERRORES PARA XAML
+    // ========================================================
 
     public string? NombreResidenteError => GetErrors(nameof(NombreResidente)).FirstOrDefault()?.ErrorMessage;
     public string? ApellidoResidenteError => GetErrors(nameof(ApellidoResidente)).FirstOrDefault()?.ErrorMessage;
     public string? DniResidenteError => GetErrors(nameof(DniResidente)).FirstOrDefault()?.ErrorMessage;
     public string? CorreoResidenteError => GetErrors(nameof(CorreoResidente)).FirstOrDefault()?.ErrorMessage;
     public string? DireccionResidenteError => GetErrors(nameof(DireccionResidente)).FirstOrDefault()?.ErrorMessage;
+    public bool HasDireccionResidenteError => !string.IsNullOrWhiteSpace(DireccionResidenteError);
 
-    public bool PuedeGuardar =>
-        !HasErrors &&
-        !HasDniDuplicadoError &&
-        !string.IsNullOrWhiteSpace(NombreResidente) &&
-        !string.IsNullOrWhiteSpace(ApellidoResidente) &&
-        !string.IsNullOrWhiteSpace(DniResidente);
+    public bool PuedeGuardar => !HasErrors && !HasDniDuplicadoError && !string.IsNullOrWhiteSpace(NombreResidente) && !string.IsNullOrWhiteSpace(ApellidoResidente) && !string.IsNullOrWhiteSpace(DniResidente);
 }

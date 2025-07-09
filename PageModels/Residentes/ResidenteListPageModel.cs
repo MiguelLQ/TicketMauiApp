@@ -5,7 +5,6 @@ using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-
 namespace MauiFirebase.PageModels.Residentes;
 
 public partial class ResidenteListPageModel : ObservableValidator

@@ -79,6 +79,7 @@
                   Route="inicioCiudadano" />
         <ShellContent Title="Regístrate" Icon="regi.png" ContentTemplate="{DataTemplate registrociudadano:RegistroCiudadanoPage}" Route="registrociudadano" />
         <ShellContent Title="Monitorear" Icon="compactador.png" ContentTemplate="{DataTemplate vermapaciudadano:MonitorearCamionPage}" Route="monitorearcamion" />
+        <ShellContent Title="Premio" Icon="{StaticResource IconPremios}" ContentTemplate="{DataTemplate premio:ListarPremioPage}" Route="premios"></ShellContent>
     </FlyoutItem>
     <!-- FLYOUT Register -->
     <FlyoutItem Title="Panel Register"
@@ -91,6 +92,7 @@
         <!--<ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />-->
         <ShellContent Title="Registro" Icon="regi.png" ContentTemplate="{DataTemplate registro:ListarRegistrosPage}" Route="registro" />
         <ShellContent Title="Ciudadanos" Icon="veci.png" ContentTemplate="{DataTemplate residente:ResidenteListPage}" Route="residente" />
+        
     </FlyoutItem>
     <!-- FLYOUT Admin -->
     <FlyoutItem Title="Panel Admin"

@@ -99,7 +99,9 @@
                                         Margin="0"
                                         Padding="0"
                                         Command="{Binding Source={x:Reference PremioPage}, Path=BindingContext.IrAEditarPremioCommand}"
-                                        CommandParameter="{Binding .}" />
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding Source={x:Reference PremioPage}, Path=BindingContext.EsAdmin}"
+                                        />
 
                                     <!-- Línea divisoria: solo en columna de texto -->
                                     <BoxView Grid.Row="0" Grid.Column="1"
@@ -168,7 +170,10 @@
             CornerRadius="30"
             HorizontalOptions="End"
             VerticalOptions="Start"
-            Margin="0,20,20,0" />
+            Margin="0,20,20,0"
+            IsVisible="{Binding EsAdmin}"/>
+   
+
 
         <!--=============================================CARGA LOADING=====================================================-->
 

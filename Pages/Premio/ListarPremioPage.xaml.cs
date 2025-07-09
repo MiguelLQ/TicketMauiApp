@@ -15,7 +15,10 @@ public partial class ListarPremioPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.CargarPremiosAsync(); // ?? Esto actualiza la lista cada vez que entras
+
+        _viewModel.VerificarRol(); // Esto carga EsAdmin en base al rol guardado
+        await _viewModel.CargarPremiosAsync();
     }
+
 }
 

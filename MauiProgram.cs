@@ -185,6 +185,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<inicioCiudadanoPage>();
         builder.Services.AddSingleton<RegistroCiudadanoPage>();
         builder.Services.AddSingleton<MonitorearCamionPage>();
+        builder.Services.AddSingleton<RegistroCiudadanoPageModel>();
         // ==========================================================
         var app = builder.Build();
         Services = app.Services;

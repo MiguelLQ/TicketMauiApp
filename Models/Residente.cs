@@ -8,7 +8,7 @@ public class Residente
     [PrimaryKey, AutoIncrement]
     public int IdResidente { get; set; }
     [Indexed]
-    public int? IdUsuario { get; set; }
+    public string? Uid { get; set; }
     [NotNull]
     public string? NombreResidente { get; set; }
     [NotNull]

@@ -37,6 +37,7 @@ using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Home;
 using MauiFirebase.Pages.RegistroCiudadano;
 using MauiFirebase.Pages.Mapa;
+using MauiFirebase.PageModels.Mapas;
 
 namespace MauiFirebase;
 
@@ -50,6 +51,7 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .ConfigureSyncfusionToolkit()
+            .UseMauiMaps()
             .ConfigureMauiHandlers(handlers =>
             {
 #if IOS || MACCATALYST
@@ -184,7 +186,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<RegisterPage>();
         builder.Services.AddSingleton<inicioCiudadanoPage>();
         builder.Services.AddSingleton<RegistroCiudadanoPage>();
+        //camion
+        builder.Services.AddSingleton<IUbicacionVehiculo, UbicacionVehiculoRepository>();
         builder.Services.AddSingleton<MonitorearCamionPage>();
+        builder.Services.AddSingleton<UbicacionVehiculoPageModel>();
         // ==========================================================
         var app = builder.Build();
         Services = app.Services;

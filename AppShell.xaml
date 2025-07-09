@@ -12,6 +12,7 @@
     xmlns:residuo="clr-namespace:MauiFirebase.Pages.Residuo"
     xmlns:categoriaresiduo="clr-namespace:MauiFirebase.Pages.CategoriaResiduo"
     xmlns:canje="clr-namespace:MauiFirebase.Pages.Canje"
+    xmlns:ruta="clr-namespace:MauiFirebase.Pages.Ruta"
     xmlns:login="clr-namespace:MauiFirebase.Pages.Login"
     xmlns:register="clr-namespace:MauiFirebase.Pages.Register"
     xmlns:residente="clr-namespace:MauiFirebase.Pages.ResidentesView"
@@ -120,6 +121,11 @@
                   Icon="premio.png"
                   ContentTemplate="{DataTemplate canje:ListarCanjePage}"
                   Route="canje" />
+        <!--Ruta -->
+        <ShellContent Title="Rutas"
+                  Icon="premio.png"
+                  ContentTemplate="{DataTemplate ruta:ListarRutaPage}"
+                  Route="ruta" />       
         <!--Premios -->
         <ShellContent Title="Premios"
                   Icon="{StaticResource IconPremios}"

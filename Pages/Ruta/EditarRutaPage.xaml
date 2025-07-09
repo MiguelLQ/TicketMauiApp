@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Ruta.EditarRutaPage"
+             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Rutas"
+             x:DataType="viewModels:EditarRutaPageModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+            <Label Text="✏️ Editar Ruta"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"/>
+
+            <!-- ID Vehículo -->
+            <Frame CornerRadius="12"
+                   Padding="12"
+                   Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="ID del vehículo"
+                           FontSize="14" />
+                    <Entry Placeholder="ID del vehículo"
+                           Text="{Binding IdVehiculo, Mode=TwoWay}"
+                           FontSize="16"
+                           Keyboard="Numeric"
+                           BackgroundColor="Transparent" />
+                    <Label Text="{Binding IdVehiculoError}"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasIdVehiculoError}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Días de Recolección -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12" Padding="12" HasShadow="True">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Días de recolección"
+                           FontSize="14" />
+                    <Entry Placeholder="Días de recolección"
+                           Text="{Binding DiasDeRecoleccion, Mode=TwoWay}"
+                           FontSize="16"
+                           BackgroundColor="Transparent" />
+                    <Label Text="{Binding DiasDeRecoleccionError}"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="{Binding HasDiasDeRecoleccionError}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Puntos de Ruta -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
+                   CornerRadius="12" Padding="12" HasShadow="True">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Puntos de ruta (JSON)"
+                           FontSize="14" />
+                    <Editor Placeholder="Puntos de la ruta"
+                            Text="{Binding PuntosRutaJson, Mode=TwoWay}"
+                            FontSize="16"
+                            BackgroundColor="Transparent"
+                            HeightRequest="100" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Estado -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Estado de Ruta"
+                       FontSize="14" />
+                <Switch IsToggled="{Binding EstadoRuta}" />
+            </VerticalStackLayout>
+
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCambiosCommand}"
+                    IsEnabled="{Binding PuedeGuardar}"
+                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="25"
+                    HeightRequest="50" />
+
+            <!-- Botón Cancelar -->
+            <Button Text="Cancelar"
+                    Clicked="OnCancelarClicked"
+                    BackgroundColor="red"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="25"
+                    HeightRequest="50" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -40,6 +40,7 @@ namespace MauiFirebase.PageModels.Registers
         [ObservableProperty] private string? apellidoResidenteLocal;
         [ObservableProperty] private string? correoResidenteLocal;
         [ObservableProperty] private string? direccionResidenteLocal;
+        [ObservableProperty] private string? dniResidenteLocal;
 
         // 🔹 Se ejecuta al cargar la vista
         public async Task InicializarAsync()
@@ -59,6 +60,7 @@ namespace MauiFirebase.PageModels.Registers
                 ApellidoResidenteLocal = residente.ApellidoResidente;
                 CorreoResidenteLocal = residente.CorreoResidente;
                 DireccionResidenteLocal = residente.DireccionResidente;
+                DniResidenteLocal = residente.DniResidente;
                 MostrarFormulario = false;
 
                 // Opcional: cargar más datos desde Firestore si los necesitas

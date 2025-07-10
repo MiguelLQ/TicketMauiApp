@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 
 namespace MauiFirebase.PageModels.RegistroDeReciclajes;
 
+[QueryProperty(nameof(DniBuscado), "dni")]
+
 public partial class AgregarRegistroPageModel : ObservableObject
 {
     private readonly IRegistroDeReciclajeRepository _registroRepository;
@@ -230,4 +232,12 @@ public partial class AgregarRegistroPageModel : ObservableObject
             TicketsGanados = 0;
         }
     }
+    partial void OnDniBuscadoChanged(string? oldValue, string? newValue)
+    {
+        if (!string.IsNullOrWhiteSpace(newValue))
+        {
+            BuscarPorDniCommand.Execute(null);
+        }
+    }
+
 }

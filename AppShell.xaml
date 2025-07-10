@@ -93,16 +93,11 @@
             IsVisible="true">
 
         <ShellContent Title="Inicio" Icon="casa.png" ContentTemplate="{DataTemplate inicio:InicioPage}" Route="inicio" />
-        <!--<ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />-->
+        <ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />
         <ShellContent Title="Registro" Icon="regi.png" ContentTemplate="{DataTemplate registro:ListarRegistrosPage}" Route="registro" />
         <ShellContent Title="Ciudadanos" Icon="veci.png" ContentTemplate="{DataTemplate residente:ResidenteListPage}" Route="residente" />
-        <ShellContent Title="Scanear" Icon=" " ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}" Route="camscaner" />
-        <!--CamScaner -->
-        <ShellContent Title="Escanear QR"
-                  x:Name="ScanearShellContent"
-                  Icon="qr.png"
-                  ContentTemplate="{DataTemplate camscaner:CamScanerPage}"
-                  Route="scaner" />
+        <ShellContent Title="Scanear" Icon="codigoqr.png" ContentTemplate="{DataTemplate camscaner:CamScanerPage}" Route="camscaner" />
+        
     </FlyoutItem>
     
     <!-- FLYOUT Admin -->

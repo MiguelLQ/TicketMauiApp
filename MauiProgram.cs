@@ -38,22 +38,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
-
-using MauiFirebase.PageModels.Conversiones;
-using MauiFirebase.Pages.Convertidores;
-
-using MauiFirebase.PageModels.Logins;
-using MauiFirebase.Pages.usuario;
-using MauiFirebase.PageModels.Usuarios;
-using MauiFirebase.PageModels.Vehiculos;
-using MauiFirebase.Pages.Vehiculo;
-using MauiFirebase.PageModels.Trabajadores;
-using MauiFirebase.Pages.Trabajador;
-using MauiFirebase.PageModels.Registers;
-using MauiFirebase.Pages.Register;
-using MauiFirebase.Pages.Home;
-using MauiFirebase.Pages.RegistroCiudadano;
-using MauiFirebase.Pages.Mapa;
 using MauiFirebase.PageModels.Mapas;
 using ZXing.Net.Maui.Controls;
 using MauiFirebase.Pages.CamScaner;
@@ -120,6 +104,7 @@ public static class MauiProgram
         builder.Services.AddTransient<AgregarPremioPage>();
         builder.Services.AddTransient<CrearPremioPageModel>();
         builder.Services.AddSingleton<EditarPremioPage>();
+        builder.Services.AddSingleton<FirebasePremioService>();
 
         // convertidor
         builder.Services.AddSingleton<IConvertidorRepository, ConvertidorRepository>();

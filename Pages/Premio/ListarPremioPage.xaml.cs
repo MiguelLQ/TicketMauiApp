@@ -16,9 +16,19 @@ public partial class ListarPremioPage : ContentPage
     {
         base.OnAppearing();
 
-        _viewModel.VerificarRol(); // Esto carga EsAdmin en base al rol guardado
+        _viewModel.VerificarRol();
+
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            //Sincroniza Firestore -> SQLite
+            await _viewModel.SincronizarPremiosDesdeFirestoreAsync();
+        }
+
+        //Carga siempre desde SQLite
         await _viewModel.CargarPremiosAsync();
     }
+
+
 
 }
 

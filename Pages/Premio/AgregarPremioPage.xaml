@@ -180,6 +180,8 @@
                                HeightRequest="150"
                                Margin="0,10,0,0"
                                Aspect="AspectFit" />
+                        
+
                     </VerticalStackLayout>
 
                     <!-- Botones en una sola fila -->

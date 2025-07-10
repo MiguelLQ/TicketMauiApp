@@ -48,30 +48,32 @@ namespace MauiFirebase.PageModels.Registers
             var uid = Preferences.Get("FirebaseUserId", null);
             var idToken = Preferences.Get("FirebaseToken", null);
 
-            if (string.IsNullOrEmpty(uid) || string.IsNullOrEmpty(idToken))
+            if (string.IsNullOrEmpty(uid))
                 return;
 
-            var yaExiste = await _firebaseCiudadanoService.ResidenteExisteEnFirestoreAsync(uid, idToken);
+            // 🔹 Primero, obtener los datos locales
             var residente = await _residenteRepository.ObtenerPorUidAsync(uid);
 
-            if (yaExiste)
-            {
-                NombreResidenteLocal = residente.NombreResidente;
-                ApellidoResidenteLocal = residente.ApellidoResidente;
-                CorreoResidenteLocal = residente.CorreoResidente;
-                DireccionResidenteLocal = residente.DireccionResidente;
-                DniResidenteLocal = residente.DniResidente;
-                MostrarFormulario = false;
+            NombreResidenteLocal = residente?.NombreResidente;
+            ApellidoResidenteLocal = residente?.ApellidoResidente;
+            CorreoResidenteLocal = residente?.CorreoResidente;
+            DireccionResidenteLocal = residente?.DireccionResidente;
+            DniResidenteLocal = residente?.DniResidente;
+            QrBase64 = GenerarQrComoBase64($"UID:{uid}\nDNI:{residente?.DniResidente}");
 
-                // Opcional: cargar más datos desde Firestore si los necesitas
-                var dataQr = $"UID:{uid}\nDNI:{residente.DniResidente}";
-                QrBase64 = GenerarQrComoBase64(dataQr);
+            // 🔹 Solo consultar Firestore si hay Internet
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && !string.IsNullOrEmpty(idToken))
+            {
+                var yaExiste = await _firebaseCiudadanoService.ResidenteExisteEnFirestoreAsync(uid, idToken);
+                MostrarFormulario = !yaExiste;
             }
             else
             {
-                MostrarFormulario = true;
+                // Si no hay internet, asumimos que ya está registrado localmente
+                MostrarFormulario = residente == null;
             }
         }
+
 
         // 🔹 Comando para guardar los datos del ciudadano
         [RelayCommand]

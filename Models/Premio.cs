@@ -15,6 +15,8 @@ namespace MauiFirebase.Models
         public int PuntosRequeridos { get; set; }
 
         public bool EstadoPremio { get; set; }
+        // 📷 URL pública de Supabase
+        public string FotoPremioUrl{ get; set; } = string.Empty;
 
         public string FotoPremio { get; set; } = string.Empty;
 

@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Core;
 using MauiFirebase.Helpers.Interface;
 
 namespace MauiFirebase.Helpers;
+
 public class AlertaHelpers : IAlertaHelper
 {
     private readonly SnackbarOptions successOptions = new()
@@ -17,6 +18,15 @@ public class AlertaHelpers : IAlertaHelper
     private readonly SnackbarOptions errorOptions = new()
     {
         BackgroundColor = Colors.Red,
+        TextColor = Colors.White,
+        ActionButtonTextColor = Colors.White,
+        CornerRadius = 8,
+        Font = Microsoft.Maui.Font.Default
+    };
+
+    private readonly SnackbarOptions warningOptions = new()
+    {
+        BackgroundColor = Colors.Orange,
         TextColor = Colors.White,
         ActionButtonTextColor = Colors.White,
         CornerRadius = 8,
@@ -38,19 +48,26 @@ public class AlertaHelpers : IAlertaHelper
         await snackbar.Show();
     }
 
-    public async Task ShowErrorAsync(string message)
+    public async Task ShowWarningAsync(string mensaje)
     {
-        var snackbar = Snackbar.Make($"Error: {message}", null, "Cerrar", TimeSpan.FromSeconds(4), errorOptions);
+        var snackbar = Snackbar.Make($"⚠️ Advertencia: {mensaje}", null, "Cerrar", TimeSpan.FromSeconds(4), warningOptions);
         await snackbar.Show();
     }
+
+    public async Task ShowErrorAsync(string message)
+    {
+        var snackbar = Snackbar.Make($"❌ Error: {message}", null, "Cerrar", TimeSpan.FromSeconds(4), errorOptions);
+        await snackbar.Show();
+    }
+
     public Task ShowInfoAsync(string mensaje)
     {
-        return Shell.Current.DisplayAlert("Información", mensaje, "OK");
+        return Shell.Current.DisplayAlert("ℹ️ Información", mensaje, "OK");
     }
 
     public async Task ShowSuccessAsync(string message)
     {
-        var snackbar = Snackbar.Make($"Éxito: {message}", null, "OK", TimeSpan.FromSeconds(3), successOptions);
+        var snackbar = Snackbar.Make($"✅ Éxito: {message}", null, "OK", TimeSpan.FromSeconds(3), successOptions);
         await snackbar.Show();
     }
 }

@@ -29,12 +29,15 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
 
     [ObservableProperty]
     private bool estadoPremio = true;
+    [ObservableProperty]
+    private string? fotoPremioUrl;  // Imagen online
 
     [ObservableProperty]
-    private string? fotoPremio;
+    private string? fotoPremio;     // Imagen local (offline)
 
     private readonly IPremioRepository _premioRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SupabaseStorageService _storageService;
 
     public int IdPremio { get; private set; }
 
@@ -42,25 +45,50 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
     {
         _premioRepository = premioRepository;
         _alertaHelper = alertaHelper;
+        _storageService = new SupabaseStorageService();
     }
-
     [RelayCommand]
     public async Task SeleccionarImagenAsync()
     {
         var resultado = await FilePicker.PickAsync(new PickOptions
         {
-            FileTypes = FilePickerFileType.Images,
-            PickerTitle = "Selecciona una imagen"
+            PickerTitle = "Selecciona una imagen",
+            FileTypes = FilePickerFileType.Images
         });
 
         if (resultado != null)
         {
-            FotoPremio = resultado.FullPath;
+            FotoPremio = await GuardarImagenLocalAsync(resultado);
+
+            // ⚠️ Aquí ya no subas a Supabase
+
+            OnPropertyChanged(nameof(ImagenVista));
             OnPropertyChanged(nameof(HasFotoError));
             AddPremioCommand.NotifyCanExecuteChanged();
         }
     }
 
+
+    private async Task<string> GuardarImagenLocalAsync(FileResult file)
+    {
+        var nombre = Path.GetFileName(file.FullPath);
+        var carpeta = Path.Combine(FileSystem.AppDataDirectory, "imagenes");
+
+        if (!Directory.Exists(carpeta))
+            Directory.CreateDirectory(carpeta);
+
+        var rutaDestino = Path.Combine(carpeta, nombre);
+
+        using var origen = await file.OpenReadAsync();
+        using var destino = File.OpenWrite(rutaDestino);
+        await origen.CopyToAsync(destino);
+
+        return rutaDestino;
+    }
+    public string? ImagenVista =>
+    Connectivity.Current.NetworkAccess == NetworkAccess.Internet && !string.IsNullOrWhiteSpace(FotoPremioUrl)
+        ? FotoPremioUrl
+        : FotoPremio;
 
     [RelayCommand(CanExecute = nameof(PuedeGuardar))]
     public async Task AddPremioAsync()
@@ -77,20 +105,46 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
             return;
         }
 
+        // 🚨 Validar conexión a Internet
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await _alertaHelper.ShowWarningAsync("Necesitas conexión a Internet para agregar un nuevo premio.");
+            return;
+        }
+
+        // 🟢 Subir imagen a Supabase
+        using var stream = File.OpenRead(FotoPremio);
+        var nombreRemoto = $"premios/{Guid.NewGuid()}{Path.GetExtension(FotoPremio)}";
+        var urlRemota = await _storageService.SubirImagenAsync(stream, nombreRemoto);
+
+        if (urlRemota == null)
+        {
+            await _alertaHelper.ShowErrorAsync("No se pudo subir la imagen. Intenta nuevamente.");
+            return;
+        }
+
+        FotoPremioUrl = urlRemota;
+
+        // Crear objeto premio
         var nuevo = new Premio
         {
             NombrePremio = NombrePremio!,
             DescripcionPremio = DescripcionPremio!,
             PuntosRequeridos = PuntosRequeridos!.Value,
             EstadoPremio = EstadoPremio,
-            FotoPremio = FotoPremio
+            FotoPremioUrl = FotoPremioUrl!,
+            FotoPremio = FotoPremio!
         };
 
         await _premioRepository.CreatePremioAsync(nuevo);
+
         await _alertaHelper.ShowSuccessAsync("Premio creado correctamente.");
         LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
+
+
+
     [RelayCommand]
     private void LimpiarFormulario()
     {
@@ -100,7 +154,8 @@ public partial class CrearPremioPageModel : ObservableValidator,INotifyPropertyC
         PuntosRequeridos = 0;
         EstadoPremio = false;
         FotoPremio = string.Empty;
-       /* LimpiarErrores();*/
+        FotoPremioUrl = string.Empty;
+        /* LimpiarErrores();*/
     }
     /*private void LimpiarErrores()
     {

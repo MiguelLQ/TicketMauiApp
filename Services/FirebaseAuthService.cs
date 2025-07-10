@@ -160,6 +160,7 @@ namespace MauiFirebase.Services
             Preferences.Remove("FirebaseRefreshToken");
             Preferences.Remove("FirebaseUserRole");
             Preferences.Remove("FirebaseTokenExpiry");
+
         }
 
         public bool IsLoggedIn()

@@ -15,6 +15,5 @@ public class Vehiculo
     public bool EstadoVehiculo { get; set; }
     public DateTime FechaRegistroVehiculo { get; set; }
     [JsonIgnore]
-
     public string Nombre { get; set; } = string.Empty;
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.Maui.Controls"
+             x:Class="MauiFirebase.Pages.CamScaner.CamScanerPage"
+             Title="Escáner QR"
+             BackgroundColor="Black">
+
+    <VerticalStackLayout Padding="10" Spacing="20">
+
+        <!-- Vista de cámara para escanear QR -->
+        <zxing:CameraBarcodeReaderView
+            x:Name="barcodeReader"
+            BarcodesDetected="barcodeReader_BarcodesDetected"
+            IsDetecting="True"
+            HeightRequest="400"
+            HorizontalOptions="FillAndExpand" />
+        
+        <!-- Texto decorativo -->
+        <Label Text="🟢 Escanea tu código QR"
+               FontSize="18"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="White"
+               Margin="0,0,0,-10" />
+
+        <!-- Texto que muestra el código detectado -->
+       <!-- <Label
+            Text="{Binding CodigoDetectado}"
+            FontSize="16"
+            TextColor="Lime"
+            FontAttributes="Bold"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            LineBreakMode="CharacterWrap" />-->
+
+    </VerticalStackLayout>
+
+</ContentPage>

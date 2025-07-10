@@ -2,25 +2,46 @@
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Data.Sources;
-using MauiFirebase.PageModels.CategoriaResiduos;
-using MauiFirebase.PageModels.RegistroDeReciclajes;
-using MauiFirebase.PageModels.Residuos;
-using MauiFirebase.PageModels.Ticket;
-using MauiFirebase.PageModels.Canjes;
-using MauiFirebase.Pages.CategoriaResiduo;
-using MauiFirebase.Pages.RegistroDeReciclaje;
-using MauiFirebase.Pages.Premio;
-using MauiFirebase.Pages.Residuo;
-using MauiFirebase.Pages.Canje;
-using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Toolkit.Hosting;
-using MauiFirebase.PageModels.Premios;
-using MauiFirebase.Pages.Ticket;
-using MauiFirebase.PageModels.Residentes;
-using MauiFirebase.Pages.ResidentesView;
-using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Helpers;
+using MauiFirebase.Helpers.Interface;
+using MauiFirebase.PageModels.Canjes;
+using MauiFirebase.PageModels.CategoriaResiduos;
+using MauiFirebase.PageModels.Conversiones;
+using MauiFirebase.PageModels.Logins;
+using MauiFirebase.PageModels.Premios;
+using MauiFirebase.PageModels.Registers;
+using MauiFirebase.PageModels.RegistroDeReciclajes;
+using MauiFirebase.PageModels.Residentes;
+using MauiFirebase.PageModels.Residuos;
+using MauiFirebase.PageModels.Rutas;
+using MauiFirebase.PageModels.Ticket;
+using MauiFirebase.PageModels.Trabajadores;
+using MauiFirebase.PageModels.Usuarios;
+using MauiFirebase.PageModels.Vehiculos;
+using MauiFirebase.Pages.Canje;
+using MauiFirebase.Pages.CategoriaResiduo;
+using MauiFirebase.Pages.Convertidores;
+using MauiFirebase.Pages.Home;
+using MauiFirebase.Pages.Mapa;
+using MauiFirebase.Pages.Premio;
+using MauiFirebase.Pages.Register;
+using MauiFirebase.Pages.RegistroCiudadano;
+using MauiFirebase.Pages.RegistroDeReciclaje;
+using MauiFirebase.Pages.ResidentesView;
+using MauiFirebase.Pages.Residuo;
+using MauiFirebase.Pages.Ruta;
+using MauiFirebase.Pages.Ticket;
+using MauiFirebase.Pages.Trabajador;
+using MauiFirebase.Pages.usuario;
+using MauiFirebase.Pages.Vehiculo;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Hosting;
+using Syncfusion.Maui.Toolkit.Hosting;
 using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
+using MauiFirebase.PageModels.Mapas;
+using ZXing.Net.Maui.Controls;
+using MauiFirebase.Pages.CamScaner;
+using MauiFirebase.PageModels.CamScaners;
 
 using Microcharts.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -53,7 +74,9 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
+           // .UseMauiMaps()
             .UseMauiCommunityToolkit()
+            .UseBarcodeReader()
             .UseSkiaSharp() // ✅ Activa soporte para Microcharts
             .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
@@ -92,6 +115,7 @@ public static class MauiProgram
         builder.Services.AddTransient<AgregarPremioPage>();
         builder.Services.AddTransient<CrearPremioPageModel>();
         builder.Services.AddSingleton<EditarPremioPage>();
+        builder.Services.AddSingleton<FirebasePremioService>();
 
         builder.Services.AddSingleton<IConvertidorRepository, ConvertidorRepository>();
         builder.Services.AddSingleton<ConversionesPageModel>();
@@ -123,6 +147,15 @@ public static class MauiProgram
         builder.Services.AddTransient<AgregarCanjePage>();
         builder.Services.AddTransient<EditarCanjePageModel>();
         builder.Services.AddTransient<EditarCanjePage>();
+        //Rutas
+        builder.Services.AddSingleton<IRutaRepository, RutaRepository>();
+        builder.Services.AddSingleton<CrearRutaPageModel>();
+        builder.Services.AddSingleton<EditarRutaPageModel>();
+        builder.Services.AddSingleton<RutaPageModel>();
+        builder.Services.AddSingleton<AgregarRutaPage>();
+        builder.Services.AddSingleton<EditarRutaPage>();
+        builder.Services.AddSingleton<ListarRutaPage>();
+        // usuario
 
         builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
         builder.Services.AddSingleton<UsuarioPageModel>();
@@ -130,7 +163,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AgregarUsuarioPage>();
 
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
-        builder.Services.AddSingleton<ResidenteFormPage, ResidenteFormPageModel>();
+        builder.Services.AddTransient<ResidenteFormPage, ResidenteFormPageModel>();
         builder.Services.AddSingleton<ResidenteListPage, ResidenteListPageModel>();
 
         builder.Services.AddSingleton<LoginPageModel>();
@@ -156,7 +189,17 @@ public static class MauiProgram
         builder.Services.AddSingleton<RegisterPage>();
         builder.Services.AddSingleton<inicioCiudadanoPage>();
         builder.Services.AddSingleton<RegistroCiudadanoPage>();
+        //camion
+        builder.Services.AddSingleton<IUbicacionVehiculo, UbicacionVehiculoRepository>();
         builder.Services.AddSingleton<MonitorearCamionPage>();
+        builder.Services.AddSingleton<UbicacionVehiculoPageModel>();
+
+        //para scaner qr
+        builder.Services.AddTransient<CamScanerPage>();
+        builder.Services.AddTransient<CamScanerPageModel>();
+
+        builder.Services.AddSingleton<RegistroCiudadanoPageModel>();
+        // ==========================================================
 
         var app = builder.Build();
         Services = app.Services;

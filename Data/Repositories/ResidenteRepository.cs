@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
@@ -110,4 +112,12 @@ public class ResidenteRepository : IResidenteRepository
     {
         return await _database.Database!.Table<Residente>().CountAsync();
     }
+    public async Task<Residente?> ObtenerPorUidAsync(string uid)
+    {
+        return await _database.Database!.Table<Residente>()
+            .Where(r => r.Uid == uid)
+            .FirstOrDefaultAsync();
+    }
+
+
 }

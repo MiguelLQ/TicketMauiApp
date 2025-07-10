@@ -15,7 +15,20 @@ public partial class ListarPremioPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.CargarPremiosAsync(); // ?? Esto actualiza la lista cada vez que entras
+
+        _viewModel.VerificarRol();
+
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            //Sincroniza Firestore -> SQLite
+            await _viewModel.SincronizarPremiosDesdeFirestoreAsync();
+        }
+
+        //Carga siempre desde SQLite
+        await _viewModel.CargarPremiosAsync();
     }
+
+
+
 }
 

@@ -96,10 +96,7 @@
         <ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />
         <ShellContent Title="Registro" Icon="regi.png" ContentTemplate="{DataTemplate registro:ListarRegistrosPage}" Route="registro" />
         <ShellContent Title="Ciudadanos" Icon="veci.png" ContentTemplate="{DataTemplate residente:ResidenteListPage}" Route="residente" />
-        <ShellContent Title="Escanear QR"
-              Icon="qr.png"
-              ContentTemplate="{DataTemplate camscaner:CamScanerPage}"
-              Route="camscaner" />
+        <ShellContent Title="Scanear" Icon="codigoqr.png" ContentTemplate="{DataTemplate camscaner:CamScanerPage}" Route="camscaner" />
         
     </FlyoutItem>
     

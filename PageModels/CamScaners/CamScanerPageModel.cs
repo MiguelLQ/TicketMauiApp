@@ -1,20 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using MauiFirebase.Data.Interfaces;
 
-namespace MauiFirebase.PageModels.CamScaners
+namespace MauiFirebase.PageModels.CamScaners;
+
+public partial class CamScanerPageModel : ObservableObject
 {
-    public partial class CamScanerPageModel : ObservableObject
+    private readonly IResidenteRepository _residenteRepository;
+
+    public CamScanerPageModel(IResidenteRepository residenteRepository)
     {
-        [ObservableProperty]
-        private string ?codigoDetectado;
+        _residenteRepository = residenteRepository;
+    }
 
-        public async void ProcesarCodigo(string valor)
-        {
-            CodigoDetectado = valor;
+    [ObservableProperty]
+    private string? codigoDetectado;
 
-            // Mostrar una alerta con el valor del código
-            await Shell.Current.DisplayAlert("Código detectado", valor, "OK");
-
-            // Aquí puedes agregar lógica adicional (guardar en DB, navegar, etc.)
-        }
+    public async Task<bool> ValidarDniExistenteAsync(string dni)
+    {
+        var residente = await _residenteRepository.ObtenerPorDniAsync(dni);
+        return residente != null;
     }
 }

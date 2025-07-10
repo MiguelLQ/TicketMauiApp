@@ -25,6 +25,14 @@ public class RegistroDeReciclaje
     public string? DniResidente { get; set; }
     [Ignore]
     public string? NombreResiduo { get; set; }
+
 }
+
+public class ReciclajePorCategoria
+{
+    public required string Categoria { get; set; }
+    public decimal TotalKg { get; set; }
+}
+
 
 

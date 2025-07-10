@@ -58,4 +58,22 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
         var registros = await _database.Database!.Table<RegistroDeReciclaje>().ToListAsync();
         return registros.Sum(r => r.PesoKilogramo);
     }
+
+    // ✅ Método para gráfico de pastel (por categoría)
+    public async Task<List<ReciclajePorCategoria>> ObtenerTotalesPorCategoriaAsync()
+    {
+        var registros = await _database.Database!.Table<RegistroDeReciclaje>().ToListAsync();
+        var residuos = await _database.Database!.Table<Residuo>().ToListAsync();
+
+        var query = from r in registros
+                    join res in residuos on r.IdResiduo equals res.IdResiduo
+                    group r by res.NombreResiduo into g
+                    select new ReciclajePorCategoria
+                    {
+                        Categoria = g.Key!,
+                        TotalKg = g.Sum(x => x.PesoKilogramo)
+                    };
+
+        return query.ToList();
+    }
 }

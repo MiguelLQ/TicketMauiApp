@@ -86,6 +86,10 @@
                    FontSize="16"
                    TextColor="Black"
                    HorizontalOptions="Center" />
+                        <Label Text="{Binding DniResidenteLocal}" 
+                        FontSize="16"
+                        TextColor="Black"
+                        HorizontalOptions="Center" />
 
                         <Label Text="{Binding CorreoResidenteLocal}" 
                    FontSize="14"

@@ -32,7 +32,7 @@ public partial class PremioPageModel : ObservableObject
     public void VerificarRol()
     {
         var rol = Preferences.Get("FirebaseUserRole", string.Empty);
-        EsAdmin = rol == "admin";
+        EsAdmin = rol == "Administrador";
 
         System.Diagnostics.Debug.WriteLine($"👮 ROL detectado en ViewModel: {rol} - ¿EsAdmin?: {EsAdmin}");
     }

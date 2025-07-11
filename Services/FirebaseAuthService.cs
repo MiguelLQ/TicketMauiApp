@@ -9,7 +9,7 @@ namespace MauiFirebase.Services
 {
     public class FirebaseAuthService
     {
-        private const string ApiKey = "AIzaSyBLh0YLNn_t2Se1s4jPmZl7wpHjvZp7txQ";
+        private const string ApiKey = "AIzaSyD51sCvl0F9s3jJtWQKdkqa8AIbEWGGx9o";
         private const string SignInUrl = $"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={ApiKey}";
         private const string RefreshUrl = $"https://securetoken.googleapis.com/v1/token?key={ApiKey}";
 
@@ -59,7 +59,7 @@ namespace MauiFirebase.Services
 
         public async Task<string> GetUserRoleAsync(string uid, string idToken)
         {
-            var url = $"https://firestore.googleapis.com/v1/projects/ticketapp-c31cf/databases/(default)/documents/usuarios/{uid}";
+            var url = $"https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/usuarios/{uid}";
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization =

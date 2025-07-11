@@ -85,7 +85,7 @@
         <ShellContent Title="Premio" Icon="{StaticResource IconPremios}" ContentTemplate="{DataTemplate premio:ListarPremioPage}" Route="premios"></ShellContent>
     </FlyoutItem>
     
-    <!-- FLYOUT Register -->
+    <!-- FLYOUT Recolector-->
     <FlyoutItem Title="Panel Register"
             x:Name="RegisterFlyoutItem"
             Icon="{StaticResource IconDashboard}"

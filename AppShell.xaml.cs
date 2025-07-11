@@ -185,7 +185,7 @@ namespace MauiFirebase
             AdminFlyoutItem.IsVisible = false;
             CiudadanoFlyoutItem.IsVisible = false;
             // Mostrar solo lo correspondiente al rol
-            if (rol == "admin")
+            if (rol == "Administrador")
             {
                 AdminFlyoutItem.IsVisible = true;
                 UsuariosFlyoutItem.IsVisible = true;
@@ -195,7 +195,7 @@ namespace MauiFirebase
                 ConversionesShellContent.IsVisible = true;
                 CiudadanoFlyoutItem.IsVisible = false;
             }
-            else if (rol == "register")
+            else if (rol == "Recolector")
             {
                 RegisterFlyoutItem.IsVisible = true;
                 AdminFlyoutItem.IsVisible = false;

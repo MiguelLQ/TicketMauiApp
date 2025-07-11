@@ -71,9 +71,9 @@ namespace MauiFirebase.PageModels.Logins
 
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
                 {
-                    if (rol == "admin")
+                    if (rol == "Administrador")
                         await Shell.Current.GoToAsync("//adminHome/inicio");
-                    else if (rol == "register")
+                    else if (rol == "Recolector")
                         await Shell.Current.GoToAsync("//registerHome/inicio");
                     else
                         await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");

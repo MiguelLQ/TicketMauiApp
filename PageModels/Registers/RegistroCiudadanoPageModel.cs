@@ -61,17 +61,24 @@ namespace MauiFirebase.PageModels.Registers
             DniResidenteLocal = residente?.DniResidente;
             QrBase64 = GenerarQrComoBase64($"UID:{uid}\nDNI:{residente?.DniResidente}");
 
-            // 🔹 Solo consultar Firestore si hay Internet
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && !string.IsNullOrEmpty(idToken))
             {
-                var yaExiste = await _firebaseCiudadanoService.ResidenteExisteEnFirestoreAsync(uid, idToken);
-                MostrarFormulario = !yaExiste;
+                var residenteFirestore = await _firebaseCiudadanoService.ObtenerResidenteDesdeFirestoreAsync(uid, idToken);
+
+                if (residenteFirestore != null && residente == null)
+                {
+                    // Guardar en BD local si no existía
+                    await _residenteRepository.CreateResidenteAsync(residenteFirestore);
+                    residente = residenteFirestore;
+                }
+
+                MostrarFormulario = residente == null;
             }
             else
             {
-                // Si no hay internet, asumimos que ya está registrado localmente
                 MostrarFormulario = residente == null;
             }
+
         }
 
 

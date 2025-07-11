@@ -8,7 +8,7 @@ namespace MauiFirebase.Services
 {
     public class FirebasePremioService
     {
-        private const string FirestoreBaseUrl = "https://firestore.googleapis.com/v1/projects/ticketapp-c31cf/databases/(default)/documents/premios";
+        private const string FirestoreBaseUrl = "https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/premios";
 
         public async Task<bool> GuardarPremioFirestoreAsync(Premio premio, string id, string idToken)
         {
@@ -40,7 +40,7 @@ namespace MauiFirebase.Services
 
         public async Task<List<Premio>> ObtenerPremiosDesdeFirestoreAsync(string idToken)
         {
-            var url = "https://firestore.googleapis.com/v1/projects/ticketapp-c31cf/databases/(default)/documents/premios";
+            var url = "https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/premios";
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization =

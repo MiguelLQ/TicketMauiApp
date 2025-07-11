@@ -146,7 +146,7 @@
 
                                     <!-- Fecha -->
                                     <Label Grid.Row="3" Grid.Column="2"
-                                           Text="{Binding FechaRegistro, StringFormat='Fecha de Creación: {0:dd/MM/yyyy HH:mm}'}"
+                                           Text="{Binding FechaRegistro, StringFormat='Fecha de Registro: {0:dd/MM/yyyy HH:mm}'}"
                                            FontSize="12"
                                            TextColor="{DynamicResource Gray500}"
                                            HorizontalOptions="End"

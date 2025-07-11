@@ -59,7 +59,6 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
         return registros.Sum(r => r.PesoKilogramo);
     }
 
-    // ✅ Método para gráfico de pastel (por categoría)
     public async Task<List<ReciclajePorCategoria>> ObtenerTotalesPorCategoriaAsync()
     {
         var registros = await _database.Database!.Table<RegistroDeReciclaje>().ToListAsync();
@@ -75,5 +74,11 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
                     };
 
         return query.ToList();
+    }
+
+    public async Task<List<RegistroDeReciclaje>> UltimosTresRegistros()
+    {
+        return await _database.Database!.Table<RegistroDeReciclaje>()
+            .OrderByDescending(r => r.FechaRegistro).Take(3).ToListAsync();
     }
 }

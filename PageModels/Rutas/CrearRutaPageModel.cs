@@ -4,6 +4,7 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MauiFirebase.PageModels.Rutas;
 
@@ -15,11 +16,12 @@ public partial class CrearRutaPageModel : ObservableValidator
     private Vehiculo? _vehiculoSeleccionado;
 
     public ObservableCollection<string> DiasOpciones { get; } = new()
-{
-    "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"
-};
+    {
+        "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"
+    };
 
     [ObservableProperty]
+    [Required(ErrorMessage = "Debes seleccionar un día de recolección.")]
     private string? _diasDeRecoleccion;
 
     [ObservableProperty]
@@ -46,14 +48,16 @@ public partial class CrearRutaPageModel : ObservableValidator
 
         if (HasErrors || VehiculoSeleccionado == null)
         {
-            var errores = string.Join("\n", GetErrors().Select(e => e.ErrorMessage));
-            if (VehiculoSeleccionado == null)
-                errores += "\nDebes seleccionar un vehículo.";
-            await _alertaHelper.ShowErrorAsync($"Errores de validación:\n{errores}");
+            var errores = GetErrors()
+                .Select(e => e.ErrorMessage)
+                .Append(VehiculoSeleccionado == null ? "Debes seleccionar un vehículo." : null)
+                .Where(e => !string.IsNullOrWhiteSpace(e));
+
+            await _alertaHelper.ShowErrorAsync($"Errores de validación:\n{string.Join("\n", errores)}");
             return;
         }
 
-        var nueva = new Ruta
+        var nuevaRuta = new Ruta
         {
             IdVehiculo = VehiculoSeleccionado.IdVehiculo,
             DiasDeRecoleccion = DiasDeRecoleccion!,
@@ -62,7 +66,7 @@ public partial class CrearRutaPageModel : ObservableValidator
             FechaRegistroRuta = DateTime.Now
         };
 
-        await _rutaRepository.CreateRutaAsync(nueva);
+        await _rutaRepository.CreateRutaAsync(nuevaRuta);
         await _alertaHelper.ShowSuccessAsync("Ruta creada correctamente.");
         LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
@@ -74,9 +78,7 @@ public partial class CrearRutaPageModel : ObservableValidator
         ListaVehiculos.Clear();
         var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
         foreach (var v in vehiculos)
-        {
             ListaVehiculos.Add(v);
-        }
     }
 
     private void LimpiarFormulario()

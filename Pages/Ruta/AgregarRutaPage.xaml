@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.Ruta.AgregarRutaPage"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Rutas"
+             x:Class="MauiFirebase.Pages.Ruta.AgregarRutaPage"
              x:DataType="viewModels:CrearRutaPageModel"
              Title="Agregar Ruta">
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:BoolToColorConverter x:Key="BoolToColorConverter" />
@@ -14,57 +16,43 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="24" Spacing="20">
+
+            <!-- Título -->
             <Label Text="🚛 Nueva Ruta"
                    FontSize="28"
                    FontAttributes="Bold"
                    HorizontalOptions="Center" />
 
             <!-- Selector de Vehículo -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
+            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="16" CornerRadius="12">
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Vehículo"
-                           FontSize="14"
-                           TextColor="#6B7280" />
+                    <Label Text="Vehículo" FontSize="14" TextColor="#6B7280" />
                     <Picker ItemsSource="{Binding ListaVehiculos}"
                             ItemDisplayBinding="{Binding Nombre}"
                             SelectedItem="{Binding VehiculoSeleccionado, Mode=TwoWay}" />
                 </VerticalStackLayout>
             </Frame>
 
-
-            <!-- Campo: Días de Recolección -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
+            <!-- Días de Recolección -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="16" CornerRadius="12">
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Días de recolección"
-                           FontSize="14"
-                           TextColor="#6B7280" />
+                    <Label Text="Días de recolección" FontSize="14" TextColor="#6B7280" />
                     <Picker ItemsSource="{Binding DiasOpciones}"
                             SelectedItem="{Binding DiasDeRecoleccion, Mode=TwoWay}"
-                            FontSize="16"
                             Title="Selecciona días de recolección"
-                            TextColor="{DynamicResource Gray500}"
-                            BackgroundColor="Transparent" />
+                            FontSize="16"
+                            BackgroundColor="Transparent"
+                            TextColor="{DynamicResource Gray500}" />
                     <Label Text="{Binding DiasDeRecoleccionError}"
-                           TextColor="Red" FontSize="12"
+                           FontSize="12" TextColor="Red"
                            IsVisible="{Binding HasDiasDeRecoleccionError}" />
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Campo: Puntos de Ruta -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
+            <!-- Puntos de Ruta -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="16" CornerRadius="12">
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Puntos de ruta (JSON)"
-                           FontSize="14"
-                           TextColor="#6B7280" />
+                    <Label Text="Puntos de ruta (JSON)" FontSize="14" TextColor="#6B7280" />
                     <Editor Text="{Binding PuntosRutaJson, Mode=TwoWay}"
                             FontSize="16"
                             Placeholder="Puntos de la ruta en formato JSON"
@@ -74,18 +62,55 @@
                             HeightRequest="100" />
                 </VerticalStackLayout>
             </Frame>
-            <!-- Campo: Estado de la Ruta -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12"
-                   Padding="16">
+
+            <!-- Estado Ruta -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="16" CornerRadius="12">
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                    <Label Text="Ruta activa"
-                           FontSize="14"
-                           TextColor="#6B7280"
-                           VerticalOptions="Center" />
+                    <Label Text="Ruta activa" FontSize="14" TextColor="#6B7280" VerticalOptions="Center" />
                     <Switch IsToggled="{Binding EstadoRuta, Mode=TwoWay}" />
                 </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Mapa -->
+            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="2" CornerRadius="1"
+                   HeightRequest="500" WidthRequest="400">
+                <Grid>
+
+                    <!-- Mapa -->
+                    <maps:Map x:Name="MyMap"
+                              MapType="Satellite"
+                              IsZoomEnabled="True"
+                              IsScrollEnabled="True"
+                              VerticalOptions="Fill"
+                              HorizontalOptions="Fill" />
+
+                    <!-- Botones de acción -->
+                    <HorizontalStackLayout Spacing="10"
+                                            VerticalOptions="Start"
+                                            HorizontalOptions="Center"
+                                            Padding="5"
+                                            BackgroundColor="#AAFFFFFF"
+                                            Margin="10">
+                        <Button Text="Deshacer" Clicked="OnUndoClicked" />
+                        <Button Text="Limpiar" Clicked="OnClearClicked" />
+                        <Button Text="Exportar" Clicked="OnExportClicked" />
+                    </HorizontalStackLayout>
+
+                    <!-- Botones de movimiento -->
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,Auto,Auto"
+                          VerticalOptions="End"
+                          HorizontalOptions="Start"
+                          Margin="10"
+                          BackgroundColor="#AAFFFFFF"
+                          Padding="5">
+                        <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnMoveUpClicked" />
+                        <Button Text="←" Grid.Row="1" Grid.Column="0" Clicked="OnMoveLeftClicked" />
+                        <Button Text="→" Grid.Row="1" Grid.Column="2" Clicked="OnMoveRightClicked" />
+                        <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnMoveDownClicked" />
+                    </Grid>
+
+                </Grid>
             </Frame>
 
             <!-- Botón Guardar -->
@@ -108,6 +133,7 @@
                     TextColor="White"
                     HeightRequest="50"
                     CornerRadius="25" />
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

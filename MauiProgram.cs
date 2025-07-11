@@ -44,6 +44,7 @@ using MauiFirebase.Pages.CamScaner;
 using MauiFirebase.PageModels.CamScaners;
 
 using Microcharts.Maui;
+using Microsoft.Maui.Controls.Maps;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 
@@ -59,7 +60,7 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
-           // .UseMauiMaps()
+            .UseMauiMaps()
             .UseMauiCommunityToolkit()
             .UseBarcodeReader()
             .UseMauiMaps()

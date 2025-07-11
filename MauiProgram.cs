@@ -43,27 +43,42 @@ using ZXing.Net.Maui.Controls;
 using MauiFirebase.Pages.CamScaner;
 using MauiFirebase.PageModels.CamScaners;
 
+using Microcharts.Maui;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+
+using MauiFirebase.PageModels.Conversiones;
+using MauiFirebase.Pages.Convertidores;
+
+using MauiFirebase.PageModels.Logins;
+using MauiFirebase.Pages.usuario;
+using MauiFirebase.PageModels.Usuarios;
+using MauiFirebase.PageModels.Vehiculos;
+using MauiFirebase.Pages.Vehiculo;
+using MauiFirebase.PageModels.Trabajadores;
+using MauiFirebase.Pages.Trabajador;
+using MauiFirebase.PageModels.Registers;
+using MauiFirebase.Pages.Register;
+using MauiFirebase.Pages.Home;
+using MauiFirebase.Pages.RegistroCiudadano;
+using MauiFirebase.Pages.Mapa;
+
 namespace MauiFirebase;
 
 public static class MauiProgram
 {
-    public static IServiceProvider Services { get; private set; }///////////////////////////////
+    public static IServiceProvider Services { get; private set; }
+
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
+
         builder
             .UseMauiApp<App>()
            // .UseMauiMaps()
             .UseMauiCommunityToolkit()
             .UseBarcodeReader()
+            .UseSkiaSharp() // ✅ Activa soporte para Microcharts
             .ConfigureSyncfusionToolkit()
-            .UseMauiMaps()
-            .ConfigureMauiHandlers(handlers =>
-            {
-#if IOS || MACCATALYST
-				handlers.AddHandler<Microsoft.Maui.Controls.CollectionView, Microsoft.Maui.Controls.Handlers.Items2.CollectionViewHandler2>();
-#endif
-            })
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -78,17 +93,13 @@ public static class MauiProgram
 #endif
 
         builder.Services.AddSingleton<IAlertaHelper, AlertaHelpers>();
-        // servicios firebase
         builder.Services.AddSingleton<FirebaseAuthService>();
 
-        /*================================================================
-         * Conexion local sqlite
-         ================================================================*/
+        // Base de datos SQLite
         string dbPath = Path.Combine(FileSystem.AppDataDirectory, "appdb.db3");
         builder.Services.AddSingleton(new AppDatabase(dbPath));
-        /*================================================================
-        * servicios residuos
-        ================================================================*/
+
+        // Repositorios y PageModels
         builder.Services.AddSingleton<IResiduoRepository, ResiduoRepository>();
         builder.Services.AddSingleton<ResiduoPageModel>();
         builder.Services.AddSingleton<EditarResiduoPageModel>();
@@ -96,7 +107,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ListarResiduoPage>();
         builder.Services.AddSingleton<AgregarResiduoPage>();
         builder.Services.AddSingleton<EditarResiduoPage>();
-        // premio
+
         builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
         builder.Services.AddSingleton<PremioPageModel>();
         builder.Services.AddSingleton<EditarPremioPageModel>();
@@ -106,7 +117,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<EditarPremioPage>();
         builder.Services.AddSingleton<FirebasePremioService>();
 
-        // convertidor
         builder.Services.AddSingleton<IConvertidorRepository, ConvertidorRepository>();
         builder.Services.AddSingleton<ConversionesPageModel>();
         builder.Services.AddSingleton<EditarConvertidorPageModel>();
@@ -114,41 +124,27 @@ public static class MauiProgram
         builder.Services.AddSingleton<ListarConvertidorPage>();
         builder.Services.AddSingleton<AgregarConvertidorPage>();
         builder.Services.AddSingleton<EditarConvertidorPage>();
-        // Ticket
+
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
         builder.Services.AddTransient<ListarTicketPage>();
-        // Categoria Residuo
+
         builder.Services.AddSingleton<ICategoriaResiduoRepository, CategoriaResiduoRepository>();
         builder.Services.AddSingleton<CategoriaResiduoPageModel>();
         builder.Services.AddSingleton<CategoriaResiduoPage>();
 
-        builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
-        builder.Services.AddSingleton<TicketPageModel>();
-
-        // registro reciclae
-
         builder.Services.AddSingleton<IRegistroDeReciclajeRepository, RegistroDeReciclajeRepository>();
-        builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
         builder.Services.AddSingleton<AgregarRegistroPageModel>();
         builder.Services.AddSingleton<ListarRegistrosPageModel>();
         builder.Services.AddSingleton<AgregarRegistroPage>();
         builder.Services.AddSingleton<ListarRegistrosPage>();
 
-        ////canje
-        builder.Services.AddSingleton<IPremioRepository, PremioRepository>();
-     
-        // Canje
         builder.Services.AddSingleton<ICanjeRepository, CanjeRepository>();
         builder.Services.AddSingleton<CanjePageModel>();
-
         builder.Services.AddSingleton<AgregarCanjePage>();
-
         builder.Services.AddSingleton<ListarCanjePage>();
-
         builder.Services.AddTransient<CrearCanjePageModel>();
         builder.Services.AddTransient<AgregarCanjePage>();
-
         builder.Services.AddTransient<EditarCanjePageModel>();
         builder.Services.AddTransient<EditarCanjePage>();
         //Rutas
@@ -160,25 +156,19 @@ public static class MauiProgram
         builder.Services.AddSingleton<EditarRutaPage>();
         builder.Services.AddSingleton<ListarRutaPage>();
         // usuario
+
         builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
         builder.Services.AddSingleton<UsuarioPageModel>();
         builder.Services.AddSingleton<ListarUsuarioPage>();
         builder.Services.AddSingleton<AgregarUsuarioPage>();
 
-
-        builder.UseMauiCommunityToolkit(); //  Esto es obligatorio
-
-
-        // Residente
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
         builder.Services.AddTransient<ResidenteFormPage, ResidenteFormPageModel>();
         builder.Services.AddSingleton<ResidenteListPage, ResidenteListPageModel>();
-       
 
-        // login
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();
-        //Vehiculo
+
         builder.Services.AddSingleton<IVehiculoRepository, VehiculoRepository>();
         builder.Services.AddSingleton<VehiculoPageModel>();
         builder.Services.AddSingleton<EditarVehiculoPageModel>();
@@ -187,7 +177,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<AgregarVehiculoPage>();
         builder.Services.AddSingleton<EditarVehiculoPageModel>();
 
-        //Trabajador
         builder.Services.AddSingleton<ITrabajadorRepository, TrabajadorRepository>();
         builder.Services.AddSingleton<TrabajadorPageModel>();
         builder.Services.AddSingleton<EditarTrabajadorPageModel>();
@@ -196,8 +185,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<AgregarTrabajadorPage>();
         builder.Services.AddSingleton<EditarTrabajadorPage>();
 
-
-        //Registro ciudadano
         builder.Services.AddSingleton<RegisterPageModel>();
         builder.Services.AddSingleton<RegisterPage>();
         builder.Services.AddSingleton<inicioCiudadanoPage>();
@@ -213,9 +200,9 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<RegistroCiudadanoPageModel>();
         // ==========================================================
+
         var app = builder.Build();
         Services = app.Services;
-        // ==========================================================
         return app;
     }
 }

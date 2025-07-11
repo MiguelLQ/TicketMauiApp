@@ -1,15 +1,22 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
 using Timer = System.Timers.Timer;
+
 namespace MauiFirebase.PageModels.Mapas;
+
 public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposable
 {
     private readonly IUbicacionVehiculo _ubicacionVehiculo;
+    private readonly IVehiculoRepository _vehiculoRepository;
+
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
+    public ObservableCollection<Vehiculo> ListaVehiculos { get; } = new();
     public ObservableCollection<Pin> MapaPins { get; } = new();
     private readonly Dictionary<int, Pin> _pinPorVehiculo = new();
 
@@ -17,9 +24,6 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private Timer? _timer;
     private bool _isUpdating = false;
     private CancellationTokenSource _cts = new();
-
-    [ObservableProperty]
-    private bool isRefreshing;
 
     [ObservableProperty]
     private bool isPolling;
@@ -30,24 +34,85 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     [ObservableProperty]
     private int pollingInterval = 5000;
 
-    private readonly Location destino = new Location(-12.0453, -77.0311);
 
-    private bool yaNotificado = false;
-
-    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo)
+    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, IVehiculoRepository vehiculoRepository )
     {
         _ubicacionVehiculo = ubicacionVehiculo;
+        _vehiculoRepository = vehiculoRepository;
         StartPolling();
     }
 
-    private void InitializeTimer()
+    [RelayCommand]
+    public async Task CargarVehiculoAsync()
+    {
+        ListaVehiculos.Clear();
+        var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
+        foreach(var item in vehiculos)
+        {
+            ListaVehiculos.Add(item);
+        }
+
+    }
+
+    [RelayCommand]
+    public async Task CargarUbicacionAsync()
+    {
+        Ubicaciones.Clear();
+
+        var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
+        var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
+
+        var vehiculosDict = vehiculos.ToDictionary(v => v.IdVehiculo);
+
+        foreach (var ubicacion in ubicaciones)
+        {
+            if (vehiculosDict.TryGetValue(ubicacion.IdVehiculo, out var vehiculo))
+            {
+                ubicacion.Placa = vehiculo.PlacaVehiculo;
+                ubicacion.NombreConductor = vehiculo.Nombre;
+            }
+            Ubicaciones.Add(ubicacion);
+        }
+        AgregarPinSimuladoAndahuaylas();
+    }
+
+
+
+    public void AgregarPinSimuladoAndahuaylas()
+    {
+        double lat = -13.653820;
+        double lng = -73.360519;
+
+        var pin = new Pin
+        {
+            Label = "Placa: ABC-123",
+            Address = "Marca: Volvo\nModelo: FH16\nConductor: Juan Pérez",
+            Location = new Location(lat, lng),
+            Type = PinType.Place
+        };
+        MapaPins.Add(pin);
+        //foreach (var ubicacion in Ubicaciones)
+        //{
+        //    var pin = new Pin
+        //    {
+        //        Label = $"Placa: {}",
+        //        Address = $"Conductor: {ubicacion.NombreConductor}",
+        //        Location = new Location(lat,lng),
+        //        Type = PinType.Place
+        //    };
+
+        //    MapaPins.Add(pin);
+        //}
+    }
+
+    public void InitializeTimer()
     {
         _timer = new Timer(PollingInterval);
         _timer.AutoReset = true;
         _timer.Elapsed += async (_, _) => await TimerElapsedAsync();
     }
 
-    private async Task TimerElapsedAsync()
+    public async Task TimerElapsedAsync()
     {
         if (_isUpdating) return;
 
@@ -62,11 +127,33 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         }
     }
 
+
+    public async Task<Location?> ObtenerUbicacionUsuarioAsync()
+    {
+        try
+        {
+            var request = new GeolocationRequest(GeolocationAccuracy.High);
+            var location = await Geolocation.GetLocationAsync(request);
+
+            if (location != null)
+            {
+                Console.WriteLine($"Usuario: {location.Latitude}, {location.Longitude}");
+                return location;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error obteniendo ubicación del usuario: {ex.Message}");
+        }
+
+        return null;
+    }
+
     public async Task ActualizarUbicacionesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            IsRefreshing = true;
+
             ErrorMessage = null;
 
             var lista = await _ubicacionVehiculo.ObtenerTodasAsync();
@@ -119,45 +206,53 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         {
             ErrorMessage = $"Error al cargar ubicaciones: {ex.Message}";
         }
-        finally
-        {
-            IsRefreshing = false;
-        }
     }
 
+    private DateTime ultimaNotificacion = DateTime.MinValue;
+    private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
 
-    private void VerificarProximidad()
+    public async void VerificarProximidad()
     {
-        foreach (var ubicacion in Ubicaciones)
+        var ubicacionUsuario = await ObtenerUbicacionUsuarioAsync();
+        if (ubicacionUsuario == null)
         {
-            var distancia = Location.CalculateDistance(
-                destino,
-                new Location(ubicacion.Latitud, ubicacion.Longitud),
-                DistanceUnits.Kilometers);
+            return;
+        }
 
-            if (distancia <= 0.5) 
+        var ubicacionCamion = new Location(-13.653820, -73.360519);
+
+        var distancia = Location.CalculateDistance(ubicacionUsuario, ubicacionCamion, DistanceUnits.Kilometers);
+
+        if (distancia <= 5)
+        {
+            if ((DateTime.Now - ultimaNotificacion) > intervaloNotificacion)
             {
-                if (!yaNotificado)
+                ultimaNotificacion = DateTime.Now;
+
+                Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(20000));
+
+                await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
-                    yaNotificado = true;
-                    MainThread.BeginInvokeOnMainThread(async () =>
-                    {
-                        await Shell.Current.DisplayAlert("Aviso", "El camión está a menos de 500 metros del destino", "OK");
-                    });
-                }
+                    await Shell.Current.DisplaySnackbar(
+                        message: "🚛 El camión está cerca!",
+                        duration: TimeSpan.FromSeconds(15),
+                        visualOptions: new SnackbarOptions
+                        {
+                            BackgroundColor = Colors.Gold,
+                            TextColor = Colors.Black,
+                            CornerRadius = 8,
+                            Font = Microsoft.Maui.Font.SystemFontOfSize(17)
+                        }
+                    );
+                });
             }
-            else
-            {
-                yaNotificado = false;
-            }
+        }
+        else
+        {
+            ultimaNotificacion = DateTime.MinValue;
         }
     }
 
-    [RelayCommand]
-    public async Task RefrescarCommand()
-    {
-        await ActualizarUbicacionesAsync();
-    }
 
     [RelayCommand]
     public void StartPolling()

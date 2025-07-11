@@ -20,18 +20,6 @@
                   IsScrollEnabled="True"
                   IsTrafficEnabled="True"
                   MapType="Hybrid"
-                  VerticalOptions="Fill" />
-
-        <CollectionView Grid.Row="2" ItemsSource="{Binding Ubicaciones}" HeightRequest="150">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding Nombre}" FontAttributes="Bold" />
-                        <Label Text="Lat: {Binding Latitud}, Lng: {Binding Longitud}" FontSize="Small" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
+                  VerticalOptions="Fill"/>
     </Grid>
 </ContentPage>

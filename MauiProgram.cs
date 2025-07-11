@@ -46,21 +46,6 @@ using MauiFirebase.PageModels.CamScaners;
 using Microcharts.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
-using MauiFirebase.PageModels.Conversiones;
-using MauiFirebase.Pages.Convertidores;
-
-using MauiFirebase.PageModels.Logins;
-using MauiFirebase.Pages.usuario;
-using MauiFirebase.PageModels.Usuarios;
-using MauiFirebase.PageModels.Vehiculos;
-using MauiFirebase.Pages.Vehiculo;
-using MauiFirebase.PageModels.Trabajadores;
-using MauiFirebase.Pages.Trabajador;
-using MauiFirebase.PageModels.Registers;
-using MauiFirebase.Pages.Register;
-using MauiFirebase.Pages.Home;
-using MauiFirebase.Pages.RegistroCiudadano;
-using MauiFirebase.Pages.Mapa;
 
 namespace MauiFirebase;
 
@@ -77,6 +62,7 @@ public static class MauiProgram
            // .UseMauiMaps()
             .UseMauiCommunityToolkit()
             .UseBarcodeReader()
+            .UseMauiMaps()
             .UseSkiaSharp() // ✅ Activa soporte para Microcharts
             .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>

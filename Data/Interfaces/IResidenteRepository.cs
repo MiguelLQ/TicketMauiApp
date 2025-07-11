@@ -37,4 +37,7 @@ public interface IResidenteRepository
     Task GuardarAsync(Residente residenteEncontrado);
 
     Task<int> TotalResidentes();
+    //  para trear datos locales segun su uid
+    Task<Residente?> ObtenerPorUidAsync(string uid);
+
 }

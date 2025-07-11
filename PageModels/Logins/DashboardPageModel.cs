@@ -1,14 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
-using System;
-using System.Collections.Generic;
+using Microcharts;
+using SkiaSharp;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.Logins
 {
@@ -16,8 +11,8 @@ namespace MauiFirebase.PageModels.Logins
     {
         public string? Titulo { get; set; }
         public string? Valor { get; set; }
-        public string? Icono { get; set; } // Usa imágenes o emojis
-        public string? Emoji { get; set; } // nuevo campo
+        public string? Icono { get; set; }
+        public string? Emoji { get; set; }
     }
 
     public class DashboardPageModel : ObservableObject
@@ -28,8 +23,20 @@ namespace MauiFirebase.PageModels.Logins
         private readonly ITicketRepository _ticketRepository;
 
         public ObservableCollection<TarjetaResumen> TarjetasResumen { get; set; } = new();
+        public ObservableCollection<ReciclajePorCategoria> DatosGrafico { get; set; } = new();
 
-        public DashboardPageModel(IResidenteRepository residenteRepository, IRegistroDeReciclajeRepository registroDeReciclajeRepository, IPremioRepository premioRepository, ITicketRepository ticketRepository)
+        private Chart _graficoPastel;
+        public Chart GraficoPastel
+        {
+            get => _graficoPastel;
+            set => SetProperty(ref _graficoPastel, value);
+        }
+
+        public DashboardPageModel(
+            IResidenteRepository residenteRepository,
+            IRegistroDeReciclajeRepository registroDeReciclajeRepository,
+            IPremioRepository premioRepository,
+            ITicketRepository ticketRepository)
         {
             _residenteRepository = residenteRepository;
             _registroDeReciclajeRepository = registroDeReciclajeRepository;
@@ -43,24 +50,69 @@ namespace MauiFirebase.PageModels.Logins
             TarjetasResumen.Clear();
 
             foreach (var tarjeta in tarjetas)
-            {
                 TarjetasResumen.Add(tarjeta);
-            }
+
+            await CargarReciclajePorCategoriaAsync();
+            await CargarGraficoPastelAsync();
         }
 
         private async Task<List<TarjetaResumen>> ObtenerTarjetasAsync()
         {
             int totalResidentes = await _residenteRepository.TotalResidentes();
             decimal totalReciclado = await _registroDeReciclajeRepository.ObtenerTotalRecicladoKg();
-            //int totalTickets = await _ticketRepository.ObtenerCantidadTickets();
             int totalPremios = await _premioRepository.ObtenerCantidadPremios();
+
             return new List<TarjetaResumen>
             {
                 new() { Titulo = "Ciudadanos", Valor = totalResidentes.ToString(), Emoji = "👥" },
                 new() { Titulo = "Reciclaje", Valor = $"{totalReciclado} kg", Emoji = "♻️" },
-                //new() { Titulo = "Tickets", Valor = totalTickets.ToString(), Emoji = "🎟️" },
                 new() { Titulo = "Premios", Valor = totalPremios.ToString(), Emoji = "🏆" }
             };
+        }
+
+        private async Task CargarReciclajePorCategoriaAsync()
+        {
+            var categorias = await _registroDeReciclajeRepository.ObtenerTotalesPorCategoriaAsync();
+            DatosGrafico.Clear();
+
+            foreach (var item in categorias)
+                DatosGrafico.Add(item);
+        }
+
+        private async Task CargarGraficoPastelAsync()
+        {
+            // 1. Obtén los datos agrupados por categoría
+            var categorias = await _registroDeReciclajeRepository.ObtenerTotalesPorCategoriaAsync();
+
+            // 2. Construye las entradas del gráfico, coloreando texto y segmento igual
+            var entries = categorias.Select(c =>
+            {
+                var color = SKColor.Parse(GenerarColorAleatorioHex());
+
+                return new ChartEntry((float)c.TotalKg)
+                {
+                    Label = c.Categoria,
+                    ValueLabel = $"{c.TotalKg} kg",
+                    Color = color,            // color del segmento
+                    ValueLabelColor = color             // mismo color para el texto “kg”
+                                                        // si quieres que el texto sea invisible, usa:  ValueLabelColor = SKColors.Transparent
+                };
+            }).ToList();
+
+            // 3. Crea el gráfico y asígnalo al binding
+            GraficoPastel = new PieChart
+            {
+                Entries = entries,
+                LabelTextSize = 40,
+                BackgroundColor = SKColors.Transparent
+            };
+        }
+
+
+        private string GenerarColorAleatorioHex()
+        {
+            Random random = new();
+            return $"#{random.Next(0x1000000):X6}";
         }
     }
 }

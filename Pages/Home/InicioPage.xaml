@@ -2,6 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Home.InicioPage"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             
+
              >
 
     <ContentPage.Resources>
@@ -95,31 +98,28 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 <Label Text="Gráfico" FontSize="19" FontAttributes="Bold" />
-                <!-- Gráfico de residuos reciclados -->
-                <Frame HeightRequest="200" 
-                       Background="{DynamicResource CardBackgroundBrush}"
-                       BorderColor="Transparent"
-                       CornerRadius="10"
-                       HasShadow="True"
-                       Padding="15">
-                    <Grid ColumnDefinitions="*, Auto">
-                        <!-- Columna izquierda: Datos -->
-                        <VerticalStackLayout VerticalOptions="Center" Spacing="5">
-                            <Label Text="Total reciclado por categoría" FontSize="18" TextColor="{DynamicResource Gray500}" />
-                            <Label Text="Plástico: 32 kg" FontSize="16" />
-                            <Label Text="Orgánico: 25 kg" FontSize="16" />
-                            <Label Text="Papel: 18 kg" FontSize="16" />
-                        </VerticalStackLayout>
+      
 
-                        <!-- Columna derecha: Ícono -->
-                        <Image Grid.Column="1"
-                           Source="grafico.png"  
-                           WidthRequest="120"
-                           HeightRequest="120"
-                           HorizontalOptions="End"
-                           VerticalOptions="Center" />
-                    </Grid>
+                <!-- Gráfico y lista de reciclaje por categoría en una sola tarjeta -->
+                  <Frame HeightRequest="250"
+                           Padding="10"
+                           HasShadow="True"
+                           Background="{DynamicResource CardBackgroundBrush}"
+                           CornerRadius="15"
+                           BorderColor="Transparent">
+                      
+                    <microcharts:ChartView 
+                        Chart="{Binding GraficoPastel}" 
+                        HeightRequest="220" 
+                        WidthRequest="340"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center" />
                 </Frame>
+
+
+
+
+
                 <!-- Registros recientes -->
                 <Grid HeightRequest="44">
                     <Label Text="♻️ Actividad reciente de reciclaje" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>

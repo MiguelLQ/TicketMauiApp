@@ -9,13 +9,13 @@ namespace MauiFirebase.Services
     public class FirebaseUsuarioService
     {
         private readonly HttpClient _httpClient = new();
-        private const string ApiKey = "AIzaSyBLh0YLNn_t2Se1s4jPmZl7wpHjvZp7txQ";
-        private const string projectId = "ticketapp-c31cf";
+        private const string ApiKey = "AIzaSyD51sCvl0F9s3jJtWQKdkqa8AIbEWGGx9o";
+        private const string projectId = "sangeronimomuniapp";
 
 
         public async Task<List<Usuario>> ObtenerUsuariosDesdeFirestoreAsync(string idToken)
         {
-            var url = "https://firestore.googleapis.com/v1/projects/ticketapp-c31cf/databases/(default)/documents/usuarios";
+            var url = "https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/usuarios";
             _httpClient.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", idToken);
 

@@ -61,15 +61,19 @@ namespace MauiFirebase.PageModels.Logins
 
                 // AppShell
                 Application.Current.MainPage = new AppShell();
+                // Espera a que AppShell se termine de cargar
+                await Task.Delay(200);
                 ((AppShell)Application.Current.MainPage).MostrarOpcionesSegunRol(); // Asegúrate de mostrar menú según rol
 
                 var rol = Preferences.Get("FirebaseUserRole", string.Empty);
+                System.Diagnostics.Debug.WriteLine($"🟡 ROL desde LoginPageModel: {rol}");
+
 
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
                 {
-                    if (rol == "admin")
+                    if (rol == "Administrador")
                         await Shell.Current.GoToAsync("//adminHome/inicio");
-                    else if (rol == "register")
+                    else if (rol == "Recolector")
                         await Shell.Current.GoToAsync("//registerHome/inicio");
                     else
                         await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");

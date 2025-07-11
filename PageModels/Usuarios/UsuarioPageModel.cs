@@ -35,9 +35,9 @@ namespace MauiFirebase.PageModels.Usuarios
         }
         public List<string> RolesDisponibles { get; } = new()
         {
-            "admin",
-            "register",
-            "conductor",
+            "Administrador",
+            "Recolector",
+            "Conductor",
         };
 
         public Command GuardarUsuarioCommand { get; }

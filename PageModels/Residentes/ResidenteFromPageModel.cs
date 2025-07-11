@@ -71,6 +71,7 @@ public partial class ResidenteFormPageModel : ObservableValidator
             EstadoResidente = EstadoResidente,
             FechaRegistroResidente = DateTime.Now
         };
+
         
         await _residenteRepository.CreateResidenteAsync(nuevo);
         await _alertaHelper.ShowSuccessAsync("Ciudadano Registrado Correctamente.");

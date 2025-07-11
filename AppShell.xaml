@@ -12,6 +12,7 @@
     xmlns:residuo="clr-namespace:MauiFirebase.Pages.Residuo"
     xmlns:categoriaresiduo="clr-namespace:MauiFirebase.Pages.CategoriaResiduo"
     xmlns:canje="clr-namespace:MauiFirebase.Pages.Canje"
+    xmlns:ruta="clr-namespace:MauiFirebase.Pages.Ruta"
     xmlns:login="clr-namespace:MauiFirebase.Pages.Login"
     xmlns:register="clr-namespace:MauiFirebase.Pages.Register"
     xmlns:residente="clr-namespace:MauiFirebase.Pages.ResidentesView"
@@ -23,6 +24,7 @@
     xmlns:iciciociudadano="clr-namespace:MauiFirebase.Pages.Home"
     xmlns:registrociudadano="clr-namespace:MauiFirebase.Pages.RegistroCiudadano"
     xmlns:vermapaciudadano="clr-namespace:MauiFirebase.Pages.Mapa"
+    xmlns:camscaner="clr-namespace:MauiFirebase.Pages.CamScaner"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}">
@@ -66,6 +68,7 @@
             </VerticalStackLayout>
         </Border>
     </Shell.FlyoutHeader>
+    
     <!-- FLYOUT Ciudadano -->
     <FlyoutItem Title="Panel Ciudadano"
             x:Name="CiudadanoFlyoutItem"
@@ -77,10 +80,12 @@
                   Icon="casa.png"
                   ContentTemplate="{DataTemplate iciciociudadano:inicioCiudadanoPage}"
                   Route="inicioCiudadano" />
-        <!--<ShellContent Title="Regístrate" Icon="regi.png" ContentTemplate="{DataTemplate registrociudadano:RegistroCiudadanoPage}" Route="registrociudadano" /> -->
+        <ShellContent Title="Regístrate" Icon="regi.png" ContentTemplate="{DataTemplate registrociudadano:RegistroCiudadanoPage}" Route="registrociudadano" /> 
         <ShellContent Title="Monitorear" Icon="compactador.png" ContentTemplate="{DataTemplate vermapaciudadano:MonitorearCamionPage}" Route="monitorearcamion" />
+        <ShellContent Title="Premio" Icon="{StaticResource IconPremios}" ContentTemplate="{DataTemplate premio:ListarPremioPage}" Route="premios"></ShellContent>
     </FlyoutItem>
-    <!-- FLYOUT Register -->
+    
+    <!-- FLYOUT Recolector-->
     <FlyoutItem Title="Panel Register"
             x:Name="RegisterFlyoutItem"
             Icon="{StaticResource IconDashboard}"
@@ -88,10 +93,13 @@
             IsVisible="true">
 
         <ShellContent Title="Inicio" Icon="casa.png" ContentTemplate="{DataTemplate inicio:InicioPage}" Route="inicio" />
-        <!--<ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />-->
+        <ShellContent Title="Canje" Icon="premio.png" ContentTemplate="{DataTemplate canje:ListarCanjePage}" Route="canje" />
         <ShellContent Title="Registro" Icon="regi.png" ContentTemplate="{DataTemplate registro:ListarRegistrosPage}" Route="registro" />
         <ShellContent Title="Ciudadanos" Icon="veci.png" ContentTemplate="{DataTemplate residente:ResidenteListPage}" Route="residente" />
+        <ShellContent Title="Scanear" Icon="codigoqr.png" ContentTemplate="{DataTemplate camscaner:CamScanerPage}" Route="camscaner" />
+        
     </FlyoutItem>
+    
     <!-- FLYOUT Admin -->
     <FlyoutItem Title="Panel Admin"
             x:Name="AdminFlyoutItem"
@@ -108,6 +116,11 @@
                   Icon="premio.png"
                   ContentTemplate="{DataTemplate canje:ListarCanjePage}"
                   Route="canje" />
+        <!--Ruta -->
+        <ShellContent Title="Rutas"
+                  Icon="premio.png"
+                  ContentTemplate="{DataTemplate ruta:ListarRutaPage}"
+                  Route="ruta" />       
         <!--Premios -->
         <ShellContent Title="Premios"
                   Icon="{StaticResource IconPremios}"
@@ -124,12 +137,8 @@
             Icon="veci.png"
             ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}"
             Route="vehiculo" />
-
-        <!--Vehiculos -->
-        <ShellContent Title="Trabajadores"
-             Icon="veci.png"
-             ContentTemplate="{DataTemplate trabajador:ListarTrabajadorPage}"
-             Route="trabajador" />
+        
+        
     </FlyoutItem>
 
 
@@ -190,6 +199,10 @@
         Icon="{StaticResource IconResiduo}"
         ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
         Route="residuo" />
+    
+   
+
+
 
     <!--<ShellContent
         Title="Canje"

@@ -103,7 +103,7 @@ namespace MauiFirebase.PageModels.Logins
             GraficoPastel = new PieChart
             {
                 Entries = entries,
-                LabelTextSize = 40,
+                LabelTextSize = 30,
                 BackgroundColor = SKColors.Transparent
             };
         }

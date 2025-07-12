@@ -28,7 +28,7 @@
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Vehículo" FontSize="14" TextColor="#6B7280" />
                     <Picker ItemsSource="{Binding ListaVehiculos}"
-                            ItemDisplayBinding="{Binding Nombre}"
+                            ItemDisplayBinding="{Binding  PlacaVehiculo}"
                             SelectedItem="{Binding VehiculoSeleccionado, Mode=TwoWay}" />
                 </VerticalStackLayout>
             </Frame>
@@ -47,28 +47,6 @@
                            FontSize="12" TextColor="Red"
                            IsVisible="{Binding HasDiasDeRecoleccionError}" />
                 </VerticalStackLayout>
-            </Frame>
-
-            <!-- Puntos de Ruta -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="16" CornerRadius="12">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Puntos de ruta (JSON)" FontSize="14" TextColor="#6B7280" />
-                    <Editor Text="{Binding PuntosRutaJson, Mode=TwoWay}"
-                            FontSize="16"
-                            Placeholder="Puntos de la ruta en formato JSON"
-                            PlaceholderColor="#9CA3AF"
-                            TextColor="{DynamicResource Gray500}"
-                            BackgroundColor="Transparent"
-                            HeightRequest="100" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Estado Ruta -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="16" CornerRadius="12">
-                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                    <Label Text="Ruta activa" FontSize="14" TextColor="#6B7280" VerticalOptions="Center" />
-                    <Switch IsToggled="{Binding EstadoRuta, Mode=TwoWay}" />
-                </HorizontalStackLayout>
             </Frame>
 
             <!-- Mapa -->

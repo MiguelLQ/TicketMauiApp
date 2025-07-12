@@ -29,7 +29,7 @@
                     <Label Text="Vehículo (Nombre)"
                FontSize="14" />
                     <Picker ItemsSource="{Binding ListaVehiculos}"
-                ItemDisplayBinding="{Binding Nombre}"
+                ItemDisplayBinding="{Binding  PlacaVehiculo }"
                 SelectedItem="{Binding VehiculoSeleccionado, Mode=TwoWay}" />
                     <Label Text="Debes seleccionar un vehículo."
                TextColor="Red"
@@ -56,22 +56,6 @@
                            IsVisible="{Binding HasDiasDeRecoleccionError}" />
                 </VerticalStackLayout>
             </Frame>
-
-            <!-- Puntos de Ruta -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12" Padding="12" HasShadow="True">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Puntos de ruta (JSON)"
-                           FontSize="14" />
-                    <Editor Placeholder="Puntos de la ruta"
-                            Text="{Binding PuntosRutaJson, Mode=TwoWay}"
-                            FontSize="16"
-                            BackgroundColor="Transparent"
-                            HeightRequest="100" />
-                </VerticalStackLayout>
-            </Frame>
-
             <!-- Estado -->
             <VerticalStackLayout Spacing="4">
                 <Label Text="Estado de Ruta"

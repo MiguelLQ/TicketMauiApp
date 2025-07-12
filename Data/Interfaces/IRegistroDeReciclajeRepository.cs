@@ -11,9 +11,6 @@ namespace MauiFirebase.Data.Interfaces
         Task<decimal> ObtenerTotalRecicladoKg();
         //para torta 
         Task<List<ReciclajePorCategoria>> ObtenerTotalesPorCategoriaAsync();
-
-
-
-
+        Task<List<RegistroDeReciclaje>> UltimosTresRegistros();
     }
 }

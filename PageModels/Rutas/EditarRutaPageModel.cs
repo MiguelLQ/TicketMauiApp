@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MauiFirebase.PageModels.Rutas;
 
@@ -11,18 +13,26 @@ public partial class EditarRutaPageModel : ObservableValidator
 {
     private readonly IRutaRepository _rutaRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly IVehiculoRepository _vehiculoRepository;
 
     [ObservableProperty]
     private int idRuta;
 
     [ObservableProperty]
-    
     private Ruta? _rutaSeleccionada;
 
-    [ObservableProperty]
-    private int _idVehiculo;
+    public ObservableCollection<Vehiculo> ListaVehiculos { get; } = new();
 
     [ObservableProperty]
+    private Vehiculo? _vehiculoSeleccionado;
+
+    public ObservableCollection<string> DiasOpciones { get; } = new()
+    {
+        "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"
+    };
+
+    [ObservableProperty]
+    [Required(ErrorMessage = "Debes ingresar el día de recolección.")]
     private string? _diasDeRecoleccion;
 
     [ObservableProperty]
@@ -31,18 +41,24 @@ public partial class EditarRutaPageModel : ObservableValidator
     [ObservableProperty]
     private string? _puntosRutaJson;
 
-    public EditarRutaPageModel(IRutaRepository rutaRepository, IAlertaHelper alertaHelper)
+    public EditarRutaPageModel(IRutaRepository rutaRepository, IAlertaHelper alertaHelper, IVehiculoRepository vehiculoRepository)
     {
         _rutaRepository = rutaRepository;
         _alertaHelper = alertaHelper;
+        _vehiculoRepository = vehiculoRepository;
     }
 
     public async Task InicializarAsync()
     {
+        var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
+        ListaVehiculos.Clear();
+        foreach (var v in vehiculos)
+            ListaVehiculos.Add(v);
+
         RutaSeleccionada = await _rutaRepository.GetRutaIdAsync(IdRuta);
         if (RutaSeleccionada != null)
         {
-            IdVehiculo = RutaSeleccionada.IdVehiculo;
+            VehiculoSeleccionado = ListaVehiculos.FirstOrDefault(v => v.IdVehiculo == RutaSeleccionada.IdVehiculo);
             DiasDeRecoleccion = RutaSeleccionada.DiasDeRecoleccion;
             EstadoRuta = RutaSeleccionada.EstadoRuta;
             PuntosRutaJson = RutaSeleccionada.PuntosRutaJson;
@@ -53,19 +69,19 @@ public partial class EditarRutaPageModel : ObservableValidator
     public async Task GuardarCambiosAsync()
     {
         ValidateAllProperties();
-        if (HasErrors)
+        if (HasErrors || VehiculoSeleccionado == null)
         {
-            var errores = string.Join("\n", GetErrors().Select(e => e.ErrorMessage));
-            await _alertaHelper.ShowErrorAsync($"Errores de validación:\n{errores}");
+            var errores = GetErrors().Select(e => e.ErrorMessage).ToList();
+            if (VehiculoSeleccionado == null)
+                errores.Add("Debes seleccionar un vehículo.");
+
+            await _alertaHelper.ShowErrorAsync($"Errores de validación:\n{string.Join("\n", errores)}");
             return;
         }
 
-        if (RutaSeleccionada == null)
-        {
-            return;
-        }
+        if (RutaSeleccionada == null) return;
 
-        RutaSeleccionada.IdVehiculo = IdVehiculo;
+        RutaSeleccionada.IdVehiculo = VehiculoSeleccionado.IdVehiculo;
         RutaSeleccionada.DiasDeRecoleccion = DiasDeRecoleccion!;
         RutaSeleccionada.EstadoRuta = EstadoRuta;
         RutaSeleccionada.PuntosRutaJson = PuntosRutaJson;
@@ -75,11 +91,9 @@ public partial class EditarRutaPageModel : ObservableValidator
         await Shell.Current.GoToAsync("..");
     }
 
-    partial void OnIdVehiculoChanged(int value)
+    partial void OnVehiculoSeleccionadoChanged(Vehiculo? value)
     {
-        ValidateProperty(value, nameof(IdVehiculo));
-        OnPropertyChanged(nameof(IdVehiculoError));
-        OnPropertyChanged(nameof(HasIdVehiculoError));
+        OnPropertyChanged(nameof(HasVehiculoError));
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
@@ -91,10 +105,12 @@ public partial class EditarRutaPageModel : ObservableValidator
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
-    public string? IdVehiculoError => GetErrors(nameof(IdVehiculo)).FirstOrDefault()?.ErrorMessage;
+    public bool HasVehiculoError => VehiculoSeleccionado == null;
     public string? DiasDeRecoleccionError => GetErrors(nameof(DiasDeRecoleccion)).FirstOrDefault()?.ErrorMessage;
-
-    public bool HasIdVehiculoError => GetErrors(nameof(IdVehiculo)).Any();
     public bool HasDiasDeRecoleccionError => GetErrors(nameof(DiasDeRecoleccion)).Any();
-    public bool PuedeGuardar => !HasErrors && IdVehiculo > 0 && !string.IsNullOrWhiteSpace(DiasDeRecoleccion);
+
+    public bool PuedeGuardar =>
+        !HasErrors &&
+        VehiculoSeleccionado != null &&
+        !string.IsNullOrWhiteSpace(DiasDeRecoleccion);
 }

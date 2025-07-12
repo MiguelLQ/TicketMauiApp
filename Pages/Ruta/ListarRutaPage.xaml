@@ -49,6 +49,7 @@
                                                FontAttributes="Bold"
                                                FontSize="16"
                                                TextColor="{DynamicResource Gray500}" />
+
                                         <Frame Padding="6,2"
                                                CornerRadius="12"
                                                HasShadow="False"

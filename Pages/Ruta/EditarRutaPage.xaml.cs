@@ -94,7 +94,7 @@ public partial class EditarRutaPage : ContentPage
     private MapSpan CalcularBounds(List<Location> puntos)
     {
         if (puntos.Count == 0)
-            return MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(5));
+            return MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(2));
 
         var latMin = puntos.Min(p => p.Latitude);
         var latMax = puntos.Max(p => p.Latitude);
@@ -264,15 +264,15 @@ public partial class EditarRutaPage : ContentPage
         MoverMapa(-desplazamiento, 0);
     }
 
-    private void OnMoveLeftClicked(object sender, EventArgs e)
-    {
-        MoverMapa(0, -desplazamiento);
-    }
+    //private void OnMoveLeftClicked(object sender, EventArgs e)
+    //{
+    //    MoverMapa(0, -desplazamiento);
+    //}
 
-    private void OnMoveRightClicked(object sender, EventArgs e)
-    {
-        MoverMapa(0, desplazamiento);
-    }
+    //private void OnMoveRightClicked(object sender, EventArgs e)
+    //{
+    //    MoverMapa(0, desplazamiento);
+    //}
 
     private async void OnCancelarClicked(object sender, EventArgs e)
     {

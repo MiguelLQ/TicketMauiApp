@@ -97,8 +97,8 @@
                           BackgroundColor="#AAFFFFFF"
                           Padding="5">
                         <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnMoveUpClicked" />
-                        <Button Text="←" Grid.Row="1" Grid.Column="0" Clicked="OnMoveLeftClicked" />
-                        <Button Text="→" Grid.Row="1" Grid.Column="2" Clicked="OnMoveRightClicked" />
+                        <!--<Button Text="←" Grid.Row="1" Grid.Column="0" Clicked="OnMoveLeftClicked" />
+                        <Button Text="→" Grid.Row="1" Grid.Column="2" Clicked="OnMoveRightClicked" />-->
                         <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnMoveDownClicked" />
                     </Grid>
 

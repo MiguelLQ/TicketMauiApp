@@ -21,7 +21,7 @@ public partial class AgregarRutaPage : ContentPage
 
         MyMap.MapElements.Add(_polyline);
         MyMap.MapClicked += OnMapClicked;
-        MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(5)));
+        MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(2)));
     }
 
     private async void OnMapClicked(object sender, MapClickedEventArgs e)
@@ -104,8 +104,8 @@ public partial class AgregarRutaPage : ContentPage
 
     private void OnMoveUpClicked(object sender, EventArgs e) => MoverMapa(_desplazamiento, 0);
     private void OnMoveDownClicked(object sender, EventArgs e) => MoverMapa(-_desplazamiento, 0);
-    private void OnMoveLeftClicked(object sender, EventArgs e) => MoverMapa(0, -_desplazamiento);
-    private void OnMoveRightClicked(object sender, EventArgs e) => MoverMapa(0, _desplazamiento);
+    //private void OnMoveLeftClicked(object sender, EventArgs e) => MoverMapa(0, -_desplazamiento);
+    //private void OnMoveRightClicked(object sender, EventArgs e) => MoverMapa(0, _desplazamiento);
 
     protected override async void OnAppearing()
     {

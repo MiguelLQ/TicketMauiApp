@@ -107,10 +107,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<IConvertidorRepository, ConvertidorRepository>();
         builder.Services.AddSingleton<ConversionesPageModel>();
         builder.Services.AddSingleton<EditarConvertidorPageModel>();
-        builder.Services.AddSingleton<CrearConvertidorPageModel>();
+        builder.Services.AddTransient<CrearConvertidorPageModel>();
         builder.Services.AddSingleton<ListarConvertidorPage>();
         builder.Services.AddSingleton<AgregarConvertidorPage>();
-        builder.Services.AddSingleton<EditarConvertidorPage>();
+        builder.Services.AddTransient<EditarConvertidorPage>();
 
         builder.Services.AddSingleton<ITicketRepository, TicketRepository>();
         builder.Services.AddSingleton<TicketPageModel>();
@@ -188,7 +188,14 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<RegistroCiudadanoPageModel>();
         // ==========================================================
-
+        builder.Services.AddSingleton<RutaService>();
+        builder.Services.AddSingleton<SincronizacionFirebaseService>();
+        builder.Services.AddSingleton<FirebaseConvertidorService>();
+        builder.Services.AddSingleton<FirebaseResidenteService>();
+        builder.Services.AddSingleton<FirebaseRegistroReciclajeService>();
+        builder.Services.AddSingleton<FirebasePremioService>();
+        builder.Services.AddSingleton<FirebaseCanjeService>();
+        builder.Services.AddSingleton<FirebaseVehiculoService>();
         var app = builder.Build();
         Services = app.Services;
         return app;

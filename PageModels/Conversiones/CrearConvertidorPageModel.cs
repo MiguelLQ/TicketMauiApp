@@ -29,10 +29,14 @@ public partial class CrearConvertidorPageModel : ObservableValidator
     public ObservableCollection<Convertidor> ListaConversiones { get; } = new();
     private readonly IConvertidorRepository _convertidorRepository;
     private readonly IAlertaHelper _alertaHelper;
-    public CrearConvertidorPageModel(IConvertidorRepository convertidorRepository, IAlertaHelper alertaHelper)
+    private readonly SincronizacionFirebaseService _sincronizador;
+
+
+    public CrearConvertidorPageModel(IConvertidorRepository convertidorRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService sincronizador)
     {
         _convertidorRepository = convertidorRepository;
         _alertaHelper = alertaHelper;
+        _sincronizador = sincronizador;
     }
     [RelayCommand]
 
@@ -69,14 +73,31 @@ public partial class CrearConvertidorPageModel : ObservableValidator
             ValorMin = ValorMin!.Value,
             ValorMax = ValorMax!.Value,
             NumeroTicket = NumeroTicket!.Value,
-            EstadoConvertidor = EstadoConvertidor
+            EstadoConvertidor = EstadoConvertidor,
+            Sincronizado = false
         };
 
         await _convertidorRepository.CreateConvertidorAsync(nuevo);
-        await _alertaHelper.ShowSuccessAsync("Convertidor creado correctamente.");
+
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            try
+            {
+                await _sincronizador.SincronizarConvertidoresAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Guardado localmente. Se sincronizará cuando haya internet.");
+            }
+        }
+
+
+        await _alertaHelper.ShowSuccessAsync("Convertidor guardado correctamente.");
         LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
+
+
     private void LimpiarFormulario()
     {
         ValorMin = null;

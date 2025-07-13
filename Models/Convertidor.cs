@@ -11,4 +11,5 @@ public class Convertidor
     [NotNull]
     public int NumeroTicket { get; set; }
     public bool EstadoConvertidor { get; set; }
+    public bool Sincronizado { get; set; } = false;//para offline
 }

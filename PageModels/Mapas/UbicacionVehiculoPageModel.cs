@@ -7,6 +7,7 @@ using MauiFirebase.Models;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
 using Timer = System.Timers.Timer;
+using Microsoft.Maui.Devices.Sensors;
 
 namespace MauiFirebase.PageModels.Mapas;
 
@@ -14,12 +15,11 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 {
     private readonly IUbicacionVehiculo _ubicacionVehiculo;
     private readonly IVehiculoRepository _vehiculoRepository;
-
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
     public ObservableCollection<Vehiculo> ListaVehiculos { get; } = new();
     public ObservableCollection<Pin> MapaPins { get; } = new();
     private readonly Dictionary<int, Pin> _pinPorVehiculo = new();
-
+    public ObservableCollection<Polyline> Rutas { get; } = new();
 
     private Timer? _timer;
     private bool _isUpdating = false;
@@ -35,7 +35,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private int pollingInterval = 5000;
 
 
-    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, IVehiculoRepository vehiculoRepository )
+    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, IVehiculoRepository vehiculoRepository, RutaService rutaService)
     {
         _ubicacionVehiculo = ubicacionVehiculo;
         _vehiculoRepository = vehiculoRepository;
@@ -47,7 +47,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     {
         ListaVehiculos.Clear();
         var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
-        foreach(var item in vehiculos)
+        foreach (var item in vehiculos)
         {
             ListaVehiculos.Add(item);
         }
@@ -75,7 +75,6 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         }
         AgregarPinSimuladoAndahuaylas();
     }
-
 
 
     public void AgregarPinSimuladoAndahuaylas()
@@ -210,7 +209,6 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
     private DateTime ultimaNotificacion = DateTime.MinValue;
     private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
-
     public async void VerificarProximidad()
     {
         var ubicacionUsuario = await ObtenerUbicacionUsuarioAsync();
@@ -252,7 +250,6 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ultimaNotificacion = DateTime.MinValue;
         }
     }
-
 
     [RelayCommand]
     public void StartPolling()

@@ -11,7 +11,7 @@ namespace MauiFirebase.Pages.Login
         public LoadingPage()
         {
             // Fondo azul oscuro
-            BackgroundColor = Color.FromArgb("#2B0B98");
+            BackgroundColor = Color.FromArgb("#cdd8e8");
 
             Content = new Grid
             {
@@ -30,7 +30,7 @@ namespace MauiFirebase.Pages.Login
                             // 🖼 Imagen superior (logo o icono)
                             new Image
                             {
-                                Source = "dotnet_bot.png", // ⚠️ Asegúrate de que esté en Resources/Images/
+                                Source = "logosanji.png", // ⚠️ Asegúrate de que esté en Resources/Images/
                                 WidthRequest = 200,
                                 HeightRequest = 200,
                                 HorizontalOptions = LayoutOptions.Center

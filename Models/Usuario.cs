@@ -16,14 +16,16 @@ namespace MauiFirebase.Models
         [NotNull]
         public string? Rol { get; set; }
         public string? Contraseña { get; set; }
-        public string? Foto { get; set; }
+        public string? FotoUrl { get; set; } // URL pública de Supabase
+        public string? FotoLocal { get; set; }
         // 👇 Esta propiedad se usará en la UI
         public ImageSource FotoSource =>
-            string.IsNullOrWhiteSpace(Foto)
-                ? ImageSource.FromFile("userlogo.png") // Imagen por defecto
-                : (Foto.StartsWith("http")
-                    ? ImageSource.FromUri(new Uri(Foto))
-                    : ImageSource.FromFile(Foto));
+            !string.IsNullOrWhiteSpace(FotoLocal) && File.Exists(FotoLocal)
+        ? ImageSource.FromFile(FotoLocal)
+        : (!string.IsNullOrWhiteSpace(FotoUrl)
+            ? ImageSource.FromUri(new Uri(FotoUrl))
+            : ImageSource.FromFile("userlogo.png")); // Imagen por defecto
+
 
         [NotNull]
         public string? Telefono { get; set; }

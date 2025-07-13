@@ -151,6 +151,30 @@ namespace MauiFirebase.Services
 
             return doc.RootElement.GetProperty("localId").GetString(); // el UID del usuario
         }
+        // FirebaseAuthService.cs
+
+        public async Task<bool> UsuarioEstaActivoAsync(string uid, string idToken)
+        {
+            var url = $"https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/usuarios/{uid}";
+
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", idToken);
+
+            var response = await client.GetAsync(url);
+            if (!response.IsSuccessStatusCode) return false;
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            if (!doc.RootElement.TryGetProperty("fields", out var fields)) return false;
+            if (!fields.TryGetProperty("estado", out var estadoField)) return false;
+
+            if (estadoField.TryGetProperty("booleanValue", out var estadoVal))
+                return estadoVal.GetBoolean(); // true o false
+
+            return false;
+        }
 
         public void Logout()
         {

@@ -70,5 +70,17 @@ namespace MauiFirebase.Data.Repositories
 
             return false;
         }
+        public async Task<Usuario?> ObtenerUsuarioPorUidAsync(string uid)
+        {
+            return await _db.Table<Usuario>().FirstOrDefaultAsync(u => u.Uid == uid);
+        }
+
+
+        public async Task<bool> EditarUsuarioLocalAsync(Usuario usuario)
+        {
+            var resultado = await _db.UpdateAsync(usuario);
+            return resultado > 0;
+        }
+
     }
 }

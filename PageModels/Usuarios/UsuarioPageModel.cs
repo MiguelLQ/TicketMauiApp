@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using MauiFirebase.Data.Repositories;
 using MauiFirebase.Helpers.Interface;
+using MauiFirebase.Pages.usuario;
 
 namespace MauiFirebase.PageModels.Usuarios
 {
@@ -42,6 +43,8 @@ namespace MauiFirebase.PageModels.Usuarios
 
         public Command GuardarUsuarioCommand { get; }
         public Command IrAgregarUsuarioCommand { get; }
+        public Command EditarUsuarioCommand { get; }
+        public Command<Models.Usuario> IrEditarUsuarioCommand { get; }
 
 
         public UsuarioPageModel(IAlertaHelper alertaHelper)
@@ -49,7 +52,8 @@ namespace MauiFirebase.PageModels.Usuarios
             _usuarioRepository = new UsuarioRepository();
             GuardarUsuarioCommand = new Command(async () => await GuardarUsuarioAsync());
             IrAgregarUsuarioCommand = new Command(async () => await IrAgregarUsuarioAsync());
-
+            IrEditarUsuarioCommand = new Command<Models.Usuario>(async (usuario) => await IrEditarUsuarioAsync(usuario));
+            EditarUsuarioCommand = new Command(async () => await EditarUsuarioAsync());
             _alertaHelper = alertaHelper;
 
             _ = CargarUsuariosAsync(); // No espera, pero ejecuta
@@ -102,7 +106,7 @@ namespace MauiFirebase.PageModels.Usuarios
                 }
 
                 // 3. Establecer valores por defecto
-                UsuarioNuevo.Foto = "userlogo.png"; // imagen local embebida
+                UsuarioNuevo.FotoLocal = "userlogo.png"; // imagen local embebida
                 UsuarioNuevo.Estado = true;
 
                 // 4. Guardar en Firebase (excepto la foto) y en SQLite (con foto local)
@@ -130,12 +134,71 @@ namespace MauiFirebase.PageModels.Usuarios
                 return false;
             }
         }
+        // Este método se llama desde el botón de edición
+        public async Task<bool> EditarUsuarioAsync()
+        {
+            return await EditarUsuarioAsync(UsuarioNuevo);
+        }
+        //Este método hace la lógica de edición en local y en Firestore
+        public async Task<bool> EditarUsuarioAsync(Models.Usuario usuarioEditado)
+        {
+            try
+            {
+                if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+                {
+                    await _alertaHelper.ShowErrorAsync("No tienes conexión a internet.");
+                    return false;
+                }
+
+                var usuarioExistente = await _usuarioRepository.ObtenerUsuarioPorUidAsync(usuarioEditado.Uid!);
+                if (usuarioExistente == null)
+                {
+                    await _alertaHelper.ShowErrorAsync("Usuario no encontrado.");
+                    return false;
+                }
+
+                // 🔒 Solo se editan estos campos por parte del admin
+                usuarioExistente.Rol = usuarioEditado.Rol;
+                usuarioExistente.Estado = usuarioEditado.Estado;
+
+                var actualizado = await _usuarioRepository.EditarUsuarioLocalAsync(usuarioExistente);
+
+                if (actualizado)
+                {
+                    // 🔁 También actualizar en Firestore
+                    var token = Preferences.Get("FirebaseToken", string.Empty);
+                    if (!string.IsNullOrWhiteSpace(token))
+                    {
+                        var firebaseService = new FirebaseUsuarioService();
+                        await firebaseService.EditarUsuarioEnFirestoreAsync(usuarioExistente, token);
+                    }
+
+                    await _alertaHelper.ShowSuccessAsync("Usuario actualizado correctamente.");
+                    await Shell.Current.GoToAsync("..");
+                    return true;
+                }
+
+                await _alertaHelper.ShowErrorAsync("No se pudo actualizar el usuario.");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al editar usuario: " + ex.Message);
+                await _alertaHelper.ShowErrorAsync("Ocurrió un error al editar el usuario.");
+                return false;
+            }
+        }
+
 
         private async Task IrAgregarUsuarioAsync()
         {
             await Shell.Current.GoToAsync("///usuarios/ListarUsuarioPage");
         }
-
+        private async Task IrEditarUsuarioAsync(Models.Usuario usuario)
+        {
+            UsuarioNuevo = usuario;
+            await Shell.Current.GoToAsync("///usuarios/editar");
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = "")

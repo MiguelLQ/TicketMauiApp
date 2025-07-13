@@ -49,7 +49,7 @@ namespace MauiFirebase.Services
                         Correo = correo,
                         Telefono = telefono,
                         Rol = rol,
-                        Foto = foto,
+                        FotoLocal = foto,
                         Estado = estado
                     });
                 }
@@ -122,6 +122,68 @@ namespace MauiFirebase.Services
 
             return newIdToken;
         }
+        public async Task<bool> EditarUsuarioEnFirestoreAsync(Usuario usuario, string idToken)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", idToken);
+
+            var firestoreData = new
+            {
+                fields = new
+                {
+                    rol = new { stringValue = usuario.Rol },
+                    estado = new { booleanValue = usuario.Estado }
+                }
+            };
+
+            var json = JsonSerializer.Serialize(firestoreData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // URL con UID del usuario
+            var url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/usuarios/{usuario.Uid}?updateMask.fieldPaths=rol&updateMask.fieldPaths=estado";
+
+            var response = await client.PatchAsync(url, content);
+            return response.IsSuccessStatusCode;
+        }
+        public async Task<Usuario?> ObtenerUsuarioPorUidAsync(string uid, string idToken)
+        {
+            var url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/usuarios/{uid}";
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", idToken);
+
+            var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            if (!doc.RootElement.TryGetProperty("fields", out var fields))
+                return null;
+
+            string nombre = fields.GetProperty("nombre").GetProperty("stringValue").GetString() ?? "";
+            string apellido = fields.TryGetProperty("apellido", out var ap) ? ap.GetProperty("stringValue").GetString() ?? "" : "";
+            string correo = fields.TryGetProperty("correo", out var co) ? co.GetProperty("stringValue").GetString() ?? "" : "";
+            string telefono = fields.TryGetProperty("telefono", out var tel) ? tel.GetProperty("stringValue").GetString() ?? "" : "";
+            string rol = fields.TryGetProperty("rol", out var rl) ? rl.GetProperty("stringValue").GetString() ?? "" : "";
+            string foto = fields.TryGetProperty("foto", out var ft) ? ft.GetProperty("stringValue").GetString() ?? "" : "";
+            bool estado = fields.TryGetProperty("estado", out var es) && es.TryGetProperty("booleanValue", out var bval) && bval.GetBoolean();
+
+            return new Usuario
+            {
+                Uid = uid,
+                Nombre = nombre,
+                Apellido = apellido,
+                Correo = correo,
+                Telefono = telefono,
+                Rol = rol,
+                FotoLocal = foto,
+                Estado = estado
+            };
+        }
+
 
     }
 }

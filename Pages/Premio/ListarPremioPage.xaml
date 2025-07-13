@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
              x:Class="MauiFirebase.Pages.Premio.ListarPremioPage"
              x:Name="PremioPage"
-             Title="Lista de Premios">
+             >
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -76,13 +76,15 @@
                                            CornerRadius="12"
                                            HasShadow="False"
                                            BackgroundColor="{Binding EstadoPremio, Converter={StaticResource EstadoColorConverter}}"
-                                           HorizontalOptions="Start">
-                                            <Label Text="{Binding EstadoPremio, Converter={StaticResource BoolToEstadoConverter}}"
+                                           HorizontalOptions="Start"
+                                           IsVisible="{Binding Source={x:Reference PremioPage}, Path=BindingContext.EsAdmin}">
+                                           <Label Text="{Binding EstadoPremio, Converter={StaticResource BoolToEstadoConverter}}"
                                                TextColor="{DynamicResource Gray600}"
                                                FontSize="13"
                                                HorizontalOptions="Center"
                                                VerticalOptions="Center" />
                                         </Frame>
+
                                     </StackLayout>
 
                                     <!-- Botón Editar -->
@@ -172,36 +174,22 @@
             VerticalOptions="Start"
             Margin="0,20,20,0"
             IsVisible="{Binding EsAdmin}"/>
-   
 
 
-        <!--=============================================CARGA LOADING=====================================================-->
 
+        <!-- CARGA: Solo el spinner centrado, sin modal -->
         <Grid IsVisible="{Binding IsBusy}"
-              BackgroundColor="#80000000"
-              HorizontalOptions="Fill"
-              VerticalOptions="Fill">
-            <Frame Padding="20"
-                   BackgroundColor="#222222DD"
-                   CornerRadius="12"
-                   HasShadow="True"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   WidthRequest="160"
-                   HeightRequest="120">
-                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
-
-                    <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                       Color="White"
-                                       WidthRequest="40"
-                                       HeightRequest="40" />
-                    <Label Text="Cargando..."
-                           TextColor="White"
-                           FontSize="16"
-                           HorizontalOptions="Center"
-                           FontAttributes="Bold" />
-                </VerticalStackLayout>
-            </Frame>
+      BackgroundColor="Transparent"
+      HorizontalOptions="Fill"
+      VerticalOptions="Fill">
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                       Color="{StaticResource Primary}"
+                       WidthRequest="50"
+                       HeightRequest="50"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Scale="1.2" />
         </Grid>
+
     </Grid>
 </ContentPage>

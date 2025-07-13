@@ -81,14 +81,56 @@ public partial class EditarPremioPageModel : ObservableObject
         if (PremioSeleccionado == null)
             return;
 
+        // Validar campos obligatorios
+        if (string.IsNullOrWhiteSpace(NombrePremio) ||
+            string.IsNullOrWhiteSpace(DescripcionPremio) ||
+            PuntosRequeridos <= 0)
+        {
+            await _alertaHelper.ShowWarningAsync("Completa todos los campos correctamente.");
+            return;
+        }
+
+        // Validar conexión a Internet para sincronizar
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await _alertaHelper.ShowWarningAsync("Necesitas conexión a Internet para sincronizar los cambios.");
+            return;
+        }
+
+        // 🔁 Actualizar propiedades
         PremioSeleccionado.NombrePremio = NombrePremio;
         PremioSeleccionado.DescripcionPremio = DescripcionPremio;
         PremioSeleccionado.PuntosRequeridos = PuntosRequeridos;
         PremioSeleccionado.EstadoPremio = EstadoPremio;
-        PremioSeleccionado.FotoPremio = FotoPremio ?? string.Empty; // ✅ se guarda la foto
 
+        // ⚠️ Si cambiaste la imagen (ruta local nueva), puedes subir una nueva a Supabase
+        if (!string.IsNullOrEmpty(FotoPremio) && FotoPremio != PremioSeleccionado.FotoPremio)
+        {
+            var storage = new SupabaseStorageService();
+            using var stream = File.OpenRead(FotoPremio);
+            var nombreRemoto = $"premios/{Guid.NewGuid()}{Path.GetExtension(FotoPremio)}";
+
+            var nuevaUrl = await storage.SubirImagenAsync(stream, nombreRemoto);
+            if (!string.IsNullOrEmpty(nuevaUrl))
+            {
+                PremioSeleccionado.FotoPremioUrl = nuevaUrl;
+                PremioSeleccionado.FotoPremio = FotoPremio;
+            }
+        }
+
+        // 🔄 Actualizar local (SQLite)
         await _premioRepository.UpdatePremioAsync(PremioSeleccionado);
-        await _alertaHelper.ShowSuccessAsync("Premio actualizado correctamente.");
+
+        // 🔄 Actualizar en Firestore
+        var idToken = await new FirebaseAuthService().ObtenerIdTokenSeguroAsync();
+        var actualizado = await new FirebasePremioService().GuardarPremioFirestoreAsync(PremioSeleccionado, PremioSeleccionado.IdPremio.ToString(), idToken);
+
+        if (actualizado)
+            await _alertaHelper.ShowSuccessAsync("Premio actualizado correctamente.");
+        else
+            await _alertaHelper.ShowWarningAsync("Premio actualizado localmente, pero no se sincronizó con Firestore.");
+
         await Shell.Current.GoToAsync("..");
     }
+
 }

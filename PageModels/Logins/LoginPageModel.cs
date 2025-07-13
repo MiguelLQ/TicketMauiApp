@@ -4,6 +4,7 @@ using System.Windows.Input;
 using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.Register;
 using Microsoft.Maui.Networking;
+using MauiFirebase.Helpers.Interface;
 
 namespace MauiFirebase.PageModels.Logins
 {
@@ -35,57 +36,97 @@ namespace MauiFirebase.PageModels.Logins
             HasError = false;
             ErrorMessage = string.Empty;
 
-            // ✅ 1. Validar conexión a Internet
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            try
             {
-                ErrorMessage = "No hay conexión a Internet.";
-                HasError = true;
-                return;
-            }
+                // ✅ 1. Validar conexión real a Internet
+                if (!await HayInternetRealAsync())
+                {
+                    ErrorMessage = "Necesitas conexion a internet";
+                    HasError = true;
+                    return;
+                }
 
-            // ✅ 2. Validar campos
-            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
-            {
-                ErrorMessage = "Debes ingresar tus datos.";
-                HasError = true;
-                return;
-            }
+                // ✅ 2. Validar campos
+                if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+                {
+                    ErrorMessage = "Debes ingresar tu correo y contraseña.";
+                    HasError = true;
+                    return;
+                }
 
-            // ✅ 3. Intentar login
-            var success = await _authService.LoginAsync(Email, Password);
-            if (success)
-            {
-                // Pantalla de carga
+                // ✅ 3. Intentar login con Firebase Auth
+                var success = await _authService.LoginAsync(Email, Password);
+                if (!success)
+                {
+                    ErrorMessage = "Correo o contraseña incorrectos.";
+                    HasError = true;
+                    return;
+                }
+
+                // ✅ 4. Verificar estado del usuario desde Firestore
+                var token = await _authService.ObtenerIdTokenSeguroAsync();
+                var uid = Preferences.Get("FirebaseUserId", string.Empty);
+
+                var usuarioService = new FirebaseUsuarioService();
+                var usuario = await usuarioService.ObtenerUsuarioPorUidAsync(uid, token);
+
+                if (usuario == null)
+                {
+                    ErrorMessage = "No se pudo obtener la información del usuario.";
+                    HasError = true;
+                    return;
+                }
+
+                if (!usuario.Estado)
+                {
+                    ErrorMessage = "Tu cuenta está inactiva. Contáctate con el administrador.";
+                    HasError = true;
+                    _authService.Logout(); // Limpia sesión
+                    return;
+                }
+
+                // ✅ 5. Guardar preferencias y navegar según rol
+                Preferences.Set("FirebaseUserRole", usuario.Rol);
+                Preferences.Set("FirebaseUid", usuario.Uid);
+
                 Application.Current.MainPage = new LoadingPage();
                 await Task.Delay(500);
 
-                // AppShell
                 Application.Current.MainPage = new AppShell();
-                // Espera a que AppShell se termine de cargar
                 await Task.Delay(200);
-                ((AppShell)Application.Current.MainPage).MostrarOpcionesSegunRol(); // Asegúrate de mostrar menú según rol
-
-                var rol = Preferences.Get("FirebaseUserRole", string.Empty);
-                System.Diagnostics.Debug.WriteLine($"🟡 ROL desde LoginPageModel: {rol}");
-
+                ((AppShell)Application.Current.MainPage).MostrarOpcionesSegunRol();
 
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
                 {
-                    if (rol == "Administrador")
+                    if (usuario.Rol == "Administrador")
                         await Shell.Current.GoToAsync("//adminHome/inicio");
-                    else if (rol == "Recolector")
+                    else if (usuario.Rol == "Recolector")
                         await Shell.Current.GoToAsync("//registerHome/inicio");
                     else
                         await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");
                 });
             }
-            else
+            catch (Exception ex)
             {
-                ErrorMessage = "Correo o contraseña incorrectos.";
+                Console.WriteLine("Error en LoginAsync: " + ex.Message);
+                ErrorMessage = "Ocurrió un error inesperado. Intenta nuevamente.";
                 HasError = true;
             }
         }
-
+        private async Task<bool> HayInternetRealAsync()
+        {
+            try
+            {
+                using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(5);
+                var result = await client.GetAsync("https://www.google.com");
+                return result.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         [RelayCommand]
         private async Task IrARegistroAsync()

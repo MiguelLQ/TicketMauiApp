@@ -2,11 +2,119 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.usuario.EditarUsuarioPage"
-             Title="EditarUsuarioPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:viewModel="clr-namespace:MauiFirebase.PageModels.Usuarios"
+             x:DataType="viewModel:UsuarioPageModel"
+             Title="Editar Usuario">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="0" HorizontalOptions="Center">
+
+            <Frame CornerRadius="16"
+                   HasShadow="True"
+                   BorderColor="Transparent"
+                   Background="{StaticResource CardBackgroundBrush}"
+                   WidthRequest="360">
+
+                <VerticalStackLayout Spacing="8" Padding="10">
+
+                    <!-- Imagen de usuario centrada -->
+                    <Frame WidthRequest="90" HeightRequest="90"
+                           CornerRadius="45"
+                           BorderColor="#ccc"
+                           BackgroundColor="Transparent"
+                           Padding="0"
+                           HorizontalOptions="Center">
+                        <Image Source="{Binding UsuarioNuevo.FotoSource}"
+                               Aspect="AspectFill" />
+                    </Frame>
+
+                    <!-- Título -->
+                    <Label Text="Editar Usuario"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#3f51b5" />
+                    <!-- Campo: Nombres -->
+                    <VerticalStackLayout>
+                        <Label Text="Nombres" FontSize="13" TextColor="#3f51b5" Margin="28,6,0,0" />
+                        <Frame CornerRadius="8" Padding="10,6" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <Label Text="{Binding UsuarioNuevo.Nombre}" FontSize="14" TextColor="{DynamicResource Gray400}" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Apellidos -->
+                    <VerticalStackLayout>
+                        <Label Text="Apellidos" FontSize="13" TextColor="#3f51b5" Margin="28,6,0,0" />
+                        <Frame CornerRadius="8" Padding="10,6" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <Label Text="{Binding UsuarioNuevo.Apellido}" FontSize="14" TextColor="{DynamicResource Gray400}" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Correo -->
+                    <VerticalStackLayout>
+                        <Label Text="Correo" FontSize="13" TextColor="#3f51b5" Margin="28,6,0,0" />
+                        <Frame CornerRadius="8" Padding="10,6" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <Label Text="{Binding UsuarioNuevo.Correo}" FontSize="14" TextColor="{DynamicResource Gray400}" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Teléfono -->
+                    <VerticalStackLayout>
+                        <Label Text="Teléfono" FontSize="13" TextColor="#3f51b5" Margin="28,6,0,0" />
+                        <Frame CornerRadius="8" Padding="10,6" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <Label Text="{Binding UsuarioNuevo.Telefono}" FontSize="14" TextColor="{DynamicResource Gray400}" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Rol -->
+                    <VerticalStackLayout>
+                        <Label Text="Rol" FontSize="13" TextColor="#3f51b5" Margin="28,0,0,0" />
+                        <Frame CornerRadius="8" Padding="6,0" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconRol}" WidthRequest="20" HeightRequest="20" Margin="4,0" VerticalOptions="Center" />
+                                <Picker ItemsSource="{Binding RolesDisponibles}" SelectedItem="{Binding UsuarioNuevo.Rol}" WidthRequest="200" TextColor="{DynamicResource Gray400}" FontSize="12" BackgroundColor="Transparent" Title="Seleccione un rol" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Campo: Estado -->
+                    <VerticalStackLayout>
+                        <Label Text="Estado" FontSize="13" TextColor="#3f51b5" Margin="28,10,0,0" />
+                        <Frame CornerRadius="8" Padding="10,4" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
+                            <HorizontalStackLayout>
+                                <Image Source="{StaticResource IconEstado}" WidthRequest="20" HeightRequest="20" Margin="4,0" VerticalOptions="Center" />
+                                <Label Text="Inactivo" VerticalOptions="Center" FontSize="12" />
+                                <Switch IsToggled="{Binding UsuarioNuevo.Estado}" HorizontalOptions="CenterAndExpand" />
+                                <Label Text="Activo" VerticalOptions="Center" FontSize="12" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Botones -->
+                    <HorizontalStackLayout Spacing="16" Margin="0,10,0,0" HorizontalOptions="Center">
+                        <Button Text="Guardar"
+                                Command="{Binding EditarUsuarioCommand}"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="#3f51b5"
+                                TextColor="White"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140" />
+
+                        <Button Text="Cancelar"
+                                Clicked="OnVolverClicked"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="#e0e0e0"
+                                TextColor="#333"
+                                HeightRequest="48"
+                                CornerRadius="8"
+                                WidthRequest="140" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

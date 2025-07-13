@@ -148,6 +148,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<UsuarioPageModel>();
         builder.Services.AddSingleton<ListarUsuarioPage>();
         builder.Services.AddSingleton<AgregarUsuarioPage>();
+        builder.Services.AddSingleton<EditarUsuarioPage>();
 
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
         builder.Services.AddTransient<ResidenteFormPage, ResidenteFormPageModel>();

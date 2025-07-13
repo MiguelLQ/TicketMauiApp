@@ -15,6 +15,17 @@ public partial class ListarUsuarioPage : ContentPage
     {
         await Shell.Current.GoToAsync("///usuarios/agregar");
     }
+
+    private async void OnEditarUsuarioClicked(object sender, EventArgs e)
+    {
+        if (sender is ImageButton button && button.CommandParameter is Models.Usuario usuario)
+        {
+            _viewModel.UsuarioNuevo = usuario;
+            await Shell.Current.GoToAsync("///usuarios/editar"); // Navegación absoluta
+        }
+    }
+
+
     protected override void OnAppearing()
     {
         base.OnAppearing();

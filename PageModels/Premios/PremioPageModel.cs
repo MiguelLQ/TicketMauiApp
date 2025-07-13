@@ -51,18 +51,30 @@ public partial class PremioPageModel : ObservableObject
         try
         {
             IsBusy = true;
-            ListaPremios.Clear(); // Limpiamos primero
-            var premios = await _premioRepository.GetAllPremiosAsync(); // Obtenemos desde BD
-            foreach (var p in premios)
+            ListaPremios.Clear();
+
+            var todosLosPremios = await _premioRepository.GetAllPremiosAsync();
+
+            // Verificamos si es administrador
+            var rol = Preferences.Get("FirebaseUserRole", string.Empty);
+            bool esAdmin = rol == "Administrador";
+
+            // Filtramos si no es admin
+            var premiosFiltrados = esAdmin
+                ? todosLosPremios
+                : todosLosPremios.Where(p => p.EstadoPremio).ToList();
+
+            foreach (var premio in premiosFiltrados)
             {
-                ListaPremios.Add(p);
+                ListaPremios.Add(premio);
             }
         }
         finally
         {
-            IsBusy = false; 
+            IsBusy = false;
         }
     }
+
 
 
     [RelayCommand]
@@ -137,7 +149,7 @@ public partial class PremioPageModel : ObservableObject
             }
 
             await CargarPremiosAsync(); // refrescar lista visible
-            await _alertaHelper.ShowSuccessAsync("premios disponibles sincornizados correctamente");
+            //await _alertaHelper.ShowSuccessAsync("premios disponibles sincornizados correctamente");
         }
         catch (Exception ex)
         {

@@ -11,5 +11,8 @@ namespace MauiFirebase.Data.Interfaces
     {
         Task<List<Usuario>> GetUsuariosAsync();
         Task<bool> AgregarUsuarioAsync(Usuario usuario);
+        Task<bool> EditarUsuarioLocalAsync(Usuario usuario);
+        Task<Usuario?> ObtenerUsuarioPorUidAsync(string uid);
+
     }
 }

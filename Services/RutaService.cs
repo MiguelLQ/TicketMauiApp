@@ -1,13 +1,7 @@
-﻿using System.Net.Http;
-using System.Text.Json;
-using Microsoft.Maui.Controls.Maps;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using System.Text.Json;
 public class RutaService
 {
-    private readonly string _apiKey = "AIzaSyBtD3WDrurc_whiHRAd0odrge26SaUrKfs"; // Pon aquí tu API Key
+    private readonly string _apiKey = "AIzaSyBtD3WDrurc_whiHRAd0odrge26SaUrKfs"; 
 
     public async Task<List<Location>> ObtenerRutaGoogleAsync(List<Location> puntos)
     {
@@ -31,7 +25,7 @@ public class RutaService
         if (routes.GetArrayLength() > 0)
         {
             var overviewPolyline = routes[0].GetProperty("overview_polyline").GetProperty("points").GetString();
-            points = DecodePolyline(overviewPolyline);
+            points = DecodePolyline(overviewPolyline!);
         }
 
         return points;

@@ -48,4 +48,21 @@ public class ConvertidorRepository : IConvertidorRepository
         var resultado = await _database.Database!.UpdateAsync(convertidor);
         return resultado;
     }
+
+    public async Task<List<Convertidor>> GetConvertidoresNoSincronizadosAsync()
+    {
+        return await _database.Database!.Table<Convertidor>()
+            .Where(c => !c.Sincronizado)
+            .ToListAsync();
+    }
+
+    public async Task MarcarComoSincronizadoAsync(int id)
+    {
+        var item = await _database.Database!.FindAsync<Convertidor>(id);
+        if (item != null)
+        {
+            item.Sincronizado = true;
+            await _database.Database.UpdateAsync(item);
+        }
+    }
 }

@@ -8,4 +8,6 @@ public interface IConvertidorRepository
     Task<Convertidor?> GetConvertidorIdAsync(int id);
     Task<int> UpdateConvertidorAsync(Convertidor convertidor);
     Task<bool> ChangeEstadoConvertidorAsync(int id);
+    Task MarcarComoSincronizadoAsync(int id);
+    Task<List<Convertidor>> GetConvertidoresNoSincronizadosAsync();
 }

@@ -19,61 +19,125 @@
 
             <!--Encabezado con fondo naranja y tarjeta del coche -->
 
-            <Grid HeightRequest="250">
+            <Grid HeightRequest="270">
                 <!-- Fondo naranja superior -->
                 <BoxView 
                     BackgroundColor="{StaticResource HeaderOrange}" 
-                    HeightRequest="210" 
+                    HeightRequest="200" 
                     VerticalOptions="Start"
                     CornerRadius="0,0,30,30"/>
 
-                <!-- Frame superior (dentro del fondo naranja) -->
                 <Frame
                     BackgroundColor="{StaticResource Headercolorsaludo}"
                     BorderColor="Transparent" 
-                    Padding="10"
-                    WidthRequest="300"
+                    Padding="15"
+                    WidthRequest="330"
                     HeightRequest="90"
                     CornerRadius="20"
                     HasShadow="True"
                     HorizontalOptions="Center"
                     VerticalOptions="Start"
                     Margin="0,15,0,0">
-                    <HorizontalStackLayout HorizontalOptions="Start" Padding="6" Margin="20,0,0,0">
-                        <!-- Agrupa verticalmente los dos textos -->
-                        <VerticalStackLayout Spacing="0">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <!-- texto -->
+                            <ColumnDefinition Width="1*" />
+                            <!-- imagen -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Columna 0: Texto (saludo y correo) -->
+                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
                             <Label Text="Hola, Bienvenido!"
-                               FontSize="20"
-                               TextColor="White" />
+                               FontSize="19"
+                               TextColor="White"
+                               FontAttributes="Bold"/>
                             <Label x:Name="CorreoUsuarioLabel"
                                FontSize="14"
                                TextColor="{DynamicResource Gray200}" />
                         </VerticalStackLayout>
-                    </HorizontalStackLayout>
 
+                        <!-- Columna 1: Imagen -->
+                        <Image
+                            Grid.Column="1"
+                            Source="camion.png"
+                            WidthRequest="80"
+                            HeightRequest="80"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            Margin="0,0,10,0"
+                            Aspect="AspectFit" />
+                    </Grid>
                 </Frame>
 
-                <!--Frame sobresalido (fuera del fondo naranja) -->
+
+
                 <Frame
                     Background="{DynamicResource CardBackgroundBrush}"
                     BorderColor="Transparent"
                     Padding="10"
-                    WidthRequest="330"
-                    HeightRequest="160"
+                    WidthRequest="350"
+                    HeightRequest="180"
                     CornerRadius="20"
-                    HasShadow="True"
+                    HasShadow="False"
                     HorizontalOptions="Center"
                     VerticalOptions="Start"
                     Margin="0,120,0,0">
-                    <!-- Se superpone al fondo naranja -->
 
-                    <Image Source="dotnet_bot.png" Aspect="AspectFit" />
+                    <VerticalStackLayout Spacing="10">
+                        <Label 
+                            Text="Vehículos con ruta para hoy" 
+                            FontAttributes="Bold" 
+                            FontSize="18"
+                            HorizontalOptions="Center"/>
+
+                        <Grid ColumnSpacing="10" RowSpacing="10" HorizontalOptions="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="130" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Fila 1 -->
+                            <Frame Grid.Column="0" Grid.Row="0" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent" >
+                                <VerticalStackLayout>
+                                    <Label Text="PLACA: ABC-123" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
+                                    <Label Text="Marca: Toyota" FontSize="12" TextColor="{StaticResource Gray500}"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                            <Frame Grid.Column="1" Grid.Row="0" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
+                                <VerticalStackLayout>
+                                    <Label Text="PLACA: XYQ-456" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}" />
+                                    <Label Text="Marca: Nissan" FontSize="12" TextColor="{StaticResource Gray500}" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Fila 2 -->
+                            <Frame Grid.Column="0" Grid.Row="1" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
+                                <VerticalStackLayout>
+                                    <Label Text="PLACA: LMN-789" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
+                                    <Label Text="Marca: Kia" FontSize="12" TextColor="{StaticResource Gray500}"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                            <Frame Grid.Column="1" Grid.Row="1" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
+                                <VerticalStackLayout>
+                                    <Label Text="PLACA: DEF-321" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
+                                    <Label Text="Marca: Hyundai" FontSize="12" TextColor="{StaticResource Gray500}" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </VerticalStackLayout>
                 </Frame>
+
             </Grid>
             
             <!--Contenido existente (no modificado) -->
             <VerticalStackLayout Spacing="10" Padding="20">
-                <Label Text="Registros" FontSize="19" FontAttributes="Bold" />
+                <Label Text="Registros" FontSize="18" FontAttributes="Bold" />
 
                 <!-- Tarjetas resumen en carrusel -->
                 <CollectionView ItemsLayout="HorizontalList" HeightRequest="130" 
@@ -97,7 +161,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Label Text="Gráfico" FontSize="19" FontAttributes="Bold" />
+                <Label Text="Gráfico" FontSize="18" FontAttributes="Bold" />
       
 
                 <!-- Gráfico y lista de reciclaje por categoría en una sola tarjeta -->
@@ -118,14 +182,7 @@
                 <!-- Registros recientes -->
                 <Grid HeightRequest="44">
                     <Label Text="♻️ Actividad reciente de reciclaje" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
-                    <ImageButton 
-                        Source="pen.png" 
-                        HorizontalOptions="End"
-                        VerticalOptions="Center"
-                        HeightRequest="10"
-                        WidthRequest="10"
-                        Scale="0.7"
-                        BackgroundColor="Transparent" />
+               
                 </Grid>
 
                 <!-- Registros recientes dinámicos -->

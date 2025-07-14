@@ -60,4 +60,5 @@ public class FirebaseCategoriaResiduoService
         }
         return lista;
     }
+
 }

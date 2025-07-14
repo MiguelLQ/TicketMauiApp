@@ -62,4 +62,6 @@ public class FirebaseResiduoService
         }
         return lista;
     }
+
+
 }

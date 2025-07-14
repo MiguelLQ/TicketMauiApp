@@ -39,16 +39,19 @@ public partial class CrearVehiculoPageModel : ObservableValidator
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
 
 
     public CrearVehiculoPageModel(
         IVehiculoRepository vehiculoRepository,
         IUsuarioRepository usuarioRepository,
-        IAlertaHelper alertaHelper)
+        IAlertaHelper alertaHelper,
+        SincronizacionFirebaseService sincronizacionFirebaseService)
     {
         _vehiculoRepository = vehiculoRepository;
         _usuarioRepository = usuarioRepository;
         _alertaHelper = alertaHelper;
+        _sincronizacionFirebaseService = sincronizacionFirebaseService;
     }
 
     // ========================== ERRORES PERSONALIZADOS ==========================
@@ -94,12 +97,14 @@ public partial class CrearVehiculoPageModel : ObservableValidator
             EstadoVehiculo = EstadoVehiculo,
             FechaRegistroVehiculo = FechaRegistro,
             IdUsuario = UsuarioSeleccionado?.Uid,
-            Nombre = UsuarioSeleccionado?.Nombre ?? string.Empty
+            Nombre = UsuarioSeleccionado?.Nombre ?? string.Empty,
+            Sincronizado = false
         };
 
         await _vehiculoRepository.CreateVehiculoAsync(nuevoVehiculo);
         await _alertaHelper.ShowSuccessAsync("Vehículo creado correctamente.");
         LimpiarFormulario();
+        await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
         await Shell.Current.GoToAsync("..");
     }
 

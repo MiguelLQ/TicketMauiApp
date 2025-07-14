@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Rutas"
+             x:Class="MauiFirebase.Pages.Ruta.DibujarRutaPage"
+             x:DataType="viewModels:CrearRutaPageModel"
+             Title="Dibujar Ruta">
+
+    <Frame Padding="2" CornerRadius="1" HeightRequest="685" WidthRequest="400" BackgroundColor="White">
+        <Grid>
+
+            <!-- Mapa -->
+            <maps:Map x:Name="MyMap"
+                      MapType="Satellite"
+                      IsZoomEnabled="True"
+                      IsScrollEnabled="True"
+                      VerticalOptions="Fill"
+                      HorizontalOptions="Fill" />
+
+            <!-- Botones de acción -->
+            <HorizontalStackLayout Spacing="10"
+                                    VerticalOptions="Start"
+                                    HorizontalOptions="Center"
+                                    Padding="2"
+                                    BackgroundColor="#AAFFFFFF"
+                                    Margin="0">
+                <Button Text="Deshacer" Clicked="OnUndoClicked" />
+                <Button Text="Limpiar" Clicked="OnClearClicked" />
+                <Button Text="Exportar" Clicked="OnExportClicked" />
+            </HorizontalStackLayout>
+
+            <!-- Botones de movimiento -->
+            <Grid RowDefinitions="Auto,Auto,Auto"
+                  ColumnDefinitions="Auto,Auto,Auto"
+                  VerticalOptions="End"
+                  HorizontalOptions="Start"
+                  Margin="10"
+                  BackgroundColor="#AAFFFFFF"
+                  Padding="5">
+                <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnMoveUpClicked" />
+                <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnMoveDownClicked" />
+            </Grid>
+
+        </Grid>
+    </Frame>
+</ContentPage>

@@ -11,22 +11,38 @@ public partial class CanjePageModel : ObservableObject
     private readonly ICanjeRepository _canjeRepository;
     private readonly IPremioRepository _premioRepository;
     private readonly IResidenteRepository _residenteRepository;
+    private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
     public ObservableCollection<Canje> ListaCanjes { get; } = new();
     public ObservableCollection<Premio> ListaPremios { get; } = new();
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
 
     [ObservableProperty] private bool _isBusy;
 
-    public CanjePageModel(ICanjeRepository canjeRepository, IPremioRepository premioRepository, IResidenteRepository residenteRepository)
+    public CanjePageModel(ICanjeRepository canjeRepository, IPremioRepository premioRepository, IResidenteRepository residenteRepository, SincronizacionFirebaseService sincronizacionFirebaseService)
     {
         _canjeRepository = canjeRepository;
         _premioRepository = premioRepository;
         _residenteRepository = residenteRepository;
+        _sincronizacionFirebaseService = sincronizacionFirebaseService;
     }
 
     [RelayCommand]
     public async Task CargarPremioAsync()
     {
+        try
+        {
+            IsBusy = true;
+            if (_sincronizacionFirebaseService != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizacionFirebaseService.SincronizarCanjesAsync();
+            }
+            await CargarResidentesAsync();
+            await CargarCanjeAsync();
+        }
+        finally
+        {
+            IsBusy = false;
+        }
         ListaPremios.Clear();
         var residuos = await _premioRepository.GetAllPremiosAsync();
         foreach (var item in residuos)
@@ -56,7 +72,7 @@ public partial class CanjePageModel : ObservableObject
             var canjes = await _canjeRepository.GetAllCanjeAync();
             var premios = await _premioRepository.GetAllPremiosAsync();
             var residentes = await _residenteRepository.GetAllResidentesAsync();
-            var residentesDict = residentes.ToDictionary(r => r.UidResidente);
+            var residentesDict = residentes.ToDictionary(r => r.IdResidente);
             var premiosDict = premios.ToDictionary(r => r.IdPremio);
 
             foreach (var item in canjes)

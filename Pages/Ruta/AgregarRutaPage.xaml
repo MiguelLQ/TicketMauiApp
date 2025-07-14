@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Rutas"
              x:Class="MauiFirebase.Pages.Ruta.AgregarRutaPage"
@@ -49,47 +48,15 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Mapa -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="2" CornerRadius="1"
-                   HeightRequest="500" WidthRequest="400">
-                <Grid>
-
-                    <!-- Mapa -->
-                    <maps:Map x:Name="MyMap"
-                              MapType="Satellite"
-                              IsZoomEnabled="True"
-                              IsScrollEnabled="True"
-                              VerticalOptions="Fill"
-                              HorizontalOptions="Fill" />
-
-                    <!-- Botones de acción -->
-                    <HorizontalStackLayout Spacing="10"
-                                            VerticalOptions="Start"
-                                            HorizontalOptions="Center"
-                                            Padding="5"
-                                            BackgroundColor="#AAFFFFFF"
-                                            Margin="10">
-                        <Button Text="Deshacer" Clicked="OnUndoClicked" />
-                        <Button Text="Limpiar" Clicked="OnClearClicked" />
-                        <Button Text="Exportar" Clicked="OnExportClicked" />
-                    </HorizontalStackLayout>
-
-                    <!-- Botones de movimiento -->
-                    <Grid RowDefinitions="Auto,Auto,Auto"
-                          ColumnDefinitions="Auto,Auto,Auto"
-                          VerticalOptions="End"
-                          HorizontalOptions="Start"
-                          Margin="10"
-                          BackgroundColor="#AAFFFFFF"
-                          Padding="5">
-                        <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnMoveUpClicked" />
-                        <!--<Button Text="←" Grid.Row="1" Grid.Column="0" Clicked="OnMoveLeftClicked" />
-                        <Button Text="→" Grid.Row="1" Grid.Column="2" Clicked="OnMoveRightClicked" />-->
-                        <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnMoveDownClicked" />
-                    </Grid>
-
-                </Grid>
-            </Frame>
+            <!-- Botón para abrir el mapa -->
+            <Button Text="Crear Ruta Nueva"
+                    Clicked="OnCrearRutaNuevaClicked"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25" />
 
             <!-- Botón Guardar -->
             <Button Text="Guardar"

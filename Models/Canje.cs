@@ -24,6 +24,7 @@ namespace MauiFirebase.Models
         public string? NombrePremio { get; set; }
         [Ignore]
         public string? DescripcionPremio { get; set; }
+        public bool Sincronizado { get; set; } = false;
 
     }
 }

@@ -238,7 +238,7 @@ public class SincronizacionFirebaseService
             await _firebaseCanjeService.GuardarCanjeFirestoreAsync(canje, canje.IdCanje.ToString(), idToken);
         }
     }
-
+    
     public async Task SincronizarVehiculosAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();

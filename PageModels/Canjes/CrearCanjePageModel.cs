@@ -11,7 +11,7 @@ public partial class CrearCanjePageModel : ObservableObject
     private readonly IPremioRepository _premioRepository;
     private readonly IResidenteRepository _residenteRepository;
     private readonly IAlertaHelper _alertaHelper;
-
+    private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
     public ObservableCollection<Premio> ListaPremios { get; } = new();
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
     public ObservableCollection<Canje> ListaCanje { get; } = new();
@@ -65,12 +65,16 @@ public partial class CrearCanjePageModel : ObservableObject
         ICanjeRepository canjeRepository,
         IPremioRepository premioRepository,
         IResidenteRepository residenteRepository,
-        IAlertaHelper alertaHelper)
+        IAlertaHelper alertaHelper,
+        SincronizacionFirebaseService sincronizacionFirebaseService)
     {
         _canjeRepository = canjeRepository;
         _premioRepository = premioRepository;
         _residenteRepository = residenteRepository;
         _alertaHelper = alertaHelper;
+        _sincronizacionFirebaseService = sincronizacionFirebaseService;
+
+
     }
 
     [RelayCommand]
@@ -173,9 +177,22 @@ public partial class CrearCanjePageModel : ObservableObject
                 FechaCanje = FechaDeCanjeo,
                 EstadoCanje = EstadoCanje,
                 IdPremio = PremioSeleccionado.IdPremio,
-                IdResidente = ResidenteEncontrado.UidResidente
+                IdResidente = ResidenteEncontrado.UidResidente,
+                Sincronizado = false
             };
             await _canjeRepository.CreateCanjeAsync(nuevoCanje);
+            // 🌐 Intentar sincronizar si hay internet
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                try
+                {
+                    await _sincronizacionFirebaseService.SincronizarCanjesAsync(); // este método debe subir a Firestore y marcar como sincronizado
+                }
+                catch
+                {
+                    await _alertaHelper.ShowWarningAsync("Guardado localmente. Se sincronizará cuando haya internet.");
+                }
+            }
             await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
             
             await Shell.Current.GoToAsync("..");

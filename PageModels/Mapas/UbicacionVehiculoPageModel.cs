@@ -27,7 +27,6 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     public ObservableCollection<Pin> MapaPins { get; } = new();
     private readonly Dictionary<string, Pin> _pinPorVehiculo = new();
     public ObservableCollection<Polyline> Rutas { get; } = new();
-    private readonly Dictionary<int, Pin> _pinPorVehiculo = new();
     public ObservableCollection<MapElement> RutasEnMapa { get; } = new();
 
 

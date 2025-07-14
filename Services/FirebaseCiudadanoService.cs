@@ -8,14 +8,15 @@ public class FirebaseCiudadanoService
 {
     private const string FirestoreBaseUrl = "https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes";
 
-    public async Task<bool> GuardarEnFirestoreAsync(Residente residente, string uid, string idToken)
+    public async Task<bool> GuardarEnFirestoreAsync(Residente residente, string idToken)
     {
-        var url = $"{FirestoreBaseUrl}/{uid}";
+        var url = "https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes";
 
         var body = new
         {
             fields = new
             {
+                // No guarda uid, solo los datos del residente
                 nombreResidente = new { stringValue = residente.NombreResidente },
                 apellidoResidente = new { stringValue = residente.ApellidoResidente },
                 dniResidente = new { stringValue = residente.DniResidente },
@@ -34,10 +35,12 @@ public class FirebaseCiudadanoService
         client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", idToken);
 
-        var response = await client.PatchAsync(url, content); // PATCH crea o actualiza
+        // 🔁 POST permite que Firestore genere un ID aleatorio
+        var response = await client.PostAsync(url, content);
 
         return response.IsSuccessStatusCode;
     }
+
     public async Task<bool> ResidenteExisteEnFirestoreAsync(string uid, string idToken)
     {
         var url = $"https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes/{uid}";

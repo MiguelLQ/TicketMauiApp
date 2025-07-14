@@ -14,7 +14,6 @@ public class FirebaseResidenteService
         {
             fields = new
             {
-                Uid = new { stringValue = residente.UidResidente },
                 NombreResidente = new { stringValue = residente.NombreResidente },
                 ApellidoResidente = new { stringValue = residente.ApellidoResidente },
                 DniResidente = new { stringValue = residente.DniResidente },

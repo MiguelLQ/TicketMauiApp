@@ -116,7 +116,7 @@ namespace MauiFirebase.PageModels.Registers
 
             // 🔸 Guardar en Firestore
             var idToken = await _authService.ObtenerIdTokenSeguroAsync();
-            var exito = await _firebaseCiudadanoService.GuardarEnFirestoreAsync(nuevoResidente, uid, idToken);
+            var exito = await _firebaseCiudadanoService.GuardarEnFirestoreAsync(nuevoResidente,idToken);
 
             if (exito)
             {

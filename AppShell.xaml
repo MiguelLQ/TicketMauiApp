@@ -69,13 +69,14 @@
         </Border>
     </Shell.FlyoutHeader>
     
+
     <!-- FLYOUT Ciudadano -->
     <FlyoutItem Title="Panel Ciudadano"
             x:Name="CiudadanoFlyoutItem"
             Icon="{StaticResource IconDashboard}"
             Route="ciudadanoHome"
             IsVisible="true">
-
+        
         <ShellContent Title="Inicio"
                   Icon="casa.png"
                   ContentTemplate="{DataTemplate iciciociudadano:inicioCiudadanoPage}"
@@ -107,10 +108,12 @@
             Route="adminHome"
             IsVisible="true">
         <!--Oculto por defecto -->
+
         <ShellContent Title="Inicio"
-              Icon="casa.png"
-              ContentTemplate="{DataTemplate inicio:InicioPage}"
-              Route="inicio" />
+                  Icon="casa.png"
+                  ContentTemplate="{DataTemplate inicio:InicioPage}"
+                  Route="inicio" />
+        
         <!--Canje -->
         <ShellContent Title="Canje"
                   Icon="premio.png"

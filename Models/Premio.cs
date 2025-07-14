@@ -9,7 +9,6 @@ namespace MauiFirebase.Models
         public int IdPremio { get; set; }
 
         public string NombrePremio { get; set; } = string.Empty;
-
         public string DescripcionPremio { get; set; } = string.Empty;
 
         public int PuntosRequeridos { get; set; }

@@ -19,7 +19,7 @@ public partial class App : Application
         if (authService.IsLoggedIn())
         {
             await authService.ObtenerIdTokenSeguroAsync();
-            MainPage = new AppShell(); 
+            MainPage = new AppShell();
         }
         else
         {

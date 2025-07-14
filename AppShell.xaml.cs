@@ -75,8 +75,8 @@ namespace MauiFirebase
             Routing.RegisterRoute("usuarios/editar", typeof(EditarUsuarioPage));
             CargarDatosUsuario();
             MostrarOpcionesSegunRol();
+            //prueba tabar
 
-            //Routing.RegisterRoute("residenteForm", typeof(ResidenteFormPage));
             // En AppShell.xaml.cs
 
             Routing.RegisterRoute("LoginPage", typeof(LoginPage));

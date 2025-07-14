@@ -100,7 +100,7 @@ public class ResidenteRepository : IResidenteRepository
     {
         return await _database.Database!.Table<Residente>().CountAsync();
     }
-    public async Task<Residente?> ObtenerPorUidAsync(string idResidente)
+    public async Task<Residente?> ObtenerPorIdAsync(string idResidente)
     {
         return await _database.Database!.Table<Residente>()
             .Where(r => r.IdResidente == idResidente)

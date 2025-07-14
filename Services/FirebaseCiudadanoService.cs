@@ -10,13 +10,13 @@ public class FirebaseCiudadanoService
 
     public async Task<bool> GuardarEnFirestoreAsync(Residente residente, string idToken)
     {
-        var url = "https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes";
+        // 👇 Aquí usamos el UidResidente como ID del documento
+        var url = $"{FirestoreBaseUrl}/{residente.IdResidente}";
 
         var body = new
         {
             fields = new
             {
-                // No guarda uid, solo los datos del residente
                 nombreResidente = new { stringValue = residente.NombreResidente },
                 apellidoResidente = new { stringValue = residente.ApellidoResidente },
                 dniResidente = new { stringValue = residente.DniResidente },
@@ -35,15 +35,14 @@ public class FirebaseCiudadanoService
         client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", idToken);
 
-        // 🔁 POST permite que Firestore genere un ID aleatorio
-        var response = await client.PostAsync(url, content);
+        var response = await client.PatchAsync(url, content); // PATCH usa el ID que pusiste
 
         return response.IsSuccessStatusCode;
     }
 
-    public async Task<bool> ResidenteExisteEnFirestoreAsync(string uid, string idToken)
+    public async Task<bool> ResidenteExisteEnFirestoreAsync(string idResidente, string idToken)
     {
-        var url = $"https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes/{uid}";
+        var url = $"https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes/{idResidente}";
 
         var client = new HttpClient();
         client.DefaultRequestHeaders.Authorization =
@@ -52,9 +51,10 @@ public class FirebaseCiudadanoService
         var response = await client.GetAsync(url);
         return response.IsSuccessStatusCode;
     }
-    public async Task<Residente?> ObtenerResidenteDesdeFirestoreAsync(string uid, string idToken)
+
+    public async Task<Residente?> ObtenerResidenteDesdeFirestoreAsync(string idResidente, string idToken)
     {
-        var url = $"https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes/{uid}";
+        var url = $"https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residentes/{idResidente}";
 
         var client = new HttpClient();
         client.DefaultRequestHeaders.Authorization =
@@ -72,16 +72,18 @@ public class FirebaseCiudadanoService
 
         return new Residente
         {
-            NombreResidente = fields.GetProperty("nombreResidente").GetProperty("stringValue").GetString(),
-            ApellidoResidente = fields.GetProperty("apellidoResidente").GetProperty("stringValue").GetString(),
-            DniResidente = fields.GetProperty("dniResidente").GetProperty("stringValue").GetString(),
-            CorreoResidente = fields.GetProperty("correoResidente").GetProperty("stringValue").GetString(),
-            DireccionResidente = fields.GetProperty("direccionResidente").GetProperty("stringValue").GetString(),
-            EstadoResidente = fields.GetProperty("estadoResidente").GetProperty("booleanValue").GetBoolean(),
-            FechaRegistroResidente = DateTime.Parse(fields.GetProperty("fechaRegistroResidente").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
-            TicketsTotalesGanados = int.Parse(fields.GetProperty("ticketsTotalesGanados").GetProperty("integerValue").GetString() ?? "0")
+            IdResidente = idResidente, //asignarl el id
+            NombreResidente = fields.GetProperty("NombreResidente").GetProperty("stringValue").GetString(),
+            ApellidoResidente = fields.GetProperty("ApellidoResidente").GetProperty("stringValue").GetString(),
+            DniResidente = fields.GetProperty("DniResidente").GetProperty("stringValue").GetString(),
+            CorreoResidente = fields.GetProperty("CorreoResidente").GetProperty("stringValue").GetString(),
+            DireccionResidente = fields.GetProperty("DireccionResidente").GetProperty("stringValue").GetString(),
+            EstadoResidente = fields.GetProperty("EstadoResidente").GetProperty("booleanValue").GetBoolean(),
+            FechaRegistroResidente = DateTime.Parse(fields.GetProperty("FechaRegistroResidente").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
+            TicketsTotalesGanados = int.Parse(fields.GetProperty("TicketsTotalesGanados").GetProperty("integerValue").GetString() ?? "0")
         };
     }
+
 
 
 }

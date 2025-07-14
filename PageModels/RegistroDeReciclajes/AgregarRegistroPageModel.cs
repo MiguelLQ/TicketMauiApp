@@ -81,7 +81,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
         var registros = await _registroRepository.ObtenerTodosAsync();
         var residentes = await _residenteRepository.GetAllResidentesAsync();
         var residuos = await _residuoRepository.GetAllResiduoAync();
-        var residentesDict = residentes.ToDictionary(r => r.UidResidente);
+        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
         var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
         foreach (var item in registros)
         {
@@ -111,12 +111,19 @@ public partial class AgregarRegistroPageModel : ObservableObject
 
         var convertidores = await _convertidorRepository.GetAllConvertidorAync();
         int ticketsCalculados = 0;
-        foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
+        if (valorTotal > 400)
         {
-            if (valorTotal >= convertidor.ValorMin && valorTotal <= convertidor.ValorMax)
+            ticketsCalculados = 5;
+        }
+        else
+        {
+            foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
             {
-                ticketsCalculados = convertidor.NumeroTicket;
-                break;
+                if (valorTotal >= convertidor.ValorMin && valorTotal <= convertidor.ValorMax)
+                {
+                    ticketsCalculados = convertidor.NumeroTicket;
+                    break;
+                }
             }
         }
 
@@ -124,32 +131,39 @@ public partial class AgregarRegistroPageModel : ObservableObject
 
         var nuevoRegistro = new RegistroDeReciclaje
         {
-            IdResidente = ResidenteSeleccionado.UidResidente,
+            IdResidente = ResidenteSeleccionado.IdResidente,
             IdResiduo = ResiduoSeleccionado.IdResiduo,
             PesoKilogramo = PesoKilogramo,
             TicketsGanados = TicketsGanados,
             FechaRegistro = DateTime.Now,
             Sincronizado = false
         };
-
         await _registroRepository.GuardarAsync(nuevoRegistro);
-
         ResidenteSeleccionado.TicketsTotalesGanados += TicketsGanados;
         await _residenteRepository.GuardarAsync(ResidenteSeleccionado);
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
         {
+            var exito = false;
             try
             {
-                await _sincronizador.SincronizarRegistrosDeReciclajeAsync();
+                await _sincronizador.SincronizarResidentesAsync(); 
+                await _sincronizador.SincronizarRegistrosDeReciclajeAsync(); 
+
+                exito = true;
             }
-            catch
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Sincronización fallida: {ex.Message}");
+            }
+
+            if (!exito)
             {
                 await _alertaHelper.ShowWarningAsync("Registro guardado localmente. Se sincronizará automáticamente cuando haya internet.");
             }
         }
 
-        LimpiarFormulario();
         await _alertaHelper.ShowSuccessAsync("Registro guardado correctamente.");
+        LimpiarFormulario();
         await Shell.Current.GoToAsync("..");
     }
 

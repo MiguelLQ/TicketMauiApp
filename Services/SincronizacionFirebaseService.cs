@@ -132,7 +132,7 @@ public class SincronizacionFirebaseService
         foreach (var residente in residentesNoSincronizados)
         {
             var exito = await _firebaseResidenteService.GuardarResidenteFirestoreAsync(
-                residente, residente.UidResidente!, idToken);
+                residente, residente.IdResidente!, idToken);
 
             if (exito)
             {
@@ -155,14 +155,16 @@ public class SincronizacionFirebaseService
 
         foreach (var remoto in residenteRemotos)
         {
-            var existe = await _localResidenteRepository.ExisteAsync(remoto.UidResidente);
+            var existe = await _localResidenteRepository.ExisteAsync(remoto.IdResidente);
             if (!existe)
             {
                 remoto.Sincronizado = true;
-                await _localResidenteRepository.GuardarAsync(remoto);
+                await _localResidenteRepository.CreateResidenteAsync(remoto);
             }
         }
     }
+
+  
 
 
     public async Task SincronizarPremiosAsync()
@@ -180,6 +182,7 @@ public class SincronizacionFirebaseService
         }
     }
 
+  
     public async Task SincronizarRegistrosDeReciclajeAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -187,20 +190,19 @@ public class SincronizacionFirebaseService
         {
             return;
         }
-        var registrosLocales = await _localReciclajeRepository.GetRegistrosNoSincronizadosAsync();
-
-        foreach (var registro in registrosLocales)
+        var registrosNoSincronizados = await _localReciclajeRepository.GetRegistrosNoSincronizadosAsync();
+        foreach (var registro in registrosNoSincronizados)
         {
             var exito = await _firebaseReciclajeService.GuardarRegistroFirestoreAsync(
                 registro, registro.IDRegistroDeReciclaje.ToString(), idToken);
 
             if (exito)
             {
+                registro.Sincronizado = true;
                 await _localReciclajeRepository.MarcarComoSincronizadoAsync(registro.IDRegistroDeReciclaje);
             }
         }
     }
-
 
 
     public async Task SincronizarRegistroReciclajeDesdeFirebaseAsync()
@@ -238,6 +240,8 @@ public class SincronizacionFirebaseService
             await _firebaseCanjeService.GuardarCanjeFirestoreAsync(canje, canje.IdCanje.ToString(), idToken);
         }
     }
+
+
     
     public async Task SincronizarVehiculosAsync()
     {
@@ -254,6 +258,8 @@ public class SincronizacionFirebaseService
         }
     }
 
+
+
     public async Task SincronizarTicketsAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -268,6 +274,7 @@ public class SincronizacionFirebaseService
             }
         }
     }
+
 
     public async Task SincronizarTicketsDesdeFirebaseAsync()
     {
@@ -290,6 +297,7 @@ public class SincronizacionFirebaseService
         }
     }
 
+
     public async Task SincronizarResiduosAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -304,6 +312,7 @@ public class SincronizacionFirebaseService
             }
         }
     }
+
 
     public async Task SincronizarResiduoDesdeFirebaseAsync()
     {
@@ -369,6 +378,7 @@ public class SincronizacionFirebaseService
     // Si alguna vez necesitas sincronizar todo manualmente
     public async Task SincronizarTodoAsync()
     {
+        // Subida
         await SincronizarResidentesAsync();
         await SincronizarPremiosAsync();
         await SincronizarConvertidoresAsync();
@@ -378,5 +388,14 @@ public class SincronizacionFirebaseService
         await SincronizarTicketsAsync();
         await SincronizarResiduosAsync();
         await SincronizarCategoriasResiduoAsync();
+
+        // Descarga desde Firebase (para mantener local actualizado)
+        //await SincronizarResidentesDesdeFirebaseAsync();
+        //await SincronizarRegistroReciclajeDesdeFirebaseAsync();
+        //await SincronizarConvertidoresDesdeFirebaseAsync();
+        //await SincronizarTicketsDesdeFirebaseAsync();
+        //await SincronizarResiduoDesdeFirebaseAsync();
+        //await SincronizarCategoriaResiduoDesdeFirebaseAsync();
     }
+
 }

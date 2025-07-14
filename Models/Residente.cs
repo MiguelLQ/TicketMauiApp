@@ -4,7 +4,7 @@ namespace MauiFirebase.Models;
 public class Residente
 {
     [PrimaryKey]
-    public string UidResidente { get; set; }= Guid.NewGuid().ToString();
+    public string IdResidente { get; set; }= Guid.NewGuid().ToString();
     [NotNull]
     public string? NombreResidente { get; set; }
     [NotNull]
@@ -21,5 +21,4 @@ public class Residente
     [NotNull]
     public int TicketsTotalesGanados { get; set; } = 0;
     public bool Sincronizado { get; set; } = false;
-
 }

@@ -29,7 +29,7 @@ public class ResidenteRepository : IResidenteRepository
     public async Task<Residente?> GetResidenteByIdAsync(string id)
     {
         return await _database.Database!.Table<Residente>()
-                                        .Where(r => r.UidResidente == id) // Ahora IdResidente también es int
+                                        .Where(r => r.IdResidente == id) 
                                         .FirstOrDefaultAsync();
     }
 
@@ -38,21 +38,20 @@ public class ResidenteRepository : IResidenteRepository
         return await _database.Database!.UpdateAsync(residente);
     }
 
-    public async Task<bool> ChangeEstadoResidenteAsync(string id) // O string id, según tu IdResidente
+    public async Task<bool> ChangeEstadoResidenteAsync(string id) 
     {
         Residente? residente = await _database.Database!.Table<Residente>()
-                                               .Where(r => r.UidResidente == id)
+                                               .Where(r => r.IdResidente == id)
                                             .FirstOrDefaultAsync();
         if (residente == null)
         {
-            return false; // Residente no encontrado
+            return false;
         }
 
-        // --- Lógica para alternar el estado booleano ---
-        residente.EstadoResidente = !residente.EstadoResidente; // Simplemente invierte el valor
+        residente.EstadoResidente = !residente.EstadoResidente; 
 
         int result = await _database.Database!.UpdateAsync(residente);
-        return result > 0; // Retorna true si la actualización fue exitosa
+        return result > 0;
     }
     public async Task<List<Residente>> SearchResidentesByNameOrApellidoAsync(string searchText)
     {
@@ -78,7 +77,7 @@ public class ResidenteRepository : IResidenteRepository
         }
 
         return await _database.Database!.Table<Residente>()
-                                        .Where(r => r.DniResidente == dni) // Búsqueda exacta para DNI
+                                        .Where(r => r.DniResidente == dni) 
                                         .FirstOrDefaultAsync();
     }
 
@@ -101,16 +100,16 @@ public class ResidenteRepository : IResidenteRepository
     {
         return await _database.Database!.Table<Residente>().CountAsync();
     }
-    public async Task<Residente?> ObtenerPorUidAsync(string uid)
+    public async Task<Residente?> ObtenerPorUidAsync(string idResidente)
     {
         return await _database.Database!.Table<Residente>()
-            .Where(r => r.UidResidente == uid)
+            .Where(r => r.IdResidente == idResidente)
             .FirstOrDefaultAsync();
     }
     public async Task<bool> ExisteAsync(string id)
     {
         var lista = await GetAllResidentesAsync();
-        return lista.Any(r => r.UidResidente.ToString() == id);
+        return lista.Any(r => r.IdResidente.ToString() == id);
     }
 
     public async Task<List<Residente>> GetResidentesNoSincronizadosAsync()

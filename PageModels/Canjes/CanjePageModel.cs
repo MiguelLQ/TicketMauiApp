@@ -72,7 +72,7 @@ public partial class CanjePageModel : ObservableObject
             var canjes = await _canjeRepository.GetAllCanjeAync();
             var premios = await _premioRepository.GetAllPremiosAsync();
             var residentes = await _residenteRepository.GetAllResidentesAsync();
-            var residentesDict = residentes.ToDictionary(r => r.UidResidente);
+            var residentesDict = residentes.ToDictionary(r => r.IdResidente);
             var premiosDict = premios.ToDictionary(r => r.IdPremio);
 
             foreach (var item in canjes)

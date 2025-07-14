@@ -50,7 +50,6 @@ public partial class ResidenteListPageModel : ObservableValidator
     }
 
 
-
     [RelayCommand]
     public async Task CargarResidentesAsync()
     {
@@ -60,13 +59,11 @@ public partial class ResidenteListPageModel : ObservableValidator
 
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
-                await _sincronizador!.SincronizarResiduoDesdeFirebaseAsync();
+                await _sincronizador!.SincronizarResidentesDesdeFirebaseAsync();
             }
             ListaResidentes.Clear();
-
             var residentes = await _residenteRepository.GetAllResidentesAsync();
             _respaldoResidentes = residentes.ToList();
-
             AplicarFiltros();
         }
         finally
@@ -74,6 +71,7 @@ public partial class ResidenteListPageModel : ObservableValidator
             IsBusy = false;
         }
     }
+
 
     [RelayCommand]
     public void AplicarFiltros()

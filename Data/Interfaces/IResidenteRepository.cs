@@ -18,5 +18,4 @@ public interface IResidenteRepository
     Task MarcarComoSincronizadoAsync(string id);
     Task<List<Residente>> GetResidentesNoSincronizadosAsync();
     Task<bool> ExisteAsync(string id);
-
 }

@@ -8,4 +8,7 @@ public interface IVehiculoRepository
     Task<int> UpdateVehiculoAsync(Vehiculo vehiculo);
     Task<bool> ChangeEstadoVehiculoAsync(string id);
     Task<Vehiculo?> GetVehiculoPorPlacaAsync(string placa);
+    Task<List<Vehiculo>> ObtenerVehiculosPorDiaAsync(DayOfWeek dia);
+
+
 }

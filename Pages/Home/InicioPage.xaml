@@ -72,66 +72,60 @@
                 </Frame>
 
 
-
-                <Frame
-                    Background="{DynamicResource CardBackgroundBrush}"
-                    BorderColor="Transparent"
-                    Padding="10"
-                    WidthRequest="350"
-                    HeightRequest="180"
-                    CornerRadius="20"
-                    HasShadow="False"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start"
-                    Margin="0,120,0,0">
+                <Frame Background="{DynamicResource CardBackgroundBrush}"
+       BorderColor="Transparent"
+       Padding="10"
+       WidthRequest="350"
+       HeightRequest="180"
+       CornerRadius="20"
+       HasShadow="False"
+       HorizontalOptions="Center"
+       VerticalOptions="Start"
+       Margin="0,120,0,0">
 
                     <VerticalStackLayout Spacing="10">
-                        <Label 
-                            Text="Vehículos con ruta para hoy" 
-                            FontAttributes="Bold" 
-                            FontSize="18"
-                            HorizontalOptions="Center"/>
+                        <Label Text="Vehículos con ruta para hoy"
+               FontAttributes="Bold"
+               FontSize="18"
+               HorizontalOptions="Center"/>
 
-                        <Grid ColumnSpacing="10" RowSpacing="10" HorizontalOptions="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="130" />
-                                <ColumnDefinition Width="130" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                        <!-- Lista dinámica -->
+                        <CollectionView ItemsSource="{Binding VehiculosHoy}"
+                        HeightRequest="120"
+                        HorizontalOptions="Center">
+                            <CollectionView.ItemsLayout>
+                                <!-- 2 columnas, ajuste automático de filas -->
+                                <GridItemsLayout Orientation="Vertical"
+                                 Span="2" />
+                            </CollectionView.ItemsLayout>
 
-                            <!-- Fila 1 -->
-                            <Frame Grid.Column="0" Grid.Row="0" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent" >
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: ABC-123" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
-                                    <Label Text="Marca: Toyota" FontSize="12" TextColor="{StaticResource Gray500}"/>
-                                </VerticalStackLayout>
-                            </Frame>
-                            <Frame Grid.Column="1" Grid.Row="0" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: XYQ-456" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}" />
-                                    <Label Text="Marca: Nissan" FontSize="12" TextColor="{StaticResource Gray500}" />
-                                </VerticalStackLayout>
-                            </Frame>
-
-                            <!-- Fila 2 -->
-                            <Frame Grid.Column="0" Grid.Row="1" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: LMN-789" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
-                                    <Label Text="Marca: Kia" FontSize="12" TextColor="{StaticResource Gray500}"/>
-                                </VerticalStackLayout>
-                            </Frame>
-                            <Frame Grid.Column="1" Grid.Row="1" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: DEF-321" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
-                                    <Label Text="Marca: Hyundai" FontSize="12" TextColor="{StaticResource Gray500}" />
-                                </VerticalStackLayout>
-                            </Frame>
-                        </Grid>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Background="{StaticResource EntryBackgroundBrush}"
+                           CornerRadius="10"
+                           Padding="8"
+                           Margin="4"
+                           HeightRequest="50"
+                           BorderColor="Transparent">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="PLACA: {Binding PlacaVehiculo}"
+                                   FontAttributes="Bold"
+                                   FontSize="13"
+                                   TextColor="{StaticResource Gray500}" />
+                                            <Label Text="Marca: {Binding MarcaVehiculo}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}" />
+                                            <Label Text="Conductor: {Binding Nombre}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}" />
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </VerticalStackLayout>
                 </Frame>
+
 
             </Grid>
             

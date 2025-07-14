@@ -177,8 +177,7 @@ public partial class CrearCanjePageModel : ObservableObject
                 FechaCanje = FechaDeCanjeo,
                 EstadoCanje = EstadoCanje,
                 IdPremio = PremioSeleccionado.IdPremio,
-                IdResidente = ResidenteEncontrado.IdResidente
-                IdResidente = ResidenteEncontrado.UidResidente,
+                IdResidente = ResidenteEncontrado.IdResidente,
                 Sincronizado = false
             };
             await _canjeRepository.CreateCanjeAsync(nuevoCanje);

@@ -17,4 +17,6 @@ public class Vehiculo
     [JsonIgnore]
     public string Nombre { get; set; } = string.Empty;
     public bool Sincronizado { get; set; } = false;
+   
+
 }

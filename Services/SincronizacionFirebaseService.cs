@@ -258,6 +258,7 @@ public class SincronizacionFirebaseService
     }
 
 
+
     public async Task SincronizarTicketsAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();

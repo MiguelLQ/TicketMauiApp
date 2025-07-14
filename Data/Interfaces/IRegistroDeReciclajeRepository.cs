@@ -15,5 +15,6 @@ namespace MauiFirebase.Data.Interfaces
         Task MarcarComoSincronizadoAsync(string id);
         Task<List<RegistroDeReciclaje>> GetRegistrosNoSincronizadosAsync();
         Task<bool> ExisteAsync(string id);
+
     }
 }

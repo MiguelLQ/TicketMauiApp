@@ -261,4 +261,5 @@ public partial class AgregarRegistroPageModel : ObservableObject
             BuscarPorDniCommand.Execute(null);
         }
     }
+
 }

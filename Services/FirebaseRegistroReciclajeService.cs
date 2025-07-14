@@ -121,4 +121,5 @@ public class FirebaseRegistroReciclajeService
 
         return lista.OrderByDescending(r => r.FechaRegistro).Take(cantidad).ToList();
     }
+
 }

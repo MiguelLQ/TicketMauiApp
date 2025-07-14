@@ -25,6 +25,7 @@ public class RegistroDeReciclaje
     [Ignore]
     public string? NombreResiduo { get; set; }
     public bool Sincronizado { get; set; } = false;
+
 }
 
 public class ReciclajePorCategoria

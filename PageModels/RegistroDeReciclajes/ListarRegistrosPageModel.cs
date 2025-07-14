@@ -174,4 +174,6 @@ public partial class ListarRegistrosPageModel : ObservableObject
             MostrarMensaje = true;
         }
     }
+
+
 }

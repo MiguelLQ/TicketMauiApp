@@ -101,4 +101,5 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
         var lista = await ObtenerTodosAsync();
         return lista.Any(c => c.IDRegistroDeReciclaje.ToString() == id);
     }
+
 }

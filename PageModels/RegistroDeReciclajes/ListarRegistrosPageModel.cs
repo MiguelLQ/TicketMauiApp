@@ -20,6 +20,8 @@ public partial class ListarRegistrosPageModel : ObservableObject
 
     [ObservableProperty]
     private bool _mostrarMensaje = false;
+    [ObservableProperty]
+    private bool _isBusy;
 
     private List<RegistroDeReciclaje> _todosLosRegistros = new();
 
@@ -70,49 +72,59 @@ public partial class ListarRegistrosPageModel : ObservableObject
     [RelayCommand]
     public async Task CargarRegistroResiduoAsync()
     {
-        ListaRegistrosResiduo.Clear();
-        _todosLosRegistros.Clear();
-
-        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        try
         {
-            await _sincronizar!.SincronizarRegistroReciclajeDesdeFirebaseAsync();
-        }
-
-        var registros = await _registroRepository.ObtenerTodosAsync();
-        var residentes = await _residenteRepository.GetAllResidentesAsync();
-        var residuos = await _residuoRepository.GetAllResiduoAync();
-
-        if (registros != null && residentes != null && residuos != null)
-        {   
-            var residentesDict = residentes.ToDictionary(r => r.IdResidente);
-            var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
-
-            foreach (var item in registros)
+            ListaRegistrosResiduo.Clear();
+            _todosLosRegistros.Clear();
+            IsBusy = true;
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
-                if (residentesDict.TryGetValue(item.IdResidente!, out var residente))
-                {
-                    item.NombreResidente = residente.NombreResidente;
-                    item.ApellidoResidente = residente.ApellidoResidente;
-                    item.DniResidente = residente.DniResidente;
-                }
+                await _sincronizar!.SincronizarRegistroReciclajeDesdeFirebaseAsync();
+                await _sincronizar.SincronizarResidentesDesdeFirebaseAsync();
+                await _sincronizar.SincronizarResiduoDesdeFirebaseAsync();
+            }
+            var registros = await _registroRepository.ObtenerTodosAsync();
+            var residentes = await _residenteRepository.GetAllResidentesAsync();
+            var residuos = await _residuoRepository.GetAllResiduoAync();
 
-                if (residuosDict.TryGetValue(item.IdResiduo!, out var residuo))
-                {
-                    item.NombreResiduo = residuo.NombreResiduo;
-                }
+            if (registros != null && residentes != null && residuos != null)
+            {
+                var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+                var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
 
-                _todosLosRegistros.Add(item);
+                foreach (var item in registros)
+                {
+                    if (residentesDict.TryGetValue(item.IdResidente!, out var residente))
+                    {
+                        item.NombreResidente = residente.NombreResidente;
+                        item.ApellidoResidente = residente.ApellidoResidente;
+                        item.DniResidente = residente.DniResidente;
+                    }
+
+                    if (residuosDict.TryGetValue(item.IdResiduo!, out var residuo))
+                    {
+                        item.NombreResiduo = residuo.NombreResiduo;
+                    }
+
+                    _todosLosRegistros.Add(item);
+                    ListaRegistrosResiduo.Add(item);
+                }
             }
 
-            foreach (var r in _todosLosRegistros)
-            {
-                ListaRegistrosResiduo.Add(r);
-            }
+            MensajeBusqueda = string.Empty;
+            MostrarMensaje = false;
         }
-
-        MensajeBusqueda = string.Empty;
-        MostrarMensaje = false;
+        catch (Exception ex)
+        {
+            MensajeBusqueda = "Error al cargar registros: " + ex.Message;
+            MostrarMensaje = true;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
+
 
     [RelayCommand]
     public void FiltrarPorDni()

@@ -18,14 +18,13 @@ public class RegistroDeReciclaje
     public int TicketsGanados { get; set; }
     [Ignore]
     public string? NombreResidente { get; set; }
-    [Ignore] 
+    [Ignore]
     public string? ApellidoResidente { get; set; }
     [Ignore]
     public string? DniResidente { get; set; }
     [Ignore]
     public string? NombreResiduo { get; set; }
-    public bool Sincronizado { get; set; } = false;// para sincronizar con Firebase
-
+    public bool Sincronizado { get; set; } = false;
 }
 
 public class ReciclajePorCategoria

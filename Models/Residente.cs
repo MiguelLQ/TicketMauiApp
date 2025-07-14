@@ -5,8 +5,6 @@ public class Residente
 {
     [PrimaryKey]
     public string IdResidente { get; set; }= Guid.NewGuid().ToString();
-    [Indexed]
-    public string? Uid { get; set; }
     [NotNull]
     public string? NombreResidente { get; set; }
     [NotNull]

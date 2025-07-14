@@ -14,7 +14,6 @@ public class FirebaseResidenteService
         {
             fields = new
             {
-                Uid = new { stringValue = residente.Uid },
                 NombreResidente = new { stringValue = residente.NombreResidente },
                 ApellidoResidente = new { stringValue = residente.ApellidoResidente },
                 DniResidente = new { stringValue = residente.DniResidente },
@@ -58,7 +57,6 @@ public class FirebaseResidenteService
             var residente = new Residente
             {
                 IdResidente = doc.GetProperty("name").ToString().Split('/').Last(),
-                Uid = fields.GetProperty("Uid").GetProperty("stringValue").GetString(),
                 NombreResidente = fields.GetProperty("NombreResidente").GetProperty("stringValue").GetString(),
                 ApellidoResidente = fields.GetProperty("ApellidoResidente").GetProperty("stringValue").GetString(),
                 DniResidente = fields.GetProperty("DniResidente").GetProperty("stringValue").GetString(),

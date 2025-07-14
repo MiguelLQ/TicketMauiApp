@@ -17,16 +17,18 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
 
     public async Task GuardarAsync(RegistroDeReciclaje registro)
     {
-        if (registro.IDRegistroDeReciclaje != null)
+        var existente = await ObtenerPorIdAsync(registro.IDRegistroDeReciclaje);
+        if (existente == null)
         {
-            await _database.Database!.UpdateAsync(registro);
+            registro.FechaRegistro = DateTime.Now;
+            await _database.Database!.InsertAsync(registro);
         }
         else
         {
-            registro.FechaRegistro = DateTime.Now; // Registrar fecha actual
-            await _database.Database!.InsertAsync(registro);
+            await _database.Database!.UpdateAsync(registro);
         }
     }
+
 
     public async Task<List<RegistroDeReciclaje>> ObtenerTodosAsync()
     {

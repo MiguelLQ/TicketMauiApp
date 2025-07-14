@@ -100,7 +100,6 @@ namespace MauiFirebase.PageModels.Registers
 
             var nuevoResidente = new Residente
             {
-                Uid = uid,
                 NombreResidente = Nombre,
                 ApellidoResidente = Apellido,
                 DniResidente = Dni,

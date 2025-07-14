@@ -69,7 +69,6 @@ public class FirebaseCiudadanoService
 
         return new Residente
         {
-            Uid = uid,
             NombreResidente = fields.GetProperty("nombreResidente").GetProperty("stringValue").GetString(),
             ApellidoResidente = fields.GetProperty("apellidoResidente").GetProperty("stringValue").GetString(),
             DniResidente = fields.GetProperty("dniResidente").GetProperty("stringValue").GetString(),

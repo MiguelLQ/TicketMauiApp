@@ -195,7 +195,7 @@ public partial class CrearCanjePageModel : ObservableObject
                 }
             }
             await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
-            
+            await _sincronizacionFirebaseService.SincronizarCanjesAsync();
             await Shell.Current.GoToAsync("..");
         }
     }

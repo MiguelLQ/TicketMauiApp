@@ -14,6 +14,7 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IAlertaHelper _alertaHelper;
     private readonly IUsuarioRepository _usuarioRepositorio;
+    private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
 
     public ObservableCollection<Usuario> ListaUsuario { get; } = new();
 
@@ -48,11 +49,13 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     public EditarVehiculoPageModel(
         IVehiculoRepository vehiculoRepository,
         IAlertaHelper alertaHelper,
-        IUsuarioRepository usuarioRepositorio)
+        IUsuarioRepository usuarioRepositorio,
+        SincronizacionFirebaseService sincronizacionFirebaseService)
     {
         _vehiculoRepository = vehiculoRepository;
         _alertaHelper = alertaHelper;
         _usuarioRepositorio = usuarioRepositorio;
+        _sincronizacionFirebaseService = sincronizacionFirebaseService;
     }
 
     public async Task InicializarAsync()
@@ -97,11 +100,13 @@ public partial class EditarVehiculoPageModel : ObservableValidator
             ModeloVehiculo = ModeloVehiculo!,
             EstadoVehiculo = EstadoVehiculo,
             IdUsuario = UsuarioSeleccionado!.Uid,
-            FechaRegistroVehiculo = DateTime.Now
+            FechaRegistroVehiculo = DateTime.Now,
+            Sincronizado = false
         };
 
         await _vehiculoRepository.UpdateVehiculoAsync(vehiculo);
         await _alertaHelper.ShowSuccessAsync("Vehículo actualizado correctamente.");
+        await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
         await Shell.Current.GoToAsync("..");
     }
 

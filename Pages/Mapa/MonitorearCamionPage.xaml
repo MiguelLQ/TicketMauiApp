@@ -20,6 +20,7 @@
                   IsScrollEnabled="True"
                   IsTrafficEnabled="True"
                   MapType="Hybrid"
-                  VerticalOptions="Fill"/>
+                  VerticalOptions="Fill"
+                  HorizontalOptions="Fill" />
     </Grid>
 </ContentPage>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MauiFirebase.Data.Interfaces;
+﻿using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
 using SQLite;
@@ -22,7 +17,7 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
 
     public async Task GuardarAsync(RegistroDeReciclaje registro)
     {
-        if (registro.IDRegistroDeReciclaje != 0)
+        if (registro.IDRegistroDeReciclaje != null)
         {
             await _database.Database!.UpdateAsync(registro);
         }
@@ -38,13 +33,13 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
         return await _database.Database!.Table<RegistroDeReciclaje>().ToListAsync();
     }
 
-    public async Task<RegistroDeReciclaje?> ObtenerPorIdAsync(int id)
+    public async Task<RegistroDeReciclaje?> ObtenerPorIdAsync(string id)
     {
         return await _database.Database!.Table<RegistroDeReciclaje>()
                      .FirstOrDefaultAsync(r => r.IDRegistroDeReciclaje == id);
     }
 
-    public async Task EliminarAsync(int id)
+    public async Task EliminarAsync(string id)
     {
         var registro = await ObtenerPorIdAsync(id);
         if (registro != null)
@@ -80,5 +75,28 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
     {
         return await _database.Database!.Table<RegistroDeReciclaje>()
             .OrderByDescending(r => r.FechaRegistro).Take(3).ToListAsync();
+    }
+
+    public async Task MarcarComoSincronizadoAsync(string id)
+    {
+        var item = await _database.Database!.FindAsync<RegistroDeReciclaje>(id);
+        if (item != null)
+        {
+            item.Sincronizado = true;
+            await _database.Database.UpdateAsync(item);
+        }
+    }
+
+    public async Task<List<RegistroDeReciclaje>> GetRegistrosNoSincronizadosAsync()
+    {
+        return await _database.Database!.Table<RegistroDeReciclaje>()
+            .Where(c => !c.Sincronizado)
+            .ToListAsync();
+    }
+
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var lista = await ObtenerTodosAsync();
+        return lista.Any(c => c.IDRegistroDeReciclaje.ToString() == id);
     }
 }

@@ -1,12 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using MauiFirebase.Data.Interfaces;
+﻿using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
-using SQLite;
 
 namespace MauiFirebase.Data.Repositories;
 
@@ -32,7 +26,7 @@ public class ResidenteRepository : IResidenteRepository
         return await _database.Database!.Table<Residente>().ToListAsync();
     }
 
-    public async Task<Residente?> GetResidenteByIdAsync(int id)
+    public async Task<Residente?> GetResidenteByIdAsync(string id)
     {
         return await _database.Database!.Table<Residente>()
                                         .Where(r => r.IdResidente == id) // Ahora IdResidente también es int
@@ -44,13 +38,8 @@ public class ResidenteRepository : IResidenteRepository
         return await _database.Database!.UpdateAsync(residente);
     }
 
-    public async Task<bool> ChangeEstadoResidenteAsync(int id) // O string id, según tu IdResidente
+    public async Task<bool> ChangeEstadoResidenteAsync(string id) // O string id, según tu IdResidente
     {
-        if (id <= 0)
-        {
-            return false;
-        }
-
         Residente? residente = await _database.Database!.Table<Residente>()
                                                .Where(r => r.IdResidente == id)
                                             .FirstOrDefaultAsync();
@@ -118,6 +107,26 @@ public class ResidenteRepository : IResidenteRepository
             .Where(r => r.Uid == uid)
             .FirstOrDefaultAsync();
     }
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var lista = await GetAllResidentesAsync();
+        return lista.Any(r => r.IdResidente.ToString() == id);
+    }
 
+    public async Task<List<Residente>> GetResidentesNoSincronizadosAsync()
+    {
+        return await _database.Database!.Table<Residente>()
+            .Where(c => !c.Sincronizado)
+            .ToListAsync();
+    }
 
+    public async Task MarcarComoSincronizadoAsync(string id)
+    {
+        var item = await _database.Database!.FindAsync<Residente>(id);
+        if (item != null)
+        {
+            item.Sincronizado = true;
+            await _database.Database.UpdateAsync(item);
+        }
+    }
 }

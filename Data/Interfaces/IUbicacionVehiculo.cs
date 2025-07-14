@@ -3,8 +3,8 @@
 namespace MauiFirebase.Data.Interfaces;
 public interface IUbicacionVehiculo
 {
-    Task<UbicacionVehiculo?> ObtenerUbicacionAsync(int idVehiculo);
+    Task<UbicacionVehiculo?> ObtenerUbicacionAsync(string idVehiculo);
     Task GuardarUbicacionAsync(UbicacionVehiculo ubicacion);
-    Task EliminarUbicacionAsync(int idVehiculo);
+    Task EliminarUbicacionAsync(string idVehiculo);
     Task<List<UbicacionVehiculo>> ObtenerTodasAsync();
 }

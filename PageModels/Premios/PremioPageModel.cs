@@ -5,8 +5,6 @@ using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using MauiFirebase.Pages.Premio;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-
 namespace MauiFirebase.PageModels.Premios;
 
 public partial class PremioPageModel : ObservableObject
@@ -78,7 +76,7 @@ public partial class PremioPageModel : ObservableObject
 
 
     [RelayCommand]
-    public async Task CambiarEstadoPremioAsync(int id)
+    public async Task CambiarEstadoPremioAsync(string id)
     {
         await _premioRepository.ChangePremioStatusAsync(id);
         await CargarPremiosAsync();
@@ -130,7 +128,7 @@ public partial class PremioPageModel : ObservableObject
                     var imagenYaExiste = !string.IsNullOrEmpty(existente?.FotoPremio) && File.Exists(existente.FotoPremio);
                     if (imagenYaExiste)
                     {
-                        premioRemoto.FotoPremio = existente.FotoPremio; // usar la imagen local
+                        premioRemoto.FotoPremio = existente!.FotoPremio; // usar la imagen local
                     }
                     else
                     {

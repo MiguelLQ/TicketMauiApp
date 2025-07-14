@@ -7,8 +7,8 @@ namespace MauiFirebase.Data.Interfaces
     {
         Task<List<Canje>> GetAllCanjeAync();
         Task<Canje> CreateCanjeAsync(Canje canje);
-        Task<Canje?> GetCanjeIdAsync(int id);
+        Task<Canje?> GetCanjeIdAsync(string id);
         Task<int> UpdateCanjeAsync(Canje canje);
-        Task<bool> ChangeEstadoCanjeAsync(int id);
+        Task<bool> ChangeEstadoCanjeAsync(string id);
     }
 }

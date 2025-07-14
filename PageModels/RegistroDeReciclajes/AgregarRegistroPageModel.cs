@@ -16,6 +16,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
     private readonly IResiduoRepository _residuoRepository;
     private readonly IConvertidorRepository _convertidorRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService _sincronizador;
 
     public ObservableCollection<Residuo> ListaResiduos { get; } = new();
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
@@ -39,6 +40,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
     public AgregarRegistroPageModel(IRegistroDeReciclajeRepository registroRepository,
                                     IResidenteRepository residenteRepository,
                                     IResiduoRepository residuoRepository,
+                                    SincronizacionFirebaseService sincronizador,
                                     IConvertidorRepository convertidorRepository,
                                     IAlertaHelper alertaHelper)
     {
@@ -47,6 +49,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
         _residuoRepository = residuoRepository;
         _convertidorRepository = convertidorRepository;
         _alertaHelper = alertaHelper;
+        _sincronizador = sincronizador;
     }
 
     [RelayCommand]
@@ -82,11 +85,11 @@ public partial class AgregarRegistroPageModel : ObservableObject
         var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
         foreach (var item in registros)
         {
-            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+            if (residentesDict.TryGetValue(item.IdResidente!, out var residente))
             {
                 item.NombreResidente = residente.NombreResidente;
             }
-            if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
+            if (residuosDict.TryGetValue(item.IdResiduo!, out var residuo))
             {
                 item.NombreResiduo = residuo.NombreResiduo;
             }
@@ -103,16 +106,10 @@ public partial class AgregarRegistroPageModel : ObservableObject
             return;
         }
 
-        // ✅ 1. Obtener valor del residuo
         int valorResiduo = ResiduoSeleccionado.ValorResiduo;
-
-        // ✅ 2. Calcular valor total
         decimal valorTotal = PesoKilogramo * valorResiduo;
 
-        // ✅ 3. Obtener todos los convertidores activos
         var convertidores = await _convertidorRepository.GetAllConvertidorAync();
-
-        // ✅ 4. Buscar el rango correspondiente
         int ticketsCalculados = 0;
         foreach (var convertidor in convertidores.Where(c => c.EstadoConvertidor))
         {
@@ -123,29 +120,40 @@ public partial class AgregarRegistroPageModel : ObservableObject
             }
         }
 
-        // ✅ 5. Asignar tickets
         TicketsGanados = ticketsCalculados;
 
-        // ✅ 6. Crear y guardar registro
         var nuevoRegistro = new RegistroDeReciclaje
         {
             IdResidente = ResidenteSeleccionado.IdResidente,
             IdResiduo = ResiduoSeleccionado.IdResiduo,
             PesoKilogramo = PesoKilogramo,
             TicketsGanados = TicketsGanados,
-            FechaRegistro = DateTime.Now
+            FechaRegistro = DateTime.Now,
+            Sincronizado = false
         };
 
         await _registroRepository.GuardarAsync(nuevoRegistro);
 
-        // ✅ 7. Sumar al total del residente
         ResidenteSeleccionado.TicketsTotalesGanados += TicketsGanados;
         await _residenteRepository.GuardarAsync(ResidenteSeleccionado);
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            try
+            {
+                await _sincronizador.SincronizarRegistrosDeReciclajeAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Registro guardado localmente. Se sincronizará automáticamente cuando haya internet.");
+            }
+        }
 
         LimpiarFormulario();
         await _alertaHelper.ShowSuccessAsync("Registro guardado correctamente.");
         await Shell.Current.GoToAsync("..");
     }
+
+
 
     [RelayCommand]
     public async Task BuscarPorDniAsync()

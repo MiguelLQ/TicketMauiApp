@@ -40,6 +40,7 @@ public partial class CrearVehiculoPageModel : ObservableValidator
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IAlertaHelper _alertaHelper;
 
+
     public CrearVehiculoPageModel(
         IVehiculoRepository vehiculoRepository,
         IUsuarioRepository usuarioRepository,

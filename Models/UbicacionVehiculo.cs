@@ -5,13 +5,13 @@ namespace MauiFirebase.Models;
 public class UbicacionVehiculo
 {
     [PrimaryKey]
-    public int IdUbicacionVehiculo { get; set; }
+    public string IdUbicacionVehiculo { get; set; } = Guid.NewGuid().ToString();
     [Indexed]
-    public int IdVehiculo { get; set; }
+    public string? IdVehiculo { get; set; }
     public double Latitud { get; set; }
     public double Longitud { get; set; }
     [JsonIgnore]
-    public string? Placa { get; set; } 
+    public string? Placa { get; set; }
     [JsonIgnore]
-    public string? NombreConductor { get; set; } 
+    public string? NombreConductor { get; set; }
 }

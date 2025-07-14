@@ -13,7 +13,6 @@ using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.usuario;
 using MauiFirebase.Pages.Register;
 using MauiFirebase.Pages.Vehiculo;
-using MauiFirebase.Pages.Trabajador;
 using MauiFirebase.Pages.Home;
 using MauiFirebase.Pages.RegistroCiudadano;
 using MauiFirebase.Pages.Mapa;
@@ -38,9 +37,6 @@ namespace MauiFirebase
             //vehiculo
             Routing.RegisterRoute(nameof(EditarVehiculoPage), typeof(EditarVehiculoPage));
             Routing.RegisterRoute(nameof(AgregarVehiculoPage), typeof(AgregarVehiculoPage));
-            //trabajador
-            Routing.RegisterRoute(nameof(EditarTrabajadorPage), typeof(EditarTrabajadorPage));
-            Routing.RegisterRoute(nameof(AgregarTrabajadorPage), typeof(AgregarTrabajadorPage));
             //convertidor
             Routing.RegisterRoute(nameof(EditarConvertidorPage), typeof(EditarConvertidorPage));
             Routing.RegisterRoute(nameof(AgregarConvertidorPage), typeof(AgregarConvertidorPage));

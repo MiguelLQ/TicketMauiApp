@@ -11,11 +11,13 @@ public partial class ResidenteFormPageModel : ObservableValidator
 {
     private readonly IResidenteRepository _residenteRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService _sincronizar;
 
-    public ResidenteFormPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
+    public ResidenteFormPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService sincronizar)
     {
         _residenteRepository = residenteRepository;
         _alertaHelper = alertaHelper;
+        _sincronizar = sincronizar;
     }
 
     // ====================== PROPIEDADES ======================
@@ -69,15 +71,28 @@ public partial class ResidenteFormPageModel : ObservableValidator
             CorreoResidente = CorreoResidente,
             DireccionResidente = DireccionResidente,
             EstadoResidente = EstadoResidente,
-            FechaRegistroResidente = DateTime.Now
+            FechaRegistroResidente = DateTime.Now,
+            Sincronizado = false,
         };
 
-        
+
         await _residenteRepository.CreateResidenteAsync(nuevo);
+
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            try
+            {
+                await _sincronizar.SincronizarResidentesAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Guardado localmente. Se sincronizará cuando haya internet.");
+            }
+        }
         await _alertaHelper.ShowSuccessAsync("Ciudadano Registrado Correctamente.");
-        
+
         await Shell.Current.GoToAsync("..");
-        
+
     }
     public void LimpiarFormulario()
     {
@@ -150,7 +165,7 @@ public partial class ResidenteFormPageModel : ObservableValidator
     }
 
     // =======================================================
-                    // ERRORES PARA XAML
+    // ERRORES PARA XAML
     // ========================================================
 
     public string? NombreResidenteError => GetErrors(nameof(NombreResidente)).FirstOrDefault()?.ErrorMessage;

@@ -54,7 +54,7 @@ public class FirebaseVehiculoService
             var fields = doc.GetProperty("fields");
             var vehiculo = new Vehiculo
             {
-                IdVehiculo = int.Parse(doc.GetProperty("name").ToString().Split('/').Last()),
+                IdVehiculo = doc.GetProperty("name").ToString().Split('/').Last(),
                 IdUsuario = fields.GetProperty("IdUsuario").GetProperty("stringValue").GetString(),
                 PlacaVehiculo = fields.GetProperty("PlacaVehiculo").GetProperty("stringValue").GetString() ?? string.Empty,
                 MarcaVehiculo = fields.GetProperty("MarcaVehiculo").GetProperty("stringValue").GetString() ?? string.Empty,

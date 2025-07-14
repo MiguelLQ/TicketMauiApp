@@ -1,19 +1,18 @@
 ﻿using SQLite;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace MauiFirebase.Models;
 public class Residuo
 {
-    [PrimaryKey, AutoIncrement]
-    public int IdResiduo { get; set; }
+    [PrimaryKey]
+    public string IdResiduo { get; set; }= Guid.NewGuid().ToString();
     [Indexed]
-    public int IdCategoriaResiduo { get; set; }
+    public string? IdCategoriaResiduo { get; set; }
     [NotNull]
     public string? NombreResiduo { get; set; }
     [NotNull]
     public bool EstadoResiduo { get; set; } = true;
     public int ValorResiduo { get; set; }
-    [Ignore] // SQLite ignora esta propiedad
+    [Ignore] 
     public string? NombreCategoria { get; set; }
+    // Indica si el registro está sincronizado con Firestore
+    public bool Sincronizado { get; set; } = false;
 }

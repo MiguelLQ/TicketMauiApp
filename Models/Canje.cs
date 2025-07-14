@@ -6,21 +6,21 @@ namespace MauiFirebase.Models
 {
     public class Canje
     {
-        [PrimaryKey, AutoIncrement]
-        public int IdCanje { get; set; }
+        [PrimaryKey]
+        public string IdCanje { get; set; }= Guid.NewGuid().ToString();
         [Indexed]
-        public int IdResidente { get; set; }
+        public string? IdResidente { get; set; }
         [NotNull]
-        public int IdPremio { get; set; }
+        public string? IdPremio { get; set; }
         [NotNull]
         public DateTime FechaCanje { get; set; }
         [NotNull]
         public bool EstadoCanje { get; set; } = true;
-        [Ignore] // SQLite ignores this property
+        [Ignore] 
         public string? NombreResidente { get; set; }
-        [Ignore] // SQLite ignores this property
+        [Ignore] 
         public string? ApellidoResidente { get; set; }
-        [Ignore] // SQLite ignores this property
+        [Ignore] 
         public string? NombrePremio { get; set; }
         [Ignore]
         public string? DescripcionPremio { get; set; }

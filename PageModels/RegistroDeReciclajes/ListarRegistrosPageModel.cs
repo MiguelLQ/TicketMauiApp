@@ -3,8 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.RegistroDeReciclajes;
 
@@ -28,12 +26,17 @@ public partial class ListarRegistrosPageModel : ObservableObject
     private readonly IRegistroDeReciclajeRepository _registroRepository;
     private readonly IResidenteRepository _residenteRepository;
     private readonly IResiduoRepository _residuoRepository;
+    private readonly SincronizacionFirebaseService _sincronizar;
 
-    public ListarRegistrosPageModel(IRegistroDeReciclajeRepository registroRepository, IResidenteRepository residenteRepository, IResiduoRepository residuoRepository)
+    public ListarRegistrosPageModel(IRegistroDeReciclajeRepository registroRepository, 
+        IResidenteRepository residenteRepository, 
+        IResiduoRepository residuoRepository, 
+        SincronizacionFirebaseService sincronizar)
     {
         _registroRepository = registroRepository;
         _residenteRepository = residenteRepository;
         _residuoRepository = residuoRepository;
+        _sincronizar = sincronizar;
     }
 
     [RelayCommand]
@@ -70,25 +73,30 @@ public partial class ListarRegistrosPageModel : ObservableObject
         ListaRegistrosResiduo.Clear();
         _todosLosRegistros.Clear();
 
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            await _sincronizar!.SincronizarRegistroReciclajeDesdeFirebaseAsync();
+        }
+
         var registros = await _registroRepository.ObtenerTodosAsync();
         var residentes = await _residenteRepository.GetAllResidentesAsync();
         var residuos = await _residuoRepository.GetAllResiduoAync();
 
         if (registros != null && residentes != null && residuos != null)
-        {
+        {   
             var residentesDict = residentes.ToDictionary(r => r.IdResidente);
             var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
 
             foreach (var item in registros)
             {
-                if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+                if (residentesDict.TryGetValue(item.IdResidente!, out var residente))
                 {
                     item.NombreResidente = residente.NombreResidente;
                     item.ApellidoResidente = residente.ApellidoResidente;
                     item.DniResidente = residente.DniResidente;
                 }
 
-                if (residuosDict.TryGetValue(item.IdResiduo, out var residuo))
+                if (residuosDict.TryGetValue(item.IdResiduo!, out var residuo))
                 {
                     item.NombreResiduo = residuo.NombreResiduo;
                 }

@@ -54,7 +54,7 @@ public partial class VehiculoPageModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task CambiarEstadoVehiculoAsync(int id)
+    public async Task CambiarEstadoVehiculoAsync(string id)
     {
         await _vehiculoRepository.ChangeEstadoVehiculoAsync(id);
         await _alertaHelper.ShowSuccessAsync("Se cambió el estado del vehículo correctamente.");

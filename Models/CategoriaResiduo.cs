@@ -4,15 +4,16 @@ namespace MauiFirebase.Models;
 
 public class CategoriaResiduo
 {
-    [PrimaryKey,AutoIncrement]
-    public int IdCategoriaResiduo { get; set; }
+    [PrimaryKey]
+    public string IdCategoriaResiduo { get; set; } = Guid.NewGuid().ToString();
     [Indexed]
-    public int IdTicket { get; set; }
+    public string? IdTicket { get; set; }
     [NotNull]
     public string? NombreCategoria { get; set; }
     [NotNull]
     public bool EstadoCategoriaResiduo { get; set; }
-    [Ignore] // ← importante para que SQLite la ignore
+    [Ignore] 
     public Ticket? Ticket { get; set; }
-
+    // Indica si el registro está sincronizado con Firestore
+    public bool Sincronizado { get; set; } = false;
 }

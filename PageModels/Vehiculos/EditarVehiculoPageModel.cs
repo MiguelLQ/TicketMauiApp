@@ -18,7 +18,7 @@ public partial class EditarVehiculoPageModel : ObservableValidator
     public ObservableCollection<Usuario> ListaUsuario { get; } = new();
 
     [ObservableProperty]
-    private int idVehiculo;
+    private string? idVehiculo;
 
     [ObservableProperty]
     [Required(ErrorMessage = "La placa es obligatoria.")]

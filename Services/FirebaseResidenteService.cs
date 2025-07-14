@@ -57,7 +57,7 @@ public class FirebaseResidenteService
             var fields = doc.GetProperty("fields");
             var residente = new Residente
             {
-                IdResidente = int.Parse(doc.GetProperty("name").ToString().Split('/').Last()),
+                IdResidente = doc.GetProperty("name").ToString().Split('/').Last(),
                 Uid = fields.GetProperty("Uid").GetProperty("stringValue").GetString(),
                 NombreResidente = fields.GetProperty("NombreResidente").GetProperty("stringValue").GetString(),
                 ApellidoResidente = fields.GetProperty("ApellidoResidente").GetProperty("stringValue").GetString(),
@@ -66,7 +66,8 @@ public class FirebaseResidenteService
                 DireccionResidente = fields.GetProperty("DireccionResidente").GetProperty("stringValue").GetString(),
                 EstadoResidente = fields.GetProperty("EstadoResidente").GetProperty("booleanValue").GetBoolean(),
                 FechaRegistroResidente = DateTime.Parse(fields.GetProperty("FechaRegistroResidente").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
-                TicketsTotalesGanados = int.Parse(fields.GetProperty("TicketsTotalesGanados").GetProperty("integerValue").GetString() ?? "0")
+                TicketsTotalesGanados = int.Parse(fields.GetProperty("TicketsTotalesGanados").GetProperty("integerValue").GetString() ?? "0"),
+                Sincronizado = true
             };
             lista.Add(residente);
         }

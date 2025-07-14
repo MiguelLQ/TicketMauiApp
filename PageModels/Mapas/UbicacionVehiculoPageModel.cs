@@ -6,8 +6,9 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Timer = System.Timers.Timer;
-using Microsoft.Maui.Devices.Sensors;
+
 
 namespace MauiFirebase.PageModels.Mapas;
 
@@ -18,7 +19,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
     public ObservableCollection<Vehiculo> ListaVehiculos { get; } = new();
     public ObservableCollection<Pin> MapaPins { get; } = new();
-    private readonly Dictionary<int, Pin> _pinPorVehiculo = new();
+    private readonly Dictionary<string, Pin> _pinPorVehiculo = new();
     public ObservableCollection<Polyline> Rutas { get; } = new();
 
     private Timer? _timer;
@@ -66,7 +67,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
         foreach (var ubicacion in ubicaciones)
         {
-            if (vehiculosDict.TryGetValue(ubicacion.IdVehiculo, out var vehiculo))
+            if (vehiculosDict.TryGetValue(ubicacion.IdVehiculo!, out var vehiculo))
             {
                 ubicacion.Placa = vehiculo.PlacaVehiculo;
                 ubicacion.NombreConductor = vehiculo.Nombre;
@@ -147,22 +148,23 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
         return null;
     }
-
     public async Task ActualizarUbicacionesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-
             ErrorMessage = null;
 
             var lista = await _ubicacionVehiculo.ObtenerTodasAsync();
 
-            if (cancellationToken.IsCancellationRequested) return;
+            if (cancellationToken.IsCancellationRequested)
+                return;
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 Ubicaciones.Clear();
-                var idsActuales = new HashSet<int>(lista.Select(u => u.IdVehiculo));
+
+                var idsActuales = new HashSet<string>(lista.Select(u => u.IdVehiculo!));
+
                 var pinsParaEliminar = _pinPorVehiculo.Keys
                     .Where(id => !idsActuales.Contains(id))
                     .ToList();
@@ -180,21 +182,21 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
                 {
                     Ubicaciones.Add(u);
 
-                    if (_pinPorVehiculo.TryGetValue(u.IdVehiculo, out var existingPin))
+                    if (_pinPorVehiculo.TryGetValue(u.IdVehiculo!, out var existingPin))
                     {
                         existingPin.Location = new Location(u.Latitud, u.Longitud);
                     }
                     else
                     {
-                        var pin = new Pin
+                        var nuevoPin = new Pin
                         {
                             Label = $"Vehículo {u.IdVehiculo}",
                             Location = new Location(u.Latitud, u.Longitud),
                             Address = $"Lat: {u.Latitud}, Lng: {u.Longitud}"
                         };
 
-                        _pinPorVehiculo[u.IdVehiculo] = pin;
-                        MapaPins.Add(pin);
+                        _pinPorVehiculo[u.IdVehiculo!] = nuevoPin;
+                        MapaPins.Add(nuevoPin);
                     }
                 }
 
@@ -206,6 +208,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ErrorMessage = $"Error al cargar ubicaciones: {ex.Message}";
         }
     }
+
+
+
 
     private DateTime ultimaNotificacion = DateTime.MinValue;
     private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
@@ -259,7 +264,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             InitializeTimer();
         }
 
-        if (!_timer.Enabled)
+        if (!_timer!.Enabled)
         {
             if (_cts.IsCancellationRequested)
             {

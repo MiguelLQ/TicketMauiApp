@@ -52,7 +52,7 @@
                 <Label Text="Estado" TextColor="{DynamicResource Gray500}" />
                     <Switch IsToggled="{Binding EstadoCategoriaResiduo}" />
 
-                    <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
                     <Button 
                         Text="Guardar"
                         Command="{Binding GuardarNuevaCategoriaCommand}"
@@ -75,8 +75,6 @@
                         WidthRequest="140"
                         CornerRadius="8" />
                 </HorizontalStackLayout>
-
-
             </VerticalStackLayout>
         </Border>
     </AbsoluteLayout>

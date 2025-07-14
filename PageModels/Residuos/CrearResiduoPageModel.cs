@@ -32,12 +32,14 @@ public partial class CrearResiduoPageModel : ObservableValidator
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService _sincronizar;
 
-    public CrearResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
+    public CrearResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService sincronizar)
     {
         _residuoRepository = residuoRepository;
         _categoriaResiduoRepository = categoriaResiduoRepository;
         _alertaHelper = alertaHelper;
+        _sincronizar = sincronizar;
     }
 
     [RelayCommand]
@@ -69,10 +71,23 @@ public partial class CrearResiduoPageModel : ObservableValidator
             NombreResiduo = NombreResiduo!,
             EstadoResiduo = EstadoResiduo,
             ValorResiduo = ValorResiduo!.Value,
-            IdCategoriaResiduo = CategoriaResiduoSeleccionada!.IdCategoriaResiduo
+            IdCategoriaResiduo = CategoriaResiduoSeleccionada!.IdCategoriaResiduo,
+            Sincronizado = false
         };
 
         await _residuoRepository.CreateResiduoAsync(nuevo);
+
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            try
+            {
+                await _sincronizar.SincronizarResiduosAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Guardado localmente. Se sincronizará cuando haya internet.");
+            }
+        }
         await _alertaHelper.ShowSuccessAsync("Residuo creado correctamente.");
         LimpiarFormulario();
         await Shell.Current.GoToAsync("..");

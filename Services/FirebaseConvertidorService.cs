@@ -51,7 +51,7 @@ public class FirebaseConvertidorService
             var fields = doc.GetProperty("fields");
             var convertidor = new Convertidor
             {
-                IdConvertidor = int.Parse(doc.GetProperty("name").ToString().Split('/').Last()),
+                IdConvertidor = doc.GetProperty("name").ToString().Split('/').Last(),
                 ValorMin = int.Parse(fields.GetProperty("ValorMin").GetProperty("integerValue").GetString() ?? "0"),
                 ValorMax = int.Parse(fields.GetProperty("ValorMax").GetProperty("integerValue").GetString() ?? "0"),
                 NumeroTicket = int.Parse(fields.GetProperty("NumeroTicket").GetProperty("integerValue").GetString() ?? "0"),

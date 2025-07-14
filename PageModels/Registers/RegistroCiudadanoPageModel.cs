@@ -1,12 +1,8 @@
-﻿using System.Buffers.Text;
-using System.Threading.Tasks;
+﻿
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
-using MauiFirebase.Services;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage;
 
 namespace MauiFirebase.PageModels.Registers
 {

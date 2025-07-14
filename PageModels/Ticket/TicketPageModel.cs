@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Pages.Ticket;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace MauiFirebase.PageModels.Ticket
 {
@@ -14,6 +15,7 @@ namespace MauiFirebase.PageModels.Ticket
         private IClosePopup? _popupCloser; // 🔧 Instancia UI del popup actual
         private readonly ITicketRepository _ticketRepository;
         private readonly IAlertaHelper _alertaHelper;
+        private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
 
         public ObservableCollection<Models.Ticket> Tickets { get; set; } = new();
 
@@ -39,7 +41,7 @@ namespace MauiFirebase.PageModels.Ticket
                 _ticketSeleccionado = value;
                 if (value != null)
                 {
-                    ColorTicket = value.ColorTicket;
+                    ColorTicket = value.ColorTicket!;
                     EstadoTicket = value.EstadoTicket;
                 }
                 OnPropertyChanged();
@@ -63,39 +65,42 @@ namespace MauiFirebase.PageModels.Ticket
         public ICommand MostrarAgregarTicketCommand => new Command(MostrarAgregarPopup);
         public ICommand GuardarNuevoTicketCommand => new Command(async () => await GuardarNuevoTicketAsync());
 
-        public TicketPageModel(ITicketRepository ticketRepository, IAlertaHelper alertaHelper)
+        public TicketPageModel(ITicketRepository ticketRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService sincronizacionFirebaseService)
         {
             _ticketRepository = ticketRepository;
             _alertaHelper = alertaHelper;
 
             LoadTicketsCommand = new Command(async () => await LoadTicketsAsync());
             AddTicketCommand = new Command(async () => await AddTicketAsync());
-            ChangeEstadoCommand = new Command<int>(async id => await ChangeEstadoAsync(id));
+            ChangeEstadoCommand = new Command<string>(async id => await ChangeEstadoAsync(id));
+            _sincronizacionFirebaseService = sincronizacionFirebaseService;
             EditTicketCommand = new Command<Models.Ticket>(async ticket => await OnEditTicket(ticket));
 
             _ = LoadTicketsAsync();
-            
         }
 
         public async Task LoadTicketsAsync()
         {
-            if (IsBusy) return;
-            IsBusy = true;
-
             try
             {
+                IsBusy = true;
+                if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                {
+                    await _sincronizacionFirebaseService!.SincronizarTicketsDesdeFirebaseAsync();
+
+                }
                 Tickets.Clear();
                 var tickets = await _ticketRepository.GetAllTicketAync();
                 foreach (var t in tickets)
+                {
                     Tickets.Add(t);
+                }
             }
             finally
             {
                 IsBusy = false;
             }
         }
-
-        // Establece el popup actual para poder cerrarlo desde el ViewModel
         public void SetPopupCloser(IClosePopup popup)
         {
             _popupCloser = popup;
@@ -115,24 +120,43 @@ namespace MauiFirebase.PageModels.Ticket
 
         private async Task GuardarNuevoTicketAsync()
         {
-            if(string.IsNullOrWhiteSpace(ColorTicket))
-    {
+            if (string.IsNullOrWhiteSpace(ColorTicket))
+            {
                 await _alertaHelper.ShowErrorAsync("El color del ticket es obligatorio.");
                 return;
             }
+
             var nuevo = new Models.Ticket
             {
                 ColorTicket = ColorTicket,
                 EstadoTicket = EstadoTicket,
-                FechaRegistro = DateTime.Now
+                FechaRegistro = DateTime.Now,
+                Sincronizado = false
             };
 
             await _ticketRepository.CreateTicketAsync(nuevo);
             await LoadTicketsAsync();
             LimpiarFormulario();
 
-            _popupCloser?.ClosePopup(); // ✅ Cerramos el popup actual
+            _popupCloser?.ClosePopup();
             await _alertaHelper.ShowSuccessAsync("Ticket agregado correctamente.");
+
+            await IntentarSincronizarAsync();
+        }
+
+        private async Task IntentarSincronizarAsync()
+        {
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                try
+                {
+                    await _sincronizacionFirebaseService.SincronizarTicketsAsync();
+                }
+                catch
+                {
+                    await _alertaHelper.ShowWarningAsync("Cambios guardados localmente. Se sincronizarán cuando haya conexión.");
+                }
+            }
         }
 
         private async Task AddTicketAsync()
@@ -162,15 +186,19 @@ namespace MauiFirebase.PageModels.Ticket
 
             TicketSeleccionado.ColorTicket = ColorTicket;
             TicketSeleccionado.EstadoTicket = EstadoTicket;
+            TicketSeleccionado.Sincronizado = false;
 
             await _ticketRepository.UpdateTicketAsync(TicketSeleccionado);
             await LoadTicketsAsync();
-            await _alertaHelper.ShowSuccessAsync("Ticket editado correctamente.");
-            _popupCloser?.ClosePopup();
 
+            _popupCloser?.ClosePopup();
+            await _alertaHelper.ShowSuccessAsync("Ticket editado correctamente.");
+
+            await IntentarSincronizarAsync();
         }
 
-        private async Task ChangeEstadoAsync(int id)
+
+        private async Task ChangeEstadoAsync(string id)
         {
             await _ticketRepository.ChangeEstadoTicketAsync(id);
             await LoadTicketsAsync();

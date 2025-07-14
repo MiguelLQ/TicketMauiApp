@@ -5,8 +5,8 @@ using System.Text.Json.Serialization;
 namespace MauiFirebase.Models;
 public class Vehiculo
 {
-    [PrimaryKey, AutoIncrement]
-    public int IdVehiculo { get; set; }
+    [PrimaryKey]
+    public string IdVehiculo { get; set; }= Guid.NewGuid().ToString();
     [Indexed]
     public string? IdUsuario { get; set; }
     public string PlacaVehiculo { get; set; } = string.Empty;

@@ -16,7 +16,7 @@ public partial class EditarRutaPageModel : ObservableValidator
     private readonly IVehiculoRepository _vehiculoRepository;
 
     [ObservableProperty]
-    private int idRuta;
+    private string? _idRuta;
 
     [ObservableProperty]
     private Ruta? _rutaSeleccionada;

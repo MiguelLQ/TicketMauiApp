@@ -17,7 +17,7 @@ public partial class EditarCanjePageModel : ObservableObject
     public ObservableCollection<Premio> ListaPremios { get; } = new();
 
     [ObservableProperty] 
-    private int idCanje;
+    private string? _idCanje;
     [ObservableProperty] 
     private Premio? _premioSeleccionado;
     [ObservableProperty] 
@@ -38,7 +38,7 @@ public partial class EditarCanjePageModel : ObservableObject
     public async Task InicializarAsync()
     {
         await CargarPremiosAsync();
-        CanjeSeleccionado = await _canjeRepository.GetCanjeIdAsync(IdCanje);
+        CanjeSeleccionado = await _canjeRepository.GetCanjeIdAsync(IdCanje!);
 
         if (CanjeSeleccionado != null)
         {
@@ -53,17 +53,21 @@ public partial class EditarCanjePageModel : ObservableObject
         ListaPremios.Clear();
         var premios = await _premioRepository.GetAllPremiosAsync();
         foreach (var p in premios)
+        {
             ListaPremios.Add(p);
+        }
     }
 
     [RelayCommand]
     public async Task GuardarCambiosAsync()
     {
         if (CanjeSeleccionado == null)
+        {
             return;
+        }
 
         CanjeSeleccionado.EstadoCanje = EstadoCanje;
-        CanjeSeleccionado.IdPremio = PremioSeleccionado?.IdPremio ?? 0;
+        CanjeSeleccionado.IdPremio = PremioSeleccionado?.IdPremio ?? string.Empty;
 
         await _canjeRepository.UpdateCanjeAsync(CanjeSeleccionado);
         await _alertaHelper.ShowSuccessAsync("Canje actualizado correctamente.");

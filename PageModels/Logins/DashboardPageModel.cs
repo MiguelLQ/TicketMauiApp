@@ -84,16 +84,16 @@ namespace MauiFirebase.PageModels.Logins
             var registros = await _registroDeReciclajeRepository.UltimosTresRegistros();
             var residentes = await _residenteRepository.GetAllResidentesAsync();
             var residuos = await _residuoRepository.GetAllResiduoAync();
-            var residentesDict = residentes.ToDictionary(r => r.UidResidente);
+            var residentesDict = residentes.ToDictionary(r => r.IdResidente);
             var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
 
             foreach (var reg in registros)
             {
-                if (residentesDict.TryGetValue(reg.IdResidente, out var residente))
+                if (residentesDict.TryGetValue(reg.IdResidente!, out var residente))
                 {
                     reg.NombreResidente = residente.NombreResidente;
                 }
-                if (residuosDict.TryGetValue(reg.IdResiduo, out var residuo))
+                if (residuosDict.TryGetValue(reg.IdResiduo!, out var residuo))
                 {
                     reg.NombreResiduo = residuo.NombreResiduo;
                 }

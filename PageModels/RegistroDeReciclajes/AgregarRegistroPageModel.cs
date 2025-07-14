@@ -81,7 +81,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
         var registros = await _registroRepository.ObtenerTodosAsync();
         var residentes = await _residenteRepository.GetAllResidentesAsync();
         var residuos = await _residuoRepository.GetAllResiduoAync();
-        var residentesDict = residentes.ToDictionary(r => r.UidResidente);
+        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
         var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
         foreach (var item in registros)
         {
@@ -131,7 +131,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
 
         var nuevoRegistro = new RegistroDeReciclaje
         {
-            IdResidente = ResidenteSeleccionado.UidResidente,
+            IdResidente = ResidenteSeleccionado.IdResidente,
             IdResiduo = ResiduoSeleccionado.IdResiduo,
             PesoKilogramo = PesoKilogramo,
             TicketsGanados = TicketsGanados,

@@ -132,7 +132,7 @@ public class SincronizacionFirebaseService
         foreach (var residente in residentesNoSincronizados)
         {
             var exito = await _firebaseResidenteService.GuardarResidenteFirestoreAsync(
-                residente, residente.UidResidente!, idToken);
+                residente, residente.IdResidente!, idToken);
 
             if (exito)
             {
@@ -155,7 +155,7 @@ public class SincronizacionFirebaseService
 
         foreach (var remoto in residenteRemotos)
         {
-            var existe = await _localResidenteRepository.ExisteAsync(remoto.UidResidente);
+            var existe = await _localResidenteRepository.ExisteAsync(remoto.IdResidente);
             if (!existe)
             {
                 remoto.Sincronizado = true;

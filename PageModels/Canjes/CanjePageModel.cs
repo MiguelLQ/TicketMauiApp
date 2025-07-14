@@ -11,19 +11,19 @@ public partial class CanjePageModel : ObservableObject
     private readonly ICanjeRepository _canjeRepository;
     private readonly IPremioRepository _premioRepository;
     private readonly IResidenteRepository _residenteRepository;
-    private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
+    private readonly SincronizacionFirebaseService _sincronizar;
     public ObservableCollection<Canje> ListaCanjes { get; } = new();
     public ObservableCollection<Premio> ListaPremios { get; } = new();
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
 
     [ObservableProperty] private bool _isBusy;
 
-    public CanjePageModel(ICanjeRepository canjeRepository, IPremioRepository premioRepository, IResidenteRepository residenteRepository, SincronizacionFirebaseService sincronizacionFirebaseService)
+    public CanjePageModel(ICanjeRepository canjeRepository, IPremioRepository premioRepository, IResidenteRepository residenteRepository, SincronizacionFirebaseService sincronizar)
     {
         _canjeRepository = canjeRepository;
         _premioRepository = premioRepository;
         _residenteRepository = residenteRepository;
-        _sincronizacionFirebaseService = sincronizacionFirebaseService;
+        _sincronizar = sincronizar;
     }
 
     [RelayCommand]
@@ -32,9 +32,9 @@ public partial class CanjePageModel : ObservableObject
         try
         {
             IsBusy = true;
-            if (_sincronizacionFirebaseService != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            if (_sincronizar != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
-                await _sincronizacionFirebaseService.SincronizarCanjesAsync();
+                await _sincronizar.SincronizarCanjeAsync();
             }
             await CargarResidentesAsync();
             await CargarCanjeAsync();
@@ -68,6 +68,10 @@ public partial class CanjePageModel : ObservableObject
         try
         {
             IsBusy = true;
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizar!.SincronizarResidentesDesdeFirebaseAsync();
+            }
             ListaCanjes.Clear();
             var canjes = await _canjeRepository.GetAllCanjeAync();
             var premios = await _premioRepository.GetAllPremiosAsync();

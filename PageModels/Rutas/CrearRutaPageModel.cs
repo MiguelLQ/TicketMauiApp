@@ -17,7 +17,7 @@ public partial class CrearRutaPageModel : ObservableValidator
 
     public ObservableCollection<string> DiasOpciones { get; } = new()
     {
-        "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"
+        "lunes", "martes", "miércoles", "jueves", "viernes", "sabado", "domingo"
     };
 
     [ObservableProperty]

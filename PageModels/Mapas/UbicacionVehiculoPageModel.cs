@@ -6,6 +6,8 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
+using System.Text.Json;
+
 using System.Linq;
 using Timer = System.Timers.Timer;
 
@@ -16,11 +18,18 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 {
     private readonly IUbicacionVehiculo _ubicacionVehiculo;
     private readonly IVehiculoRepository _vehiculoRepository;
+    private readonly IRutaRepository _rutaRepository;
+
+    private readonly RutaService _rutaService = new();
+
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
     public ObservableCollection<Vehiculo> ListaVehiculos { get; } = new();
     public ObservableCollection<Pin> MapaPins { get; } = new();
     private readonly Dictionary<string, Pin> _pinPorVehiculo = new();
     public ObservableCollection<Polyline> Rutas { get; } = new();
+    private readonly Dictionary<int, Pin> _pinPorVehiculo = new();
+    public ObservableCollection<MapElement> RutasEnMapa { get; } = new();
+
 
     private Timer? _timer;
     private bool _isUpdating = false;
@@ -36,10 +45,11 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private int pollingInterval = 5000;
 
 
-    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, IVehiculoRepository vehiculoRepository, RutaService rutaService)
+    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, IVehiculoRepository vehiculoRepository, IRutaRepository rutaRepository)
     {
         _ubicacionVehiculo = ubicacionVehiculo;
         _vehiculoRepository = vehiculoRepository;
+        _rutaRepository = rutaRepository;
         StartPolling();
     }
 
@@ -76,6 +86,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         }
         AgregarPinSimuladoAndahuaylas();
     }
+
 
 
     public void AgregarPinSimuladoAndahuaylas()
@@ -214,6 +225,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
     private DateTime ultimaNotificacion = DateTime.MinValue;
     private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
+
     public async void VerificarProximidad()
     {
         var ubicacionUsuario = await ObtenerUbicacionUsuarioAsync();
@@ -254,6 +266,56 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         {
             ultimaNotificacion = DateTime.MinValue;
         }
+    }
+
+    public async Task CargarRutaDelDiaAsync(string dia)
+    {
+        try
+        {
+            RutasEnMapa.Clear();
+
+            var rutas = await _rutaRepository.GetAllRutaAsync();
+            var rutaDelDia = rutas.FirstOrDefault(r =>
+                r.DiasDeRecoleccion?.ToLower().Contains(dia.ToLower()) == true);
+
+            if (rutaDelDia == null || string.IsNullOrWhiteSpace(rutaDelDia.PuntosRutaJson))
+                return;
+
+            var puntos = JsonSerializer.Deserialize<List<LatLng>>(rutaDelDia.PuntosRutaJson);
+            if (puntos == null || puntos.Count < 2)
+                return;
+
+            // Convertir a Locations
+            var locations = puntos.Select(p => new Location(p.lat, p.lng)).ToList();
+
+            // Obtener ruta optimizada desde Google
+            var rutaGoogle = await _rutaService.ObtenerRutaGoogleAsync(locations);
+
+            if (rutaGoogle == null || rutaGoogle.Count == 0)
+                return;
+
+            var polyline = new Polyline
+            {
+                StrokeColor = Colors.Red,
+                StrokeWidth = 5
+            };
+
+            foreach (var punto in rutaGoogle)
+            {
+                polyline.Geopath.Add(punto);
+            }
+
+            RutasEnMapa.Add(polyline);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Error al cargar ruta: " + ex.Message;
+        }
+    }
+    private class LatLng
+    {
+        public double lat { get; set; }
+        public double lng { get; set; }
     }
 
     [RelayCommand]

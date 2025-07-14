@@ -20,6 +20,7 @@ public partial class MonitorearCamionPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
         await _viewModel.CargarUbicacionAsync();
 
         map.Pins.Clear();
@@ -28,12 +29,29 @@ public partial class MonitorearCamionPage : ContentPage
         {
             map.Pins.Add(pin);
         }
+
         var andahuaylasPin = _viewModel.MapaPins.FirstOrDefault();
         if (andahuaylasPin != null)
         {
             map.MoveToRegion(MapSpan.FromCenterAndRadius(andahuaylasPin.Location, Distance.FromKilometers(0.5)));
         }
+
+        // Cargar la ruta según el día actual (en español)
+        var diaActual = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("es-PE"));
+        await _viewModel.CargarRutaDelDiaAsync(diaActual);
+
+        // Agregar la polilínea al mapa
+        map.MapElements.Clear();
+
+        foreach (var ruta in _viewModel.RutasEnMapa)
+        {
+            map.MapElements.Add(ruta);
+        }
+
+        await DisplayAlert("Ruta", $"Se agregaron {_viewModel.RutasEnMapa.Count} tramos al mapa.", "OK");
+
     }
+
 
     private void MapaPins_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

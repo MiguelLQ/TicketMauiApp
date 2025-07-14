@@ -14,7 +14,7 @@ public interface IResidenteRepository
     Task GuardarAsync(Residente residenteEncontrado);
     Task<int> TotalResidentes();
     //  para trear datos locales segun su uid
-    Task<Residente?> ObtenerPorUidAsync(string uid);
+    Task<Residente?> ObtenerPorIdAsync(string uid);
     Task MarcarComoSincronizadoAsync(string id);
     Task<List<Residente>> GetResidentesNoSincronizadosAsync();
     Task<bool> ExisteAsync(string id);

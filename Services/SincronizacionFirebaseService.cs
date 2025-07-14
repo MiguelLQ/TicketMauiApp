@@ -226,23 +226,28 @@ public class SincronizacionFirebaseService
         }
     }
 
-    public async Task SincronizarCanjesAsync()
+    public async Task SincronizarCanjeAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
-        if (idToken == null) 
-        { 
-            return; 
-        }
-
-        var canjesLocales = await _localCanjeRepository.GetAllCanjeAync();
-        foreach (var canje in canjesLocales)
+        if (idToken == null)
         {
-            await _firebaseCanjeService.GuardarCanjeFirestoreAsync(canje, canje.IdCanje.ToString(), idToken);
+            return;
+        }
+        var canjeNoSincronizados = await _localCanjeRepository.GetCanjesNoSincronizadosAsync();
+
+        foreach (var canje in canjeNoSincronizados)
+        {
+            var exito = await _firebaseCanjeService.GuardarCanjeFirestoreAsync(
+                canje, canje.IdCanje!, idToken);
+
+            if (exito)
+            {
+                canje.Sincronizado = true;
+                await _localCanjeRepository.UpdateCanjeAsync(canje);
+            }
         }
     }
 
-
-    
     public async Task SincronizarVehiculosAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -383,7 +388,7 @@ public class SincronizacionFirebaseService
         await SincronizarPremiosAsync();
         await SincronizarConvertidoresAsync();
         await SincronizarRegistrosDeReciclajeAsync();
-        await SincronizarCanjesAsync();
+        await SincronizarCanjeAsync();
         await SincronizarVehiculosAsync();
         await SincronizarTicketsAsync();
         await SincronizarResiduosAsync();

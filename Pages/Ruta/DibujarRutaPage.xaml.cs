@@ -92,8 +92,8 @@ public partial class DibujarRutaPage : ContentPage
 
         await DisplayAlert("Exportado", "Ruta exportada al campo JSON.", "OK");
 
-        // ? Regresa automáticamente a la pantalla anterior
-        await Navigation.PopAsync();
+        await Shell.Current.GoToAsync(nameof(AgregarRutaPage));
+
     }
 
     private void MoverMapa(double latDelta, double lngDelta)

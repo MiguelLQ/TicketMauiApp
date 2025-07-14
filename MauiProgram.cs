@@ -139,6 +139,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AgregarRutaPage>();
         builder.Services.AddSingleton<EditarRutaPage>();
         builder.Services.AddSingleton<ListarRutaPage>();
+        builder.Services.AddSingleton<DibujarRutaPage>();
         // usuario
 
         builder.Services.AddSingleton<IUsuarioRepository, UsuarioRepository>();

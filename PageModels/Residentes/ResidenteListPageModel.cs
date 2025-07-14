@@ -11,7 +11,7 @@ public partial class ResidenteListPageModel : ObservableValidator
 {
     private readonly IResidenteRepository _residenteRepository;
     private readonly IAlertaHelper _alertaHelper;
-
+    private readonly SincronizacionFirebaseService? _sincronizador;
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
 
     [ObservableProperty]
@@ -26,10 +26,11 @@ public partial class ResidenteListPageModel : ObservableValidator
 
     private List<Residente> _respaldoResidentes = new();
 
-    public ResidenteListPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper)
+    public ResidenteListPageModel(IResidenteRepository residenteRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService? sincronizador)
     {
         _residenteRepository = residenteRepository;
         _alertaHelper = alertaHelper;
+        _sincronizador = sincronizador;
     }
 
     // ===============================
@@ -56,6 +57,11 @@ public partial class ResidenteListPageModel : ObservableValidator
         try
         {
             IsBusy = true;
+
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador!.SincronizarResiduoDesdeFirebaseAsync();
+            }
             ListaResidentes.Clear();
 
             var residentes = await _residenteRepository.GetAllResidentesAsync();

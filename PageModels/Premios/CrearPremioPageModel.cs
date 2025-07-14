@@ -3,10 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
-using Microsoft.Maui.Storage;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.Premios;
 

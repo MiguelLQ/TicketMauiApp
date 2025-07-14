@@ -10,7 +10,7 @@ public class UbicacionVehiculoRepository : IUbicacionVehiculo
     {
         _database = database;
     }
-    public async Task EliminarUbicacionAsync(int idVehiculo)
+    public async Task EliminarUbicacionAsync(string idVehiculo)
     {
         var ubicacion = await _database.Database!.Table<UbicacionVehiculo>()
             .FirstOrDefaultAsync(u => u.IdVehiculo == idVehiculo);
@@ -31,7 +31,7 @@ public class UbicacionVehiculoRepository : IUbicacionVehiculo
 
     }
 
-    public async Task<UbicacionVehiculo?> ObtenerUbicacionAsync(int idVehiculo)
+    public async Task<UbicacionVehiculo?> ObtenerUbicacionAsync(string idVehiculo)
     {
         return await _database.Database!.Table<UbicacionVehiculo>()
             .FirstOrDefaultAsync(u => u.IdVehiculo == idVehiculo);

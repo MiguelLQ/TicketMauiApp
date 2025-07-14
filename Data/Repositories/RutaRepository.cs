@@ -13,7 +13,7 @@ public class RutaRepository : IRutaRepository
         _database = database;
     }
 
-    public async Task<bool> ChangeEstadoRutaAsync(int id)
+    public async Task<bool> ChangeEstadoRutaAsync(string id)
     {
         Ruta ruta = await _database.Database!.Table<Ruta>()
                           .Where(r => r.IdRuta == id)
@@ -42,7 +42,7 @@ public class RutaRepository : IRutaRepository
         return resultado;
     }
 
-    public Task<Ruta?> GetRutaIdAsync(int id)
+    public Task<Ruta?> GetRutaIdAsync(string id)
     {
         var resultado = _database.Database!.Table<Ruta>()
                           .Where(r => r.IdRuta == id)

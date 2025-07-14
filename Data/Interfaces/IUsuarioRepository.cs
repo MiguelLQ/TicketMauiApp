@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MauiFirebase.Models;
+﻿using MauiFirebase.Models;
 
-namespace MauiFirebase.Data.Interfaces
+namespace MauiFirebase.Data.Interfaces;
+
+public interface IUsuarioRepository
 {
-    public interface IUsuarioRepository
-    {
-        Task<List<Usuario>> GetUsuariosAsync();
-        Task<bool> AgregarUsuarioAsync(Usuario usuario);
-        Task<bool> EditarUsuarioLocalAsync(Usuario usuario);
-        Task<Usuario?> ObtenerUsuarioPorUidAsync(string uid);
-
-    }
+    Task<List<Usuario>> GetUsuariosAsync();
+    Task<bool> AgregarUsuarioAsync(Usuario usuario);
+    Task<bool> EditarUsuarioLocalAsync(Usuario usuario);
+    Task<Usuario?> ObtenerUsuarioPorUidAsync(string uid);
 }

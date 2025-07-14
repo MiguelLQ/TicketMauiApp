@@ -52,9 +52,9 @@ public class FirebaseCanjeService
             var fields = doc.GetProperty("fields");
             var canje = new Canje
             {
-                IdCanje = int.Parse(doc.GetProperty("name").ToString().Split('/').Last()),
-                IdResidente = int.Parse(fields.GetProperty("IdResidente").GetProperty("integerValue").GetString() ?? "0"),
-                IdPremio = int.Parse(fields.GetProperty("IdPremio").GetProperty("integerValue").GetString() ?? "0"),
+                IdCanje = doc.GetProperty("name").ToString().Split('/').Last(),
+                IdResidente = fields.GetProperty("IdResidente").GetProperty("stringValue").GetString() ?? string.Empty,
+                IdPremio = fields.GetProperty("IdPremio").GetProperty("stringValue").GetString() ?? string.Empty,
                 FechaCanje = DateTime.Parse(fields.GetProperty("FechaCanje").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
                 EstadoCanje = fields.GetProperty("EstadoCanje").GetProperty("booleanValue").GetBoolean()
             };

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace MauiFirebase.PageModels.Canjes;
 
@@ -62,13 +61,13 @@ public partial class CanjePageModel : ObservableObject
 
             foreach (var item in canjes)
             {
-                if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+                if (residentesDict.TryGetValue(item.IdResidente!, out var residente))
                 {
                     item.NombreResidente = residente.NombreResidente;
                     item.ApellidoResidente = residente.ApellidoResidente;
                 }
 
-                if (premiosDict.TryGetValue(item.IdPremio, out var premio))
+                if (premiosDict.TryGetValue(item.IdPremio!, out var premio))
                 {
                     item.NombrePremio = premio.NombrePremio;
                     item.DescripcionPremio = premio.NombrePremio;

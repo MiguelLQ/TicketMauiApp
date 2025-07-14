@@ -13,9 +13,10 @@ public partial class EditarConvertidorPageModel : ObservableValidator
 {
     private readonly IConvertidorRepository _convertidorRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService? _sincronizar;
     public ObservableCollection<Convertidor> ListaConversiones { get; } = new();
     [ObservableProperty]
-    private int _idConvertidor;
+    private string? _idConvertidor;
     [ObservableProperty]
     [Required(ErrorMessage = "El valor mínimo es obligatorio.")]
     [Range(1, int.MaxValue, ErrorMessage = "El valor mínimo debe ser un número positivo.")]
@@ -34,16 +35,17 @@ public partial class EditarConvertidorPageModel : ObservableValidator
     [ObservableProperty]
     private bool _estadoConvertidor = true;
 
-    public EditarConvertidorPageModel(IConvertidorRepository convertidorRepository, IAlertaHelper alertaHelper)
+    public EditarConvertidorPageModel(IConvertidorRepository convertidorRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService? sincronizar)
     {
         _alertaHelper = alertaHelper;
         _convertidorRepository = convertidorRepository;
+        _sincronizar = sincronizar;
     }
 
     public async Task InicializarAsync()
     {
         await CargarConvertidoresAsync();
-        var convertidor = await _convertidorRepository.GetConvertidorIdAsync(IdConvertidor);
+        var convertidor = await _convertidorRepository.GetConvertidorIdAsync(IdConvertidor!);
         if (convertidor != null)
         {
             ValorMin = convertidor.ValorMin;
@@ -68,15 +70,28 @@ public partial class EditarConvertidorPageModel : ObservableValidator
     {
         var convertidorActualizado = new Convertidor
         {
-            IdConvertidor = IdConvertidor,
+            IdConvertidor = IdConvertidor!,
             ValorMin = ValorMin!.Value,
             ValorMax = ValorMax!.Value,
             NumeroTicket = NumeroTicket!.Value,
-            EstadoConvertidor = EstadoConvertidor
+            EstadoConvertidor = EstadoConvertidor,
+            Sincronizado = false 
         };
 
         await _convertidorRepository.UpdateConvertidorAsync(convertidorActualizado);
         await _alertaHelper.ShowSuccessAsync("Convertidor actualizado correctamente.");
+
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && _sincronizar is not null)
+        {
+            try
+            {
+                await _sincronizar.SincronizarConvertidoresAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Cambios guardados localmente. Se sincronizarán cuando haya conexión.");
+            }
+        }
         await Shell.Current.GoToAsync("..");
     }
     public string? ValorMaxMayorQueValorMinError

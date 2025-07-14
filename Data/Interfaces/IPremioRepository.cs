@@ -11,8 +11,8 @@ public interface IPremioRepository
     Task SincronizarDesdeFirestoreAsync();
     Task<Premio> CreatePremioLocalAsync(Premio premio);
     Task<string> DescargarImagenLocalAsync(string urlRemota);
-    Task<Premio?> GetPremioByIdAsync(int id);
+    Task<Premio?> GetPremioByIdAsync(string id);
     Task<int> UpdatePremioAsync(Premio premio);
-    Task<bool> ChangePremioStatusAsync(int id);
+    Task<bool> ChangePremioStatusAsync(string id);
     Task<int> ObtenerCantidadPremios();
 }

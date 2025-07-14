@@ -1,8 +1,6 @@
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MauiFirebase.Data.Repositories;
 public class VehiculoRepository : IVehiculoRepository
@@ -13,7 +11,7 @@ public class VehiculoRepository : IVehiculoRepository
         _database = database;
     }
 
-    public async Task<bool> ChangeEstadoVehiculoAsync(int id)
+    public async Task<bool> ChangeEstadoVehiculoAsync(string id)
     {
         Vehiculo vehiculo = await _database.Database!.Table<Vehiculo>()
             .Where(v => v.IdVehiculo == id)
@@ -37,7 +35,7 @@ public class VehiculoRepository : IVehiculoRepository
         return resultado;
     }
 
-    public Task<Vehiculo?> GetVehiculoByIdAsync(int id)
+    public Task<Vehiculo?> GetVehiculoByIdAsync(string id)
     {
         var resultado = _database.Database!.Table<Vehiculo>()
             .Where(v => v.IdVehiculo == id)

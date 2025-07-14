@@ -3,9 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui.Storage;
 
 namespace MauiFirebase.PageModels.Premios;
 
@@ -16,7 +13,7 @@ public partial class EditarPremioPageModel : ObservableObject
     private readonly IAlertaHelper _alertaHelper;
 
     [ObservableProperty]
-    private int idPremio;
+    private string? _idPremio;
 
     [ObservableProperty]
     private string tituloPagina = "Editar Premio";
@@ -48,7 +45,7 @@ public partial class EditarPremioPageModel : ObservableObject
 
     public async Task InicializarAsync()
     {
-        PremioSeleccionado = await _premioRepository.GetPremioByIdAsync(IdPremio);
+        PremioSeleccionado = await _premioRepository.GetPremioByIdAsync(IdPremio!);
 
         if (PremioSeleccionado != null)
         {

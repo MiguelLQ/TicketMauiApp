@@ -34,7 +34,7 @@ public partial class ListarVehiculoPage : ContentPage
 
     private async void OnCambiarEstadoVehiculoClicked(object sender, EventArgs e)
     {
-        if (sender is Button btn && btn.CommandParameter is int id)
+        if (sender is Button btn && btn.CommandParameter is string id)
         {
             await _pageModel.CambiarEstadoVehiculoAsync(id);
         }

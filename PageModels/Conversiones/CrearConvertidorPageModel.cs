@@ -77,6 +77,7 @@ public partial class CrearConvertidorPageModel : ObservableValidator
             Sincronizado = false
         };
 
+        var conteo= await _convertidorRepository.GetAllConvertidorAync();
         await _convertidorRepository.CreateConvertidorAsync(nuevo);
 
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)

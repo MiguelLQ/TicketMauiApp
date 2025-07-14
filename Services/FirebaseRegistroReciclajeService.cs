@@ -59,9 +59,9 @@ public class FirebaseRegistroReciclajeService
             var fields = doc.GetProperty("fields");
             var registro = new RegistroDeReciclaje
             {
-                IDRegistroDeReciclaje = int.Parse(doc.GetProperty("name").ToString().Split('/').Last()),
-                IdResidente = int.Parse(fields.GetProperty("IdResidente").GetProperty("integerValue").GetString() ?? "0"),
-                IdResiduo = int.Parse(fields.GetProperty("IdResiduo").GetProperty("integerValue").GetString() ?? "0"),
+                IDRegistroDeReciclaje = doc.GetProperty("name").ToString().Split('/').Last(),
+                IdResidente = fields.GetProperty("IdResidente").GetProperty("stringValue").GetString() ?? string.Empty,
+                IdResiduo = fields.GetProperty("IdResiduo").GetProperty("integerValue").GetString() ?? string.Empty,
                 PesoKilogramo = decimal.Parse(fields.GetProperty("PesoKilogramo").GetProperty("doubleValue").GetString() ?? "0"),
                 FechaRegistro = DateTime.Parse(fields.GetProperty("FechaRegistro").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
                 TicketsGanados = int.Parse(fields.GetProperty("TicketsGanados").GetProperty("integerValue").GetString() ?? "0")
@@ -95,9 +95,9 @@ public class FirebaseRegistroReciclajeService
             var fields = doc.GetProperty("fields");
             var registro = new RegistroDeReciclaje
             {
-                IDRegistroDeReciclaje = int.Parse(doc.GetProperty("name").ToString().Split('/').Last()),
-                IdResidente = int.Parse(fields.GetProperty("IdResidente").GetProperty("integerValue").GetString() ?? "0"),
-                IdResiduo = int.Parse(fields.GetProperty("IdResiduo").GetProperty("integerValue").GetString() ?? "0"),
+                IDRegistroDeReciclaje = doc.GetProperty("name").ToString().Split('/').Last(),
+                IdResidente = fields.GetProperty("IdResidente").GetProperty("stringValue").GetString() ?? string.Empty,
+                IdResiduo = fields.GetProperty("IdResiduo").GetProperty("integerValue").GetString() ?? string.Empty,
                 PesoKilogramo = decimal.Parse(fields.GetProperty("PesoKilogramo").GetProperty("doubleValue").GetString() ?? "0"),
                 FechaRegistro = DateTime.Parse(fields.GetProperty("FechaRegistro").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
                 TicketsGanados = int.Parse(fields.GetProperty("TicketsGanados").GetProperty("integerValue").GetString() ?? "0")

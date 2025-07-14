@@ -27,7 +27,7 @@ public class CanjeRepository : ICanjeRepository
         return await _database.Database!.Table<Canje>().ToListAsync();
     }
 
-    public async Task<Canje?> GetCanjeIdAsync(int id)
+    public async Task<Canje?> GetCanjeIdAsync(string id)
     {
         return await _database.Database!.Table<Canje>()
             .FirstOrDefaultAsync(c => c.IdCanje == id);
@@ -38,7 +38,7 @@ public class CanjeRepository : ICanjeRepository
         return await _database.Database!.UpdateAsync(canje);
     }
 
-    public async Task<bool> ChangeEstadoCanjeAsync(int id)
+    public async Task<bool> ChangeEstadoCanjeAsync(string id)
     {
         var canje = await _database.Database!.Table<Canje>()
             .FirstOrDefaultAsync(c => c.IdCanje == id);

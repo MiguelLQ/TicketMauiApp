@@ -10,7 +10,7 @@ public class ResiduoRepository : IResiduoRepository
     {
         _database = database;
     }
-    public async Task<bool> ChangeEstadoResiduoAsync(int id)
+    public async Task<bool> ChangeEstadoResiduoAsync(string id)
     {
         Residuo residuo = await _database.Database!.Table<Residuo>()
                               .Where(r => r.IdResiduo == id)
@@ -44,7 +44,7 @@ public class ResiduoRepository : IResiduoRepository
         return resultado;
     }
 
-    public Task<Residuo?> GetResiduoIdAsync(int id)
+    public Task<Residuo?> GetResiduoIdAsync(string id)
     {
         var resultado = _database.Database!.Table<Residuo>()
                               .Where(r => r.IdResiduo == id)
@@ -56,5 +56,26 @@ public class ResiduoRepository : IResiduoRepository
     {
         var resultado = await _database.Database!.UpdateAsync(residuo);
         return resultado;
+    }
+
+    public async Task MarcarComoSincronizadoAsync(string id)
+    {
+        var residuo = await GetResiduoIdAsync(id);
+        if (residuo != null)
+        {
+            residuo.Sincronizado = true;
+            await _database.Database!.UpdateAsync(residuo);
+        }
+    }
+
+    public async Task<List<Residuo>> GetResiduosNoSincronizadosAsync()
+    {
+        return await _database.Database!.Table<Residuo>().Where(r => !r.Sincronizado).ToListAsync();
+    }
+
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var residuo = await GetResiduoIdAsync(id);
+        return residuo != null;
     }
 }

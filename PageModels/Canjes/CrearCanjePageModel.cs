@@ -107,7 +107,7 @@ public partial class CrearCanjePageModel : ObservableObject
 
         foreach (var item in canjes)
         {
-            if (residentesDict.TryGetValue(item.IdResidente, out var residente))
+            if (residentesDict.TryGetValue(item.IdResidente!, out var residente))
             {
                 item.NombreResidente = residente.NombreResidente;
             }

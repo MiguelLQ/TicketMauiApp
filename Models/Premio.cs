@@ -1,24 +1,16 @@
 ﻿using SQLite;
 
-namespace MauiFirebase.Models
+namespace MauiFirebase.Models;
+public class Premio
 {
-    public class Premio
-    {
 
-        [PrimaryKey, AutoIncrement]
-        public int IdPremio { get; set; }
+    [PrimaryKey]
+    public string IdPremio { get; set; }= Guid.NewGuid().ToString();
+    public string NombrePremio { get; set; } = string.Empty;
+    public string DescripcionPremio { get; set; } = string.Empty;
+    public int PuntosRequeridos { get; set; }
+    public bool EstadoPremio { get; set; }
+    public string FotoPremioUrl{ get; set; } = string.Empty;
+    public string FotoPremio { get; set; } = string.Empty;
 
-        public string NombrePremio { get; set; } = string.Empty;
-
-        public string DescripcionPremio { get; set; } = string.Empty;
-
-        public int PuntosRequeridos { get; set; }
-
-        public bool EstadoPremio { get; set; }
-        // 📷 URL pública de Supabase
-        public string FotoPremioUrl{ get; set; } = string.Empty;
-
-        public string FotoPremio { get; set; } = string.Empty;
-
-    }
 }

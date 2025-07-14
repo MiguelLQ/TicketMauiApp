@@ -4,27 +4,27 @@ namespace MauiFirebase.Models;
 
 public class RegistroDeReciclaje
 {
-    [PrimaryKey, AutoIncrement]
+    [PrimaryKey]
 
-    public int IDRegistroDeReciclaje { get; set; }
+    public string IDRegistroDeReciclaje { get; set; } = Guid.NewGuid().ToString();
     [Indexed]
-    public int IdResidente { get; set; }
-    [NotNull]
-    public int IdResiduo { get; set; }
+    public string? IdResidente { get; set; }
+    public string? IdResiduo { get; set; }
     [NotNull]
     public decimal PesoKilogramo { get; set; }
     [NotNull]
     public DateTime FechaRegistro { get; set; }
     [NotNull]
     public int TicketsGanados { get; set; }
-    [Ignore] // SQLite ignora esta propiedad
+    [Ignore]
     public string? NombreResidente { get; set; }
-    [Ignore] // SQLite ignora esta propiedad
+    [Ignore] 
     public string? ApellidoResidente { get; set; }
     [Ignore]
     public string? DniResidente { get; set; }
     [Ignore]
     public string? NombreResiduo { get; set; }
+    public bool Sincronizado { get; set; } = false;// para sincronizar con Firebase
 
 }
 

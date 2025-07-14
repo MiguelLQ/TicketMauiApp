@@ -4,13 +4,15 @@ namespace MauiFirebase.Models;
 
 public class Ticket
 {
-    [PrimaryKey, AutoIncrement]
-    public int IdTicket { get; set; }
-
-    [MaxLength(50)]
+    [PrimaryKey]
+    public string IdTicket { get; set; }= Guid.NewGuid().ToString();
+    [NotNull]
     public string? ColorTicket { get; set; }
+    [NotNull]
+    public bool EstadoTicket { get; set; } = true;
+    [NotNull]
+    public DateTime FechaRegistro { get; set; }= DateTime.Now;
 
-    public bool EstadoTicket { get; set; }
-
-    public DateTime FechaRegistro { get; set; }
+    // Indica si el registro está sincronizado con Firestore
+    public bool Sincronizado { get; set; } = false;
 }

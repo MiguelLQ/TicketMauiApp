@@ -3,8 +3,8 @@ namespace MauiFirebase.Models;
 
 public class Residente
 {
-    [PrimaryKey, AutoIncrement]
-    public int IdResidente { get; set; }
+    [PrimaryKey]
+    public string IdResidente { get; set; }= Guid.NewGuid().ToString();
     [Indexed]
     public string? Uid { get; set; }
     [NotNull]
@@ -22,5 +22,6 @@ public class Residente
     public DateTime FechaRegistroResidente { get; set; } = DateTime.Now;
     [NotNull]
     public int TicketsTotalesGanados { get; set; } = 0;
+    public bool Sincronizado { get; set; } = false;
 
 }

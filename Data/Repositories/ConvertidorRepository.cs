@@ -9,7 +9,7 @@ public class ConvertidorRepository : IConvertidorRepository
     {
         _database= database;
     }
-    public async Task<bool> ChangeEstadoConvertidorAsync(int id)
+    public async Task<bool> ChangeEstadoConvertidorAsync(string id)
     {
         Convertidor convertidor = await _database.Database!.Table<Convertidor>()
                               .Where(r => r.IdConvertidor == id)
@@ -35,7 +35,7 @@ public class ConvertidorRepository : IConvertidorRepository
         return resultado;
     }
 
-    public  Task<Convertidor?> GetConvertidorIdAsync(int id)
+    public  Task<Convertidor?> GetConvertidorIdAsync(string id)
     {
         Task<Convertidor> resultado = _database.Database!.Table<Convertidor>()
                              .Where(r => r.IdConvertidor == id)
@@ -56,7 +56,7 @@ public class ConvertidorRepository : IConvertidorRepository
             .ToListAsync();
     }
 
-    public async Task MarcarComoSincronizadoAsync(int id)
+    public async Task MarcarComoSincronizadoAsync(string id)
     {
         var item = await _database.Database!.FindAsync<Convertidor>(id);
         if (item != null)
@@ -64,5 +64,11 @@ public class ConvertidorRepository : IConvertidorRepository
             item.Sincronizado = true;
             await _database.Database.UpdateAsync(item);
         }
+    }
+
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var lista = await GetAllConvertidorAync();
+        return lista.Any(c => c.IdConvertidor.ToString() == id);
     }
 }

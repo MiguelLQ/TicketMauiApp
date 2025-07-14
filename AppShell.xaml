@@ -20,7 +20,6 @@
     xmlns:inicio="clr-namespace:MauiFirebase.Pages.Home"
     xmlns:usuario="clr-namespace:MauiFirebase.Pages.usuario"
     xmlns:vehiculo="clr-namespace:MauiFirebase.Pages.Vehiculo"
-    xmlns:trabajador="clr-namespace:MauiFirebase.Pages.Trabajador"
     xmlns:iciciociudadano="clr-namespace:MauiFirebase.Pages.Home"
     xmlns:registrociudadano="clr-namespace:MauiFirebase.Pages.RegistroCiudadano"
     xmlns:vermapaciudadano="clr-namespace:MauiFirebase.Pages.Mapa"

@@ -4,10 +4,10 @@ namespace MauiFirebase.Models
 {
     public class Ruta
     {
-        [PrimaryKey, AutoIncrement]
-        public int IdRuta { get; set; }
+        [PrimaryKey]
+        public string IdRuta { get; set; } = new Guid().ToString();
         [Indexed]
-        public int IdVehiculo { get; set; }
+        public string? IdVehiculo { get; set; }
         public string? DiasDeRecoleccion { get; set; }
         public bool EstadoRuta { get; set; }
         public DateTime FechaRegistroRuta { get; set; }

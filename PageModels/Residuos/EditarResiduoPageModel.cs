@@ -13,11 +13,12 @@ public partial class EditarResiduoPageModel : ObservableValidator
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService _sincronizar;
 
     public ObservableCollection<CategoriaResiduo> ListaCategorias { get; } = new();
 
     [ObservableProperty]
-    private int idResiduo;
+    private string? idResiduo;
 
     [ObservableProperty]
     private Residuo? _residuoSeleccionado;
@@ -39,18 +40,19 @@ public partial class EditarResiduoPageModel : ObservableValidator
     [Required(ErrorMessage = "Debe seleccionar una categoría.")]
     private CategoriaResiduo? _categoriaResiduoSeleccionada;
 
-    public EditarResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
+    public EditarResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService sincronizar)
     {
         _residuoRepository = residuoRepository;
         _categoriaResiduoRepository = categoriaResiduoRepository;
         _alertaHelper = alertaHelper;
+        _sincronizar = sincronizar;
     }
 
     public async Task InicializarAsync()
     {
         await CargarCategoriasAsync();
 
-        ResiduoSeleccionado = await _residuoRepository.GetResiduoIdAsync(IdResiduo);
+        ResiduoSeleccionado = await _residuoRepository.GetResiduoIdAsync(IdResiduo!);
 
         if (ResiduoSeleccionado != null)
         {
@@ -92,10 +94,23 @@ public partial class EditarResiduoPageModel : ObservableValidator
         ResiduoSeleccionado.NombreResiduo = NombreResiduo!;
         ResiduoSeleccionado.EstadoResiduo = EstadoResiduo;
         ResiduoSeleccionado.ValorResiduo = ValorResiduo;
+        ResiduoSeleccionado.Sincronizado = false;
         ResiduoSeleccionado.IdCategoriaResiduo = CategoriaResiduoSeleccionada!.IdCategoriaResiduo;
+
 
         await _residuoRepository.UpdateResiduoAsync(ResiduoSeleccionado);
         await _alertaHelper.ShowSuccessAsync("Residuo actualizado correctamente.");
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && _sincronizar is not null)
+        {
+            try
+            {
+                await _sincronizar.SincronizarResiduosAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Cambios guardados localmente. Se sincronizarán cuando haya conexión.");
+            }
+        }
         await Shell.Current.GoToAsync("..");
     }
 

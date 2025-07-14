@@ -43,7 +43,7 @@ public partial class RutaPageModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task CambiarEstadoRutaAsync(int id)
+    public async Task CambiarEstadoRutaAsync(string id)
     {
         await _rutaRepository.ChangeEstadoRutaAsync(id);
         await _alertaHelper.ShowSuccessAsync("Se cambió el estado de manera exitosa");

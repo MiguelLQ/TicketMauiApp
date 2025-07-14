@@ -13,15 +13,17 @@ public partial class ResiduoPageModel : ObservableObject
     private readonly IResiduoRepository _residuoRepository;
     private readonly ICategoriaResiduoRepository _categoriaResiduoRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService _sincronizar;
 
     [ObservableProperty]
     private bool isBusy;
 
-    public ResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper)
+    public ResiduoPageModel(IResiduoRepository residuoRepository, ICategoriaResiduoRepository categoriaResiduoRepository, IAlertaHelper alertaHelper, SincronizacionFirebaseService sincronizar)
     {
         _residuoRepository = residuoRepository;
         _categoriaResiduoRepository = categoriaResiduoRepository;
         _alertaHelper = alertaHelper;
+        _sincronizar = sincronizar;
     }
 
     [RelayCommand]
@@ -41,6 +43,10 @@ public partial class ResiduoPageModel : ObservableObject
         try
         {
             IsBusy = true;
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizar!.SincronizarResiduoDesdeFirebaseAsync();
+            }
             ListaResiduos.Clear();
             var residuos = await _residuoRepository.GetAllResiduoAync();
             var categorias = await _categoriaResiduoRepository.GetAllCategoriaResiduoAsync();
@@ -60,7 +66,7 @@ public partial class ResiduoPageModel : ObservableObject
 
 
     [RelayCommand]
-    public async Task CambiarEstadoResiduoAsync(int id)
+    public async Task CambiarEstadoResiduoAsync(string id)
     {
         await _residuoRepository.ChangeEstadoResiduoAsync(id);
         await _alertaHelper.ShowSuccessAsync("Se cambio de estado de manera exitosa");

@@ -2,8 +2,8 @@
 namespace MauiFirebase.Models;
 public class Convertidor
 {
-    [PrimaryKey, AutoIncrement]
-    public int IdConvertidor { get; set; }
+    [PrimaryKey]
+    public string IdConvertidor { get; set; } = Guid.NewGuid().ToString();
     [NotNull]
     public int ValorMin { get; set; }
     [NotNull]

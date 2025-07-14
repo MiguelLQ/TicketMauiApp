@@ -1,12 +1,14 @@
 ﻿using MauiFirebase.Models;
-using System.Collections.ObjectModel;
 
 namespace MauiFirebase.Data.Interfaces;
 public interface IResiduoRepository
 {
     Task<List<Residuo>> GetAllResiduoAync();
     Task<Residuo> CreateResiduoAsync(Residuo residuo);
-    Task<Residuo?> GetResiduoIdAsync(int id);
+    Task<Residuo?> GetResiduoIdAsync(string id);
     Task<int> UpdateResiduoAsync(Residuo residuo);
-    Task<bool> ChangeEstadoResiduoAsync(int id);
+    Task<bool> ChangeEstadoResiduoAsync(string id);
+    Task MarcarComoSincronizadoAsync(string id);
+    Task<List<Residuo>> GetResiduosNoSincronizadosAsync();
+    Task<bool> ExisteAsync(string id);
 }

@@ -15,7 +15,6 @@ using MauiFirebase.PageModels.Residentes;
 using MauiFirebase.PageModels.Residuos;
 using MauiFirebase.PageModels.Rutas;
 using MauiFirebase.PageModels.Ticket;
-using MauiFirebase.PageModels.Trabajadores;
 using MauiFirebase.PageModels.Usuarios;
 using MauiFirebase.PageModels.Vehiculos;
 using MauiFirebase.Pages.Canje;
@@ -31,11 +30,9 @@ using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Pages.Residuo;
 using MauiFirebase.Pages.Ruta;
 using MauiFirebase.Pages.Ticket;
-using MauiFirebase.Pages.Trabajador;
 using MauiFirebase.Pages.usuario;
 using MauiFirebase.Pages.Vehiculo;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using AgregarCanjePage = MauiFirebase.Pages.Canje.AgregarCanjePage;
 using MauiFirebase.PageModels.Mapas;
@@ -165,13 +162,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<AgregarVehiculoPage>();
         builder.Services.AddSingleton<EditarVehiculoPageModel>();
 
-        builder.Services.AddSingleton<ITrabajadorRepository, TrabajadorRepository>();
-        builder.Services.AddSingleton<TrabajadorPageModel>();
-        builder.Services.AddSingleton<EditarTrabajadorPageModel>();
-        builder.Services.AddSingleton<CrearTrabajadorPageModel>();
-        builder.Services.AddSingleton<ListarTrabajadorPage>();
-        builder.Services.AddSingleton<AgregarTrabajadorPage>();
-        builder.Services.AddSingleton<EditarTrabajadorPage>();
 
         builder.Services.AddSingleton<RegisterPageModel>();
         builder.Services.AddSingleton<RegisterPage>();
@@ -196,6 +186,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<FirebasePremioService>();
         builder.Services.AddSingleton<FirebaseCanjeService>();
         builder.Services.AddSingleton<FirebaseVehiculoService>();
+        builder.Services.AddSingleton<FirebaseTicketService>();
+        builder.Services.AddSingleton<FirebaseCategoriaResiduoService>();
+        builder.Services.AddSingleton<FirebaseResiduoService>();
         var app = builder.Build();
         Services = app.Services;
         return app;

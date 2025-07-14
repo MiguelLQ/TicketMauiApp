@@ -38,15 +38,15 @@ namespace MauiFirebase.PageModels.Logins
 
             try
             {
-                // ✅ 1. Validar conexión real a Internet
+                // Validar conexión real a Internet
                 if (!await HayInternetRealAsync())
                 {
-                    ErrorMessage = "Necesitas conexion a internet";
+                    ErrorMessage = "Necesitas conexión a internet.";
                     HasError = true;
                     return;
                 }
 
-                // ✅ 2. Validar campos
+                // Validar campos
                 if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
                 {
                     ErrorMessage = "Debes ingresar tu correo y contraseña.";
@@ -54,7 +54,7 @@ namespace MauiFirebase.PageModels.Logins
                     return;
                 }
 
-                // ✅ 3. Intentar login con Firebase Auth
+                // Intentar login con Firebase Auth
                 var success = await _authService.LoginAsync(Email, Password);
                 if (!success)
                 {
@@ -63,32 +63,39 @@ namespace MauiFirebase.PageModels.Logins
                     return;
                 }
 
-                // ✅ 4. Verificar estado del usuario desde Firestore
+                // Obtener ID token y UID
                 var token = await _authService.ObtenerIdTokenSeguroAsync();
                 var uid = Preferences.Get("FirebaseUserId", string.Empty);
 
+                // Consultar datos del usuario en Firestore
                 var usuarioService = new FirebaseUsuarioService();
                 var usuario = await usuarioService.ObtenerUsuarioPorUidAsync(uid, token);
 
+                // Si no se encuentra en la colección "usuarios", se asume ciudadano
                 if (usuario == null)
                 {
-                    ErrorMessage = "No se pudo obtener la información del usuario.";
-                    HasError = true;
-                    return;
+                    usuario = new Models.Usuario
+                    {
+                        Uid = uid,
+                        Rol = "Ciudadano",
+                        Estado = true // asumimos activo
+                    };
                 }
 
+                // Validar estado de cuenta
                 if (!usuario.Estado)
                 {
                     ErrorMessage = "Tu cuenta está inactiva. Contáctate con el administrador.";
                     HasError = true;
-                    _authService.Logout(); // Limpia sesión
+                    _authService.Logout();
                     return;
                 }
 
-                // ✅ 5. Guardar preferencias y navegar según rol
+                // Guardar datos en preferencias
                 Preferences.Set("FirebaseUserRole", usuario.Rol);
                 Preferences.Set("FirebaseUid", usuario.Uid);
 
+                // Ir a AppShell y redireccionar por rol
                 Application.Current.MainPage = new LoadingPage();
                 await Task.Delay(500);
 
@@ -113,6 +120,7 @@ namespace MauiFirebase.PageModels.Logins
                 HasError = true;
             }
         }
+
         private async Task<bool> HayInternetRealAsync()
         {
             try

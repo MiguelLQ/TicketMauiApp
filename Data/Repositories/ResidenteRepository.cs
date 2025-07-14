@@ -41,7 +41,7 @@ public class ResidenteRepository : IResidenteRepository
     public async Task<bool> ChangeEstadoResidenteAsync(string id) 
     {
         Residente? residente = await _database.Database!.Table<Residente>()
-                                               .Where(r => r.IdResidente == id)
+                                               .Where(r => r.UidResidente == id)
                                             .FirstOrDefaultAsync();
         if (residente == null)
         {
@@ -109,7 +109,7 @@ public class ResidenteRepository : IResidenteRepository
     public async Task<bool> ExisteAsync(string id)
     {
         var lista = await GetAllResidentesAsync();
-        return lista.Any(r => r.IdResidente.ToString() == id);
+        return lista.Any(r => r.UidResidente.ToString() == id);
     }
 
     public async Task<List<Residente>> GetResidentesNoSincronizadosAsync()

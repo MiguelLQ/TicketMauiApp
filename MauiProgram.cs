@@ -150,10 +150,11 @@ public static class MauiProgram
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
         builder.Services.AddTransient<ResidenteFormPage, ResidenteFormPageModel>();
         builder.Services.AddSingleton<ResidenteListPage, ResidenteListPageModel>();
-
+        //home
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();
-
+        builder.Services.AddSingleton<InicioPage>();
+        //vehiculo
         builder.Services.AddSingleton<IVehiculoRepository, VehiculoRepository>();
         builder.Services.AddSingleton<VehiculoPageModel>();
         builder.Services.AddSingleton<EditarVehiculoPageModel>();

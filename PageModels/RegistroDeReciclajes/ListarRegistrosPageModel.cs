@@ -84,7 +84,7 @@ public partial class ListarRegistrosPageModel : ObservableObject
 
         if (registros != null && residentes != null && residuos != null)
         {   
-            var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+            var residentesDict = residentes.ToDictionary(r => r.UidResidente);
             var residuosDict = residuos.ToDictionary(r => r.IdResiduo);
 
             foreach (var item in registros)

@@ -102,7 +102,7 @@ public partial class CrearCanjePageModel : ObservableObject
         var residentes = await _residenteRepository.GetAllResidentesAsync();
 
 
-        var residentesDict = residentes.ToDictionary(r => r.IdResidente);
+        var residentesDict = residentes.ToDictionary(r => r.UidResidente);
         var premiosDict = premios.ToDictionary(r => r.IdPremio);
 
         foreach (var item in canjes)
@@ -173,7 +173,7 @@ public partial class CrearCanjePageModel : ObservableObject
                 FechaCanje = FechaDeCanjeo,
                 EstadoCanje = EstadoCanje,
                 IdPremio = PremioSeleccionado.IdPremio,
-                IdResidente = ResidenteEncontrado.IdResidente
+                IdResidente = ResidenteEncontrado.UidResidente
             };
             await _canjeRepository.CreateCanjeAsync(nuevoCanje);
             await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");

@@ -29,7 +29,7 @@ public class ResidenteRepository : IResidenteRepository
     public async Task<Residente?> GetResidenteByIdAsync(string id)
     {
         return await _database.Database!.Table<Residente>()
-                                        .Where(r => r.IdResidente == id) // Ahora IdResidente también es int
+                                        .Where(r => r.UidResidente == id) // Ahora IdResidente también es int
                                         .FirstOrDefaultAsync();
     }
 
@@ -41,7 +41,7 @@ public class ResidenteRepository : IResidenteRepository
     public async Task<bool> ChangeEstadoResidenteAsync(string id) // O string id, según tu IdResidente
     {
         Residente? residente = await _database.Database!.Table<Residente>()
-                                               .Where(r => r.IdResidente == id)
+                                               .Where(r => r.UidResidente == id)
                                             .FirstOrDefaultAsync();
         if (residente == null)
         {
@@ -104,13 +104,13 @@ public class ResidenteRepository : IResidenteRepository
     public async Task<Residente?> ObtenerPorUidAsync(string uid)
     {
         return await _database.Database!.Table<Residente>()
-            .Where(r => r.Uid == uid)
+            .Where(r => r.UidResidente == uid)
             .FirstOrDefaultAsync();
     }
     public async Task<bool> ExisteAsync(string id)
     {
         var lista = await GetAllResidentesAsync();
-        return lista.Any(r => r.IdResidente.ToString() == id);
+        return lista.Any(r => r.UidResidente.ToString() == id);
     }
 
     public async Task<List<Residente>> GetResidentesNoSincronizadosAsync()

@@ -14,6 +14,7 @@ public partial class VehiculoPageModel : ObservableObject
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
 
     [ObservableProperty]
     private bool isBusy;
@@ -21,11 +22,13 @@ public partial class VehiculoPageModel : ObservableObject
     public VehiculoPageModel(
         IVehiculoRepository vehiculoRepository,
         IUsuarioRepository usuarioRepository,
-        IAlertaHelper alertaHelper)
+        IAlertaHelper alertaHelper,
+        SincronizacionFirebaseService sincronizacionFirebaseService)
     {
         _vehiculoRepository = vehiculoRepository;
         _usuarioRepository = usuarioRepository;
         _alertaHelper = alertaHelper;
+        _sincronizacionFirebaseService = sincronizacionFirebaseService;
     }
 
     [RelayCommand]
@@ -34,6 +37,7 @@ public partial class VehiculoPageModel : ObservableObject
         try
         {
             IsBusy = true;
+            await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
             ListaVehiculos.Clear();
 
             var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();

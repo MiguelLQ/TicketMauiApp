@@ -5,7 +5,7 @@ namespace MauiFirebase.Models
     public class Ruta
     {
         [PrimaryKey]
-        public string IdRuta { get; set; } = new Guid().ToString();
+        public string IdRuta { get; set; } = Guid.NewGuid().ToString();
         [Indexed]
         public string? IdVehiculo { get; set; }
         public string? DiasDeRecoleccion { get; set; }

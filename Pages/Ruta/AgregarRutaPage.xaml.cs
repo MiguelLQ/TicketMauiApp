@@ -18,14 +18,4 @@ public partial class AgregarRutaPage : ContentPage
         base.OnAppearing();
         await _viewModel.CargarVehiculosAsync();
     }
-
-    private async void OnCrearRutaNuevaClicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new DibujarRutaPage(_viewModel));
-    }
-
-    private async void OnCancelarClicked(object sender, EventArgs e)
-    {
-        await Navigation.PopAsync();
-    }
 }

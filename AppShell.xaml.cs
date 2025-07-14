@@ -61,6 +61,7 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(EditarRutaPage), typeof(EditarRutaPage));
             Routing.RegisterRoute(nameof(AgregarRutaPage), typeof(AgregarRutaPage));
             Routing.RegisterRoute(nameof(ListarRutaPage), typeof(ListarRutaPage));
+            Routing.RegisterRoute(nameof(DibujarRutaPage), typeof(DibujarRutaPage));
             //para scanear QR
             Routing.RegisterRoute(nameof(CamScanerPage), typeof(CamScanerPage));
 

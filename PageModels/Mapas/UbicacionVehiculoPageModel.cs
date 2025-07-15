@@ -197,9 +197,10 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         {
             ErrorMessage = null;
 
-            var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
+            //var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
             var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
-
+            // ubicacion del realtime database
+            var ubicaciones = await ObtenerUbicacionesRealtimeAsync();
             if (cancellationToken.IsCancellationRequested)
             {
                 return;
@@ -223,28 +224,29 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
                     var pin = new Pin
                     {
-                        Label = $"Placa: {u.Placa ?? "Desconocida"}",
-                        Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F6}\nLng: {u.Longitud:F6}",
+                        Label = $"🚛 {u.Placa ?? "Sin placa"} - {u.NombreConductor ?? "Sin conductor"}",
+                        Address =
+                                  $"📍 Lat: {u.Latitud:F6}, Lng: {u.Longitud:F6}",
                         Location = new Location(u.Latitud, u.Longitud),
                         Type = PinType.Place
                     };
 
-                    _pinPorVehiculo[u.IdVehiculo!] = pin;
+                    _pinPorVehiculo[u.IdVehiculo ?? u.IdUbicacionVehiculo ?? Guid.NewGuid().ToString()] = pin;
                     MapaPins.Add(pin);
                 }
-                var andahuaylasLat = -13.653820;
-                var andahuaylasLng = -73.360519;
+                //var andahuaylasLat = -13.653820;
+                //var andahuaylasLng = -73.360519;
 
-                var pinAndahuaylas = new Pin
-                {
-                    Label = "Placa: XYZ-999",
-                    Address = "Conductor: Juan Perez",
-                    Location = new Location(andahuaylasLat, andahuaylasLng),
-                    Type = PinType.Place
-                };
+                //var pinAndahuaylas = new Pin
+                //{
+                //    Label = "Placa: XYZ-999",
+                //    Address = "Conductor: Juan Perez",
+                //    Location = new Location(andahuaylasLat, andahuaylasLng),
+                //    Type = PinType.Place
+                //};
 
-                _pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
-                MapaPins.Add(pinAndahuaylas);
+                //_pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
+                //MapaPins.Add(pinAndahuaylas);
 
                 VerificarProximidad();
             });
@@ -254,7 +256,21 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ErrorMessage = $"Error al cargar ubicaciones: {ex.Message}";
         }
     }
-
+    // 
+    // ubicacion desde realtime database
+    public async Task<List<UbicacionVehiculo>> ObtenerUbicacionesRealtimeAsync()
+    {
+        try
+        {
+            var ubicaciones = await _firebaseUbicacionService.ObtenerTodasUbicacionesAsync();
+            return ubicaciones;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Error al consultar Realtime DB: " + ex.Message;
+            return new List<UbicacionVehiculo>();
+        }
+    }
 
     private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
     private DateTime ultimaNotificacion = DateTime.MinValue;

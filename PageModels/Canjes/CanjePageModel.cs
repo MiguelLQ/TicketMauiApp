@@ -34,8 +34,10 @@ public partial class CanjePageModel : ObservableObject
             IsBusy = true;
             if (_sincronizar != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
-                await _sincronizar.SincronizarCanjeAsync();
+                await _sincronizar.SincronizarCanjeAsync(); // sube
+                await _sincronizar.SincronizarCanjesDesdeFirebaseAsync(); // baja
             }
+
             await CargarResidentesAsync();
             await CargarCanjeAsync();
         }
@@ -102,7 +104,7 @@ public partial class CanjePageModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task IrACrearResiduoAsync()
+    public async Task IrACrearCanjeAsync()
     {
         await Shell.Current.GoToAsync("CrearCanjePageModel");
     }

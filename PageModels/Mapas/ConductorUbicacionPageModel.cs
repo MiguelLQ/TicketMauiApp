@@ -5,6 +5,7 @@ using MauiFirebase.Models;
 using MauiFirebase.Services;
 using MauiFirebase.Data.Interfaces;
 using System.Timers;
+using Microsoft.Maui.ApplicationModel;
 
 namespace MauiFirebase.PageModels.Mapas
 {
@@ -31,6 +32,13 @@ namespace MauiFirebase.PageModels.Mapas
 
         [ObservableProperty]
         private string estado = "Esperando...";
+        [ObservableProperty]
+        private bool isTrackingVisible;
+        [ObservableProperty]
+        public double? latitud;
+
+        [ObservableProperty]
+        public double? longitud;
 
         [RelayCommand]
         public async Task IniciarSeguimientoAsync()
@@ -57,7 +65,9 @@ namespace MauiFirebase.PageModels.Mapas
                 _timer.Start();
 
                 _isTracking = true;
+                IsTrackingVisible = true; // 👈 Ahora sí se activa correctamente
                 Estado = "✅ Enviando ubicación cada 5 segundos.";
+
             }
             catch (Exception ex)
             {
@@ -74,36 +84,73 @@ namespace MauiFirebase.PageModels.Mapas
             _timer?.Stop();
             _timer?.Dispose();
             _timer = null;
-            _isTracking = false;
 
+            _isTracking = false;
+            IsTrackingVisible = false;
             Estado = "🛑 Seguimiento detenido.";
         }
+
 
         private async Task EnviarUbicacionAsync()
         {
             try
             {
-                var request = new GeolocationRequest(GeolocationAccuracy.High);
-                var location = await Geolocation.GetLocationAsync(request);
-
-                if (location == null) return;
-
-                var datosUbicacion = new
+                // Ejecutar en el hilo principal
+                await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
-                    idVehiculo = _vehiculo!.IdVehiculo,
-                    latitud = location.Latitude,
-                    longitud = location.Longitude,
-                    placa = _vehiculo.PlacaVehiculo,
-                    nombreConductor = _vehiculo.Nombre,
-                    timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-                };
+                    var permisosOk = await VerificarPermisosUbicacionAsync();
+                    if (!permisosOk) return;
 
-                await _ubicacionService.EnviarUbicacionAsync(_uid!, datosUbicacion);
+                    var request = new GeolocationRequest(GeolocationAccuracy.High);
+                    var location = await Geolocation.GetLocationAsync(request);
+                    Latitud = location.Latitude;
+                    Longitud = location.Longitude;
+
+                    if (location == null) return;
+
+                    var datosUbicacion = new
+                    {
+                        idVehiculo = _vehiculo!.IdVehiculo,
+                        latitud = location.Latitude,
+                        longitud = location.Longitude,
+                        placa = _vehiculo.PlacaVehiculo,
+                        nombreConductor = Preferences.Get("FirebaseUserNombre", "") + " " + Preferences.Get("FirebaseUserApellido", ""),
+                        timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                    };
+
+                    await _ubicacionService.EnviarUbicacionAsync(_uid!, datosUbicacion);
+                });
             }
             catch (Exception ex)
             {
                 Estado = $"⚠️ Error al enviar ubicación: {ex.Message}";
             }
         }
+
+
+        private async Task<bool> VerificarPermisosUbicacionAsync()
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+
+            if (status != PermissionStatus.Granted)
+            {
+                status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+
+                if (status != PermissionStatus.Granted)
+                {
+                    // Mostrar alerta si el usuario negó el permiso
+                    await Shell.Current.DisplayAlert(
+                        "Permiso necesario",
+                        "Debes permitir el acceso a la ubicación para usar esta funcionalidad.",
+                        "Aceptar"
+                    );
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
     }
 }

@@ -18,6 +18,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private readonly IUbicacionVehiculo _ubicacionVehiculo;
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IRutaRepository _rutaRepository;
+    private readonly FirebaseUbicacionService _firebaseUbicacionService;
+
     private readonly SincronizacionFirebaseService _sincronizador;
     private readonly RutaService _rutaService = new();
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
@@ -42,17 +44,20 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private int pollingInterval = 5000;
 
 
-    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, 
-        IVehiculoRepository vehiculoRepository, 
-        IRutaRepository rutaRepository, 
-        SincronizacionFirebaseService sincronizador)
+    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo,
+     IVehiculoRepository vehiculoRepository,
+     IRutaRepository rutaRepository,
+     SincronizacionFirebaseService sincronizador,
+     FirebaseUbicacionService firebaseUbicacionService) // 👈 nuevo
     {
         _ubicacionVehiculo = ubicacionVehiculo;
         _vehiculoRepository = vehiculoRepository;
         _rutaRepository = rutaRepository;
         _sincronizador = sincronizador;
+        _firebaseUbicacionService = firebaseUbicacionService; // 👈 asignación
         StartPolling();
     }
+
 
     [RelayCommand]
     public async Task CargarVehiculoAsync()
@@ -118,18 +123,6 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             Type = PinType.Place
         };
         MapaPins.Add(pin);
-        //foreach (var ubicacion in Ubicaciones)
-        //{
-        //    var pin = new Pin
-        //    {
-        //        Label = $"Placa: {}",
-        //        Address = $"Conductor: {ubicacion.NombreConductor}",
-        //        Location = new Location(lat,lng),
-        //        Type = PinType.Place
-        //    };
-
-        //    MapaPins.Add(pin);
-        //}
     }
 
     public void InitializeTimer()
@@ -182,16 +175,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         {
             ErrorMessage = null;
 
-            // Traer ubicaciones y vehículos desde Firebase
-            var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
-            var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
-
+            var ubicaciones = await ObtenerUbicacionesRealtimeAsync();
             if (cancellationToken.IsCancellationRequested)
-            {
                 return;
-            }
-
-            var vehiculosDict = vehiculos.ToDictionary(v => v.IdVehiculo!);
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -199,46 +185,24 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
                 MapaPins.Clear();
                 _pinPorVehiculo.Clear();
 
-                // Recorrer ubicaciones de Firebase
+                foreach (var u in ubicaciones)
+                {
+                    Ubicaciones.Add(u);
+
                     var pin = new Pin
                     {
-                        Label = $"Placa: {u.Placa ?? "Desconocida"}",
-                        Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F6}\nLng: {u.Longitud:F6}",
+                        Label = $"🚛 {u.Placa ?? "Sin placa"} - {u.NombreConductor ?? "Sin conductor"}",
+                        Address = 
+                                  $"📍 Lat: {u.Latitud:F6}, Lng: {u.Longitud:F6}",
                         Location = new Location(u.Latitud, u.Longitud),
                         Type = PinType.Place
                     };
-                    {
-                    _pinPorVehiculo[u.IdVehiculo!] = pin;
-                    MapaPins.Add(pin);
-                    {
-                        var nuevoPin = new Pin
-                        {
-                            Label = $"Vehículo {u.IdVehiculo}",
-                            Location = new Location(u.Latitud, u.Longitud),
-                            Address = $"Lat: {u.Latitud}, Lng: {u.Longitud}"
-                        };
 
-                        _pinPorVehiculo[u.IdVehiculo!] = nuevoPin;
-                        MapaPins.Add(nuevoPin);
-                    }
+                    _pinPorVehiculo[u.IdVehiculo ?? u.IdUbicacionVehiculo ?? Guid.NewGuid().ToString()] = pin;
+                    MapaPins.Add(pin);
                 }
 
-                // Agregar pin fijo de Andahuaylas
-                var andahuaylasLat = -13.653820;
-                var andahuaylasLng = -73.360519;
 
-                var pinAndahuaylas = new Pin
-                {
-                    Label = "Placa: XYZ-999",
-                    Address = "Conductor: Conductor Andahuaylas\nLat: -13.653820\nLng: -73.360519",
-                    Location = new Location(andahuaylasLat, andahuaylasLng),
-                    Type = PinType.Place
-                };
-
-                _pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
-                MapaPins.Add(pinAndahuaylas);
-
-                // Verificar proximidad
                 VerificarProximidad();
             });
         }
@@ -247,6 +211,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ErrorMessage = $"Error al cargar ubicaciones: {ex.Message}";
         }
     }
+
 
     private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
     private DateTime ultimaNotificacion = DateTime.MinValue;
@@ -336,6 +301,21 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ErrorMessage = "Error al cargar ruta: " + ex.Message;
         }
     }
+    // ubicacion desde realtime database
+    public async Task<List<UbicacionVehiculo>> ObtenerUbicacionesRealtimeAsync()
+    {
+        try
+        {
+            var ubicaciones = await _firebaseUbicacionService.ObtenerTodasUbicacionesAsync();
+            return ubicaciones;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Error al consultar Realtime DB: " + ex.Message;
+            return new List<UbicacionVehiculo>();
+        }
+    }
+
     private class LatLng
     {
         public double lat { get; set; }

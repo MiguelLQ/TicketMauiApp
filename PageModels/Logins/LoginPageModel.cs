@@ -94,7 +94,9 @@ namespace MauiFirebase.PageModels.Logins
                 // Guardar datos en preferencias
                 Preferences.Set("FirebaseUserRole", usuario.Rol);
                 Preferences.Set("FirebaseUid", usuario.Uid);
-
+                // Guardar datos del usuario en Preferences
+                Preferences.Set("FirebaseUserNombre", usuario.Nombre ?? "");
+                Preferences.Set("FirebaseUserApellido", usuario.Apellido ?? "");
                 // Ir a AppShell y redireccionar por rol
                 Application.Current.MainPage = new LoadingPage();
                 await Task.Delay(500);

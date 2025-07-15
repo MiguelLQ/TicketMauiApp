@@ -19,7 +19,7 @@
 
             <!--Encabezado con fondo naranja y tarjeta del coche -->
 
-            <Grid HeightRequest="270">
+            <Grid >
                 <!-- Fondo naranja superior -->
                 <BoxView 
                     BackgroundColor="{StaticResource HeaderOrange}" 
@@ -70,61 +70,73 @@
                             Aspect="AspectFit" />
                     </Grid>
                 </Frame>
-
-
-                <Frame Background="{DynamicResource CardBackgroundBrush}"
+               <!-- Vehículos con ruta para hoy -->
+<Frame Background="{DynamicResource CardBackgroundBrush}"
        BorderColor="Transparent"
-       Padding="10"
-       WidthRequest="350"
-       HeightRequest="180"
+       Padding="12"
        CornerRadius="20"
        HasShadow="False"
        HorizontalOptions="Center"
        VerticalOptions="Start"
        Margin="0,120,0,0">
 
-                    <VerticalStackLayout Spacing="10">
-                        <Label Text="Vehículos con ruta para hoy"
+    <VerticalStackLayout Spacing="10">
+        <Label Text="Vehículos con ruta para hoy"
                FontAttributes="Bold"
                FontSize="18"
-               HorizontalOptions="Center"/>
+               HorizontalOptions="Center" />
 
-                        <!-- Lista dinámica -->
-                        <CollectionView ItemsSource="{Binding VehiculosHoy}"
-                        HeightRequest="120"
+        <!-- Lista dinámica sin HeightRequest; se ajusta sola -->
+        <CollectionView ItemsSource="{Binding VehiculosHoy}"
                         HorizontalOptions="Center">
-                            <CollectionView.ItemsLayout>
-                                <!-- 2 columnas, ajuste automático de filas -->
-                                <GridItemsLayout Orientation="Vertical"
-                                 Span="2" />
-                            </CollectionView.ItemsLayout>
+            <CollectionView.ItemsLayout>
+                <!-- Dos columnas; se crean filas según sea necesario -->
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
 
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame Background="{StaticResource EntryBackgroundBrush}"
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Background="{StaticResource EntryBackgroundBrush}"
                            CornerRadius="10"
-                           Padding="8"
-                           Margin="4"
-                           HeightRequest="50"
+                           Padding="10"
+                           Margin="6"
                            BorderColor="Transparent">
-                                        <VerticalStackLayout Spacing="2">
-                                            <Label Text="PLACA: {Binding PlacaVehiculo}"
+
+                        <VerticalStackLayout Spacing="4">
+
+                            <!-- Placa -->
+                            <Label Text="{Binding PlacaVehiculo, StringFormat='PLACA: {0}'}"
                                    FontAttributes="Bold"
                                    FontSize="13"
-                                   TextColor="{StaticResource Gray500}" />
-                                            <Label Text="Marca: {Binding MarcaVehiculo}"
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+
+                            <!-- Marca -->
+                            <Label Text="{Binding MarcaVehiculo, StringFormat='Marca: {0}'}"
                                    FontSize="12"
-                                   TextColor="{StaticResource Gray500}" />
-                                            <Label Text="Conductor: {Binding Nombre}"
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+
+                            <!-- Modelo -->
+                            <Label Text="{Binding ModeloVehiculo, StringFormat='Modelo: {0}'}"
                                    FontSize="12"
-                                   TextColor="{StaticResource Gray500}" />
-                                        </VerticalStackLayout>
-                                    </Frame>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </VerticalStackLayout>
-                </Frame>
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+
+                            <!-- Conductor -->
+                            <Label Text="{Binding Nombre, StringFormat='Conductor: {0}'}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</Frame>
+
+
 
 
             </Grid>

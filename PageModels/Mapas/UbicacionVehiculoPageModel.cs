@@ -47,6 +47,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo,
         IVehiculoRepository vehiculoRepository,
         IRutaRepository rutaRepository,
+        FirebaseUbicacionService firebaseUbicacionService,
         SincronizacionFirebaseService sincronizador)
     {
         _ubicacionVehiculo = ubicacionVehiculo;
@@ -196,10 +197,14 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         {
             ErrorMessage = null;
 
-            var ubicaciones = await ObtenerUbicacionesRealtimeAsync();
-            if (cancellationToken.IsCancellationRequested)
-                return;
+            var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
+            var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
 
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+            var vehiculosDict = vehiculos.ToDictionary(v => v.IdVehiculo!);
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 Ubicaciones.Clear();
@@ -208,21 +213,38 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
                 foreach (var u in ubicaciones)
                 {
+                    if (vehiculosDict.TryGetValue(u.IdVehiculo!, out var vehiculo))
+                    {
+                        u.Placa = vehiculo.PlacaVehiculo;
+                        u.NombreConductor = vehiculo.Nombre;
+                    }
+
                     Ubicaciones.Add(u);
 
                     var pin = new Pin
                     {
-                        Label = $"🚛 {u.Placa ?? "Sin placa"} - {u.NombreConductor ?? "Sin conductor"}",
-                        Address = 
-                                  $"📍 Lat: {u.Latitud:F6}, Lng: {u.Longitud:F6}",
+                        Label = $"Placa: {u.Placa ?? "Desconocida"}",
+                        Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F6}\nLng: {u.Longitud:F6}",
                         Location = new Location(u.Latitud, u.Longitud),
                         Type = PinType.Place
                     };
 
-                    _pinPorVehiculo[u.IdVehiculo ?? u.IdUbicacionVehiculo ?? Guid.NewGuid().ToString()] = pin;
+                    _pinPorVehiculo[u.IdVehiculo!] = pin;
                     MapaPins.Add(pin);
                 }
+                var andahuaylasLat = -13.653820;
+                var andahuaylasLng = -73.360519;
 
+                var pinAndahuaylas = new Pin
+                {
+                    Label = "Placa: XYZ-999",
+                    Address = "Conductor: Juan Perez",
+                    Location = new Location(andahuaylasLat, andahuaylasLng),
+                    Type = PinType.Place
+                };
+
+                _pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
+                MapaPins.Add(pinAndahuaylas);
 
                 VerificarProximidad();
             });

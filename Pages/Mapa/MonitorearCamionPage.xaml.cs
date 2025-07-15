@@ -39,13 +39,14 @@ public partial class MonitorearCamionPage : ContentPage
         }
         var diaActual = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("es-PE"));
         map.MapElements.Clear();
-        await _viewModel.CargarRutaDelDiaAsync(diaActual);
 
+        await _viewModel.CargarRutaDelDiaAsync(diaActual);
         foreach (var ruta in _viewModel.RutasEnMapa)
         {
             map.MapElements.Add(ruta);
         }
     }
+
 
 
     private void MapaPins_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

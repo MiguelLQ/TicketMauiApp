@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
+using MauiFirebase.Pages.Ruta;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -69,7 +70,7 @@ public partial class CrearRutaPageModel : ObservableValidator
         await _rutaRepository.CreateRutaAsync(nuevaRuta);
         await _alertaHelper.ShowSuccessAsync("Ruta creada correctamente.");
         LimpiarFormulario();
-        await Shell.Current.GoToAsync("..");
+        await Shell.Current.GoToAsync(nameof(ListarRutaPage));
     }
 
     [RelayCommand]

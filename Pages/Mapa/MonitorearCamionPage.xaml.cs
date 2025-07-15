@@ -35,14 +35,9 @@ public partial class MonitorearCamionPage : ContentPage
         {
             map.MoveToRegion(MapSpan.FromCenterAndRadius(andahuaylasPin.Location, Distance.FromKilometers(0.5)));
         }
-
-        // Cargar la ruta según el día actual (en español)
         var diaActual = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("es-PE"));
         await _viewModel.CargarRutaDelDiaAsync(diaActual);
-
-        // Agregar la polilínea al mapa
         map.MapElements.Clear();
-
         foreach (var ruta in _viewModel.RutasEnMapa)
         {
             map.MapElements.Add(ruta);
@@ -87,7 +82,6 @@ public partial class MonitorearCamionPage : ContentPage
     {
         base.OnDisappearing();
 
-        // Desuscribirse para evitar fugas de memoria
         if (_viewModel != null)
         {
             _viewModel.MapaPins.CollectionChanged -= MapaPins_CollectionChanged;

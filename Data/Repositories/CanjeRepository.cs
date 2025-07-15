@@ -49,4 +49,30 @@ public class CanjeRepository : ICanjeRepository
         int result = await _database.Database.UpdateAsync(canje);
         return result > 0;
     }
+    public async Task<Canje?> ObtenerPorUidAsync(string idCanje)
+    {
+        return await _database.Database!.Table<Canje>()
+            .Where(r => r.IdCanje == idCanje)
+            .FirstOrDefaultAsync();
+    }
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var lista = await GetAllCanjeAync();
+        return lista.Any(r => r.IdCanje.ToString() == id);
+    }
+    public async Task<List<Canje>> GetCanjesNoSincronizadosAsync()
+    {
+        return await _database.Database!.Table<Canje>()
+            .Where(c => !c.Sincronizado)
+            .ToListAsync();
+    }
+    public async Task MarcarComoSincronizadoAsync(string id)
+    {
+        var item = await _database.Database!.FindAsync<Canje>(id);
+        if (item != null)
+        {
+            item.Sincronizado = true;
+            await _database.Database.UpdateAsync(item);
+        }
+    }
 }

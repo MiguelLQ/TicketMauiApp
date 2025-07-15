@@ -95,7 +95,7 @@
                             <HorizontalStackLayout>
                                 <Picker Title="Seleccionar usuario"
                                         ItemsSource="{Binding ListaUsuario}"
-                                        ItemDisplayBinding="{Binding Nombre}" 
+                                        ItemDisplayBinding="{Binding NombreCompleto}" 
                                         SelectedItem="{Binding UsuarioSeleccionado, Mode=TwoWay}"
                                         FontSize="13"
                                         TextColor="{DynamicResource Gray400}"

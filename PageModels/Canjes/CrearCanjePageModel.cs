@@ -11,7 +11,7 @@ public partial class CrearCanjePageModel : ObservableObject
     private readonly IPremioRepository _premioRepository;
     private readonly IResidenteRepository _residenteRepository;
     private readonly IAlertaHelper _alertaHelper;
-    private readonly SincronizacionFirebaseService _sincronizacionFirebaseService;
+    private readonly SincronizacionFirebaseService _sincronizador;
     public ObservableCollection<Premio> ListaPremios { get; } = new();
     public ObservableCollection<Residente> ListaResidentes { get; } = new();
     public ObservableCollection<Canje> ListaCanje { get; } = new();
@@ -66,13 +66,13 @@ public partial class CrearCanjePageModel : ObservableObject
         IPremioRepository premioRepository,
         IResidenteRepository residenteRepository,
         IAlertaHelper alertaHelper,
-        SincronizacionFirebaseService sincronizacionFirebaseService)
+        SincronizacionFirebaseService sincronizador)
     {
         _canjeRepository = canjeRepository;
         _premioRepository = premioRepository;
         _residenteRepository = residenteRepository;
         _alertaHelper = alertaHelper;
-        _sincronizacionFirebaseService = sincronizacionFirebaseService;
+        _sincronizador = sincronizador;
 
 
     }
@@ -80,6 +80,7 @@ public partial class CrearCanjePageModel : ObservableObject
     [RelayCommand]
     public async Task CargarPremiosAsync()
     {
+        
         ListaPremios.Clear();
         var premios = await _premioRepository.GetAllPremiosAsync();
         foreach (var premio in premios)
@@ -186,7 +187,7 @@ public partial class CrearCanjePageModel : ObservableObject
             {
                 try
                 {
-                    await _sincronizacionFirebaseService.SincronizarCanjesAsync(); // este método debe subir a Firestore y marcar como sincronizado
+                    await _sincronizador.SincronizarCanjeAsync(); // este método debe subir a Firestore y marcar como sincronizado
                 }
                 catch
                 {
@@ -194,7 +195,7 @@ public partial class CrearCanjePageModel : ObservableObject
                 }
             }
             await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
-            await _sincronizacionFirebaseService.SincronizarCanjesAsync();
+            await _sincronizador.SincronizarCanjeAsync();
             await Shell.Current.GoToAsync("..");
         }
     }

@@ -37,8 +37,6 @@ public partial class ListarTicketPage : ContentPage
             var popup = new EditarTicketPopup();
             popup.BindingContext = viewModel;
             await this.ShowPopupAsync(popup);
-
-
         }
     }
     private async void OnAgregarTicketClicked(object sender, EventArgs e)

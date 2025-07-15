@@ -48,16 +48,6 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Botón para abrir el mapa -->
-            <Button Text="Crear Ruta Nueva"
-                    Clicked="OnCrearRutaNuevaClicked"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    BackgroundColor="Green"
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25" />
-
             <!-- Botón Guardar -->
             <Button Text="Guardar"
                     Command="{Binding CrearRutaCommand}"
@@ -68,17 +58,6 @@
                     TextColor="White"
                     HeightRequest="50"
                     CornerRadius="25" />
-
-            <!-- Botón Cancelar -->
-            <Button Text="Cancelar"
-                    Clicked="OnCancelarClicked"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    BackgroundColor="red"
-                    TextColor="White"
-                    HeightRequest="50"
-                    CornerRadius="25" />
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

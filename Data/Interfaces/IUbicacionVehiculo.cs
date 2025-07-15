@@ -7,4 +7,7 @@ public interface IUbicacionVehiculo
     Task GuardarUbicacionAsync(UbicacionVehiculo ubicacion);
     Task EliminarUbicacionAsync(string idVehiculo);
     Task<List<UbicacionVehiculo>> ObtenerTodasAsync();
+    Task<List<UbicacionVehiculo>> ObtenerNoSincronizadosAsync();
+    Task MarcarComoSincronizadoAsync(string id);
+    Task<bool> ExisteAsync(string id);
 }

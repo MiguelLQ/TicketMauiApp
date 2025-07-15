@@ -21,7 +21,7 @@ public partial class ListarRutaPage : ContentPage
 
     private async void OnAgregarRutaClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(AgregarRutaPage));
+        await Shell.Current.GoToAsync(nameof(DibujarRutaPage));
     }
 
     private async void OnEditarRutaClicked(object sender, EventArgs e)

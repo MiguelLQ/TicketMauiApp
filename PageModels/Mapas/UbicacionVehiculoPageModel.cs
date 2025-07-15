@@ -4,11 +4,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
+using MauiFirebase.Services;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
 using System.Text.Json;
-
-using System.Linq;
 using Timer = System.Timers.Timer;
 
 
@@ -19,9 +18,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private readonly IUbicacionVehiculo _ubicacionVehiculo;
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IRutaRepository _rutaRepository;
-
+    private readonly SincronizacionFirebaseService _sincronizador;
     private readonly RutaService _rutaService = new();
-
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
     public ObservableCollection<Vehiculo> ListaVehiculos { get; } = new();
     public ObservableCollection<Pin> MapaPins { get; } = new();
@@ -44,11 +42,15 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private int pollingInterval = 5000;
 
 
-    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, IVehiculoRepository vehiculoRepository, IRutaRepository rutaRepository)
+    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, 
+        IVehiculoRepository vehiculoRepository, 
+        IRutaRepository rutaRepository, 
+        SincronizacionFirebaseService sincronizador)
     {
         _ubicacionVehiculo = ubicacionVehiculo;
         _vehiculoRepository = vehiculoRepository;
         _rutaRepository = rutaRepository;
+        _sincronizador = sincronizador;
         StartPolling();
     }
 
@@ -67,6 +69,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     [RelayCommand]
     public async Task CargarUbicacionAsync()
     {
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            await _sincronizador.SincronizarUbicacionesDesdeFirebaseAsync();
+
         Ubicaciones.Clear();
 
         var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
@@ -83,10 +88,22 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             }
             Ubicaciones.Add(ubicacion);
         }
-        AgregarPinSimuladoAndahuaylas();
+        await ActualizarUbicacionesAsync();
     }
 
+    [RelayCommand]
+    public async Task GuardarUbicacionAsync(UbicacionVehiculo ubicacion)
+    {
+        ubicacion.Sincronizado = false;
+        await _ubicacionVehiculo.GuardarUbicacionAsync(ubicacion);
 
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            await _sincronizador.SincronizarUbicacionesAsync();
+        }
+
+        await CargarUbicacionAsync();
+    }
 
     public void AgregarPinSimuladoAndahuaylas()
     {
@@ -101,7 +118,18 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             Type = PinType.Place
         };
         MapaPins.Add(pin);
-        
+        //foreach (var ubicacion in Ubicaciones)
+        //{
+        //    var pin = new Pin
+        //    {
+        //        Label = $"Placa: {}",
+        //        Address = $"Conductor: {ubicacion.NombreConductor}",
+        //        Location = new Location(lat,lng),
+        //        Type = PinType.Place
+        //    };
+
+        //    MapaPins.Add(pin);
+        //}
     }
 
     public void InitializeTimer()
@@ -147,60 +175,70 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
         return null;
     }
+
     public async Task ActualizarUbicacionesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             ErrorMessage = null;
 
-            var lista = await _ubicacionVehiculo.ObtenerTodasAsync();
+            // Traer ubicaciones y vehículos desde Firebase
+            var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
+            var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
 
             if (cancellationToken.IsCancellationRequested)
+            {
                 return;
+            }
+
+            var vehiculosDict = vehiculos.ToDictionary(v => v.IdVehiculo!);
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 Ubicaciones.Clear();
+                MapaPins.Clear();
+                _pinPorVehiculo.Clear();
 
-                var idsActuales = new HashSet<string>(lista.Select(u => u.IdVehiculo!));
-
-                var pinsParaEliminar = _pinPorVehiculo.Keys
-                    .Where(id => !idsActuales.Contains(id))
-                    .ToList();
-
-                foreach (var idEliminar in pinsParaEliminar)
-                {
-                    if (_pinPorVehiculo.TryGetValue(idEliminar, out var pin))
+                // Recorrer ubicaciones de Firebase
+                    var pin = new Pin
                     {
-                        MapaPins.Remove(pin);
-                        _pinPorVehiculo.Remove(idEliminar);
-                    }
-                }
-
-                foreach (var u in lista)
-                {
-                    Ubicaciones.Add(u);
-
-                    if (_pinPorVehiculo.TryGetValue(u.IdVehiculo!, out var existingPin))
+                        Label = $"Placa: {u.Placa ?? "Desconocida"}",
+                        Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F6}\nLng: {u.Longitud:F6}",
+                        Location = new Location(u.Latitud, u.Longitud),
+                        Type = PinType.Place
+                    };
                     {
-                        existingPin.Location = new Location(u.Latitud, u.Longitud);
-                    }
-                    else
+                    _pinPorVehiculo[u.IdVehiculo!] = pin;
+                    MapaPins.Add(pin);
                     {
                         var nuevoPin = new Pin
                         {
-                            Label = $"Placa: {u.Placa ?? "N/A"}",
+                            Label = $"Vehículo {u.IdVehiculo}",
                             Location = new Location(u.Latitud, u.Longitud),
-                            Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F5}, Lng: {u.Longitud:F5}",
-                            Type = PinType.Place
+                            Address = $"Lat: {u.Latitud}, Lng: {u.Longitud}"
                         };
-
 
                         _pinPorVehiculo[u.IdVehiculo!] = nuevoPin;
                         MapaPins.Add(nuevoPin);
                     }
                 }
 
+                // Agregar pin fijo de Andahuaylas
+                var andahuaylasLat = -13.653820;
+                var andahuaylasLng = -73.360519;
+
+                var pinAndahuaylas = new Pin
+                {
+                    Label = "Placa: XYZ-999",
+                    Address = "Conductor: Conductor Andahuaylas\nLat: -13.653820\nLng: -73.360519",
+                    Location = new Location(andahuaylasLat, andahuaylasLng),
+                    Type = PinType.Place
+                };
+
+                _pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
+                MapaPins.Add(pinAndahuaylas);
+
+                // Verificar proximidad
                 VerificarProximidad();
             });
         }
@@ -210,12 +248,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         }
     }
 
-
-
-
-    private DateTime ultimaNotificacion = DateTime.MinValue;
     private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
-
+    private DateTime ultimaNotificacion = DateTime.MinValue;
     public async void VerificarProximidad()
     {
         var ubicacionUsuario = await ObtenerUbicacionUsuarioAsync();

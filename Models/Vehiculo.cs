@@ -16,6 +16,11 @@ public class Vehiculo
     public DateTime FechaRegistroVehiculo { get; set; }
     [JsonIgnore]
     public string Nombre { get; set; } = string.Empty;
+    [JsonIgnore]
+    public string Apellido { get; set; } = string.Empty;
+
+    [JsonIgnore]
+    public string NombreCompleto => $"{Nombre} {Apellido}";
     public bool Sincronizado { get; set; } = false;
    
 

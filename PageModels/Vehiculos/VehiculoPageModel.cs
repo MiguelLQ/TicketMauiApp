@@ -37,6 +37,10 @@ public partial class VehiculoPageModel : ObservableObject
         try
         {
             IsBusy = true;
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizacionFirebaseService!.SincronizarVehiculoDesdeFirebaseAsync();
+            }
             await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
             ListaVehiculos.Clear();
 
@@ -47,7 +51,7 @@ public partial class VehiculoPageModel : ObservableObject
             {
                 Usuario? usuario = usuarios.FirstOrDefault(u => u.Uid == vehiculo.IdUsuario);
                 vehiculo.Nombre = usuario?.Nombre ?? "Usuario no encontrado";
-
+                vehiculo.Apellido = usuario?.Apellido ?? string.Empty;
                 ListaVehiculos.Add(vehiculo);
             }
         }

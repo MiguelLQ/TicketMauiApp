@@ -99,7 +99,21 @@
         <ShellContent Title="Scanear" Icon="codigoqr.png" ContentTemplate="{DataTemplate camscaner:CamScanerPage}" Route="camscaner" />
         
     </FlyoutItem>
-    
+    <!--Flyout conductor-->
+    <FlyoutItem Title="Panel Conductor"
+            x:Name="ConductorFlyoutItem"
+            Icon="{StaticResource IconDashboard}"
+            Route="conductorHome"
+            IsVisible="true">
+        <ShellContent Title="Inicio"
+                  Icon="casa.png"
+                  ContentTemplate="{DataTemplate inicio:InicioPage}"
+                  Route="inicioConductor" />
+        <ShellContent Title="Enviar Ubicación"
+                  Icon="location.png"
+                  ContentTemplate="{DataTemplate vermapaciudadano:EnviarUbicacionPage}"
+                  Route="enviarUbicacion" />
+    </FlyoutItem>
     <!-- FLYOUT Admin -->
     <FlyoutItem Title="Panel Admin"
             x:Name="AdminFlyoutItem"
@@ -120,7 +134,7 @@
                   Route="canje" />
         <!--Ruta -->
         <ShellContent Title="Rutas"
-                  Icon="premio.png"
+                  Icon="addruta.png"
                   ContentTemplate="{DataTemplate ruta:ListarRutaPage}"
                   Route="ruta" />       
         <!--Premios -->

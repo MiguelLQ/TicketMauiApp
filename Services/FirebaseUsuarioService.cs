@@ -4,7 +4,7 @@ using System.Text.Json;
 using MauiFirebase.Models;
 namespace MauiFirebase.Services;
 
-public class FirebaseUsuarioService
+public class FirebaseUbicacionServie
 {
     private readonly HttpClient _httpClient = new();
     private const string ApiKey = "AIzaSyD51sCvl0F9s3jJtWQKdkqa8AIbEWGGx9o";

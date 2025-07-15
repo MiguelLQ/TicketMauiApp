@@ -7,7 +7,7 @@ namespace MauiFirebase.Data.Repositories;
 
 public class UsuarioRepository : IUsuarioRepository
 {
-    private readonly FirebaseUsuarioService _firebaseService = new();
+    private readonly FirebaseUbicacionServie _firebaseService = new();
     private readonly FirebaseAuthService _authService = new();
     private readonly SQLiteAsyncConnection _db;
 

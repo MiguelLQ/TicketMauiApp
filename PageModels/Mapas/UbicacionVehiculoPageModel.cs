@@ -101,18 +101,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             Type = PinType.Place
         };
         MapaPins.Add(pin);
-        //foreach (var ubicacion in Ubicaciones)
-        //{
-        //    var pin = new Pin
-        //    {
-        //        Label = $"Placa: {}",
-        //        Address = $"Conductor: {ubicacion.NombreConductor}",
-        //        Location = new Location(lat,lng),
-        //        Type = PinType.Place
-        //    };
-
-        //    MapaPins.Add(pin);
-        //}
+        
     }
 
     public void InitializeTimer()
@@ -200,10 +189,12 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
                     {
                         var nuevoPin = new Pin
                         {
-                            Label = $"Vehículo {u.IdVehiculo}",
+                            Label = $"Placa: {u.Placa ?? "N/A"}",
                             Location = new Location(u.Latitud, u.Longitud),
-                            Address = $"Lat: {u.Latitud}, Lng: {u.Longitud}"
+                            Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F5}, Lng: {u.Longitud:F5}",
+                            Type = PinType.Place
                         };
+
 
                         _pinPorVehiculo[u.IdVehiculo!] = nuevoPin;
                         MapaPins.Add(nuevoPin);

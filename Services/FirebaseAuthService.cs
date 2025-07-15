@@ -193,6 +193,10 @@ namespace MauiFirebase.Services
                    Preferences.ContainsKey("FirebaseTokenExpiry") &&
                    Preferences.Get("FirebaseTokenExpiry", DateTime.MinValue) > DateTime.UtcNow;
         }
+        public string GetUserId()
+        {
+            return Preferences.Get("FirebaseUserId", string.Empty);
+        }
 
         public string GetUserEmail() => Preferences.Get("FirebaseUserEmail", string.Empty);
         public string GetIdToken() => Preferences.Get("FirebaseToken", string.Empty);

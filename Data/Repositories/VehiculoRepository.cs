@@ -55,4 +55,12 @@ public class VehiculoRepository : IVehiculoRepository
             .FirstOrDefaultAsync();
         return resultado;
     }
+    public async Task<Vehiculo?> GetByUsuarioUidAsync(string uid)
+    {
+        var resultado = await _database.Database!.Table<Vehiculo>()
+            .Where(v => v.IdUsuario == uid)
+            .FirstOrDefaultAsync();
+        return resultado;
+    }
+
 }

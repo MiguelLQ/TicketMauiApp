@@ -68,7 +68,7 @@ namespace MauiFirebase.PageModels.Logins
                 var uid = Preferences.Get("FirebaseUserId", string.Empty);
 
                 // Consultar datos del usuario en Firestore
-                var usuarioService = new FirebaseUsuarioService();
+                var usuarioService = new FirebaseUbicacionServie();
                 var usuario = await usuarioService.ObtenerUsuarioPorUidAsync(uid, token);
 
                 // Si no se encuentra en la colección "usuarios", se asume ciudadano
@@ -109,6 +109,8 @@ namespace MauiFirebase.PageModels.Logins
                         await Shell.Current.GoToAsync("//adminHome/inicio");
                     else if (usuario.Rol == "Recolector")
                         await Shell.Current.GoToAsync("//registerHome/inicio");
+                    else if (usuario.Rol == "Conductor")
+                        await Shell.Current.GoToAsync("//conductorHome/inicioConductor");
                     else
                         await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");
                 });

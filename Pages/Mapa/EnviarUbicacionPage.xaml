@@ -1,0 +1,38 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:MauiFirebase.PageModels.Mapas"
+             x:Class="MauiFirebase.Pages.Mapa.EnviarUbicacionPage"
+             Title="Seguimiento del Conductor"
+             x:DataType="viewmodel:ConductorUbicacionPageModel"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Padding="30" Spacing="30">
+
+        <Label Text="📍 Seguimiento de Ubicación"
+               FontSize="26"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="DarkBlue" />
+
+        <Label Text="{Binding Estado}"
+               FontSize="16"
+               HorizontalOptions="Center"
+               TextColor="DarkGreen"
+               HorizontalTextAlignment="Center" />
+
+        <Button Text="▶ Iniciar Seguimiento"
+                Command="{Binding IniciarSeguimientoCommand}"
+                BackgroundColor="#007E33"
+                TextColor="White"
+                FontSize="18"
+                CornerRadius="16" />
+
+        <Button Text="⏹ Detener Seguimiento"
+                Command="{Binding DetenerSeguimientoCommand}"
+                BackgroundColor="#CC0000"
+                TextColor="White"
+                FontSize="18"
+                CornerRadius="16" />
+
+    </VerticalStackLayout>
+</ContentPage>

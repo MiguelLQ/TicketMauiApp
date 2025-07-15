@@ -7,12 +7,6 @@
 
     <Grid RowDefinitions="Auto,*,Auto" Padding="10">
 
-        <!--<StackLayout Orientation="Horizontal" Spacing="15" Grid.Row="0">
-            <Button Text="Refrescar" Command="{Binding RefrescarCommand}" />
-            <Button Text="{Binding IsPolling, ConverterParameter='Detener,Iniciar'}"
-                    Command="{Binding IsPolling, ConverterParameter='StopPollingCommand,StartPollingCommand'}" />
-        </StackLayout>-->
-
         <maps:Map x:Name="map"
                   Grid.Row="1"
                   IsShowingUser="True"

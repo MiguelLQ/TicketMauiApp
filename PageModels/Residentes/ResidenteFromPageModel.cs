@@ -174,6 +174,5 @@ public partial class ResidenteFormPageModel : ObservableValidator
     public string? CorreoResidenteError => GetErrors(nameof(CorreoResidente)).FirstOrDefault()?.ErrorMessage;
     public string? DireccionResidenteError => GetErrors(nameof(DireccionResidente)).FirstOrDefault()?.ErrorMessage;
     public bool HasDireccionResidenteError => !string.IsNullOrWhiteSpace(DireccionResidenteError);
-
     public bool PuedeGuardar => !HasErrors && !HasDniDuplicadoError && !string.IsNullOrWhiteSpace(NombreResidente) && !string.IsNullOrWhiteSpace(ApellidoResidente) && !string.IsNullOrWhiteSpace(DniResidente);
 }

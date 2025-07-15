@@ -60,12 +60,14 @@ public partial class EditarVehiculoPageModel : ObservableValidator
 
     public async Task InicializarAsync()
     {
-        var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(IdVehiculo);
+        var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(IdVehiculo!);
         var usuarios = await _usuarioRepositorio.GetUsuariosAsync();
 
         var conductores = usuarios.Where(u => u.Rol?.ToLower() == "conductor").ToList();
         foreach (var usuario in conductores)
+        {
             ListaUsuario.Add(usuario);
+        }
 
         if (vehiculo != null)
         {
@@ -94,7 +96,7 @@ public partial class EditarVehiculoPageModel : ObservableValidator
 
         var vehiculo = new Vehiculo
         {
-            IdVehiculo = IdVehiculo,
+            IdVehiculo = IdVehiculo!,
             PlacaVehiculo = PlacaVehiculo!,
             MarcaVehiculo = MarcaVehiculo!,
             ModeloVehiculo = ModeloVehiculo!,
@@ -106,7 +108,17 @@ public partial class EditarVehiculoPageModel : ObservableValidator
 
         await _vehiculoRepository.UpdateVehiculoAsync(vehiculo);
         await _alertaHelper.ShowSuccessAsync("Vehículo actualizado correctamente.");
-        await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && _sincronizacionFirebaseService is not null)
+        {
+            try
+            {
+                await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Cambios guardados localmente. Se sincronizarán cuando haya conexión.");
+            }
+        }
         await Shell.Current.GoToAsync("..");
     }
 

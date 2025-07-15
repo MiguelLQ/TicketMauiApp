@@ -73,8 +73,7 @@ public partial class CanjePageModel : ObservableObject
             IsBusy = true;
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
-                await _sincronizar!.SincronizarCanjesDesdeFirebaseAsync(); // ✅ Esto es clave
-                await _sincronizar!.SincronizarResidentesDesdeFirebaseAsync();
+                await _sincronizar!.SincronizarCanjesDesdeFirebaseAsync();
             }
 
             ListaCanjes.Clear();

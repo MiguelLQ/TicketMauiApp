@@ -19,7 +19,7 @@
 
             <!--Encabezado con fondo naranja y tarjeta del coche -->
 
-            <Grid HeightRequest="270">
+            <Grid >
                 <!-- Fondo naranja superior -->
                 <BoxView 
                     BackgroundColor="{StaticResource HeaderOrange}" 
@@ -70,68 +70,74 @@
                             Aspect="AspectFit" />
                     </Grid>
                 </Frame>
+               <!-- Vehículos con ruta para hoy -->
+<Frame Background="{DynamicResource CardBackgroundBrush}"
+       BorderColor="Transparent"
+       Padding="12"
+       CornerRadius="20"
+       HasShadow="False"
+       HorizontalOptions="Center"
+       VerticalOptions="Start"
+       Margin="0,120,0,0">
+
+    <VerticalStackLayout Spacing="10">
+        <Label Text="Vehículos con ruta para hoy"
+               FontAttributes="Bold"
+               FontSize="18"
+               HorizontalOptions="Center" />
+
+        <!-- Lista dinámica sin HeightRequest; se ajusta sola -->
+        <CollectionView ItemsSource="{Binding VehiculosHoy}"
+                        HorizontalOptions="Center">
+            <CollectionView.ItemsLayout>
+                <!-- Dos columnas; se crean filas según sea necesario -->
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Background="{StaticResource EntryBackgroundBrush}"
+                           CornerRadius="10"
+                           Padding="10"
+                           Margin="6"
+                           BorderColor="Transparent">
+
+                        <VerticalStackLayout Spacing="4">
+
+                            <!-- Placa -->
+                            <Label Text="{Binding PlacaVehiculo, StringFormat='PLACA: {0}'}"
+                                   FontAttributes="Bold"
+                                   FontSize="13"
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+
+                            <!-- Marca -->
+                            <Label Text="{Binding MarcaVehiculo, StringFormat='Marca: {0}'}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+
+                            <!-- Modelo -->
+                            <Label Text="{Binding ModeloVehiculo, StringFormat='Modelo: {0}'}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+
+                            <!-- Conductor -->
+                            <Label Text="{Binding Nombre, StringFormat='Conductor: {0}'}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</Frame>
 
 
 
-                <Frame
-                    Background="{DynamicResource CardBackgroundBrush}"
-                    BorderColor="Transparent"
-                    Padding="10"
-                    WidthRequest="350"
-                    HeightRequest="180"
-                    CornerRadius="20"
-                    HasShadow="False"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start"
-                    Margin="0,120,0,0">
-
-                    <VerticalStackLayout Spacing="10">
-                        <Label 
-                            Text="Vehículos con ruta para hoy" 
-                            FontAttributes="Bold" 
-                            FontSize="18"
-                            HorizontalOptions="Center"/>
-
-                        <Grid ColumnSpacing="10" RowSpacing="10" HorizontalOptions="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="130" />
-                                <ColumnDefinition Width="130" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <!-- Fila 1 -->
-                            <Frame Grid.Column="0" Grid.Row="0" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent" >
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: ABC-123" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
-                                    <Label Text="Marca: Toyota" FontSize="12" TextColor="{StaticResource Gray500}"/>
-                                </VerticalStackLayout>
-                            </Frame>
-                            <Frame Grid.Column="1" Grid.Row="0" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: XYQ-456" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}" />
-                                    <Label Text="Marca: Nissan" FontSize="12" TextColor="{StaticResource Gray500}" />
-                                </VerticalStackLayout>
-                            </Frame>
-
-                            <!-- Fila 2 -->
-                            <Frame Grid.Column="0" Grid.Row="1" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: LMN-789" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
-                                    <Label Text="Marca: Kia" FontSize="12" TextColor="{StaticResource Gray500}"/>
-                                </VerticalStackLayout>
-                            </Frame>
-                            <Frame Grid.Column="1" Grid.Row="1" HeightRequest="50" Background="{StaticResource EntryBackgroundBrush}" CornerRadius="10" Padding="8" BorderColor="Transparent">
-                                <VerticalStackLayout>
-                                    <Label Text="PLACA: DEF-321" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource Gray500}"/>
-                                    <Label Text="Marca: Hyundai" FontSize="12" TextColor="{StaticResource Gray500}" />
-                                </VerticalStackLayout>
-                            </Frame>
-                        </Grid>
-                    </VerticalStackLayout>
-                </Frame>
 
             </Grid>
             

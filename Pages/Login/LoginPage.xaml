@@ -37,7 +37,7 @@
                     <VerticalStackLayout Spacing="20">
 
                         <!-- Correo -->
-                        <Frame CornerRadius="30" Padding="10" BackgroundColor="White" HasShadow="False">
+                        <Frame CornerRadius="15" Padding="10" BackgroundColor="White" HasShadow="False">
                             <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center">
                                 <Image Source="admi.png"
                                    HeightRequest="20"
@@ -57,7 +57,7 @@
 
 
                         <!-- Contraseña -->
-                        <Frame CornerRadius="30" Padding="10" BackgroundColor="White" HasShadow="False">
+                        <Frame CornerRadius="15" Padding="10" BackgroundColor="White" HasShadow="False">
                             <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center">
                                 <Image Source="password.png"
                                    HeightRequest="20"

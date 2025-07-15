@@ -13,4 +13,7 @@ public interface IVehiculoRepository
     Task<bool> ExisteAsync(string id);
     Task<Vehiculo?> GetByUsuarioUidAsync(string uid);
 
+    Task<List<Vehiculo>> ObtenerVehiculosPorDiaAsync(DayOfWeek dia);
+
+
 }

@@ -1,4 +1,4 @@
-using MauiFirebase.Data.Interfaces;
+﻿using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
 
@@ -6,9 +6,12 @@ namespace MauiFirebase.Data.Repositories;
 public class VehiculoRepository : IVehiculoRepository
 {
     private readonly AppDatabase _database;
-    public VehiculoRepository(AppDatabase database)
+    private readonly IUsuarioRepository _usuarioRepository;
+
+    public VehiculoRepository(AppDatabase database, IUsuarioRepository usuarioRepository)
     {
         _database = database;
+        _usuarioRepository = usuarioRepository;
     }
 
     public async Task<bool> ChangeEstadoVehiculoAsync(string id)
@@ -85,5 +88,49 @@ public class VehiculoRepository : IVehiculoRepository
             .FirstOrDefaultAsync();
         return resultado;
     }
+
+
+    public async Task<List<Vehiculo>> ObtenerVehiculosPorDiaAsync(DayOfWeek dia)
+    {
+        string diaTexto = TraducirDia(dia).ToLower();
+
+        var rutas = await _database.Database!.Table<Ruta>()
+            .Where(r => r.DiasDeRecoleccion != null &&
+                        r.DiasDeRecoleccion.ToLower().Contains(diaTexto))
+            .ToListAsync();
+
+        if (!rutas.Any())
+            return new List<Vehiculo>();
+
+        var vehiculoIds = rutas.Select(r => r.IdVehiculo).Distinct().ToList();
+
+        var vehiculos = await _database.Database!.Table<Vehiculo>()
+            .Where(v => vehiculoIds.Contains(v.IdVehiculo))
+            .ToListAsync();
+
+        foreach (var v in vehiculos)
+        {
+            if (v.IdUsuario != null)
+            {
+                var usuario = await _usuarioRepository.ObtenerUsuarioPorUidAsync(v.IdUsuario);
+                v.Nombre = usuario?.Nombre ?? ""; // <- ajusta este nombre si es distinto
+            }
+        }
+
+        return vehiculos;
+    }
+
+
+    private string TraducirDia(DayOfWeek dia) => dia switch
+    {
+        DayOfWeek.Monday => "Lunes",
+        DayOfWeek.Tuesday => "Martes",
+        DayOfWeek.Wednesday => "Miércoles",
+        DayOfWeek.Thursday => "Jueves",
+        DayOfWeek.Friday => "Viernes",
+        DayOfWeek.Saturday => "Sábado",
+        DayOfWeek.Sunday => "Domingo",
+        _ => ""
+    };
 
 }

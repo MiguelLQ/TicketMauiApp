@@ -22,4 +22,6 @@ public class Vehiculo
     [JsonIgnore]
     public string NombreCompleto => $"{Nombre} {Apellido}";
     public bool Sincronizado { get; set; } = false;
+   
+
 }

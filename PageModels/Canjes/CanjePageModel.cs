@@ -34,8 +34,9 @@ public partial class CanjePageModel : ObservableObject
             IsBusy = true;
             if (_sincronizar != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
-                await _sincronizar.SincronizarCanjeAsync(); // sube
-                await _sincronizar.SincronizarCanjesDesdeFirebaseAsync(); // baja
+                await _sincronizar.SincronizarCanjesDesdeFirebaseAsync(); 
+                await _sincronizar.SincronizarCanjeAsync();
+
             }
 
             await CargarResidentesAsync();
@@ -74,6 +75,7 @@ public partial class CanjePageModel : ObservableObject
             {
                 await _sincronizar!.SincronizarCanjesDesdeFirebaseAsync();
             }
+
             ListaCanjes.Clear();
             var canjes = await _canjeRepository.GetAllCanjeAync();
             var premios = await _premioRepository.GetAllPremiosAsync();
@@ -106,6 +108,6 @@ public partial class CanjePageModel : ObservableObject
     [RelayCommand]
     public async Task IrACrearCanjeAsync()
     {
-        await Shell.Current.GoToAsync("CrearCanjePageModel");
+        await Shell.Current.GoToAsync("AgregarCanjePageModel");
     }
 }

@@ -13,14 +13,21 @@ public partial class RutaPageModel : ObservableObject
 
     private readonly IRutaRepository _rutaRepository;
     private readonly IAlertaHelper _alertaHelper;
+    private readonly IVehiculoRepository _vehiculoRepository;
+    private readonly SincronizacionFirebaseService _sincronizador;
 
     [ObservableProperty]
     private bool isBusy;
 
-    public RutaPageModel(IRutaRepository rutaRepository, IAlertaHelper alertaHelper)
+    public RutaPageModel(IRutaRepository rutaRepository,
+        IAlertaHelper alertaHelper,
+        IVehiculoRepository vehiculoRepository,
+        SincronizacionFirebaseService sincronizador)
     {
         _rutaRepository = rutaRepository;
         _alertaHelper = alertaHelper;
+        _sincronizador = sincronizador;
+        _vehiculoRepository = vehiculoRepository;
     }
 
     [RelayCommand]
@@ -29,10 +36,23 @@ public partial class RutaPageModel : ObservableObject
         try
         {
             IsBusy = true;
+
+            if (_sincronizador != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
+            }
+
             ListaRutas.Clear();
             var rutas = await _rutaRepository.GetAllRutaAsync();
+
             foreach (var ruta in rutas)
             {
+                if (!string.IsNullOrEmpty(ruta.IdVehiculo))
+                {
+                    var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(ruta.IdVehiculo);
+                    ruta.PlacaVehiculo = vehiculo?.PlacaVehiculo;
+                }
+
                 ListaRutas.Add(ruta);
             }
         }
@@ -54,5 +74,17 @@ public partial class RutaPageModel : ObservableObject
     public async Task IrACrearRutaAsync()
     {
         await Shell.Current.GoToAsync("AgregarRutaPage");
+    }
+
+    [RelayCommand]
+    public async Task GuardarRutaAsync(Ruta ruta)
+    {
+        ruta.Sincronizado = false;
+        await _rutaRepository.CreateRutaAsync(ruta);
+        if (_sincronizador != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            await _sincronizador.SincronizarRutasAsync();
+        }
+        await CargarRutasAsync();
     }
 }

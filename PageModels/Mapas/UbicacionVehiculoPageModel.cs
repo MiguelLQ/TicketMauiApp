@@ -4,8 +4,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
-using MauiFirebase.Services;
 using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using Timer = System.Timers.Timer;
@@ -42,9 +42,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private int pollingInterval = 5000;
 
 
-    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, 
-        IVehiculoRepository vehiculoRepository, 
-        IRutaRepository rutaRepository, 
+    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo,
+        IVehiculoRepository vehiculoRepository,
+        IRutaRepository rutaRepository,
         SincronizacionFirebaseService sincronizador)
     {
         _ubicacionVehiculo = ubicacionVehiculo;
@@ -53,6 +53,26 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         _sincronizador = sincronizador;
         StartPolling();
     }
+
+    public async Task InicializarDatosAsync()
+    {
+        try
+        {
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarVehiculoDesdeFirebaseAsync();
+                await _sincronizador.SincronizarUbicacionesDesdeFirebaseAsync();
+                await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
+            }
+            await CargarVehiculoAsync();
+            await CargarUbicacionAsync();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error al inicializar datos: {ex.Message}";
+        }
+    }
+
 
     [RelayCommand]
     public async Task CargarVehiculoAsync()
@@ -70,7 +90,10 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     public async Task CargarUbicacionAsync()
     {
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            await _sincronizador.SincronizarVehiculoDesdeFirebaseAsync();
             await _sincronizador.SincronizarUbicacionesDesdeFirebaseAsync();
+        }
 
         Ubicaciones.Clear();
 
@@ -296,11 +319,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             var puntos = JsonSerializer.Deserialize<List<LatLng>>(rutaDelDia.PuntosRutaJson);
             if (puntos == null || puntos.Count < 2)
                 return;
-
-            // Convertir a Locations
             var locations = puntos.Select(p => new Location(p.lat, p.lng)).ToList();
-
-            // Obtener ruta optimizada desde Google
             var rutaGoogle = await _rutaService.ObtenerRutaGoogleAsync(locations);
 
             if (rutaGoogle == null || rutaGoogle.Count == 0)
@@ -308,8 +327,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
             var polyline = new Polyline
             {
-                StrokeColor = Colors.Red,
-                StrokeWidth = 5
+                StrokeColor = Colors.Blue,
+                StrokeWidth = 6
             };
 
             foreach (var punto in rutaGoogle)
@@ -324,6 +343,40 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ErrorMessage = "Error al cargar ruta: " + ex.Message;
         }
     }
+
+
+    public async Task RenderizarRutaEnMapaAsync(string idRuta)
+    {
+        try
+        {
+            RutasEnMapa.Clear();
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
+            }
+            var ruta = await _rutaRepository.GetRutaIdAsync(idRuta);
+            if (ruta == null || string.IsNullOrWhiteSpace(ruta.PuntosRutaJson))
+                return;
+            var puntos = JsonSerializer.Deserialize<List<LatLng>>(ruta.PuntosRutaJson);
+            if (puntos == null || puntos.Count < 2)
+                return;
+            var polyline = new Polyline
+            {
+                StrokeColor = Colors.Red,
+                StrokeWidth = 5
+            };
+            foreach (var punto in puntos)
+            {
+                polyline.Geopath.Add(new Location(punto.lat, punto.lng));
+            }
+            RutasEnMapa.Add(polyline);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Error al renderizar ruta: " + ex.Message;
+        }
+    }
+
     private class LatLng
     {
         public double lat { get; set; }

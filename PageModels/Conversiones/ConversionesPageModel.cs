@@ -53,11 +53,4 @@ public partial class ConversionesPageModel : ObservableObject
         await _alertaHelper.ShowSuccessAsync("Se cambio de estado de manera exitosa");
         await CargarConvertidoresAsync();
     }
-
-    [RelayCommand]
-    public async Task IrACrearResiduoAsync()
-    {
-        await Shell.Current.GoToAsync("AgregarConvertidorPage");
-    }
-
 }

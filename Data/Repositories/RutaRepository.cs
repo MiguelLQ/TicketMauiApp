@@ -55,4 +55,27 @@ public class RutaRepository : IRutaRepository
         var resultado = await _database.Database!.UpdateAsync(ruta);
         return resultado;
     }
+
+    public async Task MarcarComoSincronizadoAsync(string id)
+    {
+        var item = await _database.Database!.FindAsync<Ruta>(id);
+        if (item != null)
+        {
+            item.Sincronizado = true;
+            await _database.Database.UpdateAsync(item);
+        }
+    }
+
+    public async Task<List<Ruta>> GetRutasNoSincronizadasAsync()
+    {
+        return await _database.Database!.Table<Ruta>()
+            .Where(r => !r.Sincronizado)
+            .ToListAsync();
+    }
+
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var lista = await GetAllRutaAsync();
+        return lista.Any(r => r.IdRuta == id);
+    }
 }

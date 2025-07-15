@@ -14,6 +14,7 @@ public partial class EditarRutaPageModel : ObservableValidator
     private readonly IRutaRepository _rutaRepository;
     private readonly IAlertaHelper _alertaHelper;
     private readonly IVehiculoRepository _vehiculoRepository;
+    private readonly SincronizacionFirebaseService _sincronizar;
 
     [ObservableProperty]
     private string? _idRuta;
@@ -41,10 +42,14 @@ public partial class EditarRutaPageModel : ObservableValidator
     [ObservableProperty]
     private string? _puntosRutaJson;
 
-    public EditarRutaPageModel(IRutaRepository rutaRepository, IAlertaHelper alertaHelper, IVehiculoRepository vehiculoRepository)
+    public EditarRutaPageModel(IRutaRepository rutaRepository, 
+        IAlertaHelper alertaHelper,
+        SincronizacionFirebaseService sincronizar,
+        IVehiculoRepository vehiculoRepository)
     {
         _rutaRepository = rutaRepository;
         _alertaHelper = alertaHelper;
+        _sincronizar = sincronizar;
         _vehiculoRepository = vehiculoRepository;
     }
 
@@ -84,10 +89,22 @@ public partial class EditarRutaPageModel : ObservableValidator
         RutaSeleccionada.IdVehiculo = VehiculoSeleccionado.IdVehiculo;
         RutaSeleccionada.DiasDeRecoleccion = DiasDeRecoleccion!;
         RutaSeleccionada.EstadoRuta = EstadoRuta;
+        RutaSeleccionada.Sincronizado = false;
         RutaSeleccionada.PuntosRutaJson = PuntosRutaJson;
 
         await _rutaRepository.UpdateRutaAsync(RutaSeleccionada);
         await _alertaHelper.ShowSuccessAsync("Ruta actualizada correctamente.");
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && _sincronizar is not null)
+        {
+            try
+            {
+                await _sincronizar.SincronizarRutasAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Cambios guardados localmente. Se sincronizarán cuando haya conexión.");
+            }
+        }
         await Shell.Current.GoToAsync("..");
     }
 

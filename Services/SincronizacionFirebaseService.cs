@@ -17,7 +17,7 @@ public class SincronizacionFirebaseService
     private readonly IResiduoRepository _localResiduoRepository;
     private readonly ICategoriaResiduoRepository _localCategoriaResiduoRepository;
     private readonly IUbicacionVehiculo _localUbicacionVehiculoRepository;
-
+    private readonly IRutaRepository _localRutaRepository;
 
     private readonly FirebaseUbicacionService _firebaseUbicacionService;
     private readonly FirebaseRegistroReciclajeService _firebaseReciclajeService;
@@ -29,6 +29,7 @@ public class SincronizacionFirebaseService
     private readonly FirebaseTicketService _firebaseTicketService;
     private readonly FirebaseResiduoService _firebaseResiduoService;
     private readonly FirebaseCategoriaResiduoService _firebaseCategoriaResiduoService;
+    private readonly FirebaseRutaService _firebaseRutaService;
     private readonly FirebaseAuthService _authService;
 
     public SincronizacionFirebaseService(
@@ -42,6 +43,7 @@ public class SincronizacionFirebaseService
         IResiduoRepository localResiduoRepository,
         ICategoriaResiduoRepository localCategoriaResiduoRepository,
         IUbicacionVehiculo localUbicacionVehiculoRepository,
+        IRutaRepository localRutaRepository,
         FirebaseRegistroReciclajeService firebaseReciclajeService,
         FirebaseResidenteService firebaseResidenteService,
         FirebasePremioService firebasePremioService,
@@ -52,6 +54,7 @@ public class SincronizacionFirebaseService
         FirebaseResiduoService firebaseResiduoService,
         FirebaseUbicacionService firebaseUbicacionService,
         FirebaseCategoriaResiduoService firebaseCategoriaResiduoService,
+        FirebaseRutaService firebaseRutaService,
         FirebaseAuthService authService)
     {
         _localReciclajeRepository = localReciclajeRepository;
@@ -64,6 +67,7 @@ public class SincronizacionFirebaseService
         _localResiduoRepository = localResiduoRepository;
         _localCategoriaResiduoRepository = localCategoriaResiduoRepository;
         _localUbicacionVehiculoRepository = localUbicacionVehiculoRepository;
+        _localRutaRepository = localRutaRepository;
         _firebaseReciclajeService = firebaseReciclajeService;
         _firebaseResidenteService = firebaseResidenteService;
         _firebasePremioService = firebasePremioService;
@@ -74,6 +78,7 @@ public class SincronizacionFirebaseService
         _firebaseResiduoService = firebaseResiduoService;
         _firebaseUbicacionService = firebaseUbicacionService;
         _firebaseCategoriaResiduoService = firebaseCategoriaResiduoService;
+        _firebaseRutaService = firebaseRutaService;
         _authService = authService;
     }
 
@@ -483,6 +488,45 @@ public class SincronizacionFirebaseService
         }
     }
 
+    /*==============================================================================================
+                            * Rutas
+    *==============================================================================================*/
+    public async Task SincronizarRutasAsync()
+    {
+        var idToken = await ObtenerTokenSiHayInternetAsync();
+        if (idToken == null)
+        {
+            return;
+        }
+        var rutasLocales = await _localRutaRepository.GetRutasNoSincronizadasAsync();
+        foreach (var ruta in rutasLocales)
+        {
+            var exito = await _firebaseRutaService.GuardarRutaFirestoreAsync(ruta, ruta.IdRuta, idToken);
+            if (exito)
+            {
+                await _localRutaRepository.MarcarComoSincronizadoAsync(ruta.IdRuta);
+            }
+        }
+    }
+
+    public async Task SincronizarRutasDesdeFirebaseAsync()
+    {
+        var idToken = await ObtenerTokenSiHayInternetAsync();
+        if (idToken == null)
+        {
+            return;
+        }
+        var rutasRemotas = await _firebaseRutaService.ObtenerRutasDesdeFirestoreAsync(idToken);
+        foreach (var remoto in rutasRemotas)
+        {
+            var existe = await _localRutaRepository.ExisteAsync(remoto.IdRuta);
+            if (!existe)
+            {
+                remoto.Sincronizado = true;
+                await _localRutaRepository.CreateRutaAsync(remoto);
+            }
+        }
+    }
 
     // Si alguna vez necesitas sincronizar todo manualmente
     public async Task SincronizarTodoAsync()
@@ -497,6 +541,7 @@ public class SincronizacionFirebaseService
         await SincronizarTicketsAsync();
         await SincronizarResiduosAsync();
         await SincronizarCategoriasResiduoAsync();
+        await SincronizarRutasAsync();
 
         // Descarga desde Firebase (para mantener local actualizado)
         //await SincronizarResidentesDesdeFirebaseAsync();
@@ -505,6 +550,7 @@ public class SincronizacionFirebaseService
         //await SincronizarTicketsDesdeFirebaseAsync();
         //await SincronizarResiduoDesdeFirebaseAsync();
         //await SincronizarCategoriaResiduoDesdeFirebaseAsync();
+        await SincronizarRutasDesdeFirebaseAsync();
     }
 
 }

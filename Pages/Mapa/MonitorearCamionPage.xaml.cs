@@ -24,27 +24,27 @@ public partial class MonitorearCamionPage : ContentPage
         await _viewModel.CargarUbicacionAsync();
 
         map.Pins.Clear();
-
         foreach (var pin in _viewModel.MapaPins)
         {
             map.Pins.Add(pin);
         }
 
-        var andahuaylasPin = _viewModel.MapaPins.FirstOrDefault();
-        if (andahuaylasPin != null)
+        if (map.Pins.Count > 0)
         {
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(andahuaylasPin.Location, Distance.FromKilometers(0.5)));
+            var primerPin = map.Pins[0];
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(
+                primerPin.Location,
+                Distance.FromKilometers(0.5)
+            ));
         }
         var diaActual = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("es-PE"));
-        await _viewModel.CargarRutaDelDiaAsync(diaActual);
         map.MapElements.Clear();
+        await _viewModel.CargarRutaDelDiaAsync(diaActual);
+
         foreach (var ruta in _viewModel.RutasEnMapa)
         {
             map.MapElements.Add(ruta);
         }
-
-        await DisplayAlert("Ruta", $"Se agregaron {_viewModel.RutasEnMapa.Count} tramos al mapa.", "OK");
-
     }
 
 

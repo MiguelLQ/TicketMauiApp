@@ -34,11 +34,16 @@ public partial class CrearRutaPageModel : ObservableValidator
     private readonly IRutaRepository _rutaRepository;
     private readonly IAlertaHelper _alertaHelper;
     private readonly IVehiculoRepository _vehiculoRepository;
+    private readonly SincronizacionFirebaseService _sincronizar;
 
-    public CrearRutaPageModel(IRutaRepository rutaRepository, IAlertaHelper alertaHelper, IVehiculoRepository vehiculoRepository)
+    public CrearRutaPageModel(IRutaRepository rutaRepository, 
+        IAlertaHelper alertaHelper,
+        SincronizacionFirebaseService sincronizar,
+    IVehiculoRepository vehiculoRepository)
     {
         _rutaRepository = rutaRepository;
         _alertaHelper = alertaHelper;
+        _sincronizar = sincronizar;
         _vehiculoRepository = vehiculoRepository;
     }
 
@@ -64,10 +69,22 @@ public partial class CrearRutaPageModel : ObservableValidator
             DiasDeRecoleccion = DiasDeRecoleccion!,
             EstadoRuta = EstadoRuta,
             PuntosRutaJson = PuntosRutaJson,
-            FechaRegistroRuta = DateTime.Now
+            FechaRegistroRuta = DateTime.Now,
+            Sincronizado = false
         };
 
         await _rutaRepository.CreateRutaAsync(nuevaRuta);
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            try
+            {
+                await _sincronizar.SincronizarRutasAsync();
+            }
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Guardado localmente. Se sincronizará cuando haya internet.");
+            }
+        }
         await _alertaHelper.ShowSuccessAsync("Ruta creada correctamente.");
         LimpiarFormulario();
         await Shell.Current.GoToAsync(nameof(ListarRutaPage));

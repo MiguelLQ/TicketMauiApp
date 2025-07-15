@@ -286,7 +286,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
         var distancia = Location.CalculateDistance(ubicacionUsuario, ubicacionCamion, DistanceUnits.Kilometers);
 
-        if (distancia <= 5)
+        if (distancia <= 0.5)
         {
             if ((DateTime.Now - ultimaNotificacion) > intervaloNotificacion)
             {

@@ -21,4 +21,6 @@ public class Residente
     [NotNull]
     public int TicketsTotalesGanados { get; set; } = 0;
     public bool Sincronizado { get; set; } = false;
+    public string? UidFirebase { get; set; } // 🟢 Opcional, no rompe nada
+
 }

@@ -128,4 +128,14 @@ public class ResidenteRepository : IResidenteRepository
             await _database.Database.UpdateAsync(item);
         }
     }
+    public async Task<Residente?> ObtenerPorUidFirebaseAsync(string uid)
+    {
+        if (string.IsNullOrEmpty(uid))
+            return null;
+
+        return await _database.Database!.Table<Residente>()
+            .Where(r => r.UidFirebase == uid)
+            .FirstOrDefaultAsync();
+    }
+
 }

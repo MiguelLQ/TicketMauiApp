@@ -1,5 +1,4 @@
-﻿
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
@@ -31,7 +30,8 @@ namespace MauiFirebase.PageModels.Registers
         // 🔹 Control de la vista
         [ObservableProperty] private bool mostrarFormulario = true;
         [ObservableProperty] private string? qrBase64;
-        // para mostrar los datos del usuario
+
+        // 🔹 Datos del usuario mostrado
         [ObservableProperty] private string? nombreResidenteLocal;
         [ObservableProperty] private string? apellidoResidenteLocal;
         [ObservableProperty] private string? correoResidenteLocal;
@@ -41,54 +41,60 @@ namespace MauiFirebase.PageModels.Registers
         // 🔹 Se ejecuta al cargar la vista
         public async Task InicializarAsync()
         {
-            var idResidente = Preferences.Get("IdResidenteFirestore", null);
+            var uid = Preferences.Get("FirebaseUserId", null);
             var idToken = Preferences.Get("FirebaseToken", null);
 
-            if (string.IsNullOrEmpty(idResidente))
+            if (string.IsNullOrEmpty(uid))
                 return;
 
-            // 🔹 Primero, obtener los datos locales
-            var residente = await _residenteRepository.ObtenerPorIdAsync(idResidente);
+            // 1. Intentar obtener desde Preferences (si ya está guardado)
+            var idResidente = Preferences.Get("IdResidenteFirestore", null);
+            Residente? residente = null;
 
-            if (residente != null)
+            if (!string.IsNullOrEmpty(idResidente))
             {
-                NombreResidenteLocal = residente.NombreResidente;
-                ApellidoResidenteLocal = residente.ApellidoResidente;
-                CorreoResidenteLocal = residente.CorreoResidente;
-                DireccionResidenteLocal = residente.DireccionResidente;
-                DniResidenteLocal = residente.DniResidente;
+                residente = await _residenteRepository.ObtenerPorIdAsync(idResidente);
 
-                QrBase64 = GenerarQrComoBase64($"ID:{residente.IdResidente}\nDNI:{residente.DniResidente}");
-            }
-
-            // 🔹 Verificar si hay conexión para sincronizar Firestore
-            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && !string.IsNullOrEmpty(idToken))
-            {
-                var residenteFirestore = await _firebaseCiudadanoService.ObtenerResidenteDesdeFirestoreAsync(idResidente, idToken);
-
-                if (residenteFirestore != null && residente == null)
+                // ⚠️ Validar que el UID del residente local coincida con el UID actual
+                if (residente != null && residente.UidFirebase != uid)
                 {
-                    // Guardar en BD local si no existía
-                    await _residenteRepository.CreateResidenteAsync(residenteFirestore);
-                    residente = residenteFirestore;
-
-                    NombreResidenteLocal = residente.NombreResidente;
-                    ApellidoResidenteLocal = residente.ApellidoResidente;
-                    CorreoResidenteLocal = residente.CorreoResidente;
-                    DireccionResidenteLocal = residente.DireccionResidente;
-                    DniResidenteLocal = residente.DniResidente;
-
-                    QrBase64 = GenerarQrComoBase64($"ID:{residente.IdResidente}\nDNI:{residente.DniResidente}");
+                    residente = null; // Ignorar datos si no pertenecen al usuario autenticado
                 }
             }
 
-            MostrarFormulario = residente == null;
+            if (residente != null)
+            {
+                MostrarDatosResidente(residente);
+                MostrarFormulario = false;
+                return; // Ya está todo listo
+            }
+
+            // 2. Si hay internet, consultar Firestore por el UID actual
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && !string.IsNullOrEmpty(idToken))
+            {
+                var residenteFirestore = await _firebaseCiudadanoService.ObtenerResidentePorUidFirebaseAsync(uid, idToken);
+
+                if (residenteFirestore != null)
+                {
+                    var local = await _residenteRepository.ObtenerPorIdAsync(residenteFirestore.IdResidente);
+
+                    if (local == null)
+                        await _residenteRepository.CreateResidenteAsync(residenteFirestore);
+                    else
+                        await _residenteRepository.UpdateResidenteAsync(residenteFirestore);
+
+                    Preferences.Set("IdResidenteFirestore", residenteFirestore.IdResidente);
+                    MostrarDatosResidente(residenteFirestore);
+                    MostrarFormulario = false;
+                    return;
+                }
+            }
+
+            // 🔹 Si no se encontró en local ni en Firestore → mostrar el formulario
+            MostrarFormulario = true;
         }
 
 
-
-
-        // 🔹 Comando para guardar los datos del ciudadano
         [RelayCommand]
         private async Task GuardarCiudadanoAsync()
         {
@@ -117,23 +123,21 @@ namespace MauiFirebase.PageModels.Registers
                 DireccionResidente = Direccion,
                 EstadoResidente = EstadoResidente,
                 FechaRegistroResidente = DateTime.Now,
-                TicketsTotalesGanados = 0
+                TicketsTotalesGanados = 0,
+                UidFirebase = uid
             };
 
-            // 🔸 Guardar local
             await _residenteRepository.CreateResidenteAsync(nuevoResidente);
-            // Guardar el ID generado en Preferences
             Preferences.Set("IdResidenteFirestore", nuevoResidente.IdResidente);
-            // 🔸 Guardar en Firestore
+
             var idToken = await _authService.ObtenerIdTokenSeguroAsync();
-            var exito = await _firebaseCiudadanoService.GuardarEnFirestoreAsync(nuevoResidente,idToken);
+            var exito = await _firebaseCiudadanoService.GuardarEnFirestoreAsync(nuevoResidente, idToken);
 
             if (exito)
             {
                 MostrarFormulario = false;
-                QrBase64 = GenerarQrComoBase64($"UID:{uid}");
-
-                await Application.Current.MainPage.DisplayAlert("Registro exitoso", "Tu información ha sido guardada correctamente en Firestore.", "OK");
+                QrBase64 = GenerarQrComoBase64($"ID:{nuevoResidente.IdResidente}\nDNI:{nuevoResidente.DniResidente}");
+                await Application.Current.MainPage.DisplayAlert("Registro exitoso", "Tu información ha sido guardada correctamente.", "OK");
             }
             else
             {
@@ -141,7 +145,17 @@ namespace MauiFirebase.PageModels.Registers
             }
         }
 
-        // 🔹 Método auxiliar para generar un QR base64
+        private void MostrarDatosResidente(Residente residente)
+        {
+            NombreResidenteLocal = residente.NombreResidente;
+            ApellidoResidenteLocal = residente.ApellidoResidente;
+            CorreoResidenteLocal = residente.CorreoResidente;
+            DireccionResidenteLocal = residente.DireccionResidente;
+            DniResidenteLocal = residente.DniResidente;
+
+            QrBase64 = GenerarQrComoBase64($"ID:{residente.IdResidente}\nDNI:{residente.DniResidente}");
+        }
+
         private string GenerarQrComoBase64(string texto)
         {
             using var qrGenerator = new QRCoder.QRCodeGenerator();

@@ -81,6 +81,14 @@ public class VehiculoRepository : IVehiculoRepository
         var lista = await GetAllVehiculoAsync();
         return lista.Any(c => c.IdVehiculo.ToString() == id);
     }
+    public async Task<Vehiculo?> GetByUsuarioUidAsync(string uid)
+    {
+        var resultado = await _database.Database!.Table<Vehiculo>()
+            .Where(v => v.IdUsuario == uid)
+            .FirstOrDefaultAsync();
+        return resultado;
+    }
+
 
     public async Task<List<Vehiculo>> ObtenerVehiculosPorDiaAsync(DayOfWeek dia)
     {

@@ -11,6 +11,8 @@ public interface IVehiculoRepository
     Task<List<Vehiculo>> GetConvertidoresNoSincronizadosAsync();
     Task MarcarComoSincronizadoAsync(string id);
     Task<bool> ExisteAsync(string id);
+    Task<Vehiculo?> GetByUsuarioUidAsync(string uid);
+
     Task<List<Vehiculo>> ObtenerVehiculosPorDiaAsync(DayOfWeek dia);
 
 

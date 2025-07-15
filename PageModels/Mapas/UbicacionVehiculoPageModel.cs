@@ -4,8 +4,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
-using MauiFirebase.Services;
 using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using Timer = System.Timers.Timer;
@@ -18,6 +18,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private readonly IUbicacionVehiculo _ubicacionVehiculo;
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IRutaRepository _rutaRepository;
+    private readonly FirebaseUbicacionService _firebaseUbicacionService;
+
     private readonly SincronizacionFirebaseService _sincronizador;
     private readonly RutaService _rutaService = new();
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
@@ -42,17 +44,39 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private int pollingInterval = 5000;
 
 
-    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo, 
-        IVehiculoRepository vehiculoRepository, 
-        IRutaRepository rutaRepository, 
+    public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo,
+        IVehiculoRepository vehiculoRepository,
+        IRutaRepository rutaRepository,
+        FirebaseUbicacionService firebaseUbicacionService,
         SincronizacionFirebaseService sincronizador)
     {
         _ubicacionVehiculo = ubicacionVehiculo;
         _vehiculoRepository = vehiculoRepository;
         _rutaRepository = rutaRepository;
         _sincronizador = sincronizador;
+        _firebaseUbicacionService = firebaseUbicacionService; // 👈 asignación
         StartPolling();
     }
+
+    public async Task InicializarDatosAsync()
+    {
+        try
+        {
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarVehiculoDesdeFirebaseAsync();
+                await _sincronizador.SincronizarUbicacionesDesdeFirebaseAsync();
+                await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
+            }
+            await CargarVehiculoAsync();
+            await CargarUbicacionAsync();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error al inicializar datos: {ex.Message}";
+        }
+    }
+
 
     [RelayCommand]
     public async Task CargarVehiculoAsync()
@@ -70,7 +94,10 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     public async Task CargarUbicacionAsync()
     {
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            await _sincronizador.SincronizarVehiculoDesdeFirebaseAsync();
             await _sincronizador.SincronizarUbicacionesDesdeFirebaseAsync();
+        }
 
         Ubicaciones.Clear();
 
@@ -170,27 +197,23 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         {
             ErrorMessage = null;
 
-            // Traer ubicaciones y vehículos desde Firebase
-            var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
+            //var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
             var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
-
+            // ubicacion del realtime database
+            var ubicaciones = await ObtenerUbicacionesRealtimeAsync();
             if (cancellationToken.IsCancellationRequested)
             {
                 return;
             }
-
             var vehiculosDict = vehiculos.ToDictionary(v => v.IdVehiculo!);
-
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 Ubicaciones.Clear();
                 MapaPins.Clear();
                 _pinPorVehiculo.Clear();
 
-                // Recorrer ubicaciones de Firebase
                 foreach (var u in ubicaciones)
                 {
-                    // Enriquecer con datos del vehículo
                     if (vehiculosDict.TryGetValue(u.IdVehiculo!, out var vehiculo))
                     {
                         u.Placa = vehiculo.PlacaVehiculo;
@@ -201,38 +224,51 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
                     var pin = new Pin
                     {
-                        Label = $"Placa: {u.Placa ?? "Desconocida"}",
-                        Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F6}\nLng: {u.Longitud:F6}",
+                        Label = $"🚛 {u.Placa ?? "Sin placa"} - {u.NombreConductor ?? "Sin conductor"}",
+                        Address =
+                                  $"📍 Lat: {u.Latitud:F6}, Lng: {u.Longitud:F6}",
                         Location = new Location(u.Latitud, u.Longitud),
                         Type = PinType.Place
                     };
 
-                    _pinPorVehiculo[u.IdVehiculo!] = pin;
+                    _pinPorVehiculo[u.IdVehiculo ?? u.IdUbicacionVehiculo ?? Guid.NewGuid().ToString()] = pin;
                     MapaPins.Add(pin);
                 }
+                //var andahuaylasLat = -13.653820;
+                //var andahuaylasLng = -73.360519;
 
-                // Agregar pin fijo de Andahuaylas
-                var andahuaylasLat = -13.653820;
-                var andahuaylasLng = -73.360519;
+                //var pinAndahuaylas = new Pin
+                //{
+                //    Label = "Placa: XYZ-999",
+                //    Address = "Conductor: Juan Perez",
+                //    Location = new Location(andahuaylasLat, andahuaylasLng),
+                //    Type = PinType.Place
+                //};
 
-                var pinAndahuaylas = new Pin
-                {
-                    Label = "Placa: XYZ-999",
-                    Address = "Conductor: Conductor Andahuaylas\nLat: -13.653820\nLng: -73.360519",
-                    Location = new Location(andahuaylasLat, andahuaylasLng),
-                    Type = PinType.Place
-                };
+                //_pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
+                //MapaPins.Add(pinAndahuaylas);
 
-                _pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
-                MapaPins.Add(pinAndahuaylas);
-
-                // Verificar proximidad
                 VerificarProximidad();
             });
         }
         catch (Exception ex)
         {
             ErrorMessage = $"Error al cargar ubicaciones: {ex.Message}";
+        }
+    }
+    // 
+    // ubicacion desde realtime database
+    public async Task<List<UbicacionVehiculo>> ObtenerUbicacionesRealtimeAsync()
+    {
+        try
+        {
+            var ubicaciones = await _firebaseUbicacionService.ObtenerTodasUbicacionesAsync();
+            return ubicaciones;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Error al consultar Realtime DB: " + ex.Message;
+            return new List<UbicacionVehiculo>();
         }
     }
 
@@ -296,11 +332,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             var puntos = JsonSerializer.Deserialize<List<LatLng>>(rutaDelDia.PuntosRutaJson);
             if (puntos == null || puntos.Count < 2)
                 return;
-
-            // Convertir a Locations
             var locations = puntos.Select(p => new Location(p.lat, p.lng)).ToList();
-
-            // Obtener ruta optimizada desde Google
             var rutaGoogle = await _rutaService.ObtenerRutaGoogleAsync(locations);
 
             if (rutaGoogle == null || rutaGoogle.Count == 0)
@@ -308,8 +340,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
             var polyline = new Polyline
             {
-                StrokeColor = Colors.Red,
-                StrokeWidth = 5
+                StrokeColor = Colors.Blue,
+                StrokeWidth = 6
             };
 
             foreach (var punto in rutaGoogle)
@@ -324,6 +356,40 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ErrorMessage = "Error al cargar ruta: " + ex.Message;
         }
     }
+
+
+    public async Task RenderizarRutaEnMapaAsync(string idRuta)
+    {
+        try
+        {
+            RutasEnMapa.Clear();
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
+            }
+            var ruta = await _rutaRepository.GetRutaIdAsync(idRuta);
+            if (ruta == null || string.IsNullOrWhiteSpace(ruta.PuntosRutaJson))
+                return;
+            var puntos = JsonSerializer.Deserialize<List<LatLng>>(ruta.PuntosRutaJson);
+            if (puntos == null || puntos.Count < 2)
+                return;
+            var polyline = new Polyline
+            {
+                StrokeColor = Colors.Red,
+                StrokeWidth = 5
+            };
+            foreach (var punto in puntos)
+            {
+                polyline.Geopath.Add(new Location(punto.lat, punto.lng));
+            }
+            RutasEnMapa.Add(polyline);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Error al renderizar ruta: " + ex.Message;
+        }
+    }
+
     private class LatLng
     {
         public double lat { get; set; }

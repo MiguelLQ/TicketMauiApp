@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:MauiFirebase.PageModels.Mapas"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiFirebase.Pages.Mapa.EnviarUbicacionPage"
+             x:DataType="viewmodel:ConductorUbicacionPageModel"
+            >
+
+    <VerticalStackLayout Padding="30" Spacing="40">
+
+        <!-- Título -->
+        <Label Text="Seguimiento de Ubicación"
+               FontSize="22"
+               FontAttributes="Bold"
+               TextColor="{StaticResource Primary}"
+               HorizontalOptions="Center" 
+               VerticalOptions="Center"/>
+
+        <!-- Estado actual -->
+        <Label Text="{Binding Estado}"
+               FontSize="16"
+               TextColor="#388E3C"
+               HorizontalTextAlignment="Center"
+               HorizontalOptions="Center" />
+        <HorizontalStackLayout HorizontalOptions="Center"
+                       Spacing="20"
+                       IsVisible="{Binding Latitud, Converter={StaticResource NullToBoolConverter}}">
+            <Label Text="{Binding Latitud, StringFormat='Lat: {0:F6}'}"
+           FontSize="14"
+           TextColor="{StaticResource Gray400}" />
+
+            <Label Text="{Binding Longitud, StringFormat='Lng: {0:F6}'}"
+           FontSize="14"
+           TextColor="{StaticResource Gray400}" />
+        </HorizontalStackLayout>
+
+
+        <AbsoluteLayout HeightRequest="150" WidthRequest="150"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                IsVisible="{Binding IsTrackingVisible}">
+
+            <!-- Círculo 1 -->
+            <Border x:Name="Pulse1"
+            WidthRequest="100"
+            HeightRequest="100"
+            Background="#602196F3"
+            StrokeThickness="0"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,100,100"
+            AbsoluteLayout.LayoutFlags="PositionProportional">
+                <Border.StrokeShape>
+                    <Ellipse />
+                </Border.StrokeShape>
+            </Border>
+
+            <!-- Círculo 2 -->
+            <Border x:Name="Pulse2"
+            WidthRequest="100"
+            HeightRequest="100"
+            Background="#402196F3"
+            StrokeThickness="0"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,100,100"
+            AbsoluteLayout.LayoutFlags="PositionProportional">
+                <Border.StrokeShape>
+                    <Ellipse />
+                </Border.StrokeShape>
+            </Border>
+
+            <!-- Círculo 3 -->
+            <Border x:Name="Pulse3"
+            WidthRequest="100"
+            HeightRequest="100"
+            Background="#202196F3"
+            StrokeThickness="0"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,100,100"
+            AbsoluteLayout.LayoutFlags="PositionProportional">
+                <Border.StrokeShape>
+                    <Ellipse />
+                </Border.StrokeShape>
+            </Border>
+
+        </AbsoluteLayout>
+
+        <!-- Botones -->
+        <Button Text="▶ Iniciar Seguimiento"
+                Command="{Binding IniciarSeguimientoCommand}"
+                BackgroundColor="#2E7D32"
+                TextColor="White"
+                FontSize="18"
+                CornerRadius="16"
+                HeightRequest="50" />
+
+        <Button Text="⏹ Detener Seguimiento"
+                Command="{Binding DetenerSeguimientoCommand}"
+                BackgroundColor="#C62828"
+                TextColor="White"
+                FontSize="18"
+                CornerRadius="16"
+                HeightRequest="50" />
+    </VerticalStackLayout>
+</ContentPage>

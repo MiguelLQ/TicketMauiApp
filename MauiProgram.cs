@@ -44,7 +44,6 @@ using Microcharts.Maui;
 using Microsoft.Maui.Controls.Maps;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
-
 namespace MauiFirebase;
 
 public static class MauiProgram
@@ -173,7 +172,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUbicacionVehiculo, UbicacionVehiculoRepository>();
         builder.Services.AddSingleton<MonitorearCamionPage>();
         builder.Services.AddSingleton<UbicacionVehiculoPageModel>();
-
+        builder.Services.AddSingleton<ConductorUbicacionPageModel>();
+        builder.Services.AddSingleton<EnviarUbicacionPage>();
         //para scaner qr
         builder.Services.AddTransient<CamScanerPage>();
         builder.Services.AddTransient<CamScanerPageModel>();
@@ -192,6 +192,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<FirebaseCategoriaResiduoService>();
         builder.Services.AddSingleton<FirebaseResiduoService>();
         builder.Services.AddSingleton<FirebaseUbicacionService>();
+        builder.Services.AddSingleton<FirebaseRutaService>();
         var app = builder.Build();
         Services = app.Services;
         return app;

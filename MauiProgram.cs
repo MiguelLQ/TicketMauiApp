@@ -44,7 +44,6 @@ using Microcharts.Maui;
 using Microsoft.Maui.Controls.Maps;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
-
 namespace MauiFirebase;
 
 public static class MauiProgram

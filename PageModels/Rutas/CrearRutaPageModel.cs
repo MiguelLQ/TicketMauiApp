@@ -107,7 +107,6 @@ public partial class CrearRutaPageModel : ObservableValidator
         EstadoRuta = true;
         ClearErrors();
     }
-
     partial void OnDiasDeRecoleccionChanged(string? value)
     {
         ValidateProperty(value, nameof(DiasDeRecoleccion));

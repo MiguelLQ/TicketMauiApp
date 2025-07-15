@@ -210,7 +210,6 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
                 MapaPins.Clear();
                 _pinPorVehiculo.Clear();
 
-                // Recorrer ubicaciones de Firebase
                 foreach (var u in ubicaciones)
                 {
                     // Enriquecer con datos del vehículo

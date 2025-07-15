@@ -69,7 +69,6 @@ public partial class RutaPageModel : ObservableObject
         await _alertaHelper.ShowSuccessAsync("Se cambió el estado de manera exitosa");
         await CargarRutasAsync();
     }
-
     [RelayCommand]
     public async Task IrACrearRutaAsync()
     {

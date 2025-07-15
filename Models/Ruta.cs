@@ -14,5 +14,5 @@ public class Ruta
     public string? PuntosRutaJson { get; set; }
     [Ignore]
     public string? PlacaVehiculo { get; set; }
-    public bool Sincronizado { get; set; } = false; // Para offline
+    public bool Sincronizado { get; set; } = false; 
 }

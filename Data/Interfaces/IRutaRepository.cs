@@ -1,7 +1,6 @@
 ﻿using MauiFirebase.Models;
 
 namespace MauiFirebase.Data.Interfaces;
-
 public interface IRutaRepository
 {
     Task<List<Ruta>> GetAllRutaAsync();

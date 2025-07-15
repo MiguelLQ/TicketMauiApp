@@ -107,7 +107,6 @@ public partial class EditarRutaPageModel : ObservableValidator
         }
         await Shell.Current.GoToAsync("..");
     }
-
     partial void OnVehiculoSeleccionadoChanged(Vehiculo? value)
     {
         OnPropertyChanged(nameof(HasVehiculoError));

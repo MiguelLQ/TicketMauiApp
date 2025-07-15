@@ -77,7 +77,6 @@ public partial class MonitorearCamionPage : ContentPage
             }
         });
     }
-
     protected override void OnDisappearing()
     {
         base.OnDisappearing();

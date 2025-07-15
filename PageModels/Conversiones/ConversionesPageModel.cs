@@ -44,7 +44,6 @@ public partial class ConversionesPageModel : ObservableObject
             IsBusy = false;
         }
     }
-
     [RelayCommand]
 
     public async Task CambiarEstadoConvertidor(string id)

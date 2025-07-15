@@ -3,7 +3,6 @@ using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
 
 namespace MauiFirebase.Data.Repositories;
-
 public class RutaRepository : IRutaRepository
 {
     private readonly AppDatabase _database;

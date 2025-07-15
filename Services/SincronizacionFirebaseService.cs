@@ -527,7 +527,6 @@ public class SincronizacionFirebaseService
             }
         }
     }
-
     // Si alguna vez necesitas sincronizar todo manualmente
     public async Task SincronizarTodoAsync()
     {

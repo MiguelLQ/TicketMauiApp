@@ -6,14 +6,14 @@ namespace MauiFirebase.Data.Repositories;
 public class VehiculoRepository : IVehiculoRepository
 {
     private readonly AppDatabase _database;
-   
-    private readonly IUsuarioRepository _usuarioRepository;   // ✅ interfaz
+    private readonly IUsuarioRepository _usuarioRepository;
 
     public VehiculoRepository(AppDatabase database, IUsuarioRepository usuarioRepository)
     {
         _database = database;
         _usuarioRepository = usuarioRepository;
     }
+
     public async Task<bool> ChangeEstadoVehiculoAsync(string id)
     {
         Vehiculo vehiculo = await _database.Database!.Table<Vehiculo>()
@@ -84,36 +84,34 @@ public class VehiculoRepository : IVehiculoRepository
 
     public async Task<List<Vehiculo>> ObtenerVehiculosPorDiaAsync(DayOfWeek dia)
     {
-        string diaTexto = TraducirDia(dia); // «Lunes», «Martes», …
+        string diaTexto = TraducirDia(dia).ToLower();
 
         var rutas = await _database.Database!.Table<Ruta>()
-                       .Where(r => r.DiasDeRecoleccion != null &&
-                                   r.DiasDeRecoleccion.Contains(diaTexto))
-                       .ToListAsync();
+            .Where(r => r.DiasDeRecoleccion != null &&
+                        r.DiasDeRecoleccion.ToLower().Contains(diaTexto))
+            .ToListAsync();
 
         if (!rutas.Any())
             return new List<Vehiculo>();
 
         var vehiculoIds = rutas.Select(r => r.IdVehiculo).Distinct().ToList();
 
-        // 3. Vehículos correspondientes
         var vehiculos = await _database.Database!.Table<Vehiculo>()
-                             .Where(v => vehiculoIds.Contains(v.IdVehiculo))
-                             .ToListAsync();
+            .Where(v => vehiculoIds.Contains(v.IdVehiculo))
+            .ToListAsync();
 
-        // 4. Rellenar nombre del conductor consultando usuario por UID
         foreach (var v in vehiculos)
         {
             if (v.IdUsuario != null)
             {
                 var usuario = await _usuarioRepository.ObtenerUsuarioPorUidAsync(v.IdUsuario);
-                v.Nombre = usuario?.Nombre ?? "";   // usa la propiedad real de tu modelo Usuario
+                v.Nombre = usuario?.Nombre ?? ""; // <- ajusta este nombre si es distinto
             }
         }
 
         return vehiculos;
-
     }
+
 
     private string TraducirDia(DayOfWeek dia) => dia switch
     {

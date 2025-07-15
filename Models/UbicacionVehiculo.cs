@@ -14,4 +14,5 @@ public class UbicacionVehiculo
     public string? Placa { get; set; }
     [JsonIgnore]
     public string? NombreConductor { get; set; }
+    public bool Sincronizado { get; set; } = false;
 }

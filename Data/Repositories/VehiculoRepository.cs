@@ -55,4 +55,27 @@ public class VehiculoRepository : IVehiculoRepository
             .FirstOrDefaultAsync();
         return resultado;
     }
+
+    public async Task<List<Vehiculo>> GetConvertidoresNoSincronizadosAsync()
+    {
+        return await _database.Database!.Table<Vehiculo>()
+            .Where(c => !c.Sincronizado)
+            .ToListAsync();
+    }
+
+    public async Task MarcarComoSincronizadoAsync(string id)
+    {
+        var item = await _database.Database!.FindAsync<Vehiculo>(id);
+        if (item != null)
+        {
+            item.Sincronizado = true;
+            await _database.Database.UpdateAsync(item);
+        }
+    }
+
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var lista = await GetAllVehiculoAsync();
+        return lista.Any(c => c.IdVehiculo.ToString() == id);
+    }
 }

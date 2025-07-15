@@ -36,4 +36,28 @@ public class UbicacionVehiculoRepository : IUbicacionVehiculo
         return await _database.Database!.Table<UbicacionVehiculo>()
             .FirstOrDefaultAsync(u => u.IdVehiculo == idVehiculo);
     }
+
+    public async Task<List<UbicacionVehiculo>> ObtenerNoSincronizadosAsync()
+    {
+        return await _database.Database!.Table<UbicacionVehiculo>()
+            .Where(c => !c.Sincronizado)
+            .ToListAsync();
+    }
+
+    public async Task MarcarComoSincronizadoAsync(string id)
+    {
+        var item = await _database.Database!.FindAsync<UbicacionVehiculo>(id);
+        if (item != null)
+        {
+            item.Sincronizado = true;
+            await _database.Database.UpdateAsync(item);
+        }
+    }
+
+    public async Task<bool> ExisteAsync(string id)
+    {
+        var lista = await ObtenerTodasAsync();
+        return lista.Any(c => c.IdUbicacionVehiculo.ToString() == id);
+    }
+
 }

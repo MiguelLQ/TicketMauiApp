@@ -31,5 +31,7 @@ namespace MauiFirebase.Models
         public string? Telefono { get; set; }
         [NotNull]
         public bool Estado { get; set; } = true;
+        [Ignore]
+        public string NombreCompleto => $"{Nombre} {Apellido}";
     }
 }

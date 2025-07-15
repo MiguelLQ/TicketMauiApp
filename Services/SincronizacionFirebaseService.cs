@@ -16,7 +16,10 @@ public class SincronizacionFirebaseService
     private readonly ITicketRepository _localTicketRepository;
     private readonly IResiduoRepository _localResiduoRepository;
     private readonly ICategoriaResiduoRepository _localCategoriaResiduoRepository;
+    private readonly IUbicacionVehiculo _localUbicacionVehiculoRepository;
 
+
+    private readonly FirebaseUbicacionService _firebaseUbicacionService;
     private readonly FirebaseRegistroReciclajeService _firebaseReciclajeService;
     private readonly FirebaseResidenteService _firebaseResidenteService;
     private readonly FirebasePremioService _firebasePremioService;
@@ -38,6 +41,7 @@ public class SincronizacionFirebaseService
         ITicketRepository localTicketRepository,
         IResiduoRepository localResiduoRepository,
         ICategoriaResiduoRepository localCategoriaResiduoRepository,
+        IUbicacionVehiculo localUbicacionVehiculoRepository,
         FirebaseRegistroReciclajeService firebaseReciclajeService,
         FirebaseResidenteService firebaseResidenteService,
         FirebasePremioService firebasePremioService,
@@ -46,6 +50,7 @@ public class SincronizacionFirebaseService
         FirebaseVehiculoService firebaseVehiculoService,
         FirebaseTicketService firebaseTicketService,
         FirebaseResiduoService firebaseResiduoService,
+        FirebaseUbicacionService firebaseUbicacionService,
         FirebaseCategoriaResiduoService firebaseCategoriaResiduoService,
         FirebaseAuthService authService)
     {
@@ -58,6 +63,7 @@ public class SincronizacionFirebaseService
         _localTicketRepository = localTicketRepository;
         _localResiduoRepository = localResiduoRepository;
         _localCategoriaResiduoRepository = localCategoriaResiduoRepository;
+        _localUbicacionVehiculoRepository = localUbicacionVehiculoRepository;
         _firebaseReciclajeService = firebaseReciclajeService;
         _firebaseResidenteService = firebaseResidenteService;
         _firebasePremioService = firebasePremioService;
@@ -66,6 +72,7 @@ public class SincronizacionFirebaseService
         _firebaseVehiculoService = firebaseVehiculoService;
         _firebaseTicketService = firebaseTicketService;
         _firebaseResiduoService = firebaseResiduoService;
+        _firebaseUbicacionService = firebaseUbicacionService;
         _firebaseCategoriaResiduoService = firebaseCategoriaResiduoService;
         _authService = authService;
     }
@@ -78,6 +85,63 @@ public class SincronizacionFirebaseService
         }
         return await _authService.ObtenerIdTokenSeguroAsync();
     }
+
+    /*==============================================================================================
+     *                                        UbicacionVehiculo
+     *==============================================================================================*/
+
+    public async Task SincronizarUbicacionesAsync()
+    {
+        var idToken = await ObtenerTokenSiHayInternetAsync();
+        if (idToken == null)
+        {
+            return;
+        }
+
+        var ubicacionesLocales = await _localUbicacionVehiculoRepository.ObtenerNoSincronizadosAsync();
+
+        foreach (var ubicacion in ubicacionesLocales)
+        {
+            var exito = await _firebaseUbicacionService.GuardarUbicacionVehiculoFirestoreAsync(
+                ubicacion, ubicacion.IdUbicacionVehiculo, idToken);
+
+            if (exito)
+            {
+                await _localUbicacionVehiculoRepository.MarcarComoSincronizadoAsync(ubicacion.IdUbicacionVehiculo);
+            }
+        }
+    }
+
+    public async Task SincronizarUbicacionesDesdeFirebaseAsync()
+    {
+        var idToken = await ObtenerTokenSiHayInternetAsync();
+        if (idToken == null)
+        {
+            return;
+        }
+
+        var ubicacionesRemotas = await _firebaseUbicacionService.ObtenerUbicacionesVehiculosDesdeFirestoreAsync(idToken);
+
+        foreach (var remoto in ubicacionesRemotas)
+        {
+            var existe = await _localUbicacionVehiculoRepository.ExisteAsync(remoto.IdUbicacionVehiculo);
+            if (!existe)
+            {
+                remoto.Sincronizado = true;
+                await _localUbicacionVehiculoRepository.GuardarUbicacionAsync(remoto);
+            }
+            else
+            {
+                // Si ya existe, actualiza la ubicación local con la remota (última coordenada)
+                remoto.Sincronizado = true;
+                await _localUbicacionVehiculoRepository.GuardarUbicacionAsync(remoto);
+            }
+        }
+    }
+
+    /*==============================================================================================
+    *                                    Convertidores
+    *==============================================================================================*/
 
     public async Task SincronizarConvertidoresAsync()
     {
@@ -118,7 +182,9 @@ public class SincronizacionFirebaseService
             }
         }
     }
-
+    /*==============================================================================================
+    *                                     Residentes
+    *==============================================================================================*/
 
     public async Task SincronizarResidentesAsync()
     {
@@ -164,7 +230,9 @@ public class SincronizacionFirebaseService
         }
     }
 
-  
+    /*==============================================================================================
+    *                                  Premio
+    *==============================================================================================*/
 
 
     public async Task SincronizarPremiosAsync()
@@ -182,7 +250,11 @@ public class SincronizacionFirebaseService
         }
     }
 
-  
+
+    /*==============================================================================================
+                                    * RegistrosReciclaje
+    *==============================================================================================*/
+
     public async Task SincronizarRegistrosDeReciclajeAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -225,7 +297,9 @@ public class SincronizacionFirebaseService
             }
         }
     }
-
+    /*==============================================================================================
+                            * Canje
+    *==============================================================================================*/
     public async Task SincronizarCanjeAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -248,6 +322,9 @@ public class SincronizacionFirebaseService
         }
     }
 
+    /*==============================================================================================
+                            * Vehiculo
+    *==============================================================================================*/
     public async Task SincronizarVehiculosAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -264,7 +341,30 @@ public class SincronizacionFirebaseService
     }
 
 
+    public async Task SincronizarVehiculoDesdeFirebaseAsync()
+    {
+        var idToken = await ObtenerTokenSiHayInternetAsync();
+        if (idToken == null)
+        {
+            return;
+        }
 
+        var registrosRemotos = await _firebaseVehiculoService.ObtenerVehiculosDesdeFirestoreAsync(idToken);
+
+        foreach (var remoto in registrosRemotos)
+        {
+            var existe = await _localVehiculoRepository.ExisteAsync(remoto.IdVehiculo);
+            if (!existe)
+            {
+                remoto.Sincronizado = true;
+                await _localVehiculoRepository.CreateVehiculoAsync(remoto);
+            }
+        }
+    }
+
+    /*==============================================================================================
+                            * Ticket
+    *==============================================================================================*/
     public async Task SincronizarTicketsAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -302,7 +402,9 @@ public class SincronizacionFirebaseService
         }
     }
 
-
+    /*==============================================================================================
+                            * Residuos
+    *==============================================================================================*/
     public async Task SincronizarResiduosAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -340,7 +442,9 @@ public class SincronizacionFirebaseService
         }
     }
 
-
+    /*==============================================================================================
+                            * CategoriaResiduo
+     *==============================================================================================*/
 
     public async Task SincronizarCategoriasResiduoAsync()
     {

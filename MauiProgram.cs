@@ -191,6 +191,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<FirebaseTicketService>();
         builder.Services.AddSingleton<FirebaseCategoriaResiduoService>();
         builder.Services.AddSingleton<FirebaseResiduoService>();
+        builder.Services.AddSingleton<FirebaseUbicacionService>();
         var app = builder.Build();
         Services = app.Services;
         return app;

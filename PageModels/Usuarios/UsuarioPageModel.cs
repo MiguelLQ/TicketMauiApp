@@ -169,7 +169,7 @@ namespace MauiFirebase.PageModels.Usuarios
                     var token = Preferences.Get("FirebaseToken", string.Empty);
                     if (!string.IsNullOrWhiteSpace(token))
                     {
-                        var firebaseService = new FirebaseUsuarioService();
+                        var firebaseService = new FirebaseUbicacionServie();
                         await firebaseService.EditarUsuarioEnFirestoreAsync(usuarioExistente, token);
                     }
 

@@ -62,6 +62,7 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(AgregarRutaPage), typeof(AgregarRutaPage));
             Routing.RegisterRoute(nameof(ListarRutaPage), typeof(ListarRutaPage));
             Routing.RegisterRoute(nameof(DibujarRutaPage), typeof(DibujarRutaPage));
+            Routing.RegisterRoute(nameof(EnviarUbicacionPage), typeof(EnviarUbicacionPage));
             //para scanear QR
             Routing.RegisterRoute(nameof(CamScanerPage), typeof(CamScanerPage));
 
@@ -181,6 +182,7 @@ namespace MauiFirebase
             RegisterFlyoutItem.IsVisible = false;
             AdminFlyoutItem.IsVisible = false;
             CiudadanoFlyoutItem.IsVisible = false;
+            ConductorFlyoutItem.IsVisible = false;
             // Mostrar solo lo correspondiente al rol
             if (rol == "Administrador")
             {
@@ -197,6 +199,13 @@ namespace MauiFirebase
                 RegisterFlyoutItem.IsVisible = true;
                 AdminFlyoutItem.IsVisible = false;
                 CiudadanoFlyoutItem.IsVisible = false;
+            }
+            else if (rol == "Conductor")
+            {
+                ConductorFlyoutItem.IsVisible = true;
+                AdminFlyoutItem.IsVisible = false;
+                CiudadanoFlyoutItem.IsVisible = false;
+                RegisterFlyoutItem.IsVisible = false;
             }
             else
             {

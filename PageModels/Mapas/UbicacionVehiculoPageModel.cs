@@ -18,6 +18,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
     private readonly IUbicacionVehiculo _ubicacionVehiculo;
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly IRutaRepository _rutaRepository;
+    private readonly FirebaseUbicacionService _firebaseUbicacionService;
+
     private readonly SincronizacionFirebaseService _sincronizador;
     private readonly RutaService _rutaService = new();
     public ObservableCollection<UbicacionVehiculo> Ubicaciones { get; } = new();
@@ -51,6 +53,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         _vehiculoRepository = vehiculoRepository;
         _rutaRepository = rutaRepository;
         _sincronizador = sincronizador;
+        _firebaseUbicacionService = firebaseUbicacionService; // 👈 asignación
         StartPolling();
     }
 
@@ -193,16 +196,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         {
             ErrorMessage = null;
 
-            // Traer ubicaciones y vehículos desde Firebase
-            var ubicaciones = await _ubicacionVehiculo.ObtenerTodasAsync();
-            var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
-
+            var ubicaciones = await ObtenerUbicacionesRealtimeAsync();
             if (cancellationToken.IsCancellationRequested)
-            {
                 return;
-            }
-
-            var vehiculosDict = vehiculos.ToDictionary(v => v.IdVehiculo!);
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -212,43 +208,22 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
                 foreach (var u in ubicaciones)
                 {
-                    // Enriquecer con datos del vehículo
-                    if (vehiculosDict.TryGetValue(u.IdVehiculo!, out var vehiculo))
-                    {
-                        u.Placa = vehiculo.PlacaVehiculo;
-                        u.NombreConductor = vehiculo.Nombre;
-                    }
-
                     Ubicaciones.Add(u);
 
                     var pin = new Pin
                     {
-                        Label = $"Placa: {u.Placa ?? "Desconocida"}",
-                        Address = $"Conductor: {u.NombreConductor ?? "Desconocido"}\nLat: {u.Latitud:F6}\nLng: {u.Longitud:F6}",
+                        Label = $"🚛 {u.Placa ?? "Sin placa"} - {u.NombreConductor ?? "Sin conductor"}",
+                        Address = 
+                                  $"📍 Lat: {u.Latitud:F6}, Lng: {u.Longitud:F6}",
                         Location = new Location(u.Latitud, u.Longitud),
                         Type = PinType.Place
                     };
 
-                    _pinPorVehiculo[u.IdVehiculo!] = pin;
+                    _pinPorVehiculo[u.IdVehiculo ?? u.IdUbicacionVehiculo ?? Guid.NewGuid().ToString()] = pin;
                     MapaPins.Add(pin);
                 }
 
-                // Agregar pin fijo de Andahuaylas
-                var andahuaylasLat = -13.653820;
-                var andahuaylasLng = -73.360519;
 
-                var pinAndahuaylas = new Pin
-                {
-                    Label = "Placa: XYZ-999",
-                    Address = "Conductor: Conductor Andahuaylas\nLat: -13.653820\nLng: -73.360519",
-                    Location = new Location(andahuaylasLat, andahuaylasLng),
-                    Type = PinType.Place
-                };
-
-                _pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
-                MapaPins.Add(pinAndahuaylas);
-
-                // Verificar proximidad
                 VerificarProximidad();
             });
         }
@@ -257,6 +232,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             ErrorMessage = $"Error al cargar ubicaciones: {ex.Message}";
         }
     }
+
 
     private readonly TimeSpan intervaloNotificacion = TimeSpan.FromSeconds(20);
     private DateTime ultimaNotificacion = DateTime.MinValue;

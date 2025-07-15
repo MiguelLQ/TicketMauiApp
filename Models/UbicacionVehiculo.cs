@@ -10,9 +10,12 @@ public class UbicacionVehiculo
     public string? IdVehiculo { get; set; }
     public double Latitud { get; set; }
     public double Longitud { get; set; }
-    [JsonIgnore]
+
+    [Ignore]
     public string? Placa { get; set; }
-    [JsonIgnore]
+
+    [Ignore]
     public string? NombreConductor { get; set; }
+
     public bool Sincronizado { get; set; } = false;
 }

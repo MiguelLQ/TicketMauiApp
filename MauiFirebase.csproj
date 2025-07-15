@@ -160,6 +160,9 @@
 		<MauiXaml Update="Pages\Login\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+		<MauiXaml Update="Pages\Mapa\EnviarUbicacionPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Pages\Mapa\MonitorearCamionPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

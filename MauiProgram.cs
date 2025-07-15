@@ -172,7 +172,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUbicacionVehiculo, UbicacionVehiculoRepository>();
         builder.Services.AddSingleton<MonitorearCamionPage>();
         builder.Services.AddSingleton<UbicacionVehiculoPageModel>();
-
+        builder.Services.AddSingleton<ConductorUbicacionPageModel>();
+        builder.Services.AddSingleton<EnviarUbicacionPage>();
         //para scaner qr
         builder.Services.AddTransient<CamScanerPage>();
         builder.Services.AddTransient<CamScanerPageModel>();

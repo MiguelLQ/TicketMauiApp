@@ -326,6 +326,31 @@ public class SincronizacionFirebaseService
             }
         }
     }
+    public async Task SincronizarCanjesDesdeFirebaseAsync()
+    {
+        var idToken = await ObtenerTokenSiHayInternetAsync();
+        if (idToken == null)
+            return;
+
+        var canjesRemotos = await _firebaseCanjeService.ObtenerCanjesDesdeFirestoreAsync(idToken);
+
+        foreach (var remoto in canjesRemotos)
+        {
+            var existe = await _localCanjeRepository.ExisteAsync(remoto.IdCanje);
+            if (!existe)
+            {
+                remoto.Sincronizado = true;
+                await _localCanjeRepository.CreateCanjeAsync(remoto);
+            }
+            else
+            {
+                // Si quieres actualizar también:
+                remoto.Sincronizado = true;
+                await _localCanjeRepository.UpdateCanjeAsync(remoto);
+            }
+        }
+    }
+
 
     /*==============================================================================================
                             * Vehiculo

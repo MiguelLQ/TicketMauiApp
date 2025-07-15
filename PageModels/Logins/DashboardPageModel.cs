@@ -4,6 +4,7 @@ using MauiFirebase.Models;
 using Microcharts;
 using SkiaSharp;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace MauiFirebase.PageModels.Logins
 {
@@ -169,11 +170,19 @@ namespace MauiFirebase.PageModels.Logins
         private async Task CargarVehiculosHoyAsync()
         {
             var hoy = DateTime.Today.DayOfWeek;
+            Debug.WriteLine($"[VehículosHoy] Día actual: {hoy}");
+
             var lista = await _vehiculoRepo.ObtenerVehiculosPorDiaAsync(hoy);
+            Debug.WriteLine($"[VehículosHoy] Vehículos devueltos por repo: {lista.Count}");
 
             VehiculosHoy.Clear();
             foreach (var v in lista)
+            {
+                Debug.WriteLine($"   → {v.PlacaVehiculo} | {v.MarcaVehiculo} | {v.Nombre}");
                 VehiculosHoy.Add(v);
+            }
+
+            Debug.WriteLine($"[VehículosHoy] Total en colección Observable: {VehiculosHoy.Count}");
         }
 
         // ════════════════════════════════════════════════════════════

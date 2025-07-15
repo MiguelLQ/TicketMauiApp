@@ -1,4 +1,4 @@
-using MauiFirebase.Data.Interfaces;
+ï»¿using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Data.Sources;
 using MauiFirebase.Models;
 
@@ -6,12 +6,14 @@ namespace MauiFirebase.Data.Repositories;
 public class VehiculoRepository : IVehiculoRepository
 {
     private readonly AppDatabase _database;
-    private readonly UsuarioRepository  _usuariorepository;
-    public VehiculoRepository(AppDatabase database)
+   
+    private readonly IUsuarioRepository _usuarioRepository;   // âœ… interfaz
+
+    public VehiculoRepository(AppDatabase database, IUsuarioRepository usuarioRepository)
     {
         _database = database;
+        _usuarioRepository = usuarioRepository;
     }
-
     public async Task<bool> ChangeEstadoVehiculoAsync(string id)
     {
         Vehiculo vehiculo = await _database.Database!.Table<Vehiculo>()
@@ -59,7 +61,7 @@ public class VehiculoRepository : IVehiculoRepository
 
     public async Task<List<Vehiculo>> ObtenerVehiculosPorDiaAsync(DayOfWeek dia)
     {
-        string diaTexto = TraducirDia(dia); // «Lunes», «Martes», …
+        string diaTexto = TraducirDia(dia); // Â«LunesÂ», Â«MartesÂ», â€¦
 
         var rutas = await _database.Database!.Table<Ruta>()
                        .Where(r => r.DiasDeRecoleccion != null &&
@@ -71,7 +73,7 @@ public class VehiculoRepository : IVehiculoRepository
 
         var vehiculoIds = rutas.Select(r => r.IdVehiculo).Distinct().ToList();
 
-        // 3. Vehículos correspondientes
+        // 3. VehÃ­culos correspondientes
         var vehiculos = await _database.Database!.Table<Vehiculo>()
                              .Where(v => vehiculoIds.Contains(v.IdVehiculo))
                              .ToListAsync();
@@ -81,7 +83,7 @@ public class VehiculoRepository : IVehiculoRepository
         {
             if (v.IdUsuario != null)
             {
-                var usuario = await _usuariorepository.ObtenerUsuarioPorUidAsync(v.IdUsuario);
+                var usuario = await _usuarioRepository.ObtenerUsuarioPorUidAsync(v.IdUsuario);
                 v.Nombre = usuario?.Nombre ?? "";   // usa la propiedad real de tu modelo Usuario
             }
         }
@@ -94,10 +96,10 @@ public class VehiculoRepository : IVehiculoRepository
     {
         DayOfWeek.Monday => "Lunes",
         DayOfWeek.Tuesday => "Martes",
-        DayOfWeek.Wednesday => "Miércoles",
+        DayOfWeek.Wednesday => "MiÃ©rcoles",
         DayOfWeek.Thursday => "Jueves",
         DayOfWeek.Friday => "Viernes",
-        DayOfWeek.Saturday => "Sábado",
+        DayOfWeek.Saturday => "SÃ¡bado",
         DayOfWeek.Sunday => "Domingo",
         _ => ""
     };

@@ -21,7 +21,8 @@ public class FirebaseResidenteService
                 DireccionResidente = new { stringValue = residente.DireccionResidente },
                 EstadoResidente = new { booleanValue = residente.EstadoResidente },
                 FechaRegistroResidente = new { timestampValue = residente.FechaRegistroResidente.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ") },
-                TicketsTotalesGanados = new { integerValue = residente.TicketsTotalesGanados }
+                TicketsTotalesGanados = new { integerValue = residente.TicketsTotalesGanados },
+                UidFirebase = new { stringValue = residente.UidFirebase ?? "" }
             }
         };
         var json = JsonSerializer.Serialize(body);
@@ -65,6 +66,9 @@ public class FirebaseResidenteService
                 EstadoResidente = fields.GetProperty("EstadoResidente").GetProperty("booleanValue").GetBoolean(),
                 FechaRegistroResidente = DateTime.Parse(fields.GetProperty("FechaRegistroResidente").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
                 TicketsTotalesGanados = int.Parse(fields.GetProperty("TicketsTotalesGanados").GetProperty("integerValue").GetString() ?? "0"),
+                UidFirebase = fields.TryGetProperty("UidFirebase", out var uidProp)
+                        ? uidProp.GetProperty("stringValue").GetString()
+                        : string.Empty,
                 Sincronizado = true
             };
             lista.Add(residente);

@@ -9,10 +9,10 @@ public partial class inicioCiudadanoPage : ContentPage
 	
     private readonly InicioCiudadanoPageModel _viewModel;
 
-    public inicioCiudadanoPage(IResidenteRepository residenteRepository)
+    public inicioCiudadanoPage(InicioCiudadanoPageModel viewModel)
     {
         InitializeComponent();
-        _viewModel = new InicioCiudadanoPageModel(residenteRepository);
+        _viewModel = viewModel;
         BindingContext = _viewModel;
     }
 

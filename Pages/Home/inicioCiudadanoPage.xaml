@@ -7,22 +7,46 @@
         <VerticalStackLayout>
 
             <!-- Encabezado -->
-            <Grid Background="{StaticResource Primary}" Padding="20,20,40,90">
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
-                    <Label Text="Bienvenido, Ciudadano"
-                           FontSize="20"
-                           TextColor="White"
-                           FontAttributes="Bold"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="Gracias por ayudar al medio ambiente"
-                           FontSize="15"
-                           TextColor="White"
-                           HorizontalTextAlignment="Center" />
+            <Grid Background="{StaticResource Primary}" Padding="20,0,20,190">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+
+                    <!-- ✅ Título fuera del card celeste -->
+                    <Label Text="Bienvenido!!"
+                       FontSize="20"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Start" />
+
+                    <!-- ✅ Card azul claro -->
+                    <Frame BackgroundColor="#4c59b2"
+                        CornerRadius="20"
+                           Padding="15"
+                           HasShadow="False"
+                           BorderColor="Transparent"
+                           HorizontalOptions="Fill"
+                           WidthRequest="300">
+
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                            <Label Text="{Binding NombreCompleto, StringFormat='{0}'}"
+                               FontSize="20"
+                               TextColor="White"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Start" />
+
+                            <Label Text="Gracias por ayudar al medio ambiente"
+                               FontSize="15"
+                               TextColor="White"
+                               HorizontalTextAlignment="Start" />
+                        </VerticalStackLayout>
+
+                    </Frame>
                 </VerticalStackLayout>
             </Grid>
 
+
+
             <!-- Card blanca sobresaliente -->
-            <Frame Margin="15,-60,15,30"
+            <Frame Margin="15,-160,15,30"
                    CornerRadius="35"
                    HasShadow="False"
                    Background="{StaticResource CardBackgroundBrush}"
@@ -71,8 +95,9 @@
                                    IndicatorColor="#ccc"
                                    SelectedIndicatorColor="#0077CC" />
 
-                    <!-- Estadísticas -->
                     <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+
+                        <!-- Frame de Tickets -->
                         <Frame Background="{StaticResource EntryBackgroundBrush}"
                                CornerRadius="12"
                                Padding="10"
@@ -81,40 +106,71 @@
                                 <Label Text="🎟 Tickets"
                                    FontSize="13"
                                    TextColor="#888" />
-                                <Label Text="{Binding TicketsGanados}"
+                                <Label Text="{Binding TicketsGanadosTexto}"
                                    FontSize="22"
                                    FontAttributes="Bold"
                                    TextColor="#0077CC" />
                             </VerticalStackLayout>
                         </Frame>
 
+                        <!-- Frame de motivación -->
                         <Frame Background="{StaticResource EntryBackgroundBrush}"
                                CornerRadius="12"
-                               Padding="10"
-                               WidthRequest="140">
+                               Padding="7"
+                               WidthRequest="130">
                             <VerticalStackLayout Spacing="4">
-                                <Label Text="♻ Reciclajes"
-                                       FontSize="13"
-                                       TextColor="#888" />
-                                <Label Text="6"
-                                       FontSize="22"
-                                       FontAttributes="Bold"
-                                       TextColor="#0077CC" />
+                                
+                                <Label Text="¡Acumula tickets y canjéalos por premios!"
+                                       FontSize="12"
+                                       TextColor="#0077CC"
+                                       LineBreakMode="WordWrap" />
                             </VerticalStackLayout>
                         </Frame>
+
                     </HorizontalStackLayout>
 
-                    <!-- Botón ver historial -->
-                    <Button Text="Ver historial"
-                            BackgroundColor="#0077CC"
-                            TextColor="White"
-                            CornerRadius="20"
-                            HeightRequest="48"
-                            FontSize="16"
-                            IsEnabled="False"
-                            Opacity="0.6" />
+
+                
                 </VerticalStackLayout>
             </Frame>
+            <!-- Card de indicaciones para el ciudadano -->
+            <Frame Margin="15,0,15,30"
+               CornerRadius="20"
+               HasShadow="True"
+               Background="{StaticResource EntryBackgroundBrush}"
+               BorderColor="Transparent"
+               Padding="15"
+               HorizontalOptions="Fill">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="📌 ¿Qué puedes hacer aquí?"
+               FontSize="16"
+               FontAttributes="Bold"
+               TextColor="{StaticResource Gray400}" />
+
+                    <Label Text="• 🔍 Monitorea en tiempo real el recorrido del camión reciclador."
+               FontSize="13"
+               TextColor="#555" 
+               LineBreakMode="WordWrap" />
+
+                    <Label Text="• 🎁 Mira los premios disponibles y los tickets necesarios."
+               FontSize="13"
+               TextColor="#555"
+               LineBreakMode="WordWrap" />
+
+                    <Label Text="• 📝 Regístrate como ciudadano para comenzar a reciclar."
+               FontSize="13"
+               TextColor="#555"
+               LineBreakMode="WordWrap" />
+
+                    <Label Text="• ♻ Sube tus registros de reciclaje y gana tickets."
+               FontSize="13"
+               TextColor="#555"
+               LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </Frame>
+
         </VerticalStackLayout>
+        
     </ScrollView>
 </ContentPage>

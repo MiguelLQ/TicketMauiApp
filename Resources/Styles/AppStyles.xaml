@@ -66,6 +66,11 @@
                  FontFamily="{x:Static f:FluentUI.FontFamily}"
                  Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
                  Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconCompartir"
+                 Glyph="{x:Static f:FluentUI.share_ios_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
 
     <!-- Apellido (puede usar el mismo que nombre si no hay otro mejor) -->
     <FontImageSource x:Key="IconApellido"
@@ -73,6 +78,12 @@
                     FontFamily="{x:Static f:FluentUI.FontFamily}"
                     Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
                     Size="{StaticResource IconSize}" />
+    <FontImageSource x:Key="IconUbicacion"
+                 Glyph="{x:Static f:FluentUI.location_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+
     <!-- Correo -->
     <FontImageSource x:Key="IconCorreo"
                  Glyph="{x:Static f:FluentUI.mail_24_regular}"

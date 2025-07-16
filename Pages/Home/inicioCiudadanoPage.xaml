@@ -79,12 +79,12 @@
                                WidthRequest="140">
                             <VerticalStackLayout Spacing="4">
                                 <Label Text="🎟 Tickets"
-                                       FontSize="13"
-                                       TextColor="#888" />
-                                <Label Text="12"
-                                       FontSize="22"
-                                       FontAttributes="Bold"
-                                       TextColor="#0077CC" />
+                                   FontSize="13"
+                                   TextColor="#888" />
+                                <Label Text="{Binding TicketsGanados}"
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   TextColor="#0077CC" />
                             </VerticalStackLayout>
                         </Frame>
 

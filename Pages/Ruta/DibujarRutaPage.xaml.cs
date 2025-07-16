@@ -91,7 +91,7 @@ public partial class DibujarRutaPage : ContentPage
 
         await DisplayAlert("Exportado", "Ruta exportada al campo JSON.", "OK");
 
-        await Shell.Current.GoToAsync(nameof(AgregarRutaPage));
+        await Shell.Current.GoToAsync("AgregarRutaPage");
 
     }
 
@@ -103,7 +103,4 @@ public partial class DibujarRutaPage : ContentPage
         var nuevoCentro = new Location(center.Latitude + latDelta, center.Longitude + lngDelta);
         MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(nuevoCentro, MyMap.VisibleRegion.Radius));
     }
-
-    private void OnMoveUpClicked(object sender, EventArgs e) => MoverMapa(_desplazamiento, 0);
-    private void OnMoveDownClicked(object sender, EventArgs e) => MoverMapa(-_desplazamiento, 0);
 }

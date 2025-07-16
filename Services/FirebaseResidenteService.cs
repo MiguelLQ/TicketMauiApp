@@ -75,5 +75,19 @@ public class FirebaseResidenteService
         }
         return lista;
     }
+    public async Task<int> ObtenerTicketsPorUidFirebaseAsync(string uidFirebase, string idToken)
+    {
+        var residentes = await ObtenerResidentesDesdeFirestoreAsync(idToken);
+
+        var residente = residentes.FirstOrDefault(r => r.UidFirebase == uidFirebase);
+
+        return residente?.TicketsTotalesGanados ?? 0;
+    }
+    public async Task<Residente?> ObtenerResidentePorUidFirebaseAsync(string uidFirebase, string idToken)
+    {
+        var residentes = await ObtenerResidentesDesdeFirestoreAsync(idToken);
+        return residentes.FirstOrDefault(r => r.UidFirebase == uidFirebase);
+    }
+
 
 }

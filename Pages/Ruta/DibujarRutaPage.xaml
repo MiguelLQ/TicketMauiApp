@@ -21,26 +21,12 @@
             <!-- Botones de acción -->
             <HorizontalStackLayout Spacing="10"
                                     VerticalOptions="Start"
-                                    HorizontalOptions="Center"
-                                    Padding="2"
-                                    BackgroundColor="#AAFFFFFF"
+                                    HorizontalOptions="End"                 
                                     Margin="0">
-                <Button Text="Deshacer" Clicked="OnUndoClicked" />
-                <Button Text="Limpiar" Clicked="OnClearClicked" />
-                <Button Text="Exportar" Clicked="OnExportClicked" />
+                <Button ImageSource="deshacer.png" WidthRequest="20" HeightRequest="20" Scale="2" BackgroundColor="Transparent" Clicked="OnUndoClicked" />
+                <Button ImageSource="limpiar.png" WidthRequest="20" HeightRequest="20" Scale="2" BackgroundColor="Transparent" Clicked="OnClearClicked" />
+                <Button ImageSource="exportar.png" WidthRequest="20" HeightRequest="20" Scale="2" BackgroundColor="Transparent" Clicked="OnExportClicked" />
             </HorizontalStackLayout>
-
-            <!-- Botones de movimiento -->
-            <Grid RowDefinitions="Auto,Auto,Auto"
-                  ColumnDefinitions="Auto,Auto,Auto"
-                  VerticalOptions="End"
-                  HorizontalOptions="Start"
-                  Margin="10"
-                  BackgroundColor="#AAFFFFFF"
-                  Padding="5">
-                <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnMoveUpClicked" />
-                <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnMoveDownClicked" />
-            </Grid>
 
         </Grid>
     </Frame>

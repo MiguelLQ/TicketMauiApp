@@ -139,5 +139,16 @@ public class ResidenteRepository : IResidenteRepository
             .Where(r => r.UidFirebase == uid)
             .FirstOrDefaultAsync();
     }
+    public async Task<int> ObtenerTicketsGanadosPorUidAsync(string uidFirebase)
+    {
+        if (string.IsNullOrEmpty(uidFirebase))
+            return 0;
+
+        var residente = await _database.Database!.Table<Residente>()
+            .Where(r => r.UidFirebase == uidFirebase)
+            .FirstOrDefaultAsync();
+
+        return residente?.TicketsTotalesGanados ?? 0;
+    }
 
 }

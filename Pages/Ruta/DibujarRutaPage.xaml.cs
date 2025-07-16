@@ -4,13 +4,13 @@ using Microsoft.Maui.Maps;
 using System.Text.Json;
 
 namespace MauiFirebase.Pages.Ruta;
+
 public partial class DibujarRutaPage : ContentPage
 {
     private readonly CrearRutaPageModel _viewModel;
     private readonly RutaService _rutaService = new();
     private readonly List<Location> _routePoints = new();
     private readonly Polyline _polyline = new() { StrokeColor = Colors.Blue, StrokeWidth = 4 };
-    private readonly double _desplazamiento = 0.001;
 
     public DibujarRutaPage(CrearRutaPageModel viewModel)
     {
@@ -19,8 +19,8 @@ public partial class DibujarRutaPage : ContentPage
         BindingContext = _viewModel;
 
         MyMap.MapElements.Add(_polyline);
-        MyMap.MapClicked += OnMapClicked!;
-        MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(0.5)));
+        MyMap.MapClicked += OnMapClicked;
+        MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(0.3)));
     }
 
     private async void OnMapClicked(object sender, MapClickedEventArgs e)

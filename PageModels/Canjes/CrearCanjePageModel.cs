@@ -4,8 +4,9 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Helpers.Interface;
 using MauiFirebase.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 namespace MauiFirebase.PageModels.Canjes;
-public partial class CrearCanjePageModel : ObservableObject
+public partial class CrearCanjePageModel : ObservableValidator
 {
     private readonly ICanjeRepository _canjeRepository;
     private readonly IPremioRepository _premioRepository;
@@ -20,6 +21,7 @@ public partial class CrearCanjePageModel : ObservableObject
     [ObservableProperty]
     private Premio? _premioSeleccionado;// idpremio 
     [ObservableProperty]
+    [MaxLength(8)]
     private string _dniResidente = string.Empty;
     [ObservableProperty]
     private Residente? _residenteEncontrado;//idresidente
@@ -80,7 +82,7 @@ public partial class CrearCanjePageModel : ObservableObject
     [RelayCommand]
     public async Task CargarPremiosAsync()
     {
-        
+
         ListaPremios.Clear();
         var premios = await _premioRepository.GetAllPremiosAsync();
         foreach (var premio in premios)
@@ -128,7 +130,7 @@ public partial class CrearCanjePageModel : ObservableObject
     [RelayCommand]
     public async Task BuscarResidenteAsync()
     {
-        
+
         if (string.IsNullOrWhiteSpace(DniResidente))
         {
             await _alertaHelper.ShowErrorAsync("Ingrese un DNI válido.");
@@ -153,7 +155,7 @@ public partial class CrearCanjePageModel : ObservableObject
     [RelayCommand]
     public async Task CrearCanjeAsync()
     {
-        if(ResidenteEncontrado == null)
+        if (ResidenteEncontrado == null)
         {
             await _alertaHelper.ShowErrorAsync("Debe buscar un residente primero.");
             return;
@@ -220,6 +222,23 @@ public partial class CrearCanjePageModel : ObservableObject
         foreach (var premio in premiosFiltrados)
         {
             PremiosDisponibles.Add(premio);
+        }
+    }
+    partial void OnDniResidenteChanged(string value)
+    {
+        var cleaned = new string(value.Where(char.IsDigit).ToArray());
+        if (cleaned.Length > 8)
+        {
+            cleaned = cleaned.Substring(0, 8);
+        }
+        if (cleaned != value)
+        {
+            DniResidente = cleaned; 
+            return;
+        }
+        if (cleaned.Length == 8)
+        {
+            _ = BuscarResidenteAsync(); 
         }
     }
 }

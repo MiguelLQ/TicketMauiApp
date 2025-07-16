@@ -58,8 +58,9 @@
                                    VerticalOptions="Center" />
 
                                 <Entry Placeholder="Ej. 12345678"
-                                   Text="{Binding DniResidente}"
+                                   Text="{Binding DniResidente, Mode=TwoWay}"
                                    Keyboard="Numeric"
+                                   MaxLength="8"
                                    FontSize="14"
                                    TextColor="{StaticResource Gray400}"
                                    BackgroundColor="Transparent"

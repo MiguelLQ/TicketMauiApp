@@ -254,6 +254,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
             TicketsGanados = 0;
         }
     }
+
     partial void OnDniBuscadoChanged(string? oldValue, string? newValue)
     {
         if (!string.IsNullOrWhiteSpace(newValue))
@@ -261,5 +262,4 @@ public partial class AgregarRegistroPageModel : ObservableObject
             BuscarPorDniCommand.Execute(null);
         }
     }
-
 }

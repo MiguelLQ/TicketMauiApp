@@ -35,6 +35,7 @@ public class ResidenteRepository : IResidenteRepository
 
     public async Task<int> UpdateResidenteAsync(Residente residente)
     {
+        residente.Sincronizado = false;
         return await _database.Database!.UpdateAsync(residente);
     }
 
@@ -94,6 +95,7 @@ public class ResidenteRepository : IResidenteRepository
     }
     public async Task GuardarAsync(Residente residenteEncontrado)
     {
+        residenteEncontrado.Sincronizado = false; 
         await _database.Database!.UpdateAsync(residenteEncontrado);
     }
     public async Task<int> TotalResidentes()

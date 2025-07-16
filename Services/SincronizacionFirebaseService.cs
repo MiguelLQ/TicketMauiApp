@@ -568,13 +568,13 @@ public class SincronizacionFirebaseService
         await SincronizarRutasAsync();
 
         // Descarga desde Firebase (para mantener local actualizado)
-        //await SincronizarResidentesDesdeFirebaseAsync();
-        //await SincronizarRegistroReciclajeDesdeFirebaseAsync();
-        //await SincronizarConvertidoresDesdeFirebaseAsync();
-        //await SincronizarTicketsDesdeFirebaseAsync();
-        //await SincronizarResiduoDesdeFirebaseAsync();
-        //await SincronizarCategoriaResiduoDesdeFirebaseAsync();
+        await SincronizarResidentesDesdeFirebaseAsync();
+        await SincronizarRegistroReciclajeDesdeFirebaseAsync();
+        await SincronizarConvertidoresDesdeFirebaseAsync();
+        await SincronizarTicketsDesdeFirebaseAsync();
+        await SincronizarResiduoDesdeFirebaseAsync();
+        await SincronizarCategoriaResiduoDesdeFirebaseAsync();
+        await SincronizarVehiculoDesdeFirebaseAsync();
         await SincronizarRutasDesdeFirebaseAsync();
     }
-
 }

@@ -14,6 +14,10 @@ public partial class InicioPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        if (BindingContext is DashboardPageModel viewModel)
+        {
+            await viewModel.InicializarAsync();
+        }
         Shell.SetBackgroundColor(this, Color.FromArgb("#3949ab"));                                                      
         Shell.SetForegroundColor(this, Colors.White); 
         await _viewModel.InicializarAsync();  
@@ -24,7 +28,7 @@ public partial class InicioPage : ContentPage
     {
         base.OnDisappearing();
 
-        Shell.SetBackgroundColor(this, Application.Current.RequestedTheme == AppTheme.Dark ? Colors.Black : Colors.White);
+        Shell.SetBackgroundColor(this, Application.Current!.RequestedTheme == AppTheme.Dark ? Colors.Black : Colors.White);
         Shell.SetTitleColor(this, Colors.Black);
         Shell.SetForegroundColor(this, Colors.Black);
     }

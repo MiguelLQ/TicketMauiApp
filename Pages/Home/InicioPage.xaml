@@ -2,10 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Home.InicioPage"
-             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
-             
-
-             >
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -70,8 +67,8 @@
                             Aspect="AspectFit" />
                     </Grid>
                 </Frame>
-               <!-- Vehículos con ruta para hoy -->
-<Frame Background="{DynamicResource CardBackgroundBrush}"
+                <!-- Vehículos con ruta para hoy -->
+                <Frame Background="{DynamicResource CardBackgroundBrush}"
        BorderColor="Transparent"
        Padding="12"
        CornerRadius="20"
@@ -80,67 +77,64 @@
        VerticalOptions="Start"
        Margin="0,120,0,0">
 
-    <VerticalStackLayout Spacing="10">
-        <Label Text="Vehículos con ruta para hoy"
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Vehículos con ruta para hoy"
                FontAttributes="Bold"
                FontSize="18"
                HorizontalOptions="Center" />
 
-        <!-- Lista dinámica sin HeightRequest; se ajusta sola -->
-        <CollectionView ItemsSource="{Binding VehiculosHoy}"
+                        <!-- Lista dinámica sin HeightRequest; se ajusta sola -->
+                        <CollectionView ItemsSource="{Binding VehiculosHoy}"
                         HorizontalOptions="Center">
-            <CollectionView.ItemsLayout>
-                <!-- Dos columnas; se crean filas según sea necesario -->
-                <GridItemsLayout Orientation="Vertical" Span="2" />
-            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemsLayout>
+                                <!-- Dos columnas; se crean filas según sea necesario -->
+                                <GridItemsLayout Orientation="Vertical" Span="2" />
+                            </CollectionView.ItemsLayout>
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Background="{StaticResource EntryBackgroundBrush}"
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Background="{StaticResource EntryBackgroundBrush}"
                            CornerRadius="10"
                            Padding="10"
                            Margin="6"
                            BorderColor="Transparent">
 
-                        <VerticalStackLayout Spacing="4">
+                                        <VerticalStackLayout Spacing="4">
 
-                            <!-- Placa -->
-                            <Label Text="{Binding PlacaVehiculo, StringFormat='PLACA: {0}'}"
+                                            <!-- Placa -->
+                                            <Label Text="{Binding PlacaVehiculo, StringFormat='PLACA: {0}'}"
                                    FontAttributes="Bold"
                                    FontSize="13"
                                    TextColor="{StaticResource Gray500}"
                                    LineBreakMode="WordWrap" />
 
-                            <!-- Marca -->
-                            <Label Text="{Binding MarcaVehiculo, StringFormat='Marca: {0}'}"
+                                            <!-- Marca -->
+                                            <Label Text="{Binding MarcaVehiculo, StringFormat='Marca: {0}'}"
                                    FontSize="12"
                                    TextColor="{StaticResource Gray500}"
                                    LineBreakMode="WordWrap" />
 
-                            <!-- Modelo -->
-                            <Label Text="{Binding ModeloVehiculo, StringFormat='Modelo: {0}'}"
+                                            <!-- Modelo -->
+                                            <Label Text="{Binding ModeloVehiculo, StringFormat='Modelo: {0}'}"
                                    FontSize="12"
                                    TextColor="{StaticResource Gray500}"
                                    LineBreakMode="WordWrap" />
 
-                            <!-- Conductor -->
-                            <Label Text="{Binding Nombre, StringFormat='Conductor: {0}'}"
+                                            <!-- Conductor -->
+                                            <Label Text="{Binding Nombre, StringFormat='Conductor: {0}'}"
                                    FontSize="12"
                                    TextColor="{StaticResource Gray500}"
                                    LineBreakMode="WordWrap" />
-                        </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
-</Frame>
-
-
-
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
 
             </Grid>
-            
+
             <!--Contenido existente (no modificado) -->
             <VerticalStackLayout Spacing="10" Padding="20">
                 <Label Text="Registros" FontSize="18" FontAttributes="Bold" />
@@ -148,7 +142,7 @@
                 <!-- Tarjetas resumen en carrusel -->
                 <CollectionView ItemsLayout="HorizontalList" HeightRequest="130" 
                                 ItemsSource="{Binding TarjetasResumen}">
-                    
+
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame Background="{DynamicResource CardBackgroundBrush}"
@@ -168,7 +162,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 <Label Text="Gráfico" FontSize="18" FontAttributes="Bold" />
-      
+
 
                 <!-- Gráfico y lista de reciclaje por categoría en una sola tarjeta -->
                 <Frame HeightRequest="250"
@@ -188,10 +182,10 @@
                 <!-- Registros recientes -->
                 <Grid HeightRequest="44">
                     <Label Text="♻️ Actividad reciente de reciclaje" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
-               
+
                 </Grid>
 
-                <!-- Registros recientes dinámicos -->
+                <!-- Registros dinámicos -->
                 <CollectionView ItemsSource="{Binding UltimosRegistrosResumen}" Margin="0,10,0,0">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

@@ -21,7 +21,7 @@ public partial class CrearCanjePageModel : ObservableValidator
     [ObservableProperty]
     private Premio? _premioSeleccionado;// idpremio 
     [ObservableProperty]
-    [MaxLength(8)]
+    [StringLength(8, MinimumLength = 8, ErrorMessage = "El DNI debe tener 8 dígitos.")]
     private string _dniResidente = string.Empty;
     [ObservableProperty]
     private Residente? _residenteEncontrado;//idresidente
@@ -231,14 +231,23 @@ public partial class CrearCanjePageModel : ObservableValidator
         {
             cleaned = cleaned.Substring(0, 8);
         }
+
         if (cleaned != value)
         {
-            DniResidente = cleaned; 
+            DniResidente = cleaned;
+            return;
+        }
+
+        if (cleaned.Length < 8)
+        {
+            ResidenteEncontrado = null;
+            PremiosDisponibles.Clear();
+            NoTienePremiosDisponibles = false;
             return;
         }
         if (cleaned.Length == 8)
         {
-            _ = BuscarResidenteAsync(); 
+            _ = BuscarResidenteAsync();
         }
     }
 }

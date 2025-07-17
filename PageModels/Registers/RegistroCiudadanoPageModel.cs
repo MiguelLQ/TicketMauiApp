@@ -10,13 +10,16 @@ namespace MauiFirebase.PageModels.Registers
         private readonly FirebaseAuthService _authService;
         private readonly IResidenteRepository _residenteRepository;
         private readonly FirebaseCiudadanoService _firebaseCiudadanoService = new FirebaseCiudadanoService();
+        private readonly SincronizacionFirebaseService _sincronizador;
 
         public RegistroCiudadanoPageModel(
             FirebaseAuthService authService,
-            IResidenteRepository residenteRepository)
+            IResidenteRepository residenteRepository,
+            SincronizacionFirebaseService sincronizador)
         {
             _authService = authService;
             _residenteRepository = residenteRepository;
+            _sincronizador = sincronizador;
         }
 
         // 🔹 Propiedades del formulario

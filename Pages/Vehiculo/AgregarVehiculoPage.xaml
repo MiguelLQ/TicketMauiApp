@@ -87,6 +87,8 @@
                                 <Picker ItemsSource="{Binding ListaUsuario}"
                                         SelectedItem="{Binding UsuarioSeleccionado, Mode=TwoWay}"
                                         ItemDisplayBinding="{Binding NombreCompleto}"
+                                        Title="Seleccionar usuario"
+                                        ItemDisplayBinding="{Binding NombreCompleto}"
                                         Title="Seleccionar conductor"
                                         FontSize="13"
                                         TextColor="{DynamicResource Gray400}"

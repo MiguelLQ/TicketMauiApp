@@ -180,10 +180,14 @@ public class SincronizacionFirebaseService
         foreach (var remoto in convertidoresRemotos)
         {
             var existe = await _localConvertidorRepository.ExisteAsync(remoto.IdConvertidor.ToString());
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
                 await _localConvertidorRepository.CreateConvertidorAsync(remoto);
+            }
+            else
+            {
+                await _localConvertidorRepository.UpdateConvertidorAsync(remoto);
             }
         }
     }
@@ -227,10 +231,14 @@ public class SincronizacionFirebaseService
         foreach (var remoto in residenteRemotos)
         {
             var existe = await _localResidenteRepository.ExisteAsync(remoto.IdResidente);
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
                 await _localResidenteRepository.CreateResidenteAsync(remoto);
+            }
+            else
+            {
+                await _localResidenteRepository.UpdateResidenteAsync(remoto);
             }
         }
     }
@@ -295,9 +303,13 @@ public class SincronizacionFirebaseService
         foreach (var remoto in registrosRemotos)
         {
             var existe = await _localReciclajeRepository.ExisteAsync(remoto.IDRegistroDeReciclaje);
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
+                await _localReciclajeRepository.GuardarAsync(remoto);
+            }
+            else
+            {
                 await _localReciclajeRepository.GuardarAsync(remoto);
             }
         }
@@ -386,10 +398,14 @@ public class SincronizacionFirebaseService
         foreach (var remoto in registrosRemotos)
         {
             var existe = await _localVehiculoRepository.ExisteAsync(remoto.IdVehiculo);
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
                 await _localVehiculoRepository.CreateVehiculoAsync(remoto);
+            }
+            else
+            {
+                await _localVehiculoRepository.UpdateVehiculoAsync(remoto);
             }
         }
     }
@@ -426,10 +442,14 @@ public class SincronizacionFirebaseService
         foreach (var remoto in ticketsRemotos)
         {
             var existe = await _localTicketRepository.ExisteAsync(remoto.IdTicket);
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
                 await _localTicketRepository.CreateTicketAsync(remoto);
+            }
+            else
+            {
+                await _localTicketRepository.UpdateTicketAsync(remoto);
             }
         }
     }
@@ -466,10 +486,14 @@ public class SincronizacionFirebaseService
         foreach (var remoto in residuoRemotos)
         {
             var existe = await _localResiduoRepository.ExisteAsync(remoto.IdResiduo);
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
                 await _localResiduoRepository.CreateResiduoAsync(remoto);
+            }
+            else
+            {
+                await _localResiduoRepository.UpdateResiduoAsync(remoto);
             }
         }
     }
@@ -507,10 +531,14 @@ public class SincronizacionFirebaseService
         foreach (var remoto in categoriaResiduoRemotos)
         {
             var existe = await _localCategoriaResiduoRepository.ExisteAsync(remoto.IdCategoriaResiduo);
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
                 await _localCategoriaResiduoRepository.CreateCategoriaResiduoAsync(remoto);
+            }
+            else
+            {
+                await _localCategoriaResiduoRepository.UpdateCategoriaResiduoAsync(remoto);
             }
         }
     }
@@ -547,10 +575,14 @@ public class SincronizacionFirebaseService
         foreach (var remoto in rutasRemotas)
         {
             var existe = await _localRutaRepository.ExisteAsync(remoto.IdRuta);
+            remoto.Sincronizado = true;
             if (!existe)
             {
-                remoto.Sincronizado = true;
                 await _localRutaRepository.CreateRutaAsync(remoto);
+            }
+            else
+            {
+                await _localRutaRepository.UpdateRutaAsync(remoto);
             }
         }
     }

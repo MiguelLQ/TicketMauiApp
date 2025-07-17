@@ -17,9 +17,15 @@
                        FontSize="22"
                        FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light=Black, Dark=White}" />
-
-                <!-- Buscador por DNI -->
-                <Entry Placeholder="Buscar por DNI"
+                <HorizontalStackLayout>
+                    <!-- Ícono vectorial de persona/DNI -->
+                    <Image Source="{StaticResource IconBuscar}"
+                        WidthRequest="20"
+                        HeightRequest="20"
+                        Margin="10,0"
+                        VerticalOptions="Center" />
+                    <!-- Buscador por DNI -->
+                    <Entry Placeholder="Buscar por DNI          "
                        MaxLength="8"
                        Text="{Binding TextoBusqueda, Mode=TwoWay}"
                        FontSize="16"
@@ -28,6 +34,8 @@
                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
                        HeightRequest="45"
                        Margin="0,0,0,10"/>
+                </HorizontalStackLayout>
+                
                 <Label Text="{Binding TextoBusquedaError}"
                        TextColor="Red"
                        FontSize="12"
@@ -89,7 +97,25 @@
                                             CommandParameter="{Binding .}"
                                             HorizontalOptions="End"
                                             VerticalOptions="Start" />-->
+                                    <!-- Tickets a la derecha, más grande y destacado -->
+                                    <Frame Grid.Column="1"
+                                           Grid.Row="0"
+                                           Padding="8"
+                                           CornerRadius="10"
+                                           BackgroundColor="{AppThemeBinding Light=#e6f4ea, Dark=#144d28}"
+                                           BorderColor="Green"
+                                           HasShadow="True"
+                                           VerticalOptions="Start"
+                                           HorizontalOptions="End"
+                                           WidthRequest="90"
+                                           HeightRequest="40">
+                                        <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
+                                            <!--<Image Source="ticketicon.png" WidthRequest="24" HeightRequest="24" />-->
+                                            <Label Text="{Binding TicketsTotalesGanados, StringFormat='Tickets: {0}'}"
+                                               FontSize="14" TextColor="Green" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                                        </HorizontalStackLayout>
 
+                                    </Frame>
                                     <!-- Separador -->
                                     <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                                              HeightRequest="1"
@@ -110,36 +136,19 @@
                                             <!-- DNI y Dirección a la izquierda -->
                                             <StackLayout Grid.Column="0" Spacing="6">
                                                 <HorizontalStackLayout Spacing="6">
-                                                    <Image Source="userdni.png" WidthRequest="18" HeightRequest="18" />
+                                                    <Image Source="{StaticResource IconApellido}" WidthRequest="18" HeightRequest="18" />
                                                     <Label Text="{Binding DniResidente, StringFormat='DNI: {0}'}"
                                                            FontSize="13" TextColor="#4b5563" />
                                                 </HorizontalStackLayout>
 
                                                 <HorizontalStackLayout Spacing="6">
-                                                    <Image Source="direccionicon.png" WidthRequest="18" HeightRequest="18" />
+                                                    <Image Source="{StaticResource IconUbicacion}" WidthRequest="18" HeightRequest="18" />
                                                     <Label Text="{Binding DireccionResidente, StringFormat='Dirección: {0}'}"
                                                            FontSize="13" TextColor="Gray" />
                                                 </HorizontalStackLayout>
                                             </StackLayout>
 
-                                            <!-- Tickets a la derecha, más grande y destacado -->
-                                            <Frame Grid.Column="1"
-                                                   Padding="8"
-                                                   CornerRadius="10"
-                                                   BackgroundColor="{AppThemeBinding Light=#e6f4ea, Dark=#144d28}"
-                                                   BorderColor="Green"
-                                                   HasShadow="True"
-                                                   VerticalOptions="Center"
-                                                   HorizontalOptions="End"
-                                                   WidthRequest="120"
-                                                   HeightRequest="50">         
-                                                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
-                                                    <!--<Image Source="ticketicon.png" WidthRequest="24" HeightRequest="24" />-->
-                                                    <Label Text="{Binding TicketsTotalesGanados, StringFormat='Tickets: {0}'}"
-                                                           FontSize="16" TextColor="Green" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                                                </HorizontalStackLayout>
-
-                                            </Frame>
+                                            
                                         </Grid>
                                     </StackLayout>
                                 </Grid>

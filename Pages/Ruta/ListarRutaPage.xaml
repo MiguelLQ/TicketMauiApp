@@ -105,7 +105,7 @@
                                                    TextColor="#4b5563"
                                                    VerticalOptions="Center" />
                                         </HorizontalStackLayout>
-                                        
+
                                         <HorizontalStackLayout Spacing="6">
                                             <Label Text="📍"
                                                    FontSize="18"

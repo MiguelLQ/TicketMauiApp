@@ -88,7 +88,6 @@ public partial class CrearRutaPageModel : ObservableValidator
         await _alertaHelper.ShowSuccessAsync("Ruta creada correctamente.");
         LimpiarFormulario();
         await Shell.Current.GoToAsync("//ruta");
-
     }
 
     [RelayCommand]

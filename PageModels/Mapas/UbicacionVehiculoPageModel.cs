@@ -234,19 +234,19 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
                     _pinPorVehiculo[u.IdVehiculo ?? u.IdUbicacionVehiculo ?? Guid.NewGuid().ToString()] = pin;
                     MapaPins.Add(pin);
                 }
-                //var andahuaylasLat = -13.653820;
-                //var andahuaylasLng = -73.360519;
+                //var andahuaylaslat = -13.653820;
+                //var andahuaylaslng = -73.360519;
 
-                //var pinAndahuaylas = new Pin
+                //var pinandahuaylas = new pin
                 //{
-                //    Label = "Placa: XYZ-999",
-                //    Address = "Conductor: Juan Perez",
-                //    Location = new Location(andahuaylasLat, andahuaylasLng),
-                //    Type = PinType.Place
+                //    label = "placa: xyz-999",
+                //    address = "conductor: juan perez",
+                //    location = new location(andahuaylaslat, andahuaylaslng),
+                //    type = pintype.place
                 //};
 
-                //_pinPorVehiculo["AndahuaylasFijo"] = pinAndahuaylas;
-                //MapaPins.Add(pinAndahuaylas);
+                //_pinporvehiculo["andahuaylasfijo"] = pinandahuaylas;
+                //mapapins.add(pinandahuaylas);
 
                 VerificarProximidad();
             });
@@ -286,7 +286,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
         var distancia = Location.CalculateDistance(ubicacionUsuario, ubicacionCamion, DistanceUnits.Kilometers);
 
-        if (distancia <= 0.5)
+        if (distancia <= 2)
         {
             if ((DateTime.Now - ultimaNotificacion) > intervaloNotificacion)
             {

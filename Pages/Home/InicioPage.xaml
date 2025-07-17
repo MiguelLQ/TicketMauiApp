@@ -194,10 +194,9 @@
                                     StrokeShape="RoundRectangle 10"
                                     BackgroundColor="Transparent"
                                     Padding="10"
-                                    Margin="0,0,0,10">
+                                    Margin="0,0,0,5">
                                 <HorizontalStackLayout Spacing="10">
-                                    <Image Source="{Binding Icono}" HeightRequest="24" WidthRequest="24" />
-                                    <Label Text="{Binding Descripcion}" FontSize="16" TextColor="{Binding ColorTexto}" VerticalOptions="Center" />
+                                    <Label Text="{Binding Descripcion}" FontSize="16" TextColor="{Binding ColorTexto}" VerticalOptions="Start" />
                                 </HorizontalStackLayout>
                             </Border>
                         </DataTemplate>

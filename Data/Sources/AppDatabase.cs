@@ -9,7 +9,10 @@ public class AppDatabase
 
     public AppDatabase(string dbPath)
     {
-        _database = new SQLiteAsyncConnection(dbPath); 
+        _database = new SQLiteAsyncConnection(
+            dbPath,
+            SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache
+        );
         Database = _database;
         InitializeTables();
     }

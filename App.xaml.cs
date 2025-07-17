@@ -73,7 +73,7 @@ public partial class App : Application
     }
     public static async Task BorrarBaseDeDatosLocalAsync()
     {
-        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db3");
+        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app2.db3");
 
         if (File.Exists(dbPath))
         {

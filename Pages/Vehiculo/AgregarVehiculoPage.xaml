@@ -80,14 +80,14 @@
 
                     <!-- Campo: Usuario -->
                     <VerticalStackLayout>
-                        <Label Text="Asignar a usuario" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
+                        <Label Text="Asignar a conductor" FontSize="13" TextColor="{DynamicResource Primary}" Margin="28,0,0,0" />
                         <Frame CornerRadius="8" Padding="6,0" BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="48">
                             <HorizontalStackLayout>
                                 <Picker ItemsSource="{Binding ListaUsuario}"
                                         SelectedItem="{Binding UsuarioSeleccionado, Mode=TwoWay}"
-                                        ItemDisplayBinding="{Binding Nombre}"
-                                        Title="Seleccionar usuario"
+                                        ItemDisplayBinding="{Binding NombreCompleto}"
+                                        Title="Seleccionar conductor"
                                         FontSize="13"
                                         TextColor="{DynamicResource Gray400}"
                                         BackgroundColor="Transparent"

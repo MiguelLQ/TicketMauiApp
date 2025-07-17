@@ -35,6 +35,7 @@ public class ResidenteRepository : IResidenteRepository
 
     public async Task<int> UpdateResidenteAsync(Residente residente)
     {
+        //residente.Sincronizado = false;
         return await _database.Database!.UpdateAsync(residente);
     }
 
@@ -94,6 +95,7 @@ public class ResidenteRepository : IResidenteRepository
     }
     public async Task GuardarAsync(Residente residenteEncontrado)
     {
+        //residenteEncontrado.Sincronizado = false; 
         await _database.Database!.UpdateAsync(residenteEncontrado);
     }
     public async Task<int> TotalResidentes()
@@ -136,6 +138,17 @@ public class ResidenteRepository : IResidenteRepository
         return await _database.Database!.Table<Residente>()
             .Where(r => r.UidFirebase == uid)
             .FirstOrDefaultAsync();
+    }
+    public async Task<int> ObtenerTicketsGanadosPorUidAsync(string uidFirebase)
+    {
+        if (string.IsNullOrEmpty(uidFirebase))
+            return 0;
+
+        var residente = await _database.Database!.Table<Residente>()
+            .Where(r => r.UidFirebase == uidFirebase)
+            .FirstOrDefaultAsync();
+
+        return residente?.TicketsTotalesGanados ?? 0;
     }
 
 }

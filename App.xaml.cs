@@ -1,4 +1,5 @@
-﻿using MauiFirebase.Pages.Login;
+﻿using MauiFirebase.Data.Sources;
+using MauiFirebase.Pages.Login;
 using Microsoft.Maui.Networking;
 
 namespace MauiFirebase;
@@ -20,6 +21,13 @@ public partial class App : Application
     {
         var authService = new FirebaseAuthService();
 
+        // Solo en el primer inicio
+        if (!Preferences.ContainsKey("PrimeraEjecucion"))
+        {
+            Preferences.Set("PrimeraEjecucion", true);
+            await BorrarBaseDeDatosLocalAsync();
+        }
+
         if (authService.IsLoggedIn())
         {
             await authService.ObtenerIdTokenSeguroAsync();
@@ -29,11 +37,13 @@ public partial class App : Application
         {
             MainPage = new NavigationPage(new LoginPage());
         }
+
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
         {
             await IntentarSincronizarAsync();
         }
     }
+
 
     private async Task IntentarSincronizarAsync()
     {
@@ -60,6 +70,18 @@ public partial class App : Application
         {
             await IntentarSincronizarAsync();
         }
+    }
+    public static async Task BorrarBaseDeDatosLocalAsync()
+    {
+        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app2.db3");
+
+        if (File.Exists(dbPath))
+        {
+            File.Delete(dbPath);
+        }
+
+        // Recrear la base de datos
+        var nuevaBD = new AppDatabase(dbPath);
     }
 
     protected override void CleanUp()

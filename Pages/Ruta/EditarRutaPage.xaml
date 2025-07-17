@@ -3,126 +3,67 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              x:Class="MauiFirebase.Pages.Ruta.EditarRutaPage"
-             xmlns:local="clr-namespace:MauiFirebase.Resources.Converters"
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Rutas"
              x:DataType="viewModels:EditarRutaPageModel">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="20">
-            <Label Text="✏️ Editar Ruta"
-                   FontSize="26"
-                   FontAttributes="Bold"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"/>
+    <VerticalStackLayout Padding="24" Spacing="20">
+        <Label Text="✏️ Editar Ruta"
+               FontSize="26"
+               FontAttributes="Bold"
+               HorizontalOptions="Center" />
 
-            <!-- Vehículo -->
-            <Frame CornerRadius="12"
-                   Padding="12"
-                   Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent">   
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Vehículo (Nombre)"
-               FontSize="14" />
-                    <Picker ItemsSource="{Binding ListaVehiculos}"
-                ItemDisplayBinding="{Binding  PlacaVehiculo }"
-                SelectedItem="{Binding VehiculoSeleccionado, Mode=TwoWay}" />
-                    <Label Text="Debes seleccionar un vehículo."
-               TextColor="Red"
-               FontSize="12"
-               IsVisible="{Binding HasVehiculoError}" />
-                </VerticalStackLayout>
-            </Frame>
+        <!-- Estado -->
+        <VerticalStackLayout Spacing="4">
+            <Label Text="Estado de Ruta" FontSize="14" />
+            <Switch IsToggled="{Binding EstadoRuta}" />
+        </VerticalStackLayout>
 
+        <!-- Mapa -->
+        <Frame HeightRequest="400" Padding="2" CornerRadius="1">
+            <Grid>
+                <maps:Map x:Name="MyMap"
+                          MapType="Satellite"
+                          IsZoomEnabled="True"
+                          IsScrollEnabled="True"
+                          VerticalOptions="Fill"
+                          HorizontalOptions="Fill" />
 
-            <!-- Días de Recolección -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="12" Padding="12" HasShadow="True">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Días de recolección"
-                           FontSize="14" />
-                    <Entry Placeholder="Días de recolección"
-                           Text="{Binding DiasDeRecoleccion, Mode=TwoWay}"
-                           FontSize="16"
-                           BackgroundColor="Transparent" />
-                    <Label Text="{Binding DiasDeRecoleccionError}"
-                           TextColor="Red"
-                           FontSize="12"
-                           IsVisible="{Binding HasDiasDeRecoleccionError}" />
-                </VerticalStackLayout>
-            </Frame>
-            <!-- Estado -->
-            <VerticalStackLayout Spacing="4">
-                <Label Text="Estado de Ruta"
-                       FontSize="14" />
-                <Switch IsToggled="{Binding EstadoRuta}" />
-            </VerticalStackLayout>
+                <!-- Botones de acción -->
+                <HorizontalStackLayout Spacing="10"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="End"
+                                       Margin="5">
+                    <Button ImageSource="deshacer.png" WidthRequest="20" HeightRequest="20" Scale="2" BackgroundColor="Transparent" Clicked="OnUndoClicked" />
+                    <Button ImageSource="limpiar.png" WidthRequest="20" HeightRequest="20" Scale="2" BackgroundColor="Transparent" Clicked="OnClearClicked" />
+                    <Button ImageSource="exportar.png" WidthRequest="20" HeightRequest="20" Scale="2" BackgroundColor="Transparent" Clicked="OnExportClicked" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Frame>
 
-            <!-- Mapa para Editar -->
-            <Frame Background="{DynamicResource CardBackgroundBrush}" Padding="2" CornerRadius="1"
-                   HeightRequest="500" WidthRequest="400">
-                <Grid>
-                    <!-- Mapa -->
-                    <maps:Map x:Name="MyMap"
-                              MapType="Satellite"
-                              IsZoomEnabled="True"
-                              IsScrollEnabled="True"
-                              VerticalOptions="Fill"
-                              HorizontalOptions="Fill" />
-
-                    <!-- Botones de acción -->
-                    <HorizontalStackLayout Spacing="10"
-                                            VerticalOptions="Start"
-                                            HorizontalOptions="Center"
-                                            Padding="5"
-                                            BackgroundColor="#AAFFFFFF"
-                                            Margin="10">
-                        <Button Text="Deshacer" Clicked="OnUndoClicked" />
-                        <Button Text="Limpiar" Clicked="OnClearClicked" />
-                        <Button Text="Exportar" Clicked="OnExportClicked" />
-                        <Button Text="Cargar JSON" Clicked="OnCargarJsonClicked" />
-                    </HorizontalStackLayout>
-
-                    <!-- Botones de movimiento -->
-                    <Grid RowDefinitions="Auto,Auto,Auto"
-                          ColumnDefinitions="Auto,Auto,Auto"
-                          VerticalOptions="End"
-                          HorizontalOptions="Start"
-                          Margin="10"
-                          BackgroundColor="#AAFFFFFF"
-                          Padding="5">
-                        <Button Text="↑" Grid.Row="0" Grid.Column="1" Clicked="OnMoveUpClicked" />
-                        <!--<Button Text="←" Grid.Row="1" Grid.Column="0" Clicked="OnMoveLeftClicked" />
-                        <Button Text="→" Grid.Row="1" Grid.Column="2" Clicked="OnMoveRightClicked" />-->
-                        <Button Text="↓" Grid.Row="2" Grid.Column="1" Clicked="OnMoveDownClicked" />
-                    </Grid>
-
-                </Grid>
-            </Frame>
-
+        <HorizontalStackLayout
+            HorizontalOptions="Center"
+            Spacing="10"
+            Margin="10">
             <!-- Botón Guardar -->
             <Button Text="Guardar"
                     Command="{Binding GuardarCambiosCommand}"
                     IsEnabled="{Binding PuedeGuardar}"
-                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                    BackgroundColor="{StaticResource Primary}"
                     TextColor="White"
                     FontSize="16"
-                    CornerRadius="25"
-                    HeightRequest="50" />
+                    CornerRadius="8"
+                    HeightRequest="50"
+                    WidthRequest="140"/>
 
             <!-- Botón Cancelar -->
             <Button Text="Cancelar"
                     Clicked="OnCancelarClicked"
-                    BackgroundColor="red"
+                    BackgroundColor="Gray"
                     TextColor="White"
                     FontSize="16"
-                    CornerRadius="25"
-                    HeightRequest="50" />
-        </VerticalStackLayout>
-    </ScrollView>
+                    CornerRadius="8"
+                    HeightRequest="50"
+                    WidthRequest="140"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
 </ContentPage>

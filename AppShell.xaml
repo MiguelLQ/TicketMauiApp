@@ -218,11 +218,7 @@
         Route="residuo" />
 
 
-    <!--<ShellContent
-        Title="Canje"
-        Icon="{StaticResource IconProjects}"
-        ContentTemplate="{DataTemplate canje:ListarCanjePage}"
-        Route="canje" />-->
+
 
     <!--<ShellContent
         Title="Administrar Ciudadanos"
@@ -234,8 +230,6 @@
         Title="Gestionar conversiones"
         x:Name="ConversionesShellContent"
         Icon="{StaticResource IconConfiguracion}"
-        ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
-        Route="conversiones" />
     <!--Vehiculos -->
     <ShellContent Title=" Gestionar vehiculos"
              Icon="veci.png"
@@ -248,6 +242,8 @@
           Route="ruta" />
     
     <FlyoutItem Title="Gestionar trabajadores"
+        Route="conversiones" />
+    <FlyoutItem Title="Usuarios"
             x:Name="UsuariosFlyoutItem"
             Icon="{StaticResource IconUsuarios}"
             FlyoutDisplayOptions="AsSingleItem"
@@ -261,7 +257,13 @@
         
        
     </FlyoutItem>
-
+    <!--<ShellContent
+      Icon="{StaticResource IconCompartir}"
+      Title="Compartir App"
+       Route="compartir"
+        
+     >
+    </ShellContent>-->
 
     <Shell.FlyoutFooter>
         <Grid Padding="15" RowSpacing="20">

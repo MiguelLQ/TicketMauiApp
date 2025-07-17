@@ -17,5 +17,7 @@ public partial class AgregarRutaPage : ContentPage
     {
         base.OnAppearing();
         await _viewModel.CargarVehiculosAsync();
+
     }
+
 }

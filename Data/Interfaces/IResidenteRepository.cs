@@ -19,5 +19,6 @@ public interface IResidenteRepository
     Task<List<Residente>> GetResidentesNoSincronizadosAsync();
     Task<bool> ExisteAsync(string id);
     Task<Residente?> ObtenerPorUidFirebaseAsync(string uid);
+    Task<int> ObtenerTicketsGanadosPorUidAsync(string uidFirebase);
 
 }

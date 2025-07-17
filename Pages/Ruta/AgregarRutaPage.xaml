@@ -27,7 +27,7 @@
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Vehículo" FontSize="14" TextColor="#6B7280" />
                     <Picker ItemsSource="{Binding ListaVehiculos}"
-                            ItemDisplayBinding="{Binding  PlacaVehiculo}"
+                            ItemDisplayBinding="{Binding PlacaVehiculo}"
                             SelectedItem="{Binding VehiculoSeleccionado, Mode=TwoWay}" />
                 </VerticalStackLayout>
             </Frame>
@@ -54,10 +54,11 @@
                     FontSize="16"
                     FontAttributes="Bold"
                     IsEnabled="{Binding PuedeGuardar}"
-                    BackgroundColor="{Binding PuedeGuardar, Converter={StaticResource BoolToColorConverter}}"
+                    BackgroundColor="{StaticResource Primary}"
                     TextColor="White"
                     HeightRequest="50"
-                    CornerRadius="25" />
+                    CornerRadius="8" 
+                    WidthRequest="140"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

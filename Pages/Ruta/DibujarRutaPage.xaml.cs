@@ -11,7 +11,6 @@ public partial class DibujarRutaPage : ContentPage
     private readonly RutaService _rutaService = new();
     private readonly List<Location> _routePoints = new();
     private readonly Polyline _polyline = new() { StrokeColor = Colors.Blue, StrokeWidth = 4 };
-    private readonly double _desplazamiento = 0.001;
 
     public DibujarRutaPage(CrearRutaPageModel viewModel)
     {
@@ -21,7 +20,7 @@ public partial class DibujarRutaPage : ContentPage
 
         MyMap.MapElements.Add(_polyline);
         MyMap.MapClicked += OnMapClicked;
-        MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(2)));
+        MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(0.3)));
     }
 
     private async void OnMapClicked(object sender, MapClickedEventArgs e)
@@ -92,7 +91,7 @@ public partial class DibujarRutaPage : ContentPage
 
         await DisplayAlert("Exportado", "Ruta exportada al campo JSON.", "OK");
 
-        await Shell.Current.GoToAsync(nameof(AgregarRutaPage));
+        await Shell.Current.GoToAsync("AgregarRutaPage");
 
     }
 
@@ -104,7 +103,4 @@ public partial class DibujarRutaPage : ContentPage
         var nuevoCentro = new Location(center.Latitude + latDelta, center.Longitude + lngDelta);
         MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(nuevoCentro, MyMap.VisibleRegion.Radius));
     }
-
-    private void OnMoveUpClicked(object sender, EventArgs e) => MoverMapa(_desplazamiento, 0);
-    private void OnMoveDownClicked(object sender, EventArgs e) => MoverMapa(-_desplazamiento, 0);
 }

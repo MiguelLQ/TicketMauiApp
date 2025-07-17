@@ -79,7 +79,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<FirebaseAuthService>();
 
         // Base de datos SQLite
-        string dbPath = Path.Combine(FileSystem.AppDataDirectory, "appdb.db3");
+        string dbPath = Path.Combine(FileSystem.AppDataDirectory, "app2.db3");
         builder.Services.AddSingleton(new AppDatabase(dbPath));
 
         // Repositorios y PageModels
@@ -150,6 +150,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IResidenteRepository, ResidenteRepository>();
         builder.Services.AddTransient<ResidenteFormPage, ResidenteFormPageModel>();
         builder.Services.AddSingleton<ResidenteListPage, ResidenteListPageModel>();
+        builder.Services.AddSingleton<InicioCiudadanoPageModel>();
         //home
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();

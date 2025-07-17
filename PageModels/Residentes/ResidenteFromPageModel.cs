@@ -73,6 +73,7 @@ public partial class ResidenteFormPageModel : ObservableValidator
             EstadoResidente = EstadoResidente,
             FechaRegistroResidente = DateTime.Now,
             Sincronizado = false,
+            UidFirebase = string.Empty
         };
 
 

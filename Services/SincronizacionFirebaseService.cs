@@ -326,6 +326,8 @@ public class SincronizacionFirebaseService
             }
         }
     }
+
+
     public async Task SincronizarCanjesDesdeFirebaseAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();

@@ -170,36 +170,35 @@ public partial class CrearCanjePageModel : ObservableValidator
             await _alertaHelper.ShowErrorAsync($"El residente no tiene suficientes puntos. Tiene {ResidenteEncontrado.TicketsTotalesGanados} y el premio cuesta {PremioSeleccionado.PuntosRequeridos}.");
             return;
         }
-        else
-        {
-            ResidenteEncontrado.TicketsTotalesGanados = ResidenteEncontrado.TicketsTotalesGanados - PremioSeleccionado.PuntosRequeridos;
-            await _residenteRepository.UpdateResidenteAsync(ResidenteEncontrado);
 
-            var nuevoCanje = new Canje
+        ResidenteEncontrado.TicketsTotalesGanados -= PremioSeleccionado.PuntosRequeridos;
+        await _residenteRepository.UpdateResidenteAsync(ResidenteEncontrado);
+        await _sincronizador.SincronizarResidentesAsync();
+
+        var nuevoCanje = new Canje
+        {
+            FechaCanje = FechaDeCanjeo,
+            EstadoCanje = EstadoCanje,
+            IdPremio = PremioSeleccionado.IdPremio,
+            IdResidente = ResidenteEncontrado.IdResidente,
+            Sincronizado = false
+        };
+        await _canjeRepository.CreateCanjeAsync(nuevoCanje);
+
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            try
             {
-                FechaCanje = FechaDeCanjeo,
-                EstadoCanje = EstadoCanje,
-                IdPremio = PremioSeleccionado.IdPremio,
-                IdResidente = ResidenteEncontrado.IdResidente,
-                Sincronizado = false
-            };
-            await _canjeRepository.CreateCanjeAsync(nuevoCanje);
-            // 🌐 Intentar sincronizar si hay internet
-            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
-            {
-                try
-                {
-                    await _sincronizador.SincronizarCanjeAsync(); // este método debe subir a Firestore y marcar como sincronizado
-                }
-                catch
-                {
-                    await _alertaHelper.ShowWarningAsync("Guardado localmente. Se sincronizará cuando haya internet.");
-                }
+                await _sincronizador.SincronizarCanjeAsync();
             }
-            await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
-            await _sincronizador.SincronizarCanjeAsync();
-            await Shell.Current.GoToAsync("..");
+            catch
+            {
+                await _alertaHelper.ShowWarningAsync("Guardado localmente. Se sincronizará cuando haya internet.");
+            }
         }
+
+        await _alertaHelper.ShowSuccessAsync("Canje creado correctamente.");
+        await Shell.Current.GoToAsync("..");
     }
 
     private async Task ActualizarPremiosDisponiblesAsync()

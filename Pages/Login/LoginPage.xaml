@@ -133,7 +133,7 @@
                                      HeightRequest="36"
                                      WidthRequest="36"
                                      BackgroundColor="Transparent"
-                                     Clicked="GoogleClicked"
+                                    Command="{Binding GoogleLoginCommand}"
                                      SemanticProperties.Description="Iniciar sesión con Google" />
                         </HorizontalStackLayout>
 

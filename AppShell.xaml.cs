@@ -189,7 +189,7 @@ namespace MauiFirebase
                 AdminFlyoutItem.IsVisible = true;
                 UsuariosFlyoutItem.IsVisible = true;
                 CategoriaResiduoShellContent.IsVisible = true;
-                ColoresShellContent.IsVisible = true;
+                ColoresShellContent.IsVisible = false;
                 ResiduosShellContent.IsVisible = true;
                 ConversionesShellContent.IsVisible = true;
                 CiudadanoFlyoutItem.IsVisible = false;

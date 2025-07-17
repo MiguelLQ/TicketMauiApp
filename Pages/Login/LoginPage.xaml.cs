@@ -15,8 +15,5 @@ public partial class LoginPage : ContentPage
         await DisplayAlert("Facebook", "Iniciar sesión con Facebook", "OK");
     }
 
-    private async void GoogleClicked(object sender, EventArgs e)
-    {
-        await DisplayAlert("Google", "Iniciar sesión con Google", "OK");
-    }
+    
 }

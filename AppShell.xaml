@@ -228,7 +228,8 @@
 
     <ShellContent
         Title="Gestionar conversiones"
-        x:Name="ConversionesShellContent"
+        x:Name="ConversionesShellContent" 
+        ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
         Icon="{StaticResource IconConfiguracion}"
         Route="convertidores"/>
     <!--Vehiculos -->

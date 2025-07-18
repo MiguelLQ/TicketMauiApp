@@ -64,7 +64,7 @@
 
                     <!-- Gráfico de pastel -->
                     <Frame HeightRequest="230"
-                           Padding="20"
+                           Padding="10"
                            HasShadow="False"
                            Background="{DynamicResource CardBackgroundBrush}"
                            CornerRadius="25"

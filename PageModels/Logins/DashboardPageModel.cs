@@ -190,7 +190,7 @@ public partial class DashboardPageModel : ObservableObject
         GraficoPastel = new PieChart
         {
             Entries = entries,
-            LabelTextSize = 30,
+            LabelTextSize = 20,
             BackgroundColor = SKColors.Transparent
         };
     }

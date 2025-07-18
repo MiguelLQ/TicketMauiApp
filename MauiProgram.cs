@@ -170,6 +170,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<RegisterPage>();
         builder.Services.AddSingleton<inicioCiudadanoPage>();
         builder.Services.AddSingleton<RegistroCiudadanoPage>();
+        builder.Services.AddSingleton<inicioConductorPage>();
         //camion
         builder.Services.AddSingleton<IUbicacionVehiculo, UbicacionVehiculoRepository>();
         builder.Services.AddSingleton<MonitorearCamionPage>();

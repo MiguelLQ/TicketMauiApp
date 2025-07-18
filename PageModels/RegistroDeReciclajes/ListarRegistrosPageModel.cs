@@ -83,7 +83,7 @@ public partial class ListarRegistrosPageModel : ObservableObject
                 await _sincronizar.SincronizarResidentesDesdeFirebaseAsync();
                 await _sincronizar.SincronizarResiduoDesdeFirebaseAsync();
             }
-            var registros = await _registroRepository.ObtenerTodosAsync();
+            var registros = await _registroRepository.UltimosCincoRegistros();
             var residentes = await _residenteRepository.GetAllResidentesAsync();
             var residuos = await _residuoRepository.GetAllResiduoAync();
 

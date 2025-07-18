@@ -12,6 +12,7 @@ namespace MauiFirebase.Data.Interfaces
         //para torta 
         Task<List<ReciclajePorCategoria>> ObtenerTotalesPorCategoriaAsync();
         Task<List<RegistroDeReciclaje>> UltimosTresRegistros();
+        Task<List<RegistroDeReciclaje>> UltimosCincoRegistros();
         Task MarcarComoSincronizadoAsync(string id);
         Task<List<RegistroDeReciclaje>> GetRegistrosNoSincronizadosAsync();
         Task<bool> ExisteAsync(string id);

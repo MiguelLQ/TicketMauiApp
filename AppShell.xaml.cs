@@ -183,6 +183,9 @@ namespace MauiFirebase
             AdminFlyoutItem.IsVisible = false;
             CiudadanoFlyoutItem.IsVisible = false;
             ConductorFlyoutItem.IsVisible = false;
+            RutasFlyoutItem.IsVisible = false;
+            VehiculoFlyoutItem.IsVisible = false;
+
             // Mostrar solo lo correspondiente al rol
             if (rol == "Administrador")
             {
@@ -193,6 +196,8 @@ namespace MauiFirebase
                 ResiduosShellContent.IsVisible = true;
                 ConversionesShellContent.IsVisible = true;
                 CiudadanoFlyoutItem.IsVisible = false;
+                RutasFlyoutItem.IsVisible = true;
+                VehiculoFlyoutItem.IsVisible = true;
             }
             else if (rol == "Recolector")
             {

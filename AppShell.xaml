@@ -220,8 +220,8 @@
         Route="residuo" />
     <ShellContent
         Title="Gestionar conversiones"
+        x:Name="ConversionesShellContent" 
         ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
-        x:Name="ConversionesShellContent"
         Icon="{StaticResource IconConfiguracion}"
         Route="convertidores"/>
     <FlyoutItem Title="Gestionar Trabajadores"

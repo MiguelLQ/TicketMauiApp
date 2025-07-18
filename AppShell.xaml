@@ -133,10 +133,10 @@
                   ContentTemplate="{DataTemplate canje:ListarCanjePage}"
                   Route="canje" />
         <!--Ruta -->
-        <ShellContent Title="Rutas"
+       <!-- <ShellContent Title="Rutas"
                   Icon="addruta.png"
                   ContentTemplate="{DataTemplate ruta:ListarRutaPage}"
-                  Route="ruta" />       
+                  Route="ruta" />     -->  
         <!--Premios -->
         <ShellContent Title="Premios"
                   Icon="{StaticResource IconPremios}"
@@ -149,10 +149,10 @@
                   Route="residente" />
 
         <!--Vehiculos -->
-        <ShellContent Title="Vehiculos"
+       <!-- <ShellContent Title="Vehiculos"
             Icon="veci.png"
             ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}"
-            Route="vehiculo" />
+            Route="vehiculo" />-->
         
         
     </FlyoutItem>
@@ -201,21 +201,23 @@
         x:Name="ColoresShellContent"
         ContentTemplate="{DataTemplate ticket:ListarTicketPage}"
         Route="ticket" />
+    
 
     <ShellContent
-        Title="Categoria Residuo"
+        Title="Gestionar categoria Residuo"
         x:Name="CategoriaResiduoShellContent"
         Icon="{StaticResource IconCategoriaResiduos}"
         ContentTemplate="{DataTemplate categoriaresiduo:CategoriaResiduoPage}"
         Route="categoriaResiduo" />
 
     <ShellContent
-        Title="Residuos"
+        Title=" Gestionar residuos"
         x:Name="ResiduosShellContent"
         Icon="{StaticResource IconResiduo}"
         ContentTemplate="{DataTemplate residuo:ListarResiduoPage}"
         Route="residuo" />
-    
+
+
 
 
     <!--<ShellContent
@@ -228,10 +230,19 @@
         Title="Gestionar conversiones"
         x:Name="ConversionesShellContent"
         Icon="{StaticResource IconConfiguracion}"
-        ContentTemplate="{DataTemplate conversiones:ListarConvertidorPage}"
+    <!--Vehiculos -->
+    <ShellContent Title=" Gestionar vehiculos"
+             Icon="veci.png"
+             ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}"
+             Route="vehiculo" />
+    <!--Ruta -->
+    <ShellContent Title=" Gestionar rutas"
+          Icon="addruta.png"
+          ContentTemplate="{DataTemplate ruta:ListarRutaPage}"
+          Route="ruta" />
+    
+    <FlyoutItem Title="Gestionar trabajadores"
         Route="conversiones" />
-    
-    
     <FlyoutItem Title="Usuarios"
             x:Name="UsuariosFlyoutItem"
             Icon="{StaticResource IconUsuarios}"
@@ -243,6 +254,8 @@
             Title="Usuarios"
             Route="ListarUsuarioPage"
             ContentTemplate="{DataTemplate usuario:ListarUsuarioPage}" />
+        
+       
     </FlyoutItem>
     <!--<ShellContent
       Icon="{StaticResource IconCompartir}"

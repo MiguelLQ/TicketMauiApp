@@ -199,9 +199,21 @@
                     FontFamily="FluentUI"
                     Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
                     Size="{StaticResource IconSize}" />
+        <!--Icon de ruta-->
+    <FontImageSource x:Key="IconRuta"
+                 Glyph="{x:Static f:FluentUI.map_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
+    <!--Icon de vehiculos-->
+    <FontImageSource x:Key="IconVehiculo"
+                 Glyph="{x:Static f:FluentUI.vehicle_bus_24_regular}"
+                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"
+                 Size="{StaticResource IconSize}" />
 
 
-        <FontImageSource x:Key="IconDashboard"
+    <FontImageSource x:Key="IconDashboard"
                      Glyph="{x:Static f:FluentUI.diagram_24_regular}"
                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                      Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource SecondaryDarkText}}"

@@ -240,13 +240,13 @@
     <ShellContent 
       Title=" Gestionar rutas"
       x:Name="RutasFlyoutItem"
-      Icon="addruta.png"
+      Icon="{StaticResource IconRuta}"
       ContentTemplate="{DataTemplate ruta:ListarRutaPage}"
       Route="ruta" />
     <!--Vehiculos -->
     <ShellContent 
     Title=" Gestionar vehiculos"
-         Icon="veci.png"
+         Icon="{StaticResource IconVehiculo}"
         x:Name="VehiculoFlyoutItem"
          ContentTemplate="{DataTemplate vehiculo:ListarVehiculoPage}"
          Route="vehiculo" />

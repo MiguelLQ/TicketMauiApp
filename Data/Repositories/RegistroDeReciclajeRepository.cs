@@ -79,6 +79,12 @@ public class RegistroDeReciclajeRepository : IRegistroDeReciclajeRepository
             .OrderByDescending(r => r.FechaRegistro).Take(3).ToListAsync();
     }
 
+    public async Task<List<RegistroDeReciclaje>> UltimosCincoRegistros()
+    {
+        return await _database.Database!.Table<RegistroDeReciclaje>()
+            .OrderByDescending(r => r.FechaRegistro).Take(5).ToListAsync();
+    }
+
     public async Task MarcarComoSincronizadoAsync(string id)
     {
         var item = await _database.Database!.FindAsync<RegistroDeReciclaje>(id);

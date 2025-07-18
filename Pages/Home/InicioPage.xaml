@@ -10,8 +10,8 @@
             <Color x:Key="Headercolorsaludo">#4c59b2</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <ScrollView>
+    <Grid>
+        <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="0">
 
             <!--Encabezado con fondo naranja y tarjeta del coche -->
@@ -69,13 +69,14 @@
                 </Frame>
                 <!-- Vehículos con ruta para hoy -->
                 <Frame Background="{DynamicResource CardBackgroundBrush}"
-       BorderColor="Transparent"
-       Padding="12"
-       CornerRadius="20"
-       HasShadow="False"
-       HorizontalOptions="Center"
-       VerticalOptions="Start"
-       Margin="0,120,0,0">
+                   BorderColor="Transparent"
+                   Padding="10"
+                   CornerRadius="20"
+                   HasShadow="False"
+                   WidthRequest="350"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   Margin="0,120,0,0">
 
                     <VerticalStackLayout Spacing="10">
                         <Label Text="Vehículos con ruta para hoy"
@@ -202,7 +203,18 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="#80000000" ZIndex="999">
+            <ActivityIndicator 
+        IsRunning="True" 
+        HorizontalOptions="Center" 
+        VerticalOptions="Center"
+        Color="{StaticResource Primary}"/>
+        </Grid>
+
+    
+    </Grid>
 </ContentPage>

@@ -151,6 +151,7 @@ public static class MauiProgram
         builder.Services.AddTransient<ResidenteFormPage, ResidenteFormPageModel>();
         builder.Services.AddSingleton<ResidenteListPage, ResidenteListPageModel>();
         builder.Services.AddSingleton<InicioCiudadanoPageModel>();
+        builder.Services.AddSingleton<inicioCiudadanoPage>();
         //home
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();

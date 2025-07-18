@@ -1,176 +1,311 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiFirebase.Pages.Home.inicioCiudadanoPage"
-             >
+<ContentPage
+    x:Class="MauiFirebase.Pages.Home.inicioCiudadanoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MauiFirebase.PageModels.Residentes"
+             x:Name="iniciociudadano">
 
-    <ScrollView>
-        <VerticalStackLayout>
+    <Grid >
 
-            <!-- Encabezado -->
-            <Grid Background="{StaticResource Primary}" Padding="20,0,20,190">
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+        <!-- SCROLLVIEW CON TODO EL CONTENIDO -->
+        <ScrollView>
+            <VerticalStackLayout >
 
-                    <!-- ✅ Título fuera del card celeste -->
-                    <Label Text="Bienvenido!!"
-                       FontSize="20"
-                       TextColor="White"
-                       FontAttributes="Bold"
-                       HorizontalTextAlignment="Start" />
+                <!-- Encabezado -->
+                <Grid Background="{StaticResource Primary}" Padding="20,0,20,190" >
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
 
-                    <!-- ✅ Card azul claro -->
-                    <Frame BackgroundColor="#4c59b2"
-                        CornerRadius="20"
-                           Padding="15"
-                           HasShadow="False"
-                           BorderColor="Transparent"
-                           HorizontalOptions="Fill"
-                           WidthRequest="300">
-
-                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
-                            <Label Text="{Binding NombreCompleto, StringFormat='{0}'}"
+                        <!-- Título -->
+                        <Label Text="Bienvenido!!"
                                FontSize="20"
                                TextColor="White"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Start" />
 
-                            <Label Text="Gracias por ayudar al medio ambiente"
-                               FontSize="15"
-                               TextColor="White"
-                               HorizontalTextAlignment="Start" />
-                        </VerticalStackLayout>
+                        <!-- Card azul claro -->
+                        <Frame BackgroundColor="#4c59b2"
+                               CornerRadius="18"
+                               Padding="9"
+                               HasShadow="False"
+                               BorderColor="Transparent"
+                               HorizontalOptions="Fill"
+                               WidthRequest="320">
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                                <Label Text="{Binding NombreCompleto, StringFormat='{0}'}"
+                                       FontSize="18"
+                                       TextColor="White"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Start" />
+                                <Label Text="¡Gracias por ayudar al medio ambiente!"
+                                       FontSize="15"
+                                       TextColor="White"
+                                       HorizontalTextAlignment="Start" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Grid>
 
-                    </Frame>
-                </VerticalStackLayout>
-            </Grid>
+                <!-- Card blanca sobresaliente -->
+                <Frame Margin="15,-180,15,18"
+                       CornerRadius="35"
+                       HasShadow="False"
+                       Background="{StaticResource CardBackgroundBrush}"
+                       BorderColor="Transparent"
+                       Padding="20"
+                       HorizontalOptions="Fill">
+
+                    <VerticalStackLayout Spacing="10">
+                        <!-- Carrusel -->
+                        <CarouselView HeightRequest="200"
+                                      IndicatorView="carouselIndicators"
+                                      Loop="True"
+                                      HorizontalOptions="Fill">
+                            <CarouselView.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>plaza.jpg</x:String>
+                                    <x:String>caroucel1.jpg</x:String>
+                                    <x:String>caroucel2.jpg</x:String>
+                                </x:Array>
+                            </CarouselView.ItemsSource>
+
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame CornerRadius="16"
+                                           Padding="0"
+                                           Margin="10"
+                                           HasShadow="False"
+                                           IsClippedToBounds="True"
+                                           BorderColor="#CCCCCC"
+                                           BackgroundColor="White">
+                                        <Image Source="{Binding .}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="200"
+                                               WidthRequest="400"
+                                               HorizontalOptions="Fill"
+                                               VerticalOptions="Center" />
+                                    </Frame>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <!-- Indicadores del carrusel -->
+                        <IndicatorView x:Name="carouselIndicators"
+                                       HorizontalOptions="Center"
+                                       IndicatorColor="#ccc"
+                                       SelectedIndicatorColor="{StaticResource Primary}" />
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+
+                            <!-- Tickets -->
+                            <Frame Background="{StaticResource EntryBackgroundBrush}"
+                                   CornerRadius="12"
+                                   Padding="10"
+                                   WidthRequest="130">
+
+                                <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+
+                                    <!-- Fila horizontal: texto + ícono a la derecha -->
+                                    <HorizontalStackLayout HorizontalOptions="Center">
+                                        <Image Source="{StaticResource IconTicket}"
+                                           HeightRequest="16"
+                                           WidthRequest="16"
+                                           Margin="0,0,5,0"
+                                           VerticalOptions="Center" />
+                                        <Label Text="Tickets"
+                                           FontSize="13"
+                                           TextColor="#888"
+                                           VerticalOptions="Center" />
+                                        
+                                    </HorizontalStackLayout>
+
+                                    <!-- Texto centrado abajo -->
+                                    <Label Text="{Binding TicketsGanadosTexto}"
+                                       FontSize="19"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}"
+                                       HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+
+                            </Frame>
 
 
+                            <!-- Motivación -->
+                            <Frame Background="{StaticResource EntryBackgroundBrush}"
+                                   CornerRadius="12"
+                                   Padding="7"
+                                   WidthRequest="130">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="¡Acumula tickets y canjéalos por premios!"
+                                           FontSize="12"
+                                           TextColor="{StaticResource Gray400}" 
+                                           HorizontalOptions="Center"
+                                           Padding="10,0,0,0"/>
+                                </VerticalStackLayout>
+                            </Frame>
 
-            <!-- Card blanca sobresaliente -->
-            <Frame Margin="15,-160,15,30"
-                   CornerRadius="35"
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+                <!-- NUEVO CARD CON CARRUSEL DE IMÁGENES RECTANGULARES -->
+                <Frame Margin="15,0,15,18"
+                       CornerRadius="20"
+                       HasShadow="False"
+                       Background="{StaticResource CardBackgroundBrush}"
+                       BorderColor="Transparent"
+                       Padding="10"
+                       HorizontalOptions="Fill">
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Galería de Reciclaje"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray400}"
+                           HorizontalOptions="Start" />
+
+                        <CarouselView HeightRequest="140"
+                      IndicatorView="galleryIndicators"
+                      Loop="True"
+                      HorizontalOptions="Fill">
+                            <CarouselView.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>plaza3.jpg</x:String>
+                                    <x:String>plaza4.jpg</x:String>
+                                    <x:String>plaza2.jpg</x:String>
+                                </x:Array>
+                            </CarouselView.ItemsSource>
+
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame CornerRadius="12"
+                           Padding="0"
+                           Margin="5"
+                           HasShadow="False"
+                           IsClippedToBounds="True"
+                           BackgroundColor="White">
+                                        <Image Source="{Binding .}"
+                               Aspect="AspectFill"
+                               HeightRequest="180"
+                               WidthRequest="320"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Center" />
+                                    </Frame>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <!-- Indicadores del nuevo carrusel -->
+                        <IndicatorView x:Name="galleryIndicators"
+                       HorizontalOptions="Center"
+                       IndicatorColor="#bbb"
+                       SelectedIndicatorColor="{StaticResource Primary}" />
+                    </VerticalStackLayout>
+                </Frame>
+                   <!--card 3-->
+                <Frame Margin="15,0,15,30"
+                   CornerRadius="20"
                    HasShadow="False"
                    Background="{StaticResource CardBackgroundBrush}"
                    BorderColor="Transparent"
-                   Padding="20"
-                   HorizontalOptions="Fill">
+                   Padding="15"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Start">
 
-                <VerticalStackLayout Spacing="20">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="¿Qué puedes hacer aquí?"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray400}" />
 
-                    <CarouselView HeightRequest="200"
-                      IndicatorView="carouselIndicators"
-                      Loop="True"
-                      HorizontalOptions="Fill">
-                        <CarouselView.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>caroucel1.jpg</x:String>
-                                <x:String>caroucel2.jpg</x:String>
-                                <x:String>caroucel3.jpg</x:String>
-                            </x:Array>
-                        </CarouselView.ItemsSource>
+                        <!-- Opción 1 -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Image Source="{StaticResource IconUbicacion}"
+                                   HeightRequest="18" WidthRequest="18"
+                                   VerticalOptions="Start"
+                                   Margin="0,2,10,0" />
+                            <Label Grid.Column="1"
+                               Text="Monitorea en tiempo real el recorrido del camión reciclador."
+                               FontSize="13"
+                               TextColor="#555"
+                               LineBreakMode="WordWrap"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Start" />
+                        </Grid>
 
-                        <CarouselView.ItemTemplate>
-                            <DataTemplate>
-                                <Frame CornerRadius="16"
-                   Padding="0"
-                   Margin="10"
-                   HasShadow="True"
-                   IsClippedToBounds="True"
-                   BorderColor="#CCCCCC"
-                   BackgroundColor="White">
-                                    <Image Source="{Binding .}"
-                       Aspect="AspectFill"
-                       HeightRequest="200"
-                       WidthRequest="400"
-                       HorizontalOptions="Fill"
-                       VerticalOptions="Center" />
-                                </Frame>
-                            </DataTemplate>
-                        </CarouselView.ItemTemplate>
-                    </CarouselView>
-
-
-                    <!-- Indicadores del carrusel -->
-                    <IndicatorView x:Name="carouselIndicators"
-                                   HorizontalOptions="Center"
-                                   IndicatorColor="#ccc"
-                                   SelectedIndicatorColor="#0077CC" />
-
-                    <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
-
-                        <!-- Frame de Tickets -->
-                        <Frame Background="{StaticResource EntryBackgroundBrush}"
-                               CornerRadius="12"
-                               Padding="10"
-                               WidthRequest="140">
-                            <VerticalStackLayout Spacing="4">
-                                <Label Text="🎟 Tickets"
+                        <!-- Opción 2 -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Image Source="{StaticResource IconPremios}"
+                                   HeightRequest="18" WidthRequest="18"
+                                   VerticalOptions="Start"
+                                   Margin="0,2,10,0" />
+                            <Label Grid.Column="1"
+                                   Text="Mira los premios disponibles y los tickets necesarios."
                                    FontSize="13"
-                                   TextColor="#888" />
-                                <Label Text="{Binding TicketsGanadosTexto}"
-                                   FontSize="22"
-                                   FontAttributes="Bold"
-                                   TextColor="#0077CC" />
-                            </VerticalStackLayout>
-                        </Frame>
+                                   TextColor="#555"
+                                   LineBreakMode="WordWrap"
+                                   HorizontalOptions="Fill"
+                                   VerticalOptions="Start" />
+                        </Grid>
 
-                        <!-- Frame de motivación -->
-                        <Frame Background="{StaticResource EntryBackgroundBrush}"
-                               CornerRadius="12"
-                               Padding="7"
-                               WidthRequest="130">
-                            <VerticalStackLayout Spacing="4">
-                                
-                                <Label Text="¡Acumula tickets y canjéalos por premios!"
-                                       FontSize="12"
-                                       TextColor="#0077CC"
-                                       LineBreakMode="WordWrap" />
-                            </VerticalStackLayout>
-                        </Frame>
+                        <!-- Opción 3 -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Image Source="{StaticResource IconUsuarios}"
+                               HeightRequest="18" WidthRequest="18"
+                               VerticalOptions="Start"
+                               Margin="0,2,10,0" />
+                            <Label Grid.Column="1"
+                                   Text="Regístrate como ciudadano para comenzar a reciclar."
+                                   FontSize="13"
+                                   TextColor="#555"
+                                   LineBreakMode="WordWrap"
+                                   HorizontalOptions="Fill"
+                                   VerticalOptions="Start" />
+                        </Grid>
 
-                    </HorizontalStackLayout>
-
-
-                
-                </VerticalStackLayout>
-            </Frame>
-            <!-- Card de indicaciones para el ciudadano -->
-            <Frame Margin="15,0,15,30"
-               CornerRadius="20"
-               HasShadow="True"
-               Background="{StaticResource EntryBackgroundBrush}"
-               BorderColor="Transparent"
-               Padding="15"
-               HorizontalOptions="Fill">
-
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="📌 ¿Qué puedes hacer aquí?"
-               FontSize="16"
-               FontAttributes="Bold"
-               TextColor="{StaticResource Gray400}" />
-
-                    <Label Text="• 🔍 Monitorea en tiempo real el recorrido del camión reciclador."
-               FontSize="13"
-               TextColor="#555" 
-               LineBreakMode="WordWrap" />
-
-                    <Label Text="• 🎁 Mira los premios disponibles y los tickets necesarios."
-               FontSize="13"
-               TextColor="#555"
-               LineBreakMode="WordWrap" />
-
-                    <Label Text="• 📝 Regístrate como ciudadano para comenzar a reciclar."
-               FontSize="13"
-               TextColor="#555"
-               LineBreakMode="WordWrap" />
-
-                    <Label Text="• ♻ Sube tus registros de reciclaje y gana tickets."
-               FontSize="13"
-               TextColor="#555"
-               LineBreakMode="WordWrap" />
-                </VerticalStackLayout>
-            </Frame>
-
-        </VerticalStackLayout>
+                        <!-- Opción 4 -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Image Source="{StaticResource IconResiduo}"
+                               HeightRequest="18" WidthRequest="18"
+                               VerticalOptions="Start"
+                               Margin="0,2,10,0" />
+                            <Label Grid.Column="1"
+                                   Text="Sube tus registros de reciclaje y gana tickets."
+                                   FontSize="13"
+                                   TextColor="#555"
+                                   LineBreakMode="WordWrap"
+                                   HorizontalOptions="Fill"
+                                   VerticalOptions="Start" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+            
+        </ScrollView>
         
-    </ScrollView>
+
+
+        <!-- BOTÓN FLOTANTE DE WHATSAPP FUERA DEL SCROLLVIEW -->
+        <Grid Padding="20"
+              HorizontalOptions="End"
+              VerticalOptions="End">
+            <Button
+                ImageSource="wsp.png"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                Padding="2"
+                BackgroundColor="#25D366"
+                TextColor="White"
+                Clicked="OnWhatsAppClicked" />
+        </Grid>
+        <!-- Indicador centrado sobre todo -->
+        <ActivityIndicator 
+            IsRunning="{Binding IsBusy}" 
+            IsVisible="{Binding IsBusy}" 
+            HorizontalOptions="Center" 
+            VerticalOptions="Center"
+            Color="{StaticResource Primary}"
+            WidthRequest="50"
+            HeightRequest="50"/>
+
+    </Grid>
 </ContentPage>

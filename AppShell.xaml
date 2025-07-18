@@ -229,7 +229,7 @@
     <ShellContent
         Title="Gestionar conversiones"
         x:Name="ConversionesShellContent"
-        Icon="{StaticResource IconConfiguracion}"
+        Icon="{StaticResource IconConfiguracion}"/>
     <!--Vehiculos -->
     <ShellContent Title=" Gestionar vehiculos"
              Icon="veci.png"

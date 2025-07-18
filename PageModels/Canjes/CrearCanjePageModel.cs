@@ -172,7 +172,13 @@ public partial class CrearCanjePageModel : ObservableValidator
         }
 
         ResidenteEncontrado.TicketsTotalesGanados -= PremioSeleccionado.PuntosRequeridos;
+        ResidenteEncontrado.Sincronizado = false; 
         await _residenteRepository.UpdateResidenteAsync(ResidenteEncontrado);
+        var residenteActualizado = await _residenteRepository.ObtenerPorIdAsync(ResidenteEncontrado.IdResidente);
+        if (residenteActualizado != null)
+        {
+            ResidenteEncontrado = residenteActualizado;
+        }
         await _sincronizador.SincronizarResidentesAsync();
 
         var nuevoCanje = new Canje

@@ -140,7 +140,16 @@ public partial class AgregarRegistroPageModel : ObservableObject
         };
         await _registroRepository.GuardarAsync(nuevoRegistro);
         ResidenteSeleccionado.TicketsTotalesGanados += TicketsGanados;
+        ResidenteSeleccionado.Sincronizado = false; // Marcar como no sincronizado
         await _residenteRepository.GuardarAsync(ResidenteSeleccionado);
+        // Refrescar el residente desde la base de datos para asegurar que la UI se actualice
+        var residenteActualizado = await _residenteRepository.ObtenerPorIdAsync(ResidenteSeleccionado.IdResidente);
+        if (residenteActualizado != null)
+        {
+            ResidenteSeleccionado = residenteActualizado;
+        }
+
+
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
         {
             var exito = false;

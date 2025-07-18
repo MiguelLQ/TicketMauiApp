@@ -29,7 +29,7 @@
                     </Frame>
 
                     <!-- Título -->
-                    <Label Text="Editar Usuario"
+                    <Label Text="Editar Trabajador"
                            FontSize="20"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"

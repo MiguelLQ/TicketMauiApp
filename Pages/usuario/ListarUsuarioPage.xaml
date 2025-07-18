@@ -19,7 +19,7 @@
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
 
-                <Label Text="Lista de Usuarios" FontSize="22" FontAttributes="Bold" TextColor="{DynamicResource Gray400}" HorizontalOptions="Start"/>
+                <Label Text="Lista de Trabajadores" FontSize="22" FontAttributes="Bold" TextColor="{DynamicResource Gray400}" HorizontalOptions="Start"/>
 
                 <CollectionView ItemsSource="{Binding Usuarios}">
                     <CollectionView.ItemTemplate>

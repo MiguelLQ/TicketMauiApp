@@ -230,6 +230,7 @@
         Title="Gestionar conversiones"
         x:Name="ConversionesShellContent"
         Icon="{StaticResource IconConfiguracion}"
+        Route="convertidores"/>
     <!--Vehiculos -->
     <ShellContent Title=" Gestionar vehiculos"
              Icon="veci.png"
@@ -241,9 +242,7 @@
           ContentTemplate="{DataTemplate ruta:ListarRutaPage}"
           Route="ruta" />
     
-    <FlyoutItem Title="Gestionar trabajadores"
-        Route="conversiones" />
-    <FlyoutItem Title="Usuarios"
+    <FlyoutItem Title="Gestionar Trabajadores"
             x:Name="UsuariosFlyoutItem"
             Icon="{StaticResource IconUsuarios}"
             FlyoutDisplayOptions="AsSingleItem"
@@ -251,19 +250,12 @@
             Route="usuarios">
 
         <ShellContent
-            Title="Usuarios"
+            Title="Gestionar Trabajadores"
             Route="ListarUsuarioPage"
             ContentTemplate="{DataTemplate usuario:ListarUsuarioPage}" />
-        
-       
     </FlyoutItem>
-    <!--<ShellContent
-      Icon="{StaticResource IconCompartir}"
-      Title="Compartir App"
-       Route="compartir"
-        
-     >
-    </ShellContent>-->
+    
+   
 
     <Shell.FlyoutFooter>
         <Grid Padding="15" RowSpacing="20">

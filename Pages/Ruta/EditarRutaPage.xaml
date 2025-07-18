@@ -19,7 +19,7 @@
         </VerticalStackLayout>
 
         <!-- Mapa -->
-        <Frame HeightRequest="400" Padding="2" CornerRadius="1">
+        <Frame HeightRequest="520"  WidthRequest="400" Padding="2" CornerRadius="1">
             <Grid>
                 <maps:Map x:Name="MyMap"
                           MapType="Satellite"

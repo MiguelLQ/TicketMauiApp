@@ -172,9 +172,8 @@ public partial class CrearCanjePageModel : ObservableValidator
         }
 
         ResidenteEncontrado.TicketsTotalesGanados -= PremioSeleccionado.PuntosRequeridos;
-        ResidenteEncontrado.Sincronizado = false; // Marcar como no sincronizado
+        ResidenteEncontrado.Sincronizado = false; 
         await _residenteRepository.UpdateResidenteAsync(ResidenteEncontrado);
-        // Refrescar el residente desde la base de datos para asegurar que la UI se actualice
         var residenteActualizado = await _residenteRepository.ObtenerPorIdAsync(ResidenteEncontrado.IdResidente);
         if (residenteActualizado != null)
         {

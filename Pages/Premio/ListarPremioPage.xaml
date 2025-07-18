@@ -20,7 +20,7 @@
             <VerticalStackLayout Padding="20" Spacing="15">
 
                 <!-- Título -->
-                <Label Text="Lista de Premios"
+                <Label Text="Premios Disponibles"
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}"

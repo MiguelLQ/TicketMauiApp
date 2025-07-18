@@ -30,7 +30,7 @@
                     </Frame>
 
                     <!-- Título centrado -->
-                    <Label Text="Registrar Usuario"
+                    <Label Text="Registrar Trabajador"
                            FontSize="20"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"

@@ -29,7 +29,7 @@
                     </Frame>
 
                     <!-- Título -->
-                    <Label Text="Editar Usuario"
+                    <Label Text="Editar Trabajador"
                            FontSize="20"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"
@@ -82,9 +82,8 @@
                         <Label Text="Estado" FontSize="13" TextColor="#3f51b5" Margin="28,10,0,0" />
                         <Frame CornerRadius="8" Padding="10,4" BorderColor="Transparent" Background="{StaticResource EntryBackgroundBrush}" HasShadow="False">
                             <HorizontalStackLayout>
-                                <Image Source="{StaticResource IconEstado}" WidthRequest="20" HeightRequest="20" Margin="4,0" VerticalOptions="Center" />
                                 <Label Text="Inactivo" VerticalOptions="Center" FontSize="12" />
-                                <Switch IsToggled="{Binding UsuarioNuevo.Estado}" HorizontalOptions="CenterAndExpand" />
+                                <Switch IsToggled="{Binding UsuarioNuevo.Estado}" HorizontalOptions="Center" />
                                 <Label Text="Activo" VerticalOptions="Center" FontSize="12" />
                             </HorizontalStackLayout>
                         </Frame>

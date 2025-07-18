@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.Residentes;
 
+
 public partial class InicioCiudadanoPageModel : ObservableObject
 {
     private readonly IResidenteRepository _residenteRepository;
@@ -21,16 +22,15 @@ public partial class InicioCiudadanoPageModel : ObservableObject
         _firebaseService = firebaseService;
     }
 
-    // 🔹 Datos individuales
     [ObservableProperty] private int ticketsGanados;
-    [ObservableProperty] private string nombreResidente;
-    [ObservableProperty] private string apellidoResidente;
-    [ObservableProperty] private string ticketsGanadosTexto;
+    [ObservableProperty] private string nombreResidente = "Ciudadano";
+    [ObservableProperty] private string apellidoResidente = "";
+    [ObservableProperty] private string ticketsGanadosTexto = "Cargando...";
+    [ObservableProperty]
+    private bool isBusy;
 
-    // 🔹 Nombre completo calculado (no editable)
     public string NombreCompleto => $"{NombreResidente} {ApellidoResidente}";
 
-    // 🔹 Notificar cuando cambia nombre o apellido para actualizar NombreCompleto
     partial void OnNombreResidenteChanged(string value) =>
         OnPropertyChanged(nameof(NombreCompleto));
 
@@ -39,26 +39,26 @@ public partial class InicioCiudadanoPageModel : ObservableObject
 
     public async Task CargarDatosUsuarioAsync()
     {
-        var uid = Preferences.Get("FirebaseUserId", string.Empty);
-        if (string.IsNullOrEmpty(uid)) return;
-
-        // 🔹 Obtener desde SQLite
-        var residenteLocal = await _residenteRepository.ObtenerPorUidFirebaseAsync(uid);
-
-        // 🔹 Si hay internet, intenta actualizar desde Firestore
-        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        try
         {
-            var token = await _authService.ObtenerIdTokenSeguroAsync();
-            var residentesFirebase = await _firebaseService.ObtenerResidentesDesdeFirestoreAsync(token);
-            var residenteFirestore = residentesFirebase.FirstOrDefault(r => r.UidFirebase == uid);
+            var uid = Preferences.Get("FirebaseUserId", string.Empty);
 
-            if (residenteFirestore != null)
+            if (string.IsNullOrWhiteSpace(uid))
             {
-                // 🔄 Sincronizar si hay cambios
-                if (residenteLocal == null ||
-                    residenteFirestore.TicketsTotalesGanados != residenteLocal.TicketsTotalesGanados ||
-                    residenteFirestore.NombreResidente != residenteLocal.NombreResidente ||
-                    residenteFirestore.ApellidoResidente != residenteLocal.ApellidoResidente)
+                TicketsGanadosTexto = "UID no encontrado";
+                return;
+            }
+
+            var residenteLocal = await _residenteRepository.ObtenerPorUidFirebaseAsync(uid);
+
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                var token = await _authService.ObtenerIdTokenSeguroAsync();
+                var residentesFirebase = await _firebaseService.ObtenerResidentesDesdeFirestoreAsync(token);
+
+                var residenteFirestore = residentesFirebase?.FirstOrDefault(r => r.UidFirebase == uid);
+
+                if (residenteFirestore != null)
                 {
                     residenteFirestore.Sincronizado = true;
 
@@ -70,21 +70,25 @@ public partial class InicioCiudadanoPageModel : ObservableObject
                     residenteLocal = residenteFirestore;
                 }
             }
-        }
 
-        // 🔹 Mostrar lo que se tenga local
-        if (residenteLocal != null)
-        {
-            TicketsGanados = residenteLocal.TicketsTotalesGanados;
-            TicketsGanadosTexto = residenteLocal.TicketsTotalesGanados.ToString();
-            NombreResidente = residenteLocal.NombreResidente;
-            ApellidoResidente = residenteLocal.ApellidoResidente;
+            if (residenteLocal != null)
+            {
+                TicketsGanados = residenteLocal.TicketsTotalesGanados;
+                TicketsGanadosTexto = residenteLocal.TicketsTotalesGanados.ToString();
+                NombreResidente = residenteLocal.NombreResidente;
+                ApellidoResidente = residenteLocal.ApellidoResidente;
+            }
+            else
+            {
+                TicketsGanadosTexto = "Datos no disponibles";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            TicketsGanadosTexto = "No disponible";
-            NombreResidente = "Ciudadano";
-            ApellidoResidente = "";
+            // Opcional: usa AppCenter o similar para loguear errores
+            TicketsGanadosTexto = "Error cargando datos";
+            Console.WriteLine($"❌ Error: {ex.Message}");
         }
     }
 }
+

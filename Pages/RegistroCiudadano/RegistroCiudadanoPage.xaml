@@ -17,45 +17,189 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <!-- ✅ Formulario (solo si MostrarFormulario = true) -->
-            <VerticalStackLayout IsVisible="{Binding MostrarFormulario}" Spacing="15">
-                <Label Text="Registro de Ciudadano"
-                       FontSize="24"
+            <Frame
+                IsVisible="{Binding MostrarFormulario}"
+                CornerRadius="20"
+                Padding="0"
+                Background="{StaticResource CardBackgroundBrush}"
+                WidthRequest="340"
+                Margin="0"
+                HorizontalOptions="Center"
+                HasShadow="False">
+
+                <VerticalStackLayout Spacing="14" Padding="20">
+
+                    <Label Text="Regístrate para obtener tu QR"
+                       FontSize="20"
                        FontAttributes="Bold"
-                       TextColor="#0077CC"
+                       TextColor="{StaticResource Primary}"
                        HorizontalOptions="Center" />
-
-                <Entry Placeholder="Nombre"
-                       Text="{Binding Nombre}" />
-
-                <Entry Placeholder="Apellido"
-                       Text="{Binding Apellido}" />
-
-                <Entry Placeholder="DNI"
-                       Text="{Binding Dni}"
-                       Keyboard="Numeric" />
-
-                <Entry Placeholder="Correo"
-                       Text="{Binding Correo}"
-                       Keyboard="Email" />
-
-                <Entry Placeholder="Dirección"
-                       Text="{Binding Direccion}" />
-
-                <!-- Switch de estado -->
-                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                    <Label Text="¿Está activo?" VerticalOptions="Center" />
-                    <Switch IsToggled="{Binding EstadoResidente}" />
-                </StackLayout>
-
-                <Button Text="Guardar"
-                        Command="{Binding GuardarCiudadanoCommand}"
-                        BackgroundColor="#0077CC"
-                        TextColor="White"
-                        CornerRadius="10"
+                    <Label Text="Y empieza a reciclar!"
+                        FontSize="17"
                         FontAttributes="Bold"
-                        HeightRequest="45" />
-            </VerticalStackLayout>
+                        TextColor="{StaticResource Gray400}"
+                        HorizontalOptions="Center" Margin="0,-15,0,0" />
+                    <!-- Nombre -->
+                    <Label Text="Nombre"
+               Margin="30,0,0,-15"
+               FontSize="13"
+               TextColor="{StaticResource Gray400}" />
+                    <Frame BorderColor="Transparent"
+               CornerRadius="10"
+               HeightRequest="60"
+               Padding="10"
+               HasShadow="False"
+               Background="{StaticResource EntryBackgroundBrush}">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="{StaticResource IconNombre}"
+                       HeightRequest="18"
+                       WidthRequest="18"
+                       Margin="0,2,0,0" />
+                            <Entry Placeholder="Ingrese su nombre                "
+                       Text="{Binding Nombre}"
+                       TextColor="{StaticResource Gray400}"
+                       PlaceholderColor="{StaticResource Gray500}"
+                       BackgroundColor="Transparent"
+                       FontSize="15"
+                       HorizontalOptions="Fill" />
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Apellido -->
+                    <Label Text="Apellido"
+               Margin="30,0,0,-15"
+               FontSize="13"
+               TextColor="{StaticResource Gray400}" />
+                    <Frame BorderColor="Transparent"
+               CornerRadius="10"
+               Padding="10"
+               HeightRequest="60"
+               HasShadow="False"
+               Background="{StaticResource EntryBackgroundBrush}">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="{StaticResource IconApellido}"
+                       HeightRequest="18"
+                       WidthRequest="18"
+                       Margin="0,2,0,0" />
+                            <Entry Placeholder="Ingrese su apellido              "
+                       Text="{Binding Apellido}"
+                       TextColor="{StaticResource Gray400}"
+                       PlaceholderColor="{StaticResource Gray500}"
+                       BackgroundColor="Transparent"
+                       FontSize="15"
+                       HorizontalOptions="Fill" />
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- DNI -->
+                    <Label Text="DNI"
+               FontSize="13"
+               Margin="30,0,0,-15"
+               TextColor="{StaticResource Gray400}" />
+                    <Frame BorderColor="Transparent"
+               CornerRadius="10"
+               Padding="10"
+               HeightRequest="60"
+               HasShadow="False"
+               Background="{StaticResource EntryBackgroundBrush}">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="{StaticResource IconApellido}"
+                                HeightRequest="18"
+                       WidthRequest="18"
+                       Margin="0,2,0,0" />
+                                <Entry Placeholder="Ingrese su DNI                     "
+                       Text="{Binding Dni}"
+                       Keyboard="Numeric"
+                       TextColor="{StaticResource Gray400}"
+                       PlaceholderColor="{StaticResource Gray500}"
+                       BackgroundColor="Transparent"
+                       FontSize="15"
+                       HorizontalOptions="Fill" />
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Correo -->
+                    <Label Text="Correo"
+               FontSize="13"
+               Margin="30,0,0,-15"
+               TextColor="{StaticResource Gray400}" />
+                    <Frame BorderColor="Transparent"
+               CornerRadius="10"
+               Padding="10"
+               HeightRequest="60"
+               HasShadow="False"
+               Background="{StaticResource EntryBackgroundBrush}">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="{StaticResource IconCorreo}"
+                       HeightRequest="18"
+                       WidthRequest="18"
+                       Margin="0,2,0,0" />
+                            <Entry Placeholder="Ingrese su correo                   "
+                       Text="{Binding Correo}"
+                       Keyboard="Email"
+                       TextColor="{StaticResource Gray400}"
+                       PlaceholderColor="{StaticResource Gray500}"
+                       BackgroundColor="Transparent"
+                       FontSize="15"
+                       HorizontalOptions="Fill" />
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Dirección -->
+                    <Label Text="Dirección"
+               FontSize="13"
+               Margin="30,0,0,-15"
+               TextColor="{StaticResource Gray400}" />
+                    <Frame BorderColor="Transparent"
+               CornerRadius="10"
+               Padding="10"
+               HeightRequest="60"
+               HasShadow="False"
+               Background="{StaticResource EntryBackgroundBrush}">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="{StaticResource IconUbicacion}"
+                       HeightRequest="18"
+                       WidthRequest="18"
+                       Margin="0,2,0,0" />
+                            <Entry Placeholder="Ingrese su dirección               "
+                       Text="{Binding Direccion}"
+                       TextColor="{StaticResource Gray400}"
+                       PlaceholderColor="{StaticResource Gray500}"
+                       BackgroundColor="Transparent"
+                       FontSize="15"
+                       HorizontalOptions="Fill" />
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Mostrar Nombre Completo -->
+                    <Label FontSize="15"
+               TextColor="{StaticResource Gray400}"
+               LineBreakMode="WordWrap"
+               HorizontalOptions="Start">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding NombreResidenteLocal}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding ApellidoResidenteLocal}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <!-- Botón Guardar -->
+                    <Button Text="Guardar"
+                Command="{Binding GuardarCiudadanoCommand}"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                CornerRadius="10"
+                FontAttributes="Bold"
+                HeightRequest="45"
+                HorizontalOptions="Fill" Margin="0,-15,0,0"/>
+
+                </VerticalStackLayout>
+            </Frame>
+
+
+
 
             <!-- ✅ Código QR (solo si MostrarFormulario = false) -->
             <StackLayout IsVisible="{Binding MostrarFormulario, Converter={StaticResource InverseBoolConverter}}" 
@@ -69,36 +213,38 @@
                        HeightRequest="250" 
                        WidthRequest="250" />
                 <!-- Card con datos personales -->
-                <Frame BackgroundColor="White"
-           BorderColor="#0077CC"
-           CornerRadius="20"
-           HasShadow="True"
-           Padding="20"
-           Margin="0,20,0,0">
+                <Frame Background="{StaticResource CardBackgroundBrush}"
+                       BorderColor="Transparent"
+                       CornerRadius="20"
+                       HasShadow="True"
+                       Padding="20"
+                       WidthRequest="340"
+                       Margin="0,20,0,0">
                     <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Label Text="{Binding NombreResidenteLocal}" 
-                   FontSize="18" 
-                   FontAttributes="Bold"
-                   TextColor="Black"
-                   HorizontalOptions="Center" />
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                            <Label Text="{Binding NombreResidenteLocal}" 
+               FontSize="18" 
+               FontAttributes="Bold"
+               TextColor="{StaticResource Gray400}" />
 
-                        <Label Text="{Binding ApellidoResidenteLocal}" 
-                   FontSize="16"
-                   TextColor="Black"
-                   HorizontalOptions="Center" />
+                            <Label Text="{Binding ApellidoResidenteLocal}" 
+               FontSize="18"
+               FontAttributes="Bold"
+               TextColor="{StaticResource Gray400}" />
+                        </HorizontalStackLayout>
                         <Label Text="{Binding DniResidenteLocal}" 
                         FontSize="16"
-                        TextColor="Black"
+                        TextColor="{StaticResource Gray400}"
                         HorizontalOptions="Center" />
 
                         <Label Text="{Binding CorreoResidenteLocal}" 
                    FontSize="14"
-                   TextColor="Gray"
+                   TextColor="{StaticResource Gray400}"
                    HorizontalOptions="Center" />
 
                         <Label Text="{Binding DireccionResidenteLocal}" 
                    FontSize="14"
-                   TextColor="Gray"
+                   TextColor="{StaticResource Gray500}"
                    HorizontalOptions="Center" />
                     </VerticalStackLayout>
                 </Frame>

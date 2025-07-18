@@ -39,6 +39,9 @@ public partial class DashboardPageModel : ObservableObject
     public ObservableCollection<RegistroRecienteViewModel> UltimosRegistrosResumen { get; } = new();
     public ObservableCollection<ReciclajePorCategoria> DatosGrafico { get; } = new();
     public ObservableCollection<Vehiculo> VehiculosHoy { get; } = new();
+    [ObservableProperty]
+    bool isBusy;
+
 
     // ▶ Gráfico de pastel
     [ObservableProperty] private Chart? _graficoPastel;
@@ -67,27 +70,43 @@ public partial class DashboardPageModel : ObservableObject
     // ════════════════════════════════════════════════════════════
     public async Task InicializarAsync()
     {
-        if (!_yaSincronizo)
+        if (IsBusy) return; // Previene múltiples llamadas
+        try
         {
-            await _sincronizador.SincronizarTodoAsync();
-            _yaSincronizo = true;
+            IsBusy = true;
+
+            if (!_yaSincronizo)
+            {
+                await _sincronizador.SincronizarTodoAsync();
+                _yaSincronizo = true;
+            }
+
+            // Tarjetas
+            TarjetasResumen.Clear();
+            foreach (var t in await ObtenerTarjetasAsync())
+            {
+                TarjetasResumen.Add(t);
+            }
+
+            // Últimos registros
+            await CargarUltimosRegistrosAsync();
+
+            // Gráfico pastel
+            await CargarGraficoPastelAsync();
+
+            // Vehículos con ruta hoy
+            await CargarVehiculosHoyAsync();
         }
-        // Tarjetas
-        TarjetasResumen.Clear();
-        foreach (var t in await ObtenerTarjetasAsync())
+        catch (Exception ex)
         {
-            TarjetasResumen.Add(t);
+            Debug.WriteLine($"[Error] InicializarAsync: {ex.Message}");
         }
-
-        // Últimos registros
-        await CargarUltimosRegistrosAsync();
-
-        // Gráfico pastel
-        await CargarGraficoPastelAsync();
-
-        // Vehículos con ruta hoy
-        await CargarVehiculosHoyAsync();
+        finally
+        {
+            IsBusy = false;
+        }
     }
+
 
     // ════════════════════════════════════════════════════════════
     //  TARJETAS RESUMEN
@@ -131,7 +150,7 @@ public partial class DashboardPageModel : ObservableObject
             // estéticas
             string icono = "plastico.png";
             string borde = "#2196F3";
-            string texto = "#0D47A1";
+            string texto = GenerarColorAleatorioHex();
             string desc = $"{reg.NombreResidente} recicló {reg.PesoKilogramo} kg de {reg.NombreResiduo}";
 
             if ((reg.NombreResiduo ?? "").ToLower().Contains("papel"))

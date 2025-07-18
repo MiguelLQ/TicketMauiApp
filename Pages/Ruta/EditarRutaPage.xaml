@@ -6,20 +6,20 @@
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Rutas"
              x:DataType="viewModels:EditarRutaPageModel">
 
-    <VerticalStackLayout Padding="24" Spacing="20">
+    <VerticalStackLayout Padding="24" Spacing="0">
         <Label Text="✏️ Editar Ruta"
-               FontSize="26"
+               FontSize="20"
                FontAttributes="Bold"
                HorizontalOptions="Center" />
 
         <!-- Estado -->
-        <VerticalStackLayout Spacing="4">
+        <VerticalStackLayout Spacing="1">
             <Label Text="Estado de Ruta" FontSize="14" />
             <Switch IsToggled="{Binding EstadoRuta}" />
         </VerticalStackLayout>
 
         <!-- Mapa -->
-        <Frame HeightRequest="520"  WidthRequest="400" Padding="2" CornerRadius="1">
+        <Frame HeightRequest="550"  WidthRequest="400" Padding="2" CornerRadius="1">
             <Grid>
                 <maps:Map x:Name="MyMap"
                           MapType="Satellite"

@@ -323,39 +323,50 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
             RutasEnMapa.Clear();
 
             var rutas = await _rutaRepository.GetAllRutaAsync();
-            var rutaDelDia = rutas.FirstOrDefault(r =>
-                r.DiasDeRecoleccion?.ToLower().Contains(dia.ToLower()) == true);
 
-            if (rutaDelDia == null || string.IsNullOrWhiteSpace(rutaDelDia.PuntosRutaJson))
-                return;
+            // Filtrar rutas del día Y activas
+            var rutasDelDiaActivas = rutas
+                .Where(r =>
+                    r.EstadoRuta && // 👈 solo si está activa
+                    !string.IsNullOrWhiteSpace(r.DiasDeRecoleccion) &&
+                    r.DiasDeRecoleccion.ToLower().Contains(dia.ToLower())
+                )
+                .ToList();
 
-            var puntos = JsonSerializer.Deserialize<List<LatLng>>(rutaDelDia.PuntosRutaJson);
-            if (puntos == null || puntos.Count < 2)
-                return;
-            var locations = puntos.Select(p => new Location(p.lat, p.lng)).ToList();
-            var rutaGoogle = await _rutaService.ObtenerRutaGoogleAsync(locations);
-
-            if (rutaGoogle == null || rutaGoogle.Count == 0)
-                return;
-
-            var polyline = new Polyline
+            foreach (var ruta in rutasDelDiaActivas)
             {
-                StrokeColor = Colors.Blue,
-                StrokeWidth = 6
-            };
+                if (string.IsNullOrWhiteSpace(ruta.PuntosRutaJson))
+                    continue;
 
-            foreach (var punto in rutaGoogle)
-            {
-                polyline.Geopath.Add(punto);
+                var puntos = JsonSerializer.Deserialize<List<LatLng>>(ruta.PuntosRutaJson);
+                if (puntos == null || puntos.Count < 2)
+                    continue;
+
+                var locations = puntos.Select(p => new Location(p.lat, p.lng)).ToList();
+                var rutaGoogle = await _rutaService.ObtenerRutaGoogleAsync(locations);
+                if (rutaGoogle == null || rutaGoogle.Count == 0)
+                    continue;
+
+                var polyline = new Polyline
+                {
+                    StrokeColor = Colors.Blue,
+                    StrokeWidth = 6
+                };
+
+                foreach (var punto in rutaGoogle)
+                {
+                    polyline.Geopath.Add(punto);
+                }
+
+                RutasEnMapa.Add(polyline);
             }
-
-            RutasEnMapa.Add(polyline);
         }
         catch (Exception ex)
         {
-            ErrorMessage = "Error al cargar ruta: " + ex.Message;
+            ErrorMessage = "Error al cargar rutas activas del día: " + ex.Message;
         }
     }
+
 
 
     public async Task RenderizarRutaEnMapaAsync(string idRuta)

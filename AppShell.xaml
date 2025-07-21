@@ -24,6 +24,7 @@
     xmlns:registrociudadano="clr-namespace:MauiFirebase.Pages.RegistroCiudadano"
     xmlns:vermapaciudadano="clr-namespace:MauiFirebase.Pages.Mapa"
     xmlns:camscaner="clr-namespace:MauiFirebase.Pages.CamScaner"
+    xmlns:inicioconductor="clr-namespace:MauiFirebase.Pages.Home"
     Shell.FlyoutBehavior="Flyout"
     Title="MauiFirebase"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource FlyoutLight}, Dark={StaticResource FlyoutDark}}">
@@ -43,7 +44,7 @@
 
     <Shell.FlyoutHeader>
         <Border 
-            Background="#3949ab"
+            Background="#3640c1"
             StrokeShape="RoundRectangle 0,0,0,60"
             Padding="20">
             <VerticalStackLayout Spacing="10">
@@ -107,7 +108,7 @@
             IsVisible="true">
         <ShellContent Title="Inicio"
                   Icon="casa.png"
-                  ContentTemplate="{DataTemplate inicio:InicioPage}"
+                  ContentTemplate="{DataTemplate inicioconductor:inicioConductorPage}"
                   Route="inicioConductor" />
         <ShellContent Title="Enviar Ubicación"
                   Icon="location.png"
@@ -288,7 +289,7 @@
             </sf:SfSegmentedControl>
 
             <!-- 🔓 Botón cerrar sesión -->
-            <ImageButton Source="logout.png"
+            <ImageButton Source="log.png"
                      Grid.Row="2"
                      Clicked="CerrarSesion_Clicked"
                      BackgroundColor="Transparent"

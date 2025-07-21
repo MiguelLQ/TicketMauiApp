@@ -31,7 +31,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame 
-                                Background="{StaticResource CardBackgroundBrush}"
+                                Background="{DynamicResource CardBackgroundBrush}"
                                 BorderColor="Transparent"
                                 CornerRadius="12"
                                 Padding="12"

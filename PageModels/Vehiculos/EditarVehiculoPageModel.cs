@@ -64,6 +64,7 @@ public partial class EditarVehiculoPageModel : ObservableValidator
         var usuarios = await _usuarioRepositorio.GetUsuariosAsync();
 
         var conductores = usuarios.Where(u => u.Rol?.ToLower() == "conductor").ToList();
+        ListaUsuario.Clear();
         foreach (var usuario in conductores)
         {
             ListaUsuario.Add(usuario);

@@ -19,7 +19,8 @@ public class FirebaseRutaService
                 DiasDeRecoleccion = new { stringValue = ruta.DiasDeRecoleccion ?? string.Empty },
                 EstadoRuta = new { booleanValue = ruta.EstadoRuta },
                 FechaRegistroRuta = new { timestampValue = ruta.FechaRegistroRuta.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ") },
-                PuntosRutaJson = new { stringValue = ruta.PuntosRutaJson ?? string.Empty }
+                PuntosRutaJson = new { stringValue = ruta.PuntosRutaJson ?? string.Empty },
+                NombreRuta = new { stringValue = ruta.NombreRuta ?? string.Empty } // <-- Nuevo campo
             }
         };
         var json = JsonSerializer.Serialize(body);
@@ -60,6 +61,7 @@ public class FirebaseRutaService
                 EstadoRuta = fields.GetProperty("EstadoRuta").GetProperty("booleanValue").GetBoolean(),
                 FechaRegistroRuta = DateTime.Parse(fields.GetProperty("FechaRegistroRuta").GetProperty("timestampValue").GetString() ?? DateTime.UtcNow.ToString()),
                 PuntosRutaJson = fields.GetProperty("PuntosRutaJson").GetProperty("stringValue").GetString(),
+                NombreRuta = fields.TryGetProperty("NombreRuta", out var nombreRutaProp) ? nombreRutaProp.GetProperty("stringValue").GetString() : null, // <-- Nuevo campo
                 Sincronizado = true
             };
             lista.Add(ruta);

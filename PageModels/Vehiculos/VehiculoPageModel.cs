@@ -37,16 +37,15 @@ public partial class VehiculoPageModel : ObservableObject
         try
         {
             IsBusy = true;
-            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            // Solo sincronizar desde Firebase si la lista está vacía
+            if (ListaVehiculos.Count == 0 && _sincronizacionFirebaseService != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
-                await _sincronizacionFirebaseService!.SincronizarVehiculoDesdeFirebaseAsync();
+                await _sincronizacionFirebaseService.SincronizarVehiculoDesdeFirebaseAsync();
+                await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
             }
-            await _sincronizacionFirebaseService.SincronizarVehiculosAsync();
             ListaVehiculos.Clear();
-
             var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
             var usuarios = await _usuarioRepository.GetUsuariosAsync();
-
             foreach (var vehiculo in vehiculos)
             {
                 Usuario? usuario = usuarios.FirstOrDefault(u => u.Uid == vehiculo.IdUsuario);

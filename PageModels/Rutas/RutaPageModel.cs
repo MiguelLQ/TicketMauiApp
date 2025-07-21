@@ -36,15 +36,13 @@ public partial class RutaPageModel : ObservableObject
         try
         {
             IsBusy = true;
-
-            if (_sincronizador != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            // Solo sincronizar desde Firebase si la lista está vacía
+            if (ListaRutas.Count == 0 && _sincronizador != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
                 await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
             }
-
             ListaRutas.Clear();
             var rutas = await _rutaRepository.GetAllRutaAsync();
-
             foreach (var ruta in rutas)
             {
                 if (!string.IsNullOrEmpty(ruta.IdVehiculo))
@@ -52,7 +50,6 @@ public partial class RutaPageModel : ObservableObject
                     var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(ruta.IdVehiculo);
                     ruta.PlacaVehiculo = vehiculo?.PlacaVehiculo;
                 }
-
                 ListaRutas.Add(ruta);
             }
         }

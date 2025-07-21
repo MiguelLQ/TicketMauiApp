@@ -22,7 +22,8 @@
                     Color="Gray" />
 
                 <Label Text="Lista de colores"
-                       FontSize="20"
+                       FontSize="18"
+                       HorizontalOptions="Center"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}"
                        Margin="0,20,0,0" />

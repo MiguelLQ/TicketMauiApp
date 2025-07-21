@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiFirebase.Pages.Ruta.ListarRutaPage"
@@ -17,9 +16,10 @@
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="10">
-                <Label Text="Lista de Rutas"
-                       FontSize="20"
+                <Label Text="🗺️Lista de Rutas"
+                       FontSize="18"
                        FontAttributes="Bold"
+                       HorizontalOptions="Center"
                        TextColor="{DynamicResource Gray500}" />
 
                 <CollectionView ItemsSource="{Binding ListaRutas}">
@@ -45,11 +45,17 @@
                                            Margin="0,0,10,0" />
 
                                     <StackLayout Grid.Column="1" Spacing="2">
-                                        <Label Text="Ruta de recoleccion"
-                                               FontAttributes="Bold"
-                                               FontSize="16"
-                                               TextColor="{DynamicResource Gray500}" />
-
+                                        <Frame Padding="6,2"
+                                                CornerRadius="12"
+                                                HasShadow="False"
+                                                BackgroundColor="{Binding NombreRuta}"
+                                                HorizontalOptions="Start">
+                                               <Label Text="{Binding NombreRuta}"
+                                                    TextColor="{DynamicResource DarkBackground}"
+                                                    FontSize="16"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center" />
+                                        </Frame>
                                         <Frame Padding="6,2"
                                                CornerRadius="12"
                                                HasShadow="False"
@@ -121,8 +127,18 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
             </VerticalStackLayout>
         </ScrollView>
+
+        <!-- ActivityIndicator centrado y fijo -->
+        <ActivityIndicator 
+            IsRunning="{Binding IsBusy}" 
+            IsVisible="{Binding IsBusy}" 
+            Color="DarkBlue" 
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            ZIndex="10" />
 
         <Button Text="+"
                 Clicked="OnAgregarRutaClicked"

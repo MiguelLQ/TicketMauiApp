@@ -76,27 +76,45 @@ public partial class ResidenteListPageModel : ObservableValidator
     [RelayCommand]
     public void AplicarFiltros()
     {
-
         if (HasTextoBusquedaError)
         {
             ListaResidentes.Clear();
             return;
         }
 
-        var filtrados = string.IsNullOrWhiteSpace(TextoBusqueda)
-            ? _respaldoResidentes
-            : _respaldoResidentes.Where(r => r.DniResidente != null && r.DniResidente.Contains(TextoBusqueda, StringComparison.OrdinalIgnoreCase));
+        IEnumerable<Residente> filtrados = _respaldoResidentes;
+
+        if (!string.IsNullOrWhiteSpace(TextoBusqueda))
+        {
+            filtrados = filtrados.Where(r =>
+                !string.IsNullOrWhiteSpace(r.DniResidente) &&
+                r.DniResidente.Contains(TextoBusqueda, StringComparison.OrdinalIgnoreCase));
+
+            var coincidencias = filtrados.OrderByDescending(r => r.FechaRegistroResidente).ToList();
+
+            ListaResidentes.Clear();
+            foreach (var r in coincidencias)
+            {
+                ListaResidentes.Add(r);
+            }
+
+            if (!coincidencias.Any())
+            {
+                _ = _alertaHelper.ShowErrorAsync("No se encontró ningún residente con ese número de DNI");
+            }
+
+            return;
+        }
+
+        var ultimosResidentes = filtrados.OrderByDescending(r => r.FechaRegistroResidente).Take(5).ToList();
 
         ListaResidentes.Clear();
-        foreach (var r in filtrados)
+        foreach (var r in ultimosResidentes)
         {
             ListaResidentes.Add(r);
         }
-        if (!filtrados.Any() && !string.IsNullOrWhiteSpace(TextoBusqueda))
-        {
-            _ = _alertaHelper.ShowErrorAsync("No se encontró ningún residente con ese número de DNI");
-        }
     }
+
 
 
     [RelayCommand]

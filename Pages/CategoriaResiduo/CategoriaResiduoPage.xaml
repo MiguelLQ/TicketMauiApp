@@ -14,30 +14,31 @@
     </ContentPage.Resources>
     <Grid>
         <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-
-
-            <ActivityIndicator 
-                IsRunning="{Binding IsBusy}" 
-                IsVisible="{Binding IsBusy}" 
-                Color="Gray" />
+            <VerticalStackLayout Padding="20" Spacing="15">
 
                 <Label Text="Lista de Categorías" 
-                   FontSize="20" 
+                   FontSize="18" 
+                   HorizontalOptions="Center"
                    FontAttributes="Bold" 
                    TextColor="{DynamicResource Gray500}" 
                    Margin="0,20,0,0" />
+
+                <ActivityIndicator 
+                     IsRunning="{Binding IsBusy}" 
+                     IsVisible="{Binding IsBusy}" 
+                     Color="DarkBlue" />
+
 
                 <CollectionView ItemsSource="{Binding Categorias}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame 
-                Background="{DynamicResource CardBackgroundBrush}"
-                BorderColor="Transparent"
-                CornerRadius="15"
-                Padding="15"
-                Margin="0,8"
-                HasShadow="True">
+                                Background="{DynamicResource CardBackgroundBrush}"
+                                BorderColor="Transparent"
+                                CornerRadius="15"
+                                Padding="15"
+                                Margin="0,8"
+                                HasShadow="True">
 
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
 
@@ -125,19 +126,18 @@
                                         HorizontalOptions="Center"
                                         Margin="0,8,0,0">
 
-                                  
 
-                               
+
+
                                     </HorizontalStackLayout>
                                 </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
-
             </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+
         <!-- Botón flotante fuera del ScrollView -->
         <Button
         Text="+"
@@ -152,7 +152,5 @@
         VerticalOptions="Start"
         Margin="0,20,20,0"
         />
-
-
     </Grid>
 </ContentPage>

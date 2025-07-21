@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "727843820392",
+    "firebase_url": "https://sangeronimomuniapp-default-rtdb.firebaseio.com",
+    "project_id": "sangeronimomuniapp",
+    "storage_bucket": "sangeronimomuniapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727843820392:android:c0d75f21682a61eb79fcdd",
+        "android_client_info": {
+          "package_name": "com.sanjeronimo.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "727843820392-iei7t9gubf34gfv6t6o11pugtmauie5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB22DSXs689QOjrjopIfWjXlMQZ-x4XyDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "727843820392-iei7t9gubf34gfv6t6o11pugtmauie5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

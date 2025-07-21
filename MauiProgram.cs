@@ -62,6 +62,7 @@ public static class MauiProgram
             .UseMauiMaps()
             .UseSkiaSharp() // ✅ Activa soporte para Microcharts
             .ConfigureSyncfusionToolkit()
+            
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

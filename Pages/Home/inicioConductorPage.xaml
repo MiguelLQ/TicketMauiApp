@@ -10,7 +10,7 @@
 
         <!-- Card -->
         <Frame CornerRadius="20"
-               Background="{StaticResource CardBackgroundBrush}"
+               Background="{DynamicResource CardBackgroundBrush}"
                Padding="15"
                HasShadow="True"
                BorderColor="Transparent"

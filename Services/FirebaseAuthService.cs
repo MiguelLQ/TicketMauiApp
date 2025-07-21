@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Diagnostics;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -184,6 +185,8 @@ namespace MauiFirebase.Services
             Preferences.Remove("FirebaseRefreshToken");
             Preferences.Remove("FirebaseUserRole");
             Preferences.Remove("FirebaseTokenExpiry");
+            Preferences.Remove("FirebaseUserNombre");
+            Preferences.Remove("FirebaseUserApellido");
 
         }
 
@@ -197,6 +200,30 @@ namespace MauiFirebase.Services
         {
             return Preferences.Get("FirebaseUserId", string.Empty);
         }
+        public async Task<bool> IntentarRestaurarSesionAsync()
+        {
+            try
+            {
+                var userId = Preferences.Get("FirebaseUid", string.Empty);
+
+                if (string.IsNullOrEmpty(userId))
+                    return false;
+
+                var token = await ObtenerIdTokenSeguroAsync();
+
+                // Puedes hacer una verificación adicional: llamar a un endpoint protegido de Firebase con el token
+                // para asegurarte de que aún es válido (opcional si el token ya se refresca bien).
+
+                return !string.IsNullOrEmpty(token);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al restaurar sesión: {ex.Message}");
+                return false;
+            }
+        }
+
+
 
         public string GetUserEmail() => Preferences.Get("FirebaseUserEmail", string.Empty);
         public string GetIdToken() => Preferences.Get("FirebaseToken", string.Empty);

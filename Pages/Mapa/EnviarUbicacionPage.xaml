@@ -82,21 +82,32 @@
 
         </AbsoluteLayout>
 
-        <!-- Botones -->
-        <Button Text="▶ Iniciar Seguimiento"
-                Command="{Binding IniciarSeguimientoCommand}"
-                BackgroundColor="#2E7D32"
-                TextColor="White"
-                FontSize="18"
-                CornerRadius="16"
-                HeightRequest="50" />
+        <Grid ColumnDefinitions="*,*"
+      ColumnSpacing="15"
+      Margin="15,10,15,0">
 
-        <Button Text="⏹ Detener Seguimiento"
-                Command="{Binding DetenerSeguimientoCommand}"
-                BackgroundColor="#C62828"
-                TextColor="White"
-                FontSize="18"
-                CornerRadius="16"
-                HeightRequest="50" />
+            <!-- Botón Iniciar -->
+            <Button Grid.Column="0"
+            Text="▶ Iniciar Seguimiento"
+            Command="{Binding IniciarSeguimientoCommand}"
+            BackgroundColor="#2E7D32"
+            TextColor="White"
+            FontSize="16"
+            CornerRadius="8"
+            HeightRequest="48"
+            Padding="10" />
+
+            <!-- Botón Detener -->
+            <Button Grid.Column="1"
+            Text="⏹ Detener Seguimiento"
+            Command="{Binding DetenerSeguimientoCommand}"
+            BackgroundColor="#C62828"
+            TextColor="White"
+            FontSize="16"
+            CornerRadius="8"
+            HeightRequest="48"
+            Padding="10" />
+        </Grid>
+
     </VerticalStackLayout>
 </ContentPage>

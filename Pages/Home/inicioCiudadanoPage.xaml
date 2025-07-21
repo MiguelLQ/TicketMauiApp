@@ -4,7 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:MauiFirebase.PageModels.Residentes"
              x:Name="iniciociudadano">
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="HeaderOrange">#3b46d6</Color>
+            <Color x:Key="Headercolorsaludo">#4e58db</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid >
 
         <!-- SCROLLVIEW CON TODO EL CONTENIDO -->
@@ -12,7 +17,7 @@
             <VerticalStackLayout >
 
                 <!-- Encabezado -->
-                <Grid Background="{StaticResource Primary}" Padding="20,0,20,190" >
+                <Grid Background="{StaticResource HeaderOrange}" Padding="10,0,10,110" >
                     <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
 
                         <!-- Título -->
@@ -23,7 +28,7 @@
                                HorizontalTextAlignment="Start" />
 
                         <!-- Card azul claro -->
-                        <Frame BackgroundColor="#4c59b2"
+                        <Frame BackgroundColor="{StaticResource Headercolorsaludo}"
                                CornerRadius="18"
                                Padding="9"
                                HasShadow="False"
@@ -46,12 +51,12 @@
                 </Grid>
 
                 <!-- Card blanca sobresaliente -->
-                <Frame Margin="15,-180,15,18"
+                <Frame Margin="10,-100,10,18"
                        CornerRadius="35"
                        HasShadow="False"
-                       Background="{StaticResource CardBackgroundBrush}"
+                       Background="{DynamicResource CardBackgroundBrush}"
                        BorderColor="Transparent"
-                       Padding="20"
+                       Padding="15"
                        HorizontalOptions="Fill">
 
                     <VerticalStackLayout Spacing="10">
@@ -97,7 +102,7 @@
                         <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
 
                             <!-- Tickets -->
-                            <Frame Background="{StaticResource EntryBackgroundBrush}"
+                            <Frame Background="{DynamicResource EntryBackgroundBrush}"
                                    CornerRadius="12"
                                    Padding="10"
                                    WidthRequest="130">
@@ -130,7 +135,7 @@
 
 
                             <!-- Motivación -->
-                            <Frame Background="{StaticResource EntryBackgroundBrush}"
+                            <Frame Background="{DynamicResource EntryBackgroundBrush}"
                                    CornerRadius="12"
                                    Padding="7"
                                    WidthRequest="130">
@@ -150,7 +155,7 @@
                 <Frame Margin="15,0,15,18"
                        CornerRadius="20"
                        HasShadow="False"
-                       Background="{StaticResource CardBackgroundBrush}"
+                       Background="{DynamicResource CardBackgroundBrush}"
                        BorderColor="Transparent"
                        Padding="10"
                        HorizontalOptions="Fill">
@@ -204,7 +209,7 @@
                 <Frame Margin="15,0,15,30"
                    CornerRadius="20"
                    HasShadow="False"
-                   Background="{StaticResource CardBackgroundBrush}"
+                   Background="{DynamicResource CardBackgroundBrush}"
                    BorderColor="Transparent"
                    Padding="15"
                    HorizontalOptions="Fill"
@@ -223,9 +228,9 @@
                                    VerticalOptions="Start"
                                    Margin="0,2,10,0" />
                             <Label Grid.Column="1"
-                               Text="Monitorea en tiempo real el recorrido del camión reciclador."
+                               Text="Monitorea en tiempo real el recorrido del camión y vehículos recicladores."
                                FontSize="13"
-                               TextColor="#555"
+                               TextColor="{StaticResource Gray400}"
                                LineBreakMode="WordWrap"
                                HorizontalOptions="Fill"
                                VerticalOptions="Start" />
@@ -238,9 +243,9 @@
                                    VerticalOptions="Start"
                                    Margin="0,2,10,0" />
                             <Label Grid.Column="1"
-                                   Text="Mira los premios disponibles y los tickets necesarios."
+                                   Text="Mira los premios disponibles y los tickets necesarios para canjearlos."
                                    FontSize="13"
-                                   TextColor="#555"
+                                   TextColor="{StaticResource Gray400}"
                                    LineBreakMode="WordWrap"
                                    HorizontalOptions="Fill"
                                    VerticalOptions="Start" />
@@ -253,9 +258,9 @@
                                VerticalOptions="Start"
                                Margin="0,2,10,0" />
                             <Label Grid.Column="1"
-                                   Text="Regístrate como ciudadano para comenzar a reciclar."
+                                   Text="Regístrate como ciudadano para comenzar a reciclar y ganar tickets."
                                    FontSize="13"
-                                   TextColor="#555"
+                                   TextColor="{StaticResource Gray400}"
                                    LineBreakMode="WordWrap"
                                    HorizontalOptions="Fill"
                                    VerticalOptions="Start" />
@@ -268,9 +273,23 @@
                                VerticalOptions="Start"
                                Margin="0,2,10,0" />
                             <Label Grid.Column="1"
-                                   Text="Sube tus registros de reciclaje y gana tickets."
+                                   Text="Usa tu Qr para registrar tus residuos."
                                    FontSize="13"
-                                   TextColor="#555"
+                                   TextColor="{StaticResource Gray400}"
+                                   LineBreakMode="WordWrap"
+                                   HorizontalOptions="Fill"
+                                   VerticalOptions="Start" />
+                        </Grid>
+                        <!-- Opción 5 -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Image Source="{StaticResource IconTelefono}"
+                               HeightRequest="18" WidthRequest="18"
+                               VerticalOptions="Start"
+                               Margin="0,2,10,0" />
+                               <Label Grid.Column="1"
+                                   Text="Puedes comunicar cualquier incidente o consulta presionando el ícono de WhatsApp."
+                                   FontSize="13"
+                                   TextColor="{StaticResource Gray400}"
                                    LineBreakMode="WordWrap"
                                    HorizontalOptions="Fill"
                                    VerticalOptions="Start" />
@@ -280,23 +299,29 @@
             </VerticalStackLayout>
             
         </ScrollView>
-        
 
 
-        <!-- BOTÓN FLOTANTE DE WHATSAPP FUERA DEL SCROLLVIEW -->
-        <Grid Padding="20"
-              HorizontalOptions="End"
-              VerticalOptions="End">
-            <Button
-                ImageSource="wsp.png"
-                WidthRequest="60"
-                HeightRequest="60"
-                CornerRadius="30"
-                Padding="2"
-                BackgroundColor="#25D366"
-                TextColor="White"
-                Clicked="OnWhatsAppClicked" />
-        </Grid>
+
+        <AbsoluteLayout>
+            <!-- Todo tu contenido ScrollView y otros elementos aquí -->
+
+            <!-- Botón flotante draggable -->
+            <ImageButton
+        x:Name="BotonWsp"
+        Source="wsp.png"
+        WidthRequest="60"
+        HeightRequest="60"
+        BackgroundColor="#25D366"
+        CornerRadius="30"
+        AbsoluteLayout.LayoutBounds="1,1,60,60"
+        AbsoluteLayout.LayoutFlags="PositionProportional"
+        Clicked="OnWhatsAppClicked">
+                <ImageButton.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="OnPanUpdated" />
+                </ImageButton.GestureRecognizers>
+            </ImageButton>
+        </AbsoluteLayout>
+
         <!-- Indicador centrado sobre todo -->
         <ActivityIndicator 
             IsRunning="{Binding IsBusy}" 

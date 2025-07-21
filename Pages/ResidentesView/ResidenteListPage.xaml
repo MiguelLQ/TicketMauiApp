@@ -30,7 +30,7 @@
                        Text="{Binding TextoBusqueda, Mode=TwoWay}"
                        FontSize="16"
                        Keyboard="Numeric"
-                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#29303e}"
                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
                        HeightRequest="45"
                        Margin="0,0,0,10"/>
@@ -58,7 +58,7 @@
                                    Margin="0,8"
                                    Padding="12"
                                    HasShadow="False"
-                                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1C1C1C}"
+                                   BackgroundColor="{AppThemeBinding Light=White, Dark=#141422}"
                                    BorderColor="Transparent">
                                 <Frame.Shadow>
                                     <Shadow Brush="Black" Opacity="0.2" Radius="8" Offset="3,3"/>

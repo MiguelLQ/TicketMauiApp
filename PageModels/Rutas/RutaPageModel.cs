@@ -36,15 +36,13 @@ public partial class RutaPageModel : ObservableObject
         try
         {
             IsBusy = true;
-
+            // Sincroniza siempre desde Firebase si hay internet
             if (_sincronizador != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
                 await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
             }
-
             ListaRutas.Clear();
             var rutas = await _rutaRepository.GetAllRutaAsync();
-
             foreach (var ruta in rutas)
             {
                 if (!string.IsNullOrEmpty(ruta.IdVehiculo))
@@ -52,7 +50,6 @@ public partial class RutaPageModel : ObservableObject
                     var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(ruta.IdVehiculo);
                     ruta.PlacaVehiculo = vehiculo?.PlacaVehiculo;
                 }
-
                 ListaRutas.Add(ruta);
             }
         }
@@ -76,6 +73,7 @@ public partial class RutaPageModel : ObservableObject
     }
 
     [RelayCommand]
+
     public async Task GuardarRutaAsync(Ruta ruta)
     {
         ruta.Sincronizado = false;
@@ -85,5 +83,38 @@ public partial class RutaPageModel : ObservableObject
             await _sincronizador.SincronizarRutasAsync();
         }
         await CargarRutasAsync();
+    }
+
+    [RelayCommand]
+    public async Task CargarRutasPorDiaAsync(string dia)
+    {
+        try
+        {
+            IsBusy = true;
+            // Sincroniza siempre desde Firebase si hay internet
+            if (_sincronizador != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarRutasDesdeFirebaseAsync();
+            }
+            ListaRutas.Clear();
+            var rutas = await _rutaRepository.GetAllRutaAsync();
+            foreach (var ruta in rutas)
+            {
+                if (!string.IsNullOrEmpty(ruta.IdVehiculo))
+                {
+                    var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(ruta.IdVehiculo);
+                    ruta.PlacaVehiculo = vehiculo?.PlacaVehiculo;
+                }
+                // Filtra por día
+                if (!string.IsNullOrWhiteSpace(ruta.DiasDeRecoleccion) && ruta.DiasDeRecoleccion.ToLower().Contains(dia.ToLower()))
+                {
+                    ListaRutas.Add(ruta);
+                }
+            }
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

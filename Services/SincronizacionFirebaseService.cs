@@ -1,4 +1,5 @@
 using MauiFirebase.Data.Interfaces;
+using MauiFirebase.Models;
 
 namespace MauiFirebase.Services;
 
@@ -473,6 +474,8 @@ public class SincronizacionFirebaseService
     }
 
 
+
+
     public async Task SincronizarResiduoDesdeFirebaseAsync()
     {
         var idToken = await ObtenerTokenSiHayInternetAsync();
@@ -497,6 +500,8 @@ public class SincronizacionFirebaseService
             }
         }
     }
+
+
 
     /*==============================================================================================
                             * CategoriaResiduo

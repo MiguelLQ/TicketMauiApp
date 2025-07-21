@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Home.inicioConductorPage"
+             Title="Inicio Conductor">
+
+    <VerticalStackLayout Padding="20" Spacing="5"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center">
+
+        <!-- Card -->
+        <Frame CornerRadius="20"
+               Background="{DynamicResource CardBackgroundBrush}"
+               Padding="15"
+               HasShadow="True"
+               BorderColor="Transparent"
+               WidthRequest="350">
+
+            <VerticalStackLayout Spacing="20" HorizontalOptions="Center">
+
+                <!-- Imagen centrada -->
+                <Image Source="camion.png"
+                       WidthRequest="140"
+                       HeightRequest="140"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center" />
+
+                <!-- Texto de bienvenida -->
+                <Label Text="¡Bienvenido, Conductor!"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center" />
+
+                <!-- Mensaje adicional -->
+                <Label Text="Tu jornada empieza aquí. Gracias por conducir con nosotros."
+                       FontSize="15"
+                       TextColor="#607D8B"
+                       HorizontalTextAlignment="Center" />
+
+            </VerticalStackLayout>
+        </Frame>
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -25,7 +25,7 @@
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
 		<!-- Display name -->
-		<ApplicationTitle>MauiFirebase</ApplicationTitle>
+		<ApplicationTitle>San Jerónimo App</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.mauifirebase</ApplicationId>
@@ -49,7 +49,7 @@
 
 		
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\camionreco.ico" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\cami.ico" Color="#17171a" />
 
 		<!-- App Icon -->
 		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#17171a" =""/>-->
@@ -117,7 +117,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.81" />
-		<PackageReference Include="Plugin.Firebase.Auth" Version="3.1.1" />
+		<PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 		<PackageReference Include="QRCoder" Version="1.6.0" />
 		<PackageReference Include="RestSharp" Version="112.1.0" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.0" />
@@ -157,6 +157,9 @@
 	  </MauiXaml>
 		<MauiXaml Update="Pages\Convertidores\ListarConvertidorPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\Home\inicioConductorPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\Home\InicioPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
@@ -257,6 +260,10 @@
 	  <Compile Update="Pages\ResidentesView\ResidenteFormPage.xaml.cs">
 	    <DependentUpon>ResidenteFormPage.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiAsset Include="Resources/Sounds/alerta.mp3" />
 	</ItemGroup>
 	
 </Project>

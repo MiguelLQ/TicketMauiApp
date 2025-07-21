@@ -15,4 +15,6 @@ public class Residuo
     public string? NombreCategoria { get; set; }
     // Indica si el registro está sincronizado con Firestore
     public bool Sincronizado { get; set; } = false;
+    public DateTime FechaModificacion { get; set; } = DateTime.UtcNow;
+
 }

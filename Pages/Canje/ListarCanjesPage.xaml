@@ -6,7 +6,7 @@
              xmlns:converterscolor="clr-namespace:MauiFirebase.Helpers"
              x:Class="MauiFirebase.Pages.Canje.ListarCanjePage"
              x:Name="CanjePage"
-             Title="Listado de Canjes">
+             Title="Historial de Canjes">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -20,8 +20,9 @@
             <VerticalStackLayout Padding="20" Spacing="15">
 
                 <!-- Título -->
-                <Label Text="Lista de Canjes"
-                       FontSize="20"
+                <Label Text="Historial de Canjes"
+                       FontSize="18"
+                       HorizontalOptions="Center"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}"
                        Margin="0,20,0,0" />
@@ -62,7 +63,7 @@
                                                 FontAttributes="Bold"
                                                 FontSize="16"
                                                 TextColor="{DynamicResource Gray500}" />
-                                        <Frame
+                                        <!--<Frame
                                             Padding="6,2"
                                             CornerRadius="12"
                                             HasShadow="False"
@@ -74,7 +75,7 @@
                                                 FontSize="13"
                                                 HorizontalOptions="Center"
                                                 VerticalOptions="Center" />
-                                        </Frame>
+                                        </Frame>-->
                                         <!-- Línea divisoria: solo en columna de texto -->
                                         <BoxView Grid.Row="0" Grid.Column="1"
                                              HeightRequest="1"
@@ -82,7 +83,7 @@
                                              Opacity="0.3"
                                              HorizontalOptions="Fill"
                                              Margin="0,6,0,0" />
-                                        
+
                                         <HorizontalStackLayout Spacing="6" Margin="0,2,0,0">
                                             <Image Source="{StaticResource IconPremios}"
                                                WidthRequest="18"
@@ -96,7 +97,7 @@
 
                                     </StackLayout>
 
-                                    
+
                                     <!-- Ícono emoji -->
                                     <Label 
                                          Text="Ciudadano"
@@ -128,6 +129,13 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
+
+        <ActivityIndicator 
+              IsRunning="{Binding IsBusy}" 
+              IsVisible="{Binding IsBusy}"
+              Color="DarkBlue"
+              VerticalOptions="Center" 
+              HorizontalOptions="Center" />
 
         <!-- Botón flotante -->
         <Button

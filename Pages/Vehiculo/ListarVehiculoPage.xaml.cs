@@ -17,6 +17,7 @@ public partial class ListarVehiculoPage : ContentPage
     {
         base.OnAppearing();
         await _pageModel.CargarVehiculosAsync();
+
     }
 
     private async void OnAgregarVehiculoClicked(object sender, EventArgs e)

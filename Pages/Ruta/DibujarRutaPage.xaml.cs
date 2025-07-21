@@ -19,7 +19,7 @@ public partial class DibujarRutaPage : ContentPage
         BindingContext = _viewModel;
 
         MyMap.MapElements.Add(_polyline);
-        MyMap.MapClicked += OnMapClicked;
+        MyMap.MapClicked += OnMapClicked!;
         MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(-13.651239, -73.363682), Distance.FromKilometers(0.3)));
     }
 

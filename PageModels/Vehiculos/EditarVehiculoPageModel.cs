@@ -60,10 +60,23 @@ public partial class EditarVehiculoPageModel : ObservableValidator
 
     public async Task InicializarAsync()
     {
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && _sincronizacionFirebaseService is not null)
+        {
+            try
+            {
+                await _sincronizacionFirebaseService.SincronizarVehiculoDesdeFirebaseAsync();
+            }
+            catch
+            {
+               
+            }
+        }
+
         var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(IdVehiculo!);
         var usuarios = await _usuarioRepositorio.GetUsuariosAsync();
 
         var conductores = usuarios.Where(u => u.Rol?.ToLower() == "conductor").ToList();
+        ListaUsuario.Clear();
         foreach (var usuario in conductores)
         {
             ListaUsuario.Add(usuario);

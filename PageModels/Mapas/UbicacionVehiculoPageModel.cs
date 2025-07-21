@@ -6,6 +6,7 @@ using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
+using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using Timer = System.Timers.Timer;
@@ -42,6 +43,8 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
     [ObservableProperty]
     private int pollingInterval = 5000;
+
+    private readonly IAudioManager _audioManager = AudioManager.Current;
 
 
     public UbicacionVehiculoPageModel(IUbicacionVehiculo ubicacionVehiculo,
@@ -286,13 +289,14 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
         var distancia = Location.CalculateDistance(ubicacionUsuario, ubicacionCamion, DistanceUnits.Kilometers);
 
-        if (distancia <= 2)
+        if (distancia <= 5)
         {
             if ((DateTime.Now - ultimaNotificacion) > intervaloNotificacion)
             {
                 ultimaNotificacion = DateTime.Now;
 
                 Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(20000));
+                ReproducirAlerta();
 
                 await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
@@ -324,6 +328,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
             var rutas = await _rutaRepository.GetAllRutaAsync();
 
+            // Lista de colores hardcodeados
+            var colores = new List<Color> { Colors.Blue, Colors.Red, Colors.Green, Colors.Orange, Colors.Purple };
+
             // Filtrar rutas del día Y activas
             var rutasDelDiaActivas = rutas
                 .Where(r =>
@@ -333,8 +340,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
                 )
                 .ToList();
 
-            foreach (var ruta in rutasDelDiaActivas)
+            for (int i = 0; i < rutasDelDiaActivas.Count; i++)
             {
+                var ruta = rutasDelDiaActivas[i];
                 if (string.IsNullOrWhiteSpace(ruta.PuntosRutaJson))
                     continue;
 
@@ -349,7 +357,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
                 var polyline = new Polyline
                 {
-                    StrokeColor = Colors.Blue,
+                    StrokeColor = colores[i % colores.Count], // Color diferente para cada ruta
                     StrokeWidth = 6
                 };
 
@@ -446,6 +454,19 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
         if (_timer != null)
         {
             _timer.Interval = nuevoIntervalo;
+        }
+    }
+
+    private void ReproducirAlerta()
+    {
+        try
+        {
+            var player = _audioManager.CreatePlayer("Resources/Sounds/alerta.mp3");
+            player.Play();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error reproduciendo audio: {ex.Message}";
         }
     }
 

@@ -21,7 +21,7 @@
                 IsVisible="{Binding MostrarFormulario}"
                 CornerRadius="20"
                 Padding="0"
-                Background="{StaticResource CardBackgroundBrush}"
+                Background="{DynamicResource CardBackgroundBrush}"
                 WidthRequest="340"
                 Margin="0"
                 HorizontalOptions="Center"
@@ -213,7 +213,7 @@
                        HeightRequest="250" 
                        WidthRequest="250" />
                 <!-- Card con datos personales -->
-                <Frame Background="{StaticResource CardBackgroundBrush}"
+                <Frame Background="{DynamicResource CardBackgroundBrush}"
                        BorderColor="Transparent"
                        CornerRadius="20"
                        HasShadow="True"
@@ -225,12 +225,12 @@
                             <Label Text="{Binding NombreResidenteLocal}" 
                FontSize="18" 
                FontAttributes="Bold"
-               TextColor="{StaticResource Gray400}" />
+               TextColor="{StaticResource Gray300}" />
 
                             <Label Text="{Binding ApellidoResidenteLocal}" 
                FontSize="18"
                FontAttributes="Bold"
-               TextColor="{StaticResource Gray400}" />
+               TextColor="{StaticResource Gray300}" />
                         </HorizontalStackLayout>
                         <Label Text="{Binding DniResidenteLocal}" 
                         FontSize="16"

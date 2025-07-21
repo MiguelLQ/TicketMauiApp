@@ -30,9 +30,9 @@ public partial class ListarRegistrosPageModel : ObservableObject
     private readonly IResiduoRepository _residuoRepository;
     private readonly SincronizacionFirebaseService _sincronizar;
 
-    public ListarRegistrosPageModel(IRegistroDeReciclajeRepository registroRepository, 
-        IResidenteRepository residenteRepository, 
-        IResiduoRepository residuoRepository, 
+    public ListarRegistrosPageModel(IRegistroDeReciclajeRepository registroRepository,
+        IResidenteRepository residenteRepository,
+        IResiduoRepository residuoRepository,
         SincronizacionFirebaseService sincronizar)
     {
         _registroRepository = registroRepository;
@@ -83,7 +83,7 @@ public partial class ListarRegistrosPageModel : ObservableObject
                 await _sincronizar.SincronizarResidentesDesdeFirebaseAsync();
                 await _sincronizar.SincronizarResiduoDesdeFirebaseAsync();
             }
-            var registros = await _registroRepository.ObtenerTodosAsync();
+            var registros = await _registroRepository.UltimosCincoRegistros();
             var residentes = await _residenteRepository.GetAllResidentesAsync();
             var residuos = await _residuoRepository.GetAllResiduoAync();
 
@@ -143,19 +143,21 @@ public partial class ListarRegistrosPageModel : ObservableObject
             if (string.IsNullOrWhiteSpace(DniBuscado))
             {
                 foreach (var r in _todosLosRegistros)
+                {
                     ListaRegistrosResiduo.Add(r);
+                }
 
                 MensajeBusqueda = string.Empty;
                 MostrarMensaje = false;
                 return;
             }
 
-            var filtrados = _todosLosRegistros
-                .Where(r => r.DniResidente != null && r.DniResidente.Contains(DniBuscado, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+            var filtrados = _todosLosRegistros.Where(r => r.DniResidente != null && r.DniResidente.Contains(DniBuscado, StringComparison.OrdinalIgnoreCase)).ToList();
 
             foreach (var r in filtrados)
+            {
                 ListaRegistrosResiduo.Add(r);
+            }
 
             if (filtrados.Count == 0)
             {

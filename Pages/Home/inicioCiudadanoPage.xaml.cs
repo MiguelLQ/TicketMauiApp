@@ -1,11 +1,16 @@
 ﻿using MauiFirebase.PageModels.Residentes;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.ApplicationModel;
+using System;
 
 namespace MauiFirebase.Pages.Home
 {
     public partial class inicioCiudadanoPage : ContentPage
     {
         private readonly InicioCiudadanoPageModel _viewModel;
+
+        // Para arrastrar el botón
+        double xOffset, yOffset;
 
         public inicioCiudadanoPage(InicioCiudadanoPageModel viewModel)
         {
@@ -20,11 +25,10 @@ namespace MauiFirebase.Pages.Home
 
             try
             {
-                Shell.SetBackgroundColor(this, Color.FromArgb("#5061c8"));
+                Shell.SetBackgroundColor(this, Color.FromArgb("#3b46d6"));
                 Shell.SetForegroundColor(this, Colors.White);
 
-                await Task.Delay(300); // Deja tiempo para pintar la UI
-
+                await Task.Delay(300); // Espera para pintar la UI
                 _viewModel.IsBusy = true;
                 await _viewModel.CargarDatosUsuarioAsync();
             }
@@ -48,10 +52,11 @@ namespace MauiFirebase.Pages.Home
             Shell.SetForegroundColor(this, Colors.Black);
         }
 
+        // Botón WhatsApp: redirige al enlace
         private async void OnWhatsAppClicked(object sender, EventArgs e)
         {
-            string numeroTelefono = "51987654321";
-            string mensaje = Uri.EscapeDataString("Hola, me gustaría obtener más información.");
+            string numeroTelefono = "51920805556";
+            string mensaje = Uri.EscapeDataString("Hola, me gustaría reportar un incidente.");
             string url = $"https://wa.me/{numeroTelefono}?text={mensaje}";
 
             try
@@ -61,6 +66,29 @@ namespace MauiFirebase.Pages.Home
             catch
             {
                 await DisplayAlert("Error", "No se pudo abrir WhatsApp.", "OK");
+            }
+        }
+
+        // Lógica para mover el botón con el dedo (drag & drop)
+        private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
+        {
+            switch (e.StatusType)
+            {
+                case GestureStatus.Started:
+                    // Guardar posición inicial
+                    xOffset = BotonWsp.TranslationX;
+                    yOffset = BotonWsp.TranslationY;
+                    break;
+
+                case GestureStatus.Running:
+                    // Mover el botón mientras se arrastra
+                    BotonWsp.TranslationX = xOffset + e.TotalX;
+                    BotonWsp.TranslationY = yOffset + e.TotalY;
+                    break;
+
+                case GestureStatus.Completed:
+                    // Podrías guardar la posición aquí si lo deseas
+                    break;
             }
         }
     }

@@ -75,6 +75,12 @@ public partial class DashboardPageModel : ObservableObject
         {
             IsBusy = true;
 
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarPremiosAsync();
+                await _sincronizador.SincronizarResidentesDesdeFirebaseAsync();
+            }
+
             if (!_yaSincronizo)
             {
                 await _sincronizador.SincronizarTodoAsync();
@@ -149,14 +155,14 @@ public partial class DashboardPageModel : ObservableObject
 
             // estéticas
             string icono = "plastico.png";
-            string borde = "#2196F3";
+            string borde = "#29303e";
             string texto = GenerarColorAleatorioHex();
             string desc = $"{reg.NombreResidente} recicló {reg.PesoKilogramo} kg de {reg.NombreResiduo}";
 
             if ((reg.NombreResiduo ?? "").ToLower().Contains("papel"))
-            { icono = "papel.png"; borde = "#8BC34A"; texto = "#33691E"; }
+            { icono = "papel.png"; borde = "#29303e"; texto = GenerarColorAleatorioHex(); }
             else if ((reg.NombreResiduo ?? "").ToLower().Contains("vidrio"))
-            { icono = "vidrio.png"; borde = "#FF9800"; texto = "#E65100"; }
+            { icono = "vidrio.png"; borde = "#29303e"; GenerarColorAleatorioHex(); }
 
             UltimosRegistrosResumen.Add(new RegistroRecienteViewModel
             {
@@ -190,7 +196,7 @@ public partial class DashboardPageModel : ObservableObject
         GraficoPastel = new PieChart
         {
             Entries = entries,
-            LabelTextSize = 30,
+            LabelTextSize = 20,
             BackgroundColor = SKColors.Transparent
         };
     }

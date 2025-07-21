@@ -25,10 +25,11 @@
             <VerticalStackLayout Padding="20" Spacing="10">
                 <!--<Button Text="Agregar Residuo"
                         Clicked="OnAgregarResiduoClicked" />-->
-                <Label Text="Lista de Residuos"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   TextColor="{DynamicResource Gray500}" />
+                <Label Text="🗑️ Lista de Residuos"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource Gray500}" />
                 <CollectionView ItemsSource="{Binding ListaResiduos}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -128,18 +129,15 @@
 
                                         <HorizontalStackLayout Spacing="6">
                                             <Image Source="{StaticResource IconValor}" 
-               WidthRequest="18" HeightRequest="18"
-               VerticalOptions="Center" />
+                                                   WidthRequest="18" HeightRequest="18"
+                                                   VerticalOptions="Center" />
                                             <Label 
-            Text="{Binding ValorResiduo, StringFormat='Valor: {0}'}" 
-            FontSize="13"
-            TextColor="#4b5563"
-            VerticalOptions="Center" />
+                                                Text="{Binding ValorResiduo, StringFormat='Valor: {0}'}" 
+                                                FontSize="13"
+                                                TextColor="#4b5563"
+                                                VerticalOptions="Center" />
                                         </HorizontalStackLayout>
                                     </StackLayout>
-
-
-
                                 </Grid>
                             </Frame>
                         </DataTemplate>
@@ -147,6 +145,13 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
+
+        <ActivityIndicator 
+             IsRunning="{Binding IsBusy}" 
+             IsVisible="{Binding IsBusy}" 
+             Color="DarkBlue" 
+             VerticalOptions="Center" 
+             HorizontalOptions="Center" />
 
         <!-- Botón flotante fijo arriba a la derecha -->
         <Button
@@ -162,6 +167,6 @@
             VerticalOptions="Start"
             Margin="0,0,20,0"
             ZIndex="1" />
-       
+
     </Grid>
 </ContentPage>

@@ -328,6 +328,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
             var rutas = await _rutaRepository.GetAllRutaAsync();
 
+            // Lista de colores hardcodeados
+            var colores = new List<Color> { Colors.Blue, Colors.Red, Colors.Green, Colors.Orange, Colors.Purple };
+
             // Filtrar rutas del día Y activas
             var rutasDelDiaActivas = rutas
                 .Where(r =>
@@ -337,8 +340,9 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
                 )
                 .ToList();
 
-            foreach (var ruta in rutasDelDiaActivas)
+            for (int i = 0; i < rutasDelDiaActivas.Count; i++)
             {
+                var ruta = rutasDelDiaActivas[i];
                 if (string.IsNullOrWhiteSpace(ruta.PuntosRutaJson))
                     continue;
 
@@ -353,7 +357,7 @@ public partial class UbicacionVehiculoPageModel : ObservableValidator, IDisposab
 
                 var polyline = new Polyline
                 {
-                    StrokeColor = Colors.Blue,
+                    StrokeColor = colores[i % colores.Count], // Color diferente para cada ruta
                     StrokeWidth = 6
                 };
 

@@ -75,6 +75,12 @@ public partial class DashboardPageModel : ObservableObject
         {
             IsBusy = true;
 
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await _sincronizador.SincronizarPremiosAsync();
+                await _sincronizador.SincronizarResidentesDesdeFirebaseAsync();
+            }
+
             if (!_yaSincronizo)
             {
                 await _sincronizador.SincronizarTodoAsync();

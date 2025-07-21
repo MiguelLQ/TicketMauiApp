@@ -26,11 +26,11 @@ public partial class App : Application
         var authService = new FirebaseAuthService();
 
         // Solo la primera vez
-        if (!Preferences.ContainsKey("PrimeraEjecucion"))
-        {
-            Preferences.Set("PrimeraEjecucion", true);
-            await BorrarBaseDeDatosLocalAsync();
-        }
+        //if (!Preferences.ContainsKey("PrimeraEjecucion"))
+        //{
+        //    Preferences.Set("PrimeraEjecucion", true);
+        //    await BorrarBaseDeDatosLocalAsync();
+        //}
 
         if (authService.IsLoggedIn())
         {
@@ -116,17 +116,17 @@ public partial class App : Application
         }
     }
 
-    public static async Task BorrarBaseDeDatosLocalAsync()
-    {
-        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app2.db3");
+    //public static async Task BorrarBaseDeDatosLocalAsync()
+    //{
+    //    var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app2.db3");
 
-        if (File.Exists(dbPath))
-        {
-            File.Delete(dbPath);
-        }
+    //    if (File.Exists(dbPath))
+    //    {
+    //        File.Delete(dbPath);
+    //    }
 
-        var nuevaBD = new AppDatabase(dbPath);
-    }
+    //    var nuevaBD = new AppDatabase(dbPath);
+    //}
 
     protected override void CleanUp()
     {

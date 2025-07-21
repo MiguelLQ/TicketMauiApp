@@ -31,12 +31,16 @@ public partial class CrearRutaPageModel : ObservableValidator
     [ObservableProperty]
     private string? _puntosRutaJson;
 
+    [ObservableProperty]
+    [StringLength(20, MinimumLength = 3, ErrorMessage = "El día debe tener entre 6 y 20 caracteres.")]
+    private string? nombreRuta;
+
     private readonly IRutaRepository _rutaRepository;
     private readonly IAlertaHelper _alertaHelper;
     private readonly IVehiculoRepository _vehiculoRepository;
     private readonly SincronizacionFirebaseService _sincronizar;
 
-    public CrearRutaPageModel(IRutaRepository rutaRepository, 
+    public CrearRutaPageModel(IRutaRepository rutaRepository,
         IAlertaHelper alertaHelper,
         SincronizacionFirebaseService sincronizar,
     IVehiculoRepository vehiculoRepository)
@@ -70,7 +74,8 @@ public partial class CrearRutaPageModel : ObservableValidator
             EstadoRuta = EstadoRuta,
             PuntosRutaJson = PuntosRutaJson,
             FechaRegistroRuta = DateTime.Now,
-            Sincronizado = false
+            Sincronizado = false,
+            NombreRuta = NombreRuta 
         };
 
         await _rutaRepository.CreateRutaAsync(nuevaRuta);
@@ -96,7 +101,9 @@ public partial class CrearRutaPageModel : ObservableValidator
         ListaVehiculos.Clear();
         var vehiculos = await _vehiculoRepository.GetAllVehiculoAsync();
         foreach (var v in vehiculos)
+        {
             ListaVehiculos.Add(v);
+        }
     }
 
     private void LimpiarFormulario()
@@ -105,6 +112,7 @@ public partial class CrearRutaPageModel : ObservableValidator
         DiasDeRecoleccion = null;
         PuntosRutaJson = null;
         EstadoRuta = true;
+        NombreRuta =null;
         ClearErrors();
     }
     partial void OnDiasDeRecoleccionChanged(string? value)
@@ -114,12 +122,22 @@ public partial class CrearRutaPageModel : ObservableValidator
         OnPropertyChanged(nameof(HasDiasDeRecoleccionError));
         OnPropertyChanged(nameof(PuedeGuardar));
     }
-
+    partial void OnNombreRutaChanged(string? value)
+    {
+        ValidateProperty(value, nameof(NombreRuta));
+        OnPropertyChanged(nameof(NombreRutaError));
+        OnPropertyChanged(nameof(HasNombreRutaError));
+        OnPropertyChanged(nameof(PuedeGuardar));
+    }
     public string? DiasDeRecoleccionError => GetErrors(nameof(DiasDeRecoleccion)).FirstOrDefault()?.ErrorMessage;
     public bool HasDiasDeRecoleccionError => GetErrors(nameof(DiasDeRecoleccion)).Any();
+    public string? NombreRutaError => GetErrors(nameof(NombreRuta)).FirstOrDefault()?.ErrorMessage;
+    public bool HasNombreRutaError => GetErrors(nameof(NombreRuta)).Any();
 
     public bool PuedeGuardar =>
         !HasErrors &&
         VehiculoSeleccionado != null &&
-        !string.IsNullOrWhiteSpace(DiasDeRecoleccion);
+        !string.IsNullOrWhiteSpace(DiasDeRecoleccion) &&
+        !string.IsNullOrWhiteSpace(NombreRuta);
+
 }

@@ -14,7 +14,8 @@
 
                 <!-- Título -->
                 <Label Text="Lista de Ciudadanos"
-                       FontSize="22"
+                       FontSize="20"
+                       HorizontalOptions="Center"
                        FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                 <HorizontalStackLayout>
@@ -100,14 +101,14 @@
                                     <!-- Tickets a la derecha, más grande y destacado -->
                                     <Frame Grid.Column="1"
                                            Grid.Row="0"
-                                           Padding="8"
+                                           Padding="6"
                                            CornerRadius="10"
                                            BackgroundColor="{AppThemeBinding Light=#e6f4ea, Dark=#144d28}"
                                            BorderColor="Green"
                                            HasShadow="True"
                                            VerticalOptions="Start"
                                            HorizontalOptions="End"
-                                           WidthRequest="90"
+                                           WidthRequest="100"
                                            HeightRequest="40">
                                         <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
                                             <!--<Image Source="ticketicon.png" WidthRequest="24" HeightRequest="24" />-->
@@ -158,6 +159,13 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
+
+        <ActivityIndicator 
+            IsRunning="{Binding IsBusy}" 
+            IsVisible="{Binding IsBusy}" 
+            Color="DarkBlue"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
 
         <!-- Botón flotante de agregar -->
         <Button Text="+"

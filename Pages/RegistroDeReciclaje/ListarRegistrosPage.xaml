@@ -12,13 +12,13 @@
                
                 <!-- Buscador por DNI con estilo consistente e ícono -->
                 <Frame Background="{DynamicResource CardBackgroundBrush}"
-                   BorderColor="Transparent"
-                   CornerRadius="16"
-                   Padding="5"
-                   HasShadow="False"
+                       BorderColor="Transparent"
+                       CornerRadius="16"
+                       Padding="5"
+                       HasShadow="False"
                        HorizontalOptions="Start"
                        WidthRequest="250"
-                   Margin="0,0">
+                       Margin="0,0">
 
                     <HorizontalStackLayout Spacing="5" VerticalOptions="Start">
                         <Image Source="{StaticResource IconBuscar}"
@@ -40,11 +40,11 @@
                 </Frame>
 
                 <!-- Título -->
-                <Label Text="📄 Lista de Registros"
-                    FontSize="22"
+                <Label Text="📄 Historial de registros"
+                    FontSize="18"
                     FontAttributes="Bold"
-                    TextColor="{DynamicResource Primary}"
-                    HorizontalOptions="Start" />
+                    HorizontalOptions="Center"
+                    TextColor="{DynamicResource Primary}"/>
 
                 <!-- Mensaje de error -->
                 <Label Text="{Binding MensajeBusqueda}" 
@@ -159,6 +159,13 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
+
+        <ActivityIndicator 
+            IsRunning="{Binding IsBusy}" 
+            IsVisible="{Binding IsBusy}" 
+            Color="DarkBlue"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
 
         <!-- ✅ Botón flotante fuera del ScrollView -->
         <Button

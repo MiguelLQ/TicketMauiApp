@@ -21,8 +21,9 @@
 
                 <!-- Título -->
                 <Label Text="Premios Disponibles"
-                       FontSize="20"
+                       FontSize="18"
                        FontAttributes="Bold"
+                       HorizontalOptions="Center"
                        TextColor="{DynamicResource Gray500}"
                        Margin="0,20,0,0" />
 

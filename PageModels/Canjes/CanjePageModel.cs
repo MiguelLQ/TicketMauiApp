@@ -83,7 +83,13 @@ public partial class CanjePageModel : ObservableObject
             var residentesDict = residentes.ToDictionary(r => r.IdResidente);
             var premiosDict = premios.ToDictionary(r => r.IdPremio);
 
-            foreach (var item in canjes)
+            // Tomar los 5 últimos registros por fecha (descendente)
+            var ultimosCanjes = canjes
+                .OrderByDescending(c => c.FechaCanje) // Asegúrate que FechaCanje existe y es DateTime
+                .Take(5)
+                .ToList();
+
+            foreach (var item in ultimosCanjes)
             {
                 if (residentesDict.TryGetValue(item.IdResidente!, out var residente))
                 {

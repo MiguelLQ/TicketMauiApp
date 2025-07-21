@@ -15,4 +15,5 @@ public class Ruta
     [Ignore]
     public string? PlacaVehiculo { get; set; }
     public bool Sincronizado { get; set; } = false; 
+    public string? NombreRuta { get; set; } // Nombre personalizado de la ruta
 }

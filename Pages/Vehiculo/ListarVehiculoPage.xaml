@@ -18,8 +18,9 @@
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="10">
 
-                <Label Text="Lista de Vehículos"
-                       FontSize="20"
+                <Label Text="🚛Lista de Vehículos"
+                       FontSize="18"
+                       HorizontalOptions="Center"
                        FontAttributes="Bold"
                        TextColor="{DynamicResource Gray500}" />
 
@@ -44,7 +45,7 @@
 
                                     <!-- Icono -->
                                     <Label 
-                                        Text="🚗"
+                                        Text="🚛"
                                         FontSize="26"
                                         Grid.RowSpan="2"
                                         VerticalOptions="Start"
@@ -122,9 +123,15 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
             </VerticalStackLayout>
         </ScrollView>
+
+        <ActivityIndicator 
+             IsRunning="{Binding IsBusy}" 
+             IsVisible="{Binding IsBusy}" 
+             Color="DarkBlue"
+             VerticalOptions="Center" 
+             HorizontalOptions="Center" />
 
         <!-- Botón flotante -->
         <Button

@@ -20,7 +20,6 @@ public partial class InicioPage : ContentPage
         }
         Shell.SetBackgroundColor(this, Color.FromArgb("#3b46d6"));                                                      
         Shell.SetForegroundColor(this, Colors.White); 
-        await _viewModel.InicializarAsync();  
         MostrarCorreoUsuario();  
     }
 

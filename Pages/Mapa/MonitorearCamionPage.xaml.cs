@@ -61,7 +61,10 @@ public partial class MonitorearCamionPage : ContentPage
                     {
                         map.Pins.Add(pin);
                     }
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(pin.Location, Distance.FromKilometers(0.5)));
+                    // Mantener el zoom actual si existe, si no usar 0.5km
+                    var currentRegion = map.VisibleRegion;
+                    var radius = currentRegion?.Radius ?? Distance.FromKilometers(0.5);
+                    map.MoveToRegion(MapSpan.FromCenterAndRadius(pin.Location, radius));
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)

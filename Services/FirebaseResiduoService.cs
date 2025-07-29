@@ -1,11 +1,13 @@
 using System.Text;
 using System.Text.Json;
 using MauiFirebase.Models;
+
 namespace MauiFirebase.Services;
 
 public class FirebaseResiduoService
 {
     private const string FirestoreBaseUrl = "https://firestore.googleapis.com/v1/projects/sangeronimomuniapp/databases/(default)/documents/residuos";
+
     public async Task<bool> GuardarResiduoFirestoreAsync(Residuo residuo, string id, string idToken)
     {
         var url = $"{FirestoreBaseUrl}/{id}";
@@ -16,7 +18,7 @@ public class FirebaseResiduoService
                 IdCategoriaResiduo = new { stringValue = residuo.IdCategoriaResiduo },
                 NombreResiduo = new { stringValue = residuo.NombreResiduo },
                 EstadoResiduo = new { booleanValue = residuo.EstadoResiduo },
-                ValorResiduo = new { integerValue = residuo.ValorResiduo }
+                ValorResiduo = new { doubleValue = Convert.ToDouble(residuo.ValorResiduo) }
             }
         };
         var json = JsonSerializer.Serialize(body);
@@ -39,6 +41,7 @@ public class FirebaseResiduoService
         {
             return new List<Residuo>();
         }
+
         var json = await response.Content.ReadAsStringAsync();
         var document = JsonDocument.Parse(json);
         var lista = new List<Residuo>();
@@ -46,20 +49,54 @@ public class FirebaseResiduoService
         {
             return lista;
         }
+
         foreach (var doc in docs.EnumerateArray())
         {
             var fields = doc.GetProperty("fields");
             var residuo = new Residuo
             {
                 IdResiduo = doc.GetProperty("name").ToString().Split('/').Last(),
-                IdCategoriaResiduo = fields.GetProperty("IdCategoriaResiduo").GetProperty("stringValue").GetString(),
-                NombreResiduo = fields.GetProperty("NombreResiduo").GetProperty("stringValue").GetString(),
-                EstadoResiduo = fields.GetProperty("EstadoResiduo").GetProperty("booleanValue").GetBoolean(),
-                ValorResiduo = int.Parse(fields.GetProperty("ValorResiduo").GetProperty("integerValue").GetString() ?? "0"),
+                IdCategoriaResiduo = ObtenerStringDesdeFirestore(fields, "IdCategoriaResiduo"),
+                NombreResiduo = ObtenerStringDesdeFirestore(fields, "NombreResiduo"),
+                EstadoResiduo = ObtenerBoolDesdeFirestore(fields, "EstadoResiduo"),
+                ValorResiduo = ObtenerDecimalDesdeFirestore(fields, "ValorResiduo"),
                 Sincronizado = true
             };
             lista.Add(residuo);
         }
         return lista;
+    }
+
+    private string ObtenerStringDesdeFirestore(JsonElement fields, string campo)
+    {
+        return fields.TryGetProperty(campo, out var valorCampo) &&
+               valorCampo.TryGetProperty("stringValue", out var val)
+            ? val.GetString() ?? string.Empty
+            : string.Empty;
+    }
+
+    private bool ObtenerBoolDesdeFirestore(JsonElement fields, string campo)
+    {
+        return fields.TryGetProperty(campo, out var valorCampo) &&
+               valorCampo.TryGetProperty("booleanValue", out var val) &&
+               val.ValueKind == JsonValueKind.True;
+    }
+
+    private decimal ObtenerDecimalDesdeFirestore(JsonElement fields, string campo)
+    {
+        if (!fields.TryGetProperty(campo, out var valorCampo))
+            return 0;
+
+        foreach (var tipoValor in valorCampo.EnumerateObject())
+        {
+            if (tipoValor.Value.ValueKind == JsonValueKind.Number)
+                return tipoValor.Value.GetDecimal(); 
+
+            if (tipoValor.Value.ValueKind == JsonValueKind.String &&
+                decimal.TryParse(tipoValor.Value.GetString(), out var result))
+                return result;
+        }
+
+        return 0;
     }
 }

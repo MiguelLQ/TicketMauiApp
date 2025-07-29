@@ -2,10 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using MauiFirebase.Data.Interfaces;
 using MauiFirebase.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace MauiFirebase.PageModels.Registers
 {
-    public partial class RegistroCiudadanoPageModel : ObservableObject
+    public partial class RegistroCiudadanoPageModel : ObservableValidator
     {
         private readonly FirebaseAuthService _authService;
         private readonly IResidenteRepository _residenteRepository;
@@ -22,26 +23,65 @@ namespace MauiFirebase.PageModels.Registers
             _sincronizador = sincronizador;
         }
 
-        // 🔹 Propiedades del formulario
-        [ObservableProperty] private string? nombre;
-        [ObservableProperty] private string? apellido;
-        [ObservableProperty] private string? dni;
-        [ObservableProperty] private string? correo;
-        [ObservableProperty] private string? direccion;
-        [ObservableProperty] private bool estadoResidente = true;
+        // =================== PROPIEDADES CON VALIDACIÓN ===================
 
-        // 🔹 Control de la vista
-        [ObservableProperty] private bool mostrarFormulario = true;
-        [ObservableProperty] private string? qrBase64;
+        [ObservableProperty]
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "El nombre debe tener entre 3 y 20 caracteres.")]
+        private string nombre = string.Empty;
 
-        // 🔹 Datos del usuario mostrado
-        [ObservableProperty] private string? nombreResidenteLocal;
-        [ObservableProperty] private string? apellidoResidenteLocal;
-        [ObservableProperty] private string? correoResidenteLocal;
-        [ObservableProperty] private string? direccionResidenteLocal;
-        [ObservableProperty] private string? dniResidenteLocal;
+        [ObservableProperty]
+        [Required(ErrorMessage = "El apellido es obligatorio.")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "El apellido debe tener entre 3 y 20 caracteres.")]
+        private string apellido = string.Empty;
 
-        // 🔹 Se ejecuta al cargar la vista
+        [ObservableProperty]
+        [Required(ErrorMessage = "El DNI es obligatorio.")]
+        [StringLength(8, MinimumLength = 8, ErrorMessage = "El DNI debe tener 8 dígitos.")]
+        private string dni = string.Empty;
+
+        [ObservableProperty]
+        [EmailAddress(ErrorMessage = "El correo no es válido.")]
+        private string correo = string.Empty;
+
+        [ObservableProperty]
+        private string direccion = string.Empty;
+
+        [ObservableProperty]
+        private bool estadoResidente = true;
+
+        // =================== ERRORES DNI DUPLICADO ===================
+
+        public string? DniDuplicadoError { get; private set; }
+        public bool HasDniDuplicadoError => !string.IsNullOrWhiteSpace(DniDuplicadoError);
+
+        // =================== CONTROL DE VISTA ===================
+
+        [ObservableProperty]
+        private bool mostrarFormulario = true;
+
+        [ObservableProperty]
+        private string? qrBase64;
+
+        // =================== DATOS DEL USUARIO MOSTRADO ===================
+
+        [ObservableProperty]
+        private string? nombreResidenteLocal;
+
+        [ObservableProperty]
+        private string? apellidoResidenteLocal;
+
+        [ObservableProperty]
+        private string? correoResidenteLocal;
+
+        [ObservableProperty]
+        private string? direccionResidenteLocal;
+
+        [ObservableProperty]
+        private string? dniResidenteLocal;
+
+        // =================== MÉTODO DE INICIALIZACIÓN ===================
+
         public async Task InicializarAsync()
         {
             var uid = Preferences.Get("FirebaseUserId", null);
@@ -50,7 +90,6 @@ namespace MauiFirebase.PageModels.Registers
             if (string.IsNullOrEmpty(uid))
                 return;
 
-            // 1. Intentar obtener desde Preferences (si ya está guardado)
             var idResidente = Preferences.Get("IdResidenteFirestore", null);
             Residente? residente = null;
 
@@ -58,10 +97,9 @@ namespace MauiFirebase.PageModels.Registers
             {
                 residente = await _residenteRepository.ObtenerPorIdAsync(idResidente);
 
-                // ⚠️ Validar que el UID del residente local coincida con el UID actual
                 if (residente != null && residente.UidFirebase != uid)
                 {
-                    residente = null; // Ignorar datos si no pertenecen al usuario autenticado
+                    residente = null;
                 }
             }
 
@@ -69,10 +107,9 @@ namespace MauiFirebase.PageModels.Registers
             {
                 MostrarDatosResidente(residente);
                 MostrarFormulario = false;
-                return; // Ya está todo listo
+                return;
             }
 
-            // 2. Si hay internet, consultar Firestore por el UID actual
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && !string.IsNullOrEmpty(idToken))
             {
                 var residenteFirestore = await _firebaseCiudadanoService.ObtenerResidentePorUidFirebaseAsync(uid, idToken);
@@ -93,20 +130,28 @@ namespace MauiFirebase.PageModels.Registers
                 }
             }
 
-            // 🔹 Si no se encontró en local ni en Firestore → mostrar el formulario
             MostrarFormulario = true;
+            if (string.IsNullOrWhiteSpace(Correo))
+            {
+                var correoUsuario = _authService.GetUserEmail();
+                if (!string.IsNullOrWhiteSpace(correoUsuario))
+                    Correo = correoUsuario;
+            }
         }
 
+        // =================== COMANDO GUARDAR CIUDADANO ===================
 
         [RelayCommand]
-        private async Task GuardarCiudadanoAsync()
+        public async Task GuardarCiudadanoAsync()
         {
-            if (string.IsNullOrWhiteSpace(Nombre) ||
-                string.IsNullOrWhiteSpace(Apellido) ||
-                string.IsNullOrWhiteSpace(Correo) ||
-                string.IsNullOrWhiteSpace(Direccion))
+            ValidateAllProperties();
+
+            if (HasErrors || HasDniDuplicadoError)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Por favor complete todos los campos.", "OK");
+                var errores = string.Join("\n", GetErrors().Select(e => e.ErrorMessage));
+                if (HasDniDuplicadoError)
+                    errores += $"\n{DniDuplicadoError}";
+                await Application.Current.MainPage.DisplayAlert("Errores", errores, "OK");
                 return;
             }
 
@@ -127,7 +172,8 @@ namespace MauiFirebase.PageModels.Registers
                 EstadoResidente = EstadoResidente,
                 FechaRegistroResidente = DateTime.Now,
                 TicketsTotalesGanados = 0,
-                UidFirebase = uid
+                UidFirebase = uid,
+                Sincronizado = false
             };
 
             await _residenteRepository.CreateResidenteAsync(nuevoResidente);
@@ -147,6 +193,81 @@ namespace MauiFirebase.PageModels.Registers
                 await Application.Current.MainPage.DisplayAlert("Error", "Error al guardar en Firestore.", "OK");
             }
         }
+
+        // =================== VALIDACIÓN EN TIEMPO REAL ===================
+
+        partial void OnNombreChanged(string value)
+        {
+            ValidateProperty(value, nameof(Nombre));
+            OnPropertyChanged(nameof(NombreError));
+            OnPropertyChanged(nameof(PuedeGuardar));
+        }
+
+        partial void OnApellidoChanged(string value)
+        {
+            ValidateProperty(value, nameof(Apellido));
+            OnPropertyChanged(nameof(ApellidoError));
+            OnPropertyChanged(nameof(PuedeGuardar));
+        }
+
+        partial void OnDniChanged(string value)
+        {
+            ValidateProperty(value, nameof(Dni));
+            _ = VerificarDniDuplicadoAsync(value);
+            OnPropertyChanged(nameof(DniError));
+            OnPropertyChanged(nameof(DniDuplicadoError));
+            OnPropertyChanged(nameof(HasDniDuplicadoError));
+            OnPropertyChanged(nameof(PuedeGuardar));
+        }
+
+        partial void OnCorreoChanged(string value)
+        {
+            ValidateProperty(value, nameof(Correo));
+            OnPropertyChanged(nameof(CorreoError));
+            OnPropertyChanged(nameof(PuedeGuardar));
+        }
+
+        partial void OnDireccionChanged(string value)
+        {
+            ValidateProperty(value, nameof(Direccion));
+            OnPropertyChanged(nameof(DireccionError));
+            OnPropertyChanged(nameof(PuedeGuardar));
+        }
+
+        private async Task VerificarDniDuplicadoAsync(string dni)
+        {
+            DniDuplicadoError = null;
+
+            if (!string.IsNullOrWhiteSpace(dni) && dni.Length == 8)
+            {
+                var existente = await _residenteRepository.GetResidenteByDniAsync(dni);
+                if (existente != null)
+                {
+                    DniDuplicadoError = "Ya existe un residente con este DNI.";
+                }
+            }
+
+            OnPropertyChanged(nameof(DniDuplicadoError));
+            OnPropertyChanged(nameof(HasDniDuplicadoError));
+            OnPropertyChanged(nameof(PuedeGuardar));
+        }
+
+        // =================== ERRORES PARA XAML ===================
+
+        public string? NombreError => GetErrors(nameof(Nombre)).FirstOrDefault()?.ErrorMessage;
+        public string? ApellidoError => GetErrors(nameof(Apellido)).FirstOrDefault()?.ErrorMessage;
+        public string? DniError => GetErrors(nameof(Dni)).FirstOrDefault()?.ErrorMessage;
+        public string? CorreoError => GetErrors(nameof(Correo)).FirstOrDefault()?.ErrorMessage;
+        public string? DireccionError => GetErrors(nameof(Direccion)).FirstOrDefault()?.ErrorMessage;
+
+        // =================== PROPIEDAD PARA CONTROLAR EL BOTÓN GUARDAR ===================
+
+        public bool PuedeGuardar => !HasErrors && !HasDniDuplicadoError
+            && !string.IsNullOrWhiteSpace(Nombre)
+            && !string.IsNullOrWhiteSpace(Apellido)
+            && !string.IsNullOrWhiteSpace(Dni);
+
+        // =================== MÉTODOS AUXILIARES ===================
 
         private void MostrarDatosResidente(Residente residente)
         {

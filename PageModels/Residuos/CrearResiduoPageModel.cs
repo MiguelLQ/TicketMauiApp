@@ -20,8 +20,8 @@ public partial class CrearResiduoPageModel : ObservableValidator
 
     [ObservableProperty]
     [Required(ErrorMessage = "El valor del residuo es obligatorio.")]
-    [Range(1, int.MaxValue, ErrorMessage = "El valor del residuo debe ser mayor que 0.")]
-    private int? _valorResiduo;
+    [Range(1, double.MaxValue, ErrorMessage = "El valor del residuo debe ser mayor que 0.")]
+    private decimal? _valorResiduo;
 
     [ObservableProperty]
     [Required(ErrorMessage = "Debe seleccionar una categoría.")]
@@ -114,7 +114,7 @@ public partial class CrearResiduoPageModel : ObservableValidator
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 
-    partial void OnValorResiduoChanged(int? value)
+    partial void OnValorResiduoChanged(decimal? value)
     {
         ValidateProperty(value, nameof(ValorResiduo));
         OnPropertyChanged(nameof(ValorResiduoError));

@@ -10,7 +10,7 @@ public class Residuo
     public string? NombreResiduo { get; set; }
     [NotNull]
     public bool EstadoResiduo { get; set; } = true;
-    public int ValorResiduo { get; set; }
+    public decimal ValorResiduo { get; set; } // Cambiado de int a decimal
     [Ignore] 
     public string? NombreCategoria { get; set; }
     // Indica si el registro está sincronizado con Firestore

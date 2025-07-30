@@ -25,7 +25,7 @@
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
 		<!-- Display name -->
-		<ApplicationTitle>San Jerónimo App</ApplicationTitle>
+		<ApplicationTitle>RecoRutas</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.mauifirebase</ApplicationId>

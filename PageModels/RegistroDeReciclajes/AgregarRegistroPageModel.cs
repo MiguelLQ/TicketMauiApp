@@ -106,7 +106,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
             return;
         }
 
-        int valorResiduo = ResiduoSeleccionado.ValorResiduo;
+        decimal valorResiduo = ResiduoSeleccionado.ValorResiduo;
         decimal valorTotal = PesoKilogramo * valorResiduo;
 
         var convertidores = await _convertidorRepository.GetAllConvertidorAync();
@@ -233,7 +233,7 @@ public partial class AgregarRegistroPageModel : ObservableObject
 
         try
         {
-            int valorResiduo = ResiduoSeleccionado.ValorResiduo;
+            decimal valorResiduo = ResiduoSeleccionado.ValorResiduo;
             decimal valorTotal = PesoKilogramo * valorResiduo;
 
             var convertidores = await _convertidorRepository.GetAllConvertidorAync();

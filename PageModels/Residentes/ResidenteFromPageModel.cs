@@ -29,7 +29,7 @@ public partial class ResidenteFormPageModel : ObservableValidator
 
     [ObservableProperty]
     [Required(ErrorMessage = "El apellido es obligatorio.")]
-    [StringLength(20, MinimumLength = 3, ErrorMessage = "El apellido debe tener entre 3 y 20 caracteres.")]
+    [StringLength(20, MinimumLength = 5, ErrorMessage = "El apellido debe tener entre 3 y 20 caracteres.")]
     private string apellidoResidente = string.Empty;
 
     [ObservableProperty]
@@ -168,6 +168,7 @@ public partial class ResidenteFormPageModel : ObservableValidator
     // =======================================================
     // ERRORES PARA XAML
     // ========================================================
+    public bool HasDniResidenteError => !string.IsNullOrWhiteSpace(DniResidenteError);
 
     public string? NombreResidenteError => GetErrors(nameof(NombreResidente)).FirstOrDefault()?.ErrorMessage;
     public string? ApellidoResidenteError => GetErrors(nameof(ApellidoResidente)).FirstOrDefault()?.ErrorMessage;

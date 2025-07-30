@@ -34,17 +34,17 @@ public partial class DashboardPageModel : ObservableObject
     private readonly IVehiculoRepository _vehiculoRepo;
     private readonly SincronizacionFirebaseService _sincronizador;
 
-    // ▶ Colecciones para la vista
     public ObservableCollection<TarjetaResumen> TarjetasResumen { get; } = new();
     public ObservableCollection<RegistroRecienteViewModel> UltimosRegistrosResumen { get; } = new();
     public ObservableCollection<ReciclajePorCategoria> DatosGrafico { get; } = new();
     public ObservableCollection<Vehiculo> VehiculosHoy { get; } = new();
+
     [ObservableProperty]
-    bool isBusy;
+    private bool isBusy;
 
+    [ObservableProperty]
+    private Chart? graficoPastel;
 
-    // ▶ Gráfico de pastel
-    [ObservableProperty] private Chart? _graficoPastel;
     private static bool _yaSincronizo = false;
 
     public DashboardPageModel(
@@ -66,11 +66,12 @@ public partial class DashboardPageModel : ObservableObject
     }
 
     // ════════════════════════════════════════════════════════════
-    //  MÉTODO PRINCIPAL
+    //  MÉTODO PRINCIPAL (CARGA AUTOMÁTICA Y FORZADA)
     // ════════════════════════════════════════════════════════════
-    public async Task InicializarAsync()
+    public async Task InicializarAsync(bool forzarSincronizacion = false)
     {
-        if (IsBusy) return; // Previene múltiples llamadas
+        if (IsBusy) return;
+
         try
         {
             IsBusy = true;
@@ -81,26 +82,19 @@ public partial class DashboardPageModel : ObservableObject
                 await _sincronizador.SincronizarResidentesDesdeFirebaseAsync();
             }
 
-            if (!_yaSincronizo)
+            if (!_yaSincronizo || forzarSincronizacion)
             {
                 await _sincronizador.SincronizarTodoAsync();
                 _yaSincronizo = true;
             }
 
-            // Tarjetas
+            // Cargar UI
             TarjetasResumen.Clear();
             foreach (var t in await ObtenerTarjetasAsync())
-            {
                 TarjetasResumen.Add(t);
-            }
 
-            // Últimos registros
             await CargarUltimosRegistrosAsync();
-
-            // Gráfico pastel
             await CargarGraficoPastelAsync();
-
-            // Vehículos con ruta hoy
             await CargarVehiculosHoyAsync();
         }
         catch (Exception ex)
@@ -112,7 +106,6 @@ public partial class DashboardPageModel : ObservableObject
             IsBusy = false;
         }
     }
-
 
     // ════════════════════════════════════════════════════════════
     //  TARJETAS RESUMEN
@@ -153,7 +146,7 @@ public partial class DashboardPageModel : ObservableObject
             if (resi2Dict.TryGetValue(reg.IdResiduo!, out var r2))
                 reg.NombreResiduo = r2.NombreResiduo;
 
-            // estéticas
+            // Estética
             string icono = "plastico.png";
             string borde = "#29303e";
             string texto = GenerarColorAleatorioHex();
@@ -162,7 +155,7 @@ public partial class DashboardPageModel : ObservableObject
             if ((reg.NombreResiduo ?? "").ToLower().Contains("papel"))
             { icono = "papel.png"; borde = "#29303e"; texto = GenerarColorAleatorioHex(); }
             else if ((reg.NombreResiduo ?? "").ToLower().Contains("vidrio"))
-            { icono = "vidrio.png"; borde = "#29303e"; GenerarColorAleatorioHex(); }
+            { icono = "vidrio.png"; borde = "#29303e"; texto = GenerarColorAleatorioHex(); }
 
             UltimosRegistrosResumen.Add(new RegistroRecienteViewModel
             {
@@ -222,20 +215,18 @@ public partial class DashboardPageModel : ObservableObject
         Debug.WriteLine($"[VehículosHoy] Total en colección Observable: {VehiculosHoy.Count}");
     }
 
-    // ════════════════════════════════════════════════════════════
     private string GenerarColorAleatorioHex()
     {
         var rnd = new Random();
         return $"#{rnd.Next(0x1000000):X6}";
     }
 
-    /*=================================================================
-     * Boton para sincronizar
-     =================================================================*/
+    // ════════════════════════════════════════════════════════════
+    //  BOTÓN: FORZAR SINCRONIZACIÓN
+    // ════════════════════════════════════════════════════════════
     [RelayCommand]
     public async Task ForzarSincronizacionAsync()
     {
-        await _sincronizador.SincronizarTodoAsync();
-        await InicializarAsync(); 
+        await InicializarAsync(forzarSincronizacion: true);
     }
 }

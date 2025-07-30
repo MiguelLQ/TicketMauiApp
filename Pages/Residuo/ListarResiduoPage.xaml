@@ -132,8 +132,8 @@
                                                    WidthRequest="18" HeightRequest="18"
                                                    VerticalOptions="Center" />
                                             <Label 
-                                                Text="{Binding ValorResiduo, StringFormat='Valor: {0}'}" 
-                                                FontSize="13"
+                                                Text="{Binding ValorResiduo, StringFormat='S/ {0:F2}'}" 
+                                                FontSize="14"
                                                 TextColor="#4b5563"
                                                 VerticalOptions="Center" />
                                         </HorizontalStackLayout>

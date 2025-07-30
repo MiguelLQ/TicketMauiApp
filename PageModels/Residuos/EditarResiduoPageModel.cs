@@ -33,8 +33,8 @@ public partial class EditarResiduoPageModel : ObservableValidator
 
     [ObservableProperty]
     [Required(ErrorMessage = "El valor del residuo es obligatorio.")]
-    [Range(1, int.MaxValue, ErrorMessage = "El valor debe ser mayor que 0.")]
-    private int _valorResiduo;
+    [Range(1, double.MaxValue, ErrorMessage = "El valor debe ser mayor que 0.")]
+    private decimal _valorResiduo;
 
     [ObservableProperty]
     [Required(ErrorMessage = "Debe seleccionar una categoría.")]
@@ -58,7 +58,7 @@ public partial class EditarResiduoPageModel : ObservableValidator
         {
             NombreResiduo = ResiduoSeleccionado.NombreResiduo;
             EstadoResiduo = ResiduoSeleccionado.EstadoResiduo;
-            ValorResiduo = ResiduoSeleccionado.ValorResiduo;
+            ValorResiduo = (decimal)ResiduoSeleccionado.ValorResiduo;
             CategoriaResiduoSeleccionada = ListaCategorias.FirstOrDefault(c => c.IdCategoriaResiduo == ResiduoSeleccionado.IdCategoriaResiduo);
         }
     }
@@ -97,7 +97,6 @@ public partial class EditarResiduoPageModel : ObservableValidator
         ResiduoSeleccionado.Sincronizado = false;
         ResiduoSeleccionado.IdCategoriaResiduo = CategoriaResiduoSeleccionada!.IdCategoriaResiduo;
 
-
         await _residuoRepository.UpdateResiduoAsync(ResiduoSeleccionado);
         await _alertaHelper.ShowSuccessAsync("Residuo actualizado correctamente.");
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && _sincronizar is not null)
@@ -122,14 +121,6 @@ public partial class EditarResiduoPageModel : ObservableValidator
         ValidateProperty(value, nameof(NombreResiduo));
         OnPropertyChanged(nameof(NombreResiduoError));
         OnPropertyChanged(nameof(HasNombreResiduoError));
-        OnPropertyChanged(nameof(PuedeGuardar));
-    }
-
-    partial void OnValorResiduoChanged(int value)
-    {
-        ValidateProperty(value, nameof(ValorResiduo));
-        OnPropertyChanged(nameof(ValorResiduoError));
-        OnPropertyChanged(nameof(HasValorResiduoError));
         OnPropertyChanged(nameof(PuedeGuardar));
     }
 

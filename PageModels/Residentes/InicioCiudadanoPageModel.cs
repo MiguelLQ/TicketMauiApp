@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MauiFirebase.Models;
 using MauiFirebase.Data.Interfaces;
-using System.Threading.Tasks;
 
 namespace MauiFirebase.PageModels.Residentes;
 
@@ -75,8 +73,8 @@ public partial class InicioCiudadanoPageModel : ObservableObject
             {
                 TicketsGanados = residenteLocal.TicketsTotalesGanados;
                 TicketsGanadosTexto = residenteLocal.TicketsTotalesGanados.ToString();
-                NombreResidente = residenteLocal.NombreResidente;
-                ApellidoResidente = residenteLocal.ApellidoResidente;
+                NombreResidente = residenteLocal.NombreResidente!;
+                ApellidoResidente = residenteLocal.ApellidoResidente!;
             }
             else
             {

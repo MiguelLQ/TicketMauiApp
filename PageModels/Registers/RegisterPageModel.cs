@@ -37,7 +37,7 @@ public partial class RegisterPageModel : ObservableObject
 
         if (uid == null)
         {
-            await Application.Current!.MainPage.DisplayAlert("Error", "No se pudo registrar. Verifica el correo o intenta más tarde.", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "No se pudo registrar. Verifica el correo o intenta más tarde.", "OK");
             return;
         }
         //

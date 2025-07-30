@@ -78,7 +78,7 @@ public partial class InicioCiudadanoPageModel : ObservableObject
             }
             else
             {
-                TicketsGanadosTexto = "Datos no disponibles";
+                TicketsGanadosTexto = "Tickets no disponibles";
             }
         }
         catch (Exception ex)

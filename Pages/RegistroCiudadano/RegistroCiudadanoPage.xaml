@@ -17,13 +17,14 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="16">
+        <VerticalStackLayout Padding="16" Spacing="6">
 
             <!-- Formulario de Registro -->
             <Frame IsVisible="{Binding MostrarFormulario}"
                    CornerRadius="20"
                    Padding="0"
                    Background="{DynamicResource CardBackgroundBrush}"
+                   BorderColor="Transparent"
                    WidthRequest="340"
                    Margin="0"
                    HorizontalOptions="Center"
@@ -35,7 +36,8 @@
                            FontSize="20"
                            FontAttributes="Bold"
                            TextColor="{StaticResource Primary}"
-                           HorizontalOptions="Center" />
+                           HorizontalOptions="Center"
+                           Padding="10"/>
 
                     <Label Text="Y empieza a reciclar!"
                            FontSize="17"
@@ -45,7 +47,7 @@
                            Margin="0,-15,0,0" />
 
                     <!-- Nombre -->
-                    <VerticalStackLayout Spacing="1" Margin="0,10,0,0">
+                    <VerticalStackLayout Spacing="1" Margin="0,10,0,-20">
                         <Label Text="Nombres"
                                Margin="28,0,0,0"
                                FontSize="13"
@@ -55,6 +57,7 @@
                                HeightRequest="60"
                                Padding="10"
                                HasShadow="False"
+                               BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}">
 
                             <HorizontalStackLayout Spacing="10">
@@ -79,7 +82,7 @@
                     </VerticalStackLayout>
 
                     <!-- Apellido -->
-                    <VerticalStackLayout Spacing="1" Margin="0,10,0,0">
+                    <VerticalStackLayout Spacing="1" Margin="0,10,0,-20">
                         <Label Text="Apellidos"
                                Margin="28,0,0,0"
                                FontSize="13"
@@ -89,6 +92,7 @@
                                Padding="10"
                                HeightRequest="60"
                                HasShadow="False"
+                               BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}">
                             <HorizontalStackLayout Spacing="10">
                                 <Image Source="{StaticResource IconApellido}"
@@ -112,7 +116,7 @@
                     </VerticalStackLayout>
 
                     <!-- DNI -->
-                    <VerticalStackLayout Spacing="1" Margin="0,10,0,0">
+                    <VerticalStackLayout Spacing="1" Margin="0,10,0,-20">
                         <Label Text="DNI"
                                FontSize="13"
                                Margin="28,0,0,0"
@@ -122,6 +126,7 @@
                                Padding="10"
                                HeightRequest="60"
                                HasShadow="False"
+                               BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}">
                             <HorizontalStackLayout Spacing="10">
                                 <Image Source="{StaticResource IconApellido}"
@@ -152,7 +157,7 @@
                     </VerticalStackLayout>
 
                     <!-- Correo -->
-                    <VerticalStackLayout Spacing="1" Margin="0,10,0,0">
+                    <VerticalStackLayout Spacing="1" Margin="0,10,0,-20">
                         <Label Text="Correo"
                                FontSize="13"
                                Margin="28,0,0,0"
@@ -162,6 +167,7 @@
                                Padding="10"
                                HeightRequest="60"
                                HasShadow="False"
+                               BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}">
                             <HorizontalStackLayout Spacing="10">
                                 <Image Source="{StaticResource IconCorreo}"
@@ -196,6 +202,7 @@
                                Padding="10"
                                HeightRequest="60"
                                HasShadow="False"
+                               BorderColor="Transparent"
                                Background="{StaticResource EntryBackgroundBrush}">
                             <HorizontalStackLayout Spacing="10">
                                 <Image Source="{StaticResource IconUbicacion}"

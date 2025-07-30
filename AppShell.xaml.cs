@@ -18,6 +18,8 @@ using MauiFirebase.Pages.RegistroCiudadano;
 using MauiFirebase.Pages.Mapa;
 using MauiFirebase.Pages.ResidentesView;
 using MauiFirebase.Pages.CamScaner;
+using MauiFirebase.Pages.RecuperarContrasena;
+
 //using Windows.Devices.Sensors;
 
 namespace MauiFirebase
@@ -66,6 +68,9 @@ namespace MauiFirebase
             Routing.RegisterRoute(nameof(inicioConductorPage), typeof(inicioConductorPage));
             //para scanear QR
             Routing.RegisterRoute(nameof(CamScanerPage), typeof(CamScanerPage));
+            //para recuperar contrasena 
+           Routing.RegisterRoute(nameof(RecuperarContrasenaPage), typeof(RecuperarContrasenaPage));
+
 
 
             //Usuario

@@ -5,6 +5,8 @@ using MauiFirebase.Pages.Login;
 using MauiFirebase.Pages.Register;
 using Microsoft.Maui.Networking;
 using MauiFirebase.Helpers.Interface;
+using MauiFirebase.Pages.RecuperarContrasena;
+
 
 namespace MauiFirebase.PageModels.Logins
 {
@@ -38,7 +40,7 @@ namespace MauiFirebase.PageModels.Logins
 
             try
             {
-                // Validar conexión real a Internet
+                // Validar conexión a internet real
                 if (!await HayInternetRealAsync())
                 {
                     ErrorMessage = "Necesitas conexión a internet.";
@@ -54,7 +56,7 @@ namespace MauiFirebase.PageModels.Logins
                     return;
                 }
 
-                // Intentar login con Firebase Auth
+                // Intentar login
                 var success = await _authService.LoginAsync(Email, Password);
                 if (!success)
                 {
@@ -63,46 +65,55 @@ namespace MauiFirebase.PageModels.Logins
                     return;
                 }
 
+                // ✅ Validar si el correo fue verificado
+                var estaVerificado = await _authService.VerificarCorreoElectronicoAsync();
+                if (!estaVerificado)
+                {
+                    ErrorMessage = "Debes verificar tu correo electrónico antes de continuar.";
+                    HasError = true;
+                    await _authService.Logout(); // cerrar sesión inmediata
+                    return;
+                }
+
                 // Obtener ID token y UID
                 var token = await _authService.ObtenerIdTokenSeguroAsync();
                 var uid = Preferences.Get("FirebaseUserId", string.Empty);
 
-                // Consultar datos del usuario en Firestore
+                // Consultar datos del usuario desde Firestore
                 var usuarioService = new FirebaseUbicacionServie();
                 var usuario = await usuarioService.ObtenerUsuarioPorUidAsync(uid, token);
 
-                // Si no se encuentra en la colección "usuarios", se asume ciudadano
                 if (usuario == null)
                 {
                     usuario = new Models.Usuario
                     {
                         Uid = uid,
                         Rol = "Ciudadano",
-                        Estado = true // asumimos activo
+                        Estado = true
                     };
                 }
 
-                // Validar estado de cuenta
+                // Verificar si está activo
                 if (!usuario.Estado)
                 {
                     ErrorMessage = "Tu cuenta está inactiva. Contáctate con el administrador.";
                     HasError = true;
-                    _authService.Logout();
+                    await _authService.Logout();
                     return;
                 }
 
-                // Guardar datos en preferencias
+                // Guardar preferencias
                 Preferences.Set("FirebaseUserRole", usuario.Rol);
                 Preferences.Set("FirebaseUid", usuario.Uid);
-                // Guardar datos del usuario en Preferences
                 Preferences.Set("FirebaseUserNombre", usuario.Nombre ?? "");
                 Preferences.Set("FirebaseUserApellido", usuario.Apellido ?? "");
-                // Ir a AppShell y redireccionar por rol
+
+                // Redirigir según rol
                 Application.Current.MainPage = new LoadingPage();
                 await Task.Delay(500);
-
                 Application.Current.MainPage = new AppShell();
                 await Task.Delay(200);
+
                 ((AppShell)Application.Current.MainPage).MostrarOpcionesSegunRol();
 
                 Application.Current.MainPage.Dispatcher.Dispatch(async () =>
@@ -145,5 +156,13 @@ namespace MauiFirebase.PageModels.Logins
         {
             await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
         }
+
+        [RelayCommand]
+        private async Task IrARecuperarContrasenaAsync()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new RecuperarContrasenaPage());
+        }
+
+
     }
 }

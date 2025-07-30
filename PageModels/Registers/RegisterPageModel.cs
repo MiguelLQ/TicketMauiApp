@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Text.RegularExpressions;
+
 
 namespace MauiFirebase.PageModels.Registers;
 
@@ -38,11 +40,19 @@ public partial class RegisterPageModel : ObservableObject
             await Application.Current.MainPage.DisplayAlert("Error", "No se pudo registrar. Verifica el correo o intenta más tarde.", "OK");
             return;
         }
+        //
+        if (!Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", "Ingrese un correo válido.", "OK");
+            return;
+        }
+
 
         Preferences.Set("FirebaseUserId", uid);
         Preferences.Set("FirebaseUserEmail", Email);
 
-        await Application.Current.MainPage.DisplayAlert("Éxito", "Cuenta creada correctamente. Inicie sesión.", "OK");
+        await Application.Current.MainPage.DisplayAlert("Éxito", "Cuenta creada correctamente. Se ha enviado un correo de verificación. Revise su bandeja de entrada antes de iniciar sesión.Si no lo ves en tu bandeja de entrada, revisa tu carpeta de spam o promociones", "OK");
+
 
         // ✅ Volver al login (página anterior)
         await Application.Current.MainPage.Navigation.PopAsync();

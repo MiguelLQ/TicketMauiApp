@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:MauiFirebase.PageModels.RecuperarContrasenas"
+             x:Class="MauiFirebase.Pages.RecuperarContrasena.RecuperarContrasenaPage"
+             Title="Recuperar contraseña">
+
+    <ContentPage.BindingContext>
+        <viewmodel:RecuperarContrasenaPageModel />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout Padding="30" Spacing="20">
+        <Label Text="Recuperar Contraseña" FontSize="24" HorizontalOptions="Center" />
+
+        <Entry Placeholder="Correo electrónico" Text="{Binding Email}" Keyboard="Email"/>
+        <Button Text="Enviar correo" Command="{Binding EnviarCorreoCommand}" />
+        <Button Text="Cancelar" Command="{Binding CancelarCommand}" BackgroundColor="Gray" TextColor="White"/>
+        <Label Text="{Binding Mensaje}" TextColor="Red" FontSize="14" HorizontalOptions="Center"/>
+    </VerticalStackLayout>
+</ContentPage>

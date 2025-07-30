@@ -43,6 +43,8 @@ using MauiFirebase.PageModels.CamScaners;
 using Microcharts.Maui;
 using Microsoft.Maui.Controls.Maps;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using MauiFirebase.Pages.RecuperarContrasena;
+using MauiFirebase.PageModels.RecuperarContrasenas;
 
 namespace MauiFirebase;
 
@@ -181,6 +183,11 @@ public static class MauiProgram
         //para scaner qr
         builder.Services.AddTransient<CamScanerPage>();
         builder.Services.AddTransient<CamScanerPageModel>();
+
+        // Recuperar contraseña
+        builder.Services.AddTransient<RecuperarContrasenaPage>();
+        builder.Services.AddTransient<RecuperarContrasenaPageModel>();
+
 
         builder.Services.AddSingleton<RegistroCiudadanoPageModel>();
         // ==========================================================

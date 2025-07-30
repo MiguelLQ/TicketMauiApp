@@ -150,8 +150,24 @@ namespace MauiFirebase.Services
             var result = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(result);
 
-            return doc.RootElement.GetProperty("localId").GetString(); // el UID del usuario
+            var idToken = doc.RootElement.GetProperty("idToken").GetString(); // ⬅️ Token necesario para enviar verificación
+            var localId = doc.RootElement.GetProperty("localId").GetString();
+
+            // ✅ Enviar correo de verificación
+            var verifyUrl = $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}";
+            var verifyPayload = new
+            {
+                requestType = "VERIFY_EMAIL",
+                idToken = idToken
+            };
+            var verifyJson = JsonSerializer.Serialize(verifyPayload);
+            var verifyContent = new StringContent(verifyJson, Encoding.UTF8, "application/json");
+
+            await client.PostAsync(verifyUrl, verifyContent); // No es necesario verificar la respuesta aquí
+
+            return localId; // UID del usuario
         }
+
         // FirebaseAuthService.cs
 
         public async Task<bool> UsuarioEstaActivoAsync(string uid, string idToken)
@@ -177,8 +193,10 @@ namespace MauiFirebase.Services
             return false;
         }
 
-        public void Logout()
+        public async Task Logout()
         {
+            await Task.CompletedTask; // Esto evita warning de async vacío
+
             Preferences.Remove("FirebaseToken");
             Preferences.Remove("FirebaseUserEmail");
             Preferences.Remove("FirebaseUserId");
@@ -222,6 +240,56 @@ namespace MauiFirebase.Services
                 return false;
             }
         }
+        public async Task<bool> VerificarCorreoElectronicoAsync()
+        {
+            var idToken = Preferences.Get("FirebaseToken", string.Empty);
+            if (string.IsNullOrEmpty(idToken))
+                return false;
+
+            var url = $"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={ApiKey}";
+
+            var payload = new
+            {
+                idToken
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = new HttpClient();
+
+            var response = await client.PostAsync(url, content);
+            if (!response.IsSuccessStatusCode)
+                return false;
+
+            var result = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(result);
+
+            var users = doc.RootElement.GetProperty("users");
+            if (users.GetArrayLength() == 0)
+                return false;
+
+            var emailVerified = users[0].GetProperty("emailVerified").GetBoolean();
+            return emailVerified;
+        }
+        public async Task<bool> EnviarCorreoRecuperacionAsync(string email)
+        {
+            var url = $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}";
+
+            var payload = new
+            {
+                requestType = "PASSWORD_RESET",
+                email = email
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = new HttpClient();
+
+            var response = await client.PostAsync(url, content);
+            return response.IsSuccessStatusCode;
+        }
+
+
 
 
 

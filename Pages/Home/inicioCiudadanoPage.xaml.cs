@@ -25,7 +25,7 @@ namespace MauiFirebase.Pages.Home
 
             try
             {
-                Shell.SetBackgroundColor(this, Color.FromArgb("#3b46d6"));
+                Shell.SetBackgroundColor(this, Color.FromArgb("#555CD9"));
                 Shell.SetForegroundColor(this, Colors.White);
 
                 await Task.Delay(300); // Espera para pintar la UI

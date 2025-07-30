@@ -43,6 +43,7 @@ using MauiFirebase.PageModels.CamScaners;
 using Microcharts.Maui;
 using Microsoft.Maui.Controls.Maps;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using MauiFirebase.Pages.Login;
 
 namespace MauiFirebase;
 
@@ -55,7 +56,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
 
         builder
-            .UseMauiApp<App>()
+            .UseMauiApp(provider => provider.GetRequiredService<App>())
             .UseMauiMaps()
             .UseMauiCommunityToolkit()
             .UseBarcodeReader()
@@ -157,6 +158,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<LoginPageModel>();
         builder.Services.AddSingleton<DashboardPageModel>();
         builder.Services.AddSingleton<InicioPage>();
+        builder.Services.AddSingleton<OnboardingPage>();
         //vehiculo
         builder.Services.AddSingleton<IVehiculoRepository, VehiculoRepository>();
         builder.Services.AddSingleton<VehiculoPageModel>();
@@ -197,6 +199,11 @@ public static class MauiProgram
         builder.Services.AddSingleton<FirebaseResiduoService>();
         builder.Services.AddSingleton<FirebaseUbicacionService>();
         builder.Services.AddSingleton<FirebaseRutaService>();
+        builder.Services.AddSingleton<App>(provider =>
+        {
+            var sincronizador = provider.GetRequiredService<SincronizacionFirebaseService>();
+            return new App(sincronizador);
+        });
         var app = builder.Build();
         Services = app.Services;
         return app;

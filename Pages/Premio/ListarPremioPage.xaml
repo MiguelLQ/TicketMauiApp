@@ -21,10 +21,10 @@
 
                 <!-- Título -->
                 <Label Text="Premios Disponibles"
-                       FontSize="18"
+                       FontSize="22"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
-                       TextColor="{DynamicResource Gray500}"
+                       TextColor="{DynamicResource Gray300}"
                        Margin="0,20,0,0" />
 
                 <CollectionView ItemsSource="{Binding ListaPremios}">
@@ -71,7 +71,7 @@
                                         <Label Text="{Binding NombrePremio}"
                                            FontAttributes="Bold"
                                            FontSize="16"
-                                           TextColor="{DynamicResource Gray500}" />
+                                           TextColor="{DynamicResource Gray400}" />
 
                                         <Frame Padding="6,2"
                                            CornerRadius="12"
@@ -125,7 +125,7 @@
                                                    VerticalOptions="Center" />
                                                 <Label Text="Descripción:"
                                                    FontSize="13"
-                                                   TextColor="#4b5563"
+                                                   TextColor="{StaticResource Gray500}"
                                                    FontAttributes="Bold"
                                                    VerticalOptions="Center" />
                                             </HorizontalStackLayout>
@@ -133,7 +133,7 @@
                                             <!-- Contenido de la descripción -->
                                             <Label Text="{Binding DescripcionPremio}"
                                                FontSize="13"
-                                               TextColor="#4b5563"
+                                                   TextColor="{StaticResource Gray500}"
                                                LineBreakMode="WordWrap"
                                                HorizontalOptions="Fill"
                                                VerticalOptions="Start"
@@ -146,7 +146,7 @@
                                             <Image Source="{StaticResource IconTicket}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
                                             <Label Text="{Binding PuntosRequeridos, StringFormat='Tickets Requeridos: {0}'}"
                                                FontSize="13"
-                                               TextColor="#4b5563"
+                                                   TextColor="{StaticResource Gray500}"
                                                    FontAttributes="Bold"
                                                VerticalOptions="Center" />
                                         </HorizontalStackLayout>

@@ -14,7 +14,15 @@ public partial class App : Application
         InitializeComponent();
         _sincronizador = sincronizador;
         Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-
+        MainPage = new ContentPage
+        {
+            Content = new ActivityIndicator
+            {
+                IsRunning = true,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            }
+        };
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             await InicializarAplicacionCompletaAsync();
@@ -24,31 +32,37 @@ public partial class App : Application
     private async Task InicializarAplicacionCompletaAsync()
     {
         var authService = new FirebaseAuthService();
-
-        // Solo la primera vez
-        //if (!Preferences.ContainsKey("PrimeraEjecucion"))
-        //{
-        //    Preferences.Set("PrimeraEjecucion", true);
-        //    await BorrarBaseDeDatosLocalAsync();
-        //}
-
-        if (authService.IsLoggedIn())
+        //Mostrar Onboarding si aún no se ha visto
+        bool onboardingVisto = Preferences.Get("onboarding_visto", false);
+        if (!onboardingVisto)
         {
-            // Si hay una sesión activa, intenta restaurarla con rol
-            await RestaurarSesionAsync(authService);
-        }
-        else
-        {
-            // No hay sesión activa, ir al login
-            MainPage = new NavigationPage(new LoginPage());
+            var onboarding = new OnboardingPage();
+
+            onboarding.CuandoFinaliza = () =>
+            {
+                Preferences.Set("onboarding_visto", true);
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await InicializarAplicacionCompletaAsync(); // vuelve a ejecutar el flujo normal
+                });
+            };
+
+            MainPage = new NavigationPage(onboarding);
+            return;
         }
 
-        // Intentar sincronizar si hay internet
+
+        // Intenta restaurar sesión siempre, no solo si está "loggeado"
+        await RestaurarSesionAsync(authService);
+
+        //Sincronización si hay internet
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
         {
             await IntentarSincronizarAsync();
         }
     }
+
 
     private async Task RestaurarSesionAsync(FirebaseAuthService authService)
     {
@@ -59,35 +73,40 @@ public partial class App : Application
             string rol = Preferences.Get("FirebaseUserRole", string.Empty);
 
             // Cargar el AppShell
-            MainPage = new AppShell();
+            var shell = new AppShell();
+            MainPage = shell;
 
-            await Task.Delay(200); // Espera para evitar errores de navegación prematura
+            // Esperar hasta que Shell esté completamente inicializado
+            await Task.Delay(300); // A veces 200 ms no es suficiente
 
-            ((AppShell)MainPage).MostrarOpcionesSegunRol();
+            shell.MostrarOpcionesSegunRol();
 
-            // Navegar según rol
-            switch (rol)
+            // Usa Dispatcher para asegurar hilo UI
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                case "Administrador":
-                    await Shell.Current.GoToAsync("//adminHome/inicio");
-                    break;
-                case "Recolector":
-                    await Shell.Current.GoToAsync("//registerHome/inicio");
-                    break;
-                case "Conductor":
-                    await Shell.Current.GoToAsync("//conductorHome/inicioConductor");
-                    break;
-                case "Ciudadano":
-                default:
-                    await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");
-                    break;
-            }
+                switch (rol)
+                {
+                    case "Administrador":
+                        await Shell.Current.GoToAsync("//adminHome/inicio");
+                        break;
+                    case "Recolector":
+                        await Shell.Current.GoToAsync("//registerHome/inicio");
+                        break;
+                    case "Conductor":
+                        await Shell.Current.GoToAsync("//conductorHome/inicioConductor");
+                        break;
+                    default:
+                        await Shell.Current.GoToAsync("//ciudadanoHome/inicioCiudadano");
+                        break;
+                }
+            });
         }
         else
         {
             MainPage = new NavigationPage(new LoginPage());
         }
     }
+
 
     private async Task IntentarSincronizarAsync()
     {

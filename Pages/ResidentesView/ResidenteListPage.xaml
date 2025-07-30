@@ -59,7 +59,7 @@
                                    Margin="0,8"
                                    Padding="12"
                                    HasShadow="False"
-                                   BackgroundColor="{AppThemeBinding Light=White, Dark=#141422}"
+                                   BackgroundColor="{AppThemeBinding Light=White, Dark=#24293d}"
                                    BorderColor="Transparent">
                                 <Frame.Shadow>
                                     <Shadow Brush="Black" Opacity="0.2" Radius="8" Offset="3,3"/>
@@ -103,7 +103,7 @@
                                            Grid.Row="0"
                                            Padding="6"
                                            CornerRadius="10"
-                                           BackgroundColor="{AppThemeBinding Light=#e6f4ea, Dark=#144d28}"
+                                           BackgroundColor="{AppThemeBinding Light=#e6f4ea, Dark=#24293d}"
                                            BorderColor="Green"
                                            HasShadow="True"
                                            VerticalOptions="Start"

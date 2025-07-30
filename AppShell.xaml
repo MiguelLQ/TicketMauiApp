@@ -44,7 +44,7 @@
 
     <Shell.FlyoutHeader>
         <Border 
-            Background="#3640c1"
+            Background="#555CD9"
             StrokeShape="RoundRectangle 0,0,0,60"
             Padding="20">
             <VerticalStackLayout Spacing="10">

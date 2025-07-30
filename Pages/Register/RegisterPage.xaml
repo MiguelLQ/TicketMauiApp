@@ -4,70 +4,92 @@
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Registers"
              x:Class="MauiFirebase.Pages.Register.RegisterPage"
              x:DataType="viewModels:RegisterPageModel"
-             Title="Registro">
+             >
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20" BackgroundColor="#F5F9FF">
+        <VerticalStackLayout Padding="30" Spacing="20" Background="{DynamicResource CardBackgroundBrush}">
+            <Image Source="addus.png" WidthRequest="80" HeightRequest="80" BackgroundColor="Transparent" Margin="5" ></Image>
 
             <!-- Título -->
             <Label Text="Crear Cuenta"
                    FontSize="28"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   TextColor="#0077CC" />
+                   TextColor="{StaticResource Primary}" />
 
             <!-- Correo -->
-            <Frame CornerRadius="12" Padding="10" BackgroundColor="White" HasShadow="True">
-                <Entry Placeholder="Correo electrónico"
-                       Text="{Binding Email}"
-                       Keyboard="Email"
-                       FontSize="16"
-                       TextColor="#333"
-                       PlaceholderColor="#999" />
-            </Frame>
+            <VerticalStackLayout>
+                
+                
+                <Frame CornerRadius="12" Padding="0" Background="{DynamicResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="50">
+                    <HorizontalStackLayout>
+                        <Label Text="📧" FontSize="20" Margin="10,0" VerticalOptions="Center" />
+                        <Entry Placeholder="Correo electrónico"
+                               Text="{Binding Email}"
+                               Keyboard="Email"
+                               FontSize="16"
+                               TextColor="{StaticResource Gray500}"
+                               BackgroundColor="Transparent"
+                               PlaceholderColor="#999"
+                               Margin="8,0" />
+                    </HorizontalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
 
             <!-- Contraseña -->
-            <Frame CornerRadius="12" Padding="10" BackgroundColor="White" HasShadow="True">
-                <Entry Placeholder="Contraseña"
-                       Text="{Binding Password}"
-                       IsPassword="True"
-                       FontSize="16"
-                       TextColor="#333"
-                       PlaceholderColor="#999" />
-            </Frame>
+            <VerticalStackLayout>
+                <Frame CornerRadius="12" Padding="0" Background="{DynamicResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="50">
+                    <HorizontalStackLayout>
+                        <Label Text="🔒" FontSize="20" Margin="10,0" VerticalOptions="Center" />
+                        <Entry Placeholder="Contraseña"
+                               Text="{Binding Password}"
+                               IsPassword="True"
+                               FontSize="16"
+                               TextColor="{StaticResource Gray500}"
+                               BackgroundColor="Transparent"
+                               PlaceholderColor="#999"
+                               Margin="8,0" />
+                    </HorizontalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
 
             <!-- Confirmar contraseña -->
-            <Frame CornerRadius="12" Padding="10" BackgroundColor="White" >
-                <Entry Placeholder="Confirmar contraseña"
-                       Text="{Binding ConfirmarPassword}"
-                       IsPassword="True"
-                       FontSize="16"
-                       TextColor="#333"
-                       PlaceholderColor="#999" />
-            </Frame>
+            <VerticalStackLayout>
+                <Frame CornerRadius="12" Padding="0" Background="{DynamicResource EntryBackgroundBrush}" HasShadow="False" HeightRequest="50">
+                    <HorizontalStackLayout>
+                        <Label Text="🔒" FontSize="20" Margin="10,0" VerticalOptions="Center" />
+                        <Entry Placeholder="Confirmar contraseña"
+                               Text="{Binding ConfirmarPassword}"
+                               IsPassword="True"
+                               FontSize="16"
+                               TextColor="{StaticResource Gray500}"
+                               BackgroundColor="Transparent"
+                               PlaceholderColor="#999"
+                               Margin="8,0" />
+                    </HorizontalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
 
-            <!-- Botón Registrarse -->
-            <Button Text="Registrarse"
-                    Command="{Binding RegistrarCommand}"
-                    BackgroundColor="#0077CC"
-                    TextColor="White"
-                    CornerRadius="25"
-                    FontSize="16"
-                    HeightRequest="50"
-                    Margin="0,10,0,0"
-                     />
-
-            <!-- Botón Cancelar -->
-            <Button Text="Cancelar"
-                    Clicked="OnCancelarClicked"
-                    BackgroundColor="#EEEEEE"
-                    TextColor="#333333"
-                    CornerRadius="25"
-                    FontAttributes="Bold"
-                    FontSize="14"
-                    HeightRequest="50"
-                    WidthRequest="150"
-                    HorizontalOptions="Center" />
+            <!-- Botones en una sola fila -->
+            <HorizontalStackLayout Spacing="16" Margin="0,10,0,0" HorizontalOptions="Center">
+                <Button Text="Registrarse"
+                        Command="{Binding RegistrarCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        CornerRadius="8"
+                        FontSize="16"
+                        HeightRequest="50"
+                        WidthRequest="150" />
+                <Button Text="Cancelar"
+                        Clicked="OnCancelarClicked"
+                        BackgroundColor="#EEEEEE"
+                        TextColor="#333333"
+                        CornerRadius="8"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        HeightRequest="50"
+                        WidthRequest="150" />
+            </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

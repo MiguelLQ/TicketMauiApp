@@ -6,8 +6,8 @@
              x:Name="iniciociudadano">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="HeaderOrange">#3b46d6</Color>
-            <Color x:Key="Headercolorsaludo">#4e58db</Color>
+            <Color x:Key="HeaderOrange">#555CD9</Color>
+            <Color x:Key="Headercolorsaludo">#666ED9</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid >
@@ -105,7 +105,9 @@
                             <Frame Background="{DynamicResource EntryBackgroundBrush}"
                                    CornerRadius="12"
                                    Padding="10"
-                                   WidthRequest="130">
+                                   WidthRequest="130"
+                                   BorderColor="Transparent"
+                                   HasShadow="False">
 
                                 <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
 
@@ -138,7 +140,8 @@
                             <Frame Background="{DynamicResource EntryBackgroundBrush}"
                                    CornerRadius="12"
                                    Padding="7"
-                                   WidthRequest="130">
+                                   WidthRequest="130"
+                                   BorderColor="Transparent">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="¡Acumula tickets y canjéalos por premios!"
                                            FontSize="12"

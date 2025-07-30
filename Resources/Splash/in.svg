@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="250" height="150" viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg">
+	<!-- Fondo transparente (no se incluye ningún fondo explícito) -->
+
+	<!-- Texto principal: EcoRutas -->
+	<text x="50%" y="45%" text-anchor="middle" fill="#555CD9" font-size="48" font-family="Segoe UI, sans-serif" font-weight="bold" shape-rendering="geometricPrecision">
+		RecoRutas
+	</text>
+
+	<!-- Subtítulo: Bienvenido de nuevo -->
+	<text x="55%" y="70%" text-anchor="middle" fill="#555CD9" font-size="24" font-family="Segoe UI, sans-serif" shape-rendering="geometricPrecision">
+		¡Bienvenido de nuevo!
+	</text>
+</svg>

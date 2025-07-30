@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+	<rect width="100%" height="100%" fill="#1e252c"/>
+	<!-- Ruedas -->
+	<circle cx="160" cy="390" r="30" fill="#175d73"/>
+	<circle cx="360" cy="390" r="30" fill="#175d73"/>
+	<!-- Camión -->
+	<rect x="120" y="260" width="280" height="100" rx="20" fill="#1f7056"/>
+	<rect x="220" y="180" width="140" height="90" rx="10" fill="#1f7056"/>
+	<!-- Cabina -->
+	<rect x="300" y="200" width="60" height="50" rx="8" fill="#3cb68a"/>
+	<rect x="310" y="210" width="30" height="30" rx="5" fill="#a5e4f4"/>
+	<!-- Símbolo de reciclaje -->
+	<path d="M200 180 l20 -30 20 30h-10l10 20h-40l10 -20z" fill="#32b76c"/>
+	<path d="M220 150 l30 10 -10 20-10-5-10 15-20-35z" fill="#32b76c"/>
+	<path d="M250 190 l10 30 -30 -10 5-10-15-10 35-10z" fill="#32b76c"/>
+	<!-- Texto principal -->
+	<text x="50%" y="470" text-anchor="middle" fill="white" font-size="40" font-family="Arial, Helvetica, sans-serif" font-weight="bold">EcoRutas</text>
+	<!-- Subtítulo -->
+	<text x="50%" y="505" text-anchor="middle" fill="#cfd1d3" font-size="22" font-family="Arial, Helvetica, sans-serif">Bienvenido de nuevo</text>
+</svg>

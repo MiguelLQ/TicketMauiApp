@@ -6,8 +6,8 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="HeaderOrange">#3b46d6</Color>
-            <Color x:Key="Headercolorsaludo">#4e58db</Color>
+            <Color x:Key="HeaderOrange">#555CD9</Color>
+            <Color x:Key="Headercolorsaludo">#666ED9</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -127,7 +127,7 @@
 
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <Frame BackgroundColor="{AppThemeBinding Light=White, Dark=#14171e}"
+                                        <Frame Background="{DynamicResource EntryBackgroundBrush}"
                                                CornerRadius="10"
                                                Padding="10"
                                                Margin="6"

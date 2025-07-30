@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiFirebase.Pages.Login.OnboardingPage"
+             BackgroundColor="White">
+
+    <Grid>
+
+        <!-- Carrusel de slides -->
+        <CarouselView x:Name="OnboardingCarousel"
+                      ItemsSource="{Binding Slides}"
+                      IsSwipeEnabled="True"
+                      PositionChanged="OnCarouselPositionChanged"
+                      VerticalOptions="Fill">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="20" Spacing="25" VerticalOptions="Center">
+                        <Image Source="{Binding Imagen}" HeightRequest="200" HorizontalOptions="Center" />
+                        <Label Text="{Binding Titulo}" FontSize="24" HorizontalOptions="Center" />
+                        <Label Text="{Binding Descripcion}" FontSize="16"
+                               TextColor="{StaticResource Gray300}"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+        <!-- Botón solo visible en la última slide -->
+        <StackLayout VerticalOptions="End" Padding="20">
+            <Button x:Name="BotonEmpezar"
+                    Text="Empezar"
+                    Clicked="OnEmpezarClicked"
+                    IsVisible="False"
+                    HorizontalOptions="Center"
+                    Margin="10,0"/>
+        </StackLayout>
+        <Label 
+               Text="➜"
+               FontSize="20"
+               TextColor="Gray"
+               Opacity="0.4"
+               VerticalOptions="End"
+               HorizontalOptions="Center"
+               Margin="70"></Label>
+    </Grid>
+</ContentPage>

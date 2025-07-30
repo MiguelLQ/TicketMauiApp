@@ -6,17 +6,17 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#3b46d6</Color>
+    <Color x:Key="Primary">#5E66D6</Color>
     <Color x:Key="PrimaryDark">#ac99ea</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#6c44e9</Color>
-    <Color x:Key="Tertiary">#805dec</Color>
+    <Color x:Key="SecondaryDarkText">#4e4fa2</Color>
+    <Color x:Key="Tertiary">#6D89E7</Color>
 
-    <Color x:Key="DarkBackground">#030511</Color>
+    <Color x:Key="DarkBackground">#1e2336</Color>
     <Color x:Key="LightOnDarkBackground">#d7d6d6</Color>
     <Color x:Key="LightBackground">#f2f2f2</Color>
-    <Color x:Key="DarkOnLightBackground">#030511</Color>
+    <Color x:Key="DarkOnLightBackground">#1e2336</Color>
 
     <Color x:Key="LightSecondaryBackground">#E0E0E0</Color>
     <Color x:Key="DarkSecondaryBackground">#222228</Color>
@@ -36,17 +36,17 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
     <Color x:Key="CardBackgroundLight">#ffffff</Color>
-    <Color x:Key="CardBackgroundDark">#141422</Color>
+    <Color x:Key="CardBackgroundDark">#24293d</Color>
     <Color x:Key="BorderLight">#d2d3d6</Color>
     <Color x:Key="BorderDark">#444444</Color>
     <!-- Fondo de Entry para tema claro -->
     <Color x:Key="EntryBackgroundLight">#f0f0f0</Color>
-
+    <Color x:Key="TitulosColor">#f3f6ff</Color>
     <!-- Fondo de Entry para tema oscuro -->
-    <Color x:Key="EntryBackgroundDark">#1c1c31</Color>
+    <Color x:Key="EntryBackgroundDark">#33384c</Color>
     <Color x:Key="FlyoutLight">#EDEDED</Color>
     <!-- gris claro -->
-    <Color x:Key="FlyoutDark">#14171e</Color>
+    <Color x:Key="FlyoutDark">#1e2336</Color>
     <!-- gris oscuro, pero no negro -->
 
     <SolidColorBrush x:Key="CardBackgroundBrush"

@@ -5,7 +5,7 @@
              xmlns:viewModels="clr-namespace:MauiFirebase.PageModels.Premios"
              x:DataType="viewModels:EditarPremioPageModel"
              Title="Editar Premio"
-             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#121212}">
+             >
 
     <ScrollView>
         <VerticalStackLayout Padding="20" HorizontalOptions="Center">
@@ -13,7 +13,7 @@
             <Frame CornerRadius="16"
                    HasShadow="True"
                    BorderColor="Transparent"
-                   Background="{StaticResource CardBackgroundBrush}"
+                   Background="{DynamicResource CardBackgroundBrush}"
                    WidthRequest="350">
 
                 <VerticalStackLayout Padding="10" Spacing="10">

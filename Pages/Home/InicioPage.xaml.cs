@@ -18,7 +18,7 @@ public partial class InicioPage : ContentPage
         {
             await viewModel.InicializarAsync();
         }
-        Shell.SetBackgroundColor(this, Color.FromArgb("#3b46d6"));                                                      
+        Shell.SetBackgroundColor(this, Color.FromArgb("#555CD9"));                                                      
         Shell.SetForegroundColor(this, Colors.White); 
         MostrarCorreoUsuario();  
     }

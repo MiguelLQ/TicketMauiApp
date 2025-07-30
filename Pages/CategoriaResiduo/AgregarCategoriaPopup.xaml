@@ -19,7 +19,7 @@
 
         <!-- Contenedor principal con solo bordes superiores redondeados -->
         <Border
-            BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"
+            Background="{AppThemeBinding Light={StaticResource White}, Dark={DynamicResource CardBackgroundBrush}}"
             StrokeThickness="0"
             StrokeShape="RoundRectangle 25,25,0,0"
             AbsoluteLayout.LayoutBounds="0,1,1,0.6"
@@ -31,7 +31,7 @@
                      CornerRadius="2" BackgroundColor="LightGray"
                      HorizontalOptions="Center" />
 
-                <Label Text="Agregar Categoría" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#3f51b5"/>
+                <Label Text="Agregar Categoría" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{StaticResource Gray400}"/>
                 <Label Text="Nombre de Categoría" TextColor="#3f51b5" />
                 <Entry 
                     Placeholder="Ingrese Nombre"

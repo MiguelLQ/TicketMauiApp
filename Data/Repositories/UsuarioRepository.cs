@@ -48,28 +48,41 @@ public class UsuarioRepository : IUsuarioRepository
     public async Task<bool> AgregarUsuarioAsync(Usuario usuario)
     {
         if (string.IsNullOrWhiteSpace(usuario.Correo) || string.IsNullOrWhiteSpace(usuario.Contraseña))
+        {
+            Console.WriteLine("❌ Correo o contraseña vacíos.");
             return false;
+        }
 
         // 1. Crear en Firebase Auth
         var uid = await _authService.RegistrarAuthUsuarioAsync(usuario.Correo, usuario.Contraseña);
-        if (string.IsNullOrEmpty(uid))
-            return false;
+        Console.WriteLine($"✅ UID obtenido: {uid}");
 
-        // 2. Usar el token actual (puedes omitir si solo usas modo Admin)
+        if (string.IsNullOrEmpty(uid))
+        {
+            Console.WriteLine("❌ Error al registrar en Firebase Auth.");
+            return false;
+        }
+
+        // 2. Obtener token
         var token = await _authService.ObtenerIdTokenSeguroAsync();
+        Console.WriteLine($"✅ Token obtenido: {token}");
 
         // 3. Guardar en Firestore
         usuario.Uid = uid;
         var resultado = await _firebaseService.AgregarUsuarioAsync(usuario, token);
+        Console.WriteLine($"✅ Resultado Firestore: {resultado}");
 
         if (!string.IsNullOrEmpty(resultado))
         {
-            await _db.InsertAsync(usuario); // Guardar local
+            await _db.InsertAsync(usuario);
+            Console.WriteLine("✅ Usuario guardado localmente.");
             return true;
         }
 
+        Console.WriteLine("❌ Error al guardar en Firestore.");
         return false;
     }
+
     public async Task<Usuario?> ObtenerUsuarioPorUidAsync(string uid)
     {
         return await _db.Table<Usuario>().FirstOrDefaultAsync(u => u.Uid == uid);
